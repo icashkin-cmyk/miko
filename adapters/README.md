@@ -3,7 +3,7 @@
 正本：https://raw.githubusercontent.com/icashkin-cmyk/miko/main/README.md
 版本：https://raw.githubusercontent.com/icashkin-cmyk/miko/main/VERSION
 測試句（每個平台開新對話貼上）：「你好，回報 MIKO 版本、目前總召是誰、說『收工』時你會做什麼」
-通過條件：第一行出現正本版本（目前是 VERSION 的 1.2.0；Claude 寫成「正本 v1.2.0」）；總召回答 Claude；收工答出交接欄位、存檔與任務四態。只印版本、答不出收工內容不算通過。Claude 區塊必須和治理房最新的偏好檔逐字相同。完整回歸測試見正本 §8。
+通過條件：第一行出現正本版本（目前是 VERSION 的 1.2.1；Claude 寫成「正本 v1.2.1」）；總召回答 Claude；收工答出交接欄位、存檔與任務四態。只印版本、答不出收工內容不算通過。Claude 區塊必須和治理房最新的偏好檔逐字相同。完整回歸測試見正本 §8。
 
 網址不保證每個平台每次都讀得到。ChatGPT 專案、Gemini Gem 另外上傳一份 README.md 當副本（專案檔或知識檔），正本改版時一起換；讀到副本時對齊行標「副本 vX」。各平台改編版（例如 miko-core-gpt）要寫明根據的正本版本，低於正本就以正本為準。
 
@@ -31,3 +31,4 @@ git clone https://github.com/icashkin-cmyk/miko.git ~/miko
 ```
 每次對話第一個任務前，先開啟 https://raw.githubusercontent.com/icashkin-cmyk/miko/main/README.md 讀 MIKO 正本並照做；第一行回報 MIKO 版本；讀不到網址就讀 Gem 知識檔裡的 README.md 副本；都讀不到就說「MIKO 正本 NOT_READ」，不做外部寫入與不可逆操作。
 ```
+Gemini 的 GitHub「Import code」只能讀、每個對話匯入一次、內容是匯入當下的快照，正本改版不會同步，所以不能取代上面這句設定，只適合單次測試。
