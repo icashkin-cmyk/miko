@@ -1,0 +1,62 @@
+# check_repo.py｜MIKO 正本自動檢查（只用標準函式庫）｜用法：在 repo 根目錄執行 python3 tests/check_repo.py
+# 私人關鍵字不寫進本檔：要加測時，用環境變數 MIKO_PRIVATE_WORDS（以逗號分隔）傳入。
+import json, os, re, subprocess, sys, pathlib, hashlib
+R = pathlib.Path(__file__).resolve().parents[1]
+res = []
+def ok(name, cond, note=''):
+    res.append((name, bool(cond), note))
+
+readme = (R / 'README.md').read_text(encoding='utf-8')
+ver = (R / 'VERSION').read_text(encoding='utf-8').split('\n')[0].strip()
+chg = (R / 'CHANGELOG.md').read_text(encoding='utf-8')
+adp = (R / 'adapters' / 'README.md').read_text(encoding='utf-8')
+core = (R / 'skills' / 'miko-core' / 'SKILL.md').read_text(encoding='utf-8')
+m = re.search(r'對應正本：([0-9.]+)', core)
+ok('C1 版本一致', f'v{ver}｜' in readme and f'- {ver}（' in chg and f'VERSION 的 {ver}' in adp and m and m.group(1) == ver,
+   f'VERSION={ver} miko-core 對應正本={m.group(1) if m else None}')
+
+bad = []
+for p in sorted((R / 'skills').glob('*/SKILL.md')):
+    t = p.read_text(encoding='utf-8')
+    fm = re.match(r'^---\n(.*?)\n---\n', t, re.S)
+    name = re.search(r'^name:\s*"?([^"\n]+)"?\s*$', fm.group(1), re.M) if fm else None
+    desc = re.search(r'^description:\s*\S', fm.group(1), re.M) if fm else None
+    if not (fm and name and desc and name.group(1).strip() == p.parent.name):
+        bad.append(p.parent.name)
+ok('C2 Skill 開頭格式（name 與資料夾同名、有 description）', not bad, f'不合格：{bad}')
+
+words = [w for w in os.environ.get('MIKO_PRIVATE_WORDS', '').split(',') if w]
+pat = re.compile(r'[\w.+-]+@[\w-]+\.(com|tw|net|org)|/home/|/Users/|~/[A-Z]' + ''.join('|' + re.escape(w) for w in words))
+hits = []
+for p in R.rglob('*'):
+    if p.is_file() and '.git' not in p.parts and p.suffix in ('.md', '.py', '.txt', '.json', '') and p.name != 'check_repo.py':
+        try:
+            t = p.read_text(encoding='utf-8')
+        except Exception:
+            continue
+        for mm in pat.finditer(t):
+            hits.append(f'{p.relative_to(R)}:{mm.group(0)}')
+ok('C3 公開檔無 email、本機路徑與私人關鍵字', not hits, f'命中：{hits[:5]}；私人關鍵字 {len(words)} 個')
+
+miss = [f'T{i}' for i in list(range(1, 15)) if f'| T{i} |' not in readme]
+ok('C4 回歸測試 T1～T14 都在正本 §8', not miss, f'缺：{miss}')
+
+log = (R / 'sync' / 'LOG.md').read_text(encoding='utf-8') if (R / 'sync' / 'LOG.md').exists() else ''
+ok('C5 sync 檔存在且 LOG 有表頭', (R / 'sync' / 'CLAUDE_STATUS.md').exists() and '| 時間（台北） | 提出方 | 內容 | 決定 | 負責方 | 狀態 |' in log)
+
+sd = R / 'skills' / 'tw-backtest-workflow' / 'scripts'
+exp = json.loads((R / 'tests' / 'expected_bt_min.json').read_text(encoding='utf-8'))
+out = subprocess.run([sys.executable, '-I', 'bt_min.py', '2330_202501_202505.csv'], cwd=sd, capture_output=True, text=True)
+try:
+    got = json.loads(out.stdout)
+    same = (got['sha256'] == exp['csv_sha256'] and got['rows'] == exp['rows'] and got['range'] == exp['range']
+            and got['no_lookahead'] == exp['no_lookahead'] and got['stats'] == exp['stats']
+            and got['open_position'] == exp['open_position'] and len(got['trades']) == exp['closed_trades'])
+    ok('C6 bt_min.py 實跑結果與預期一致', same, f"報酬率={got['stats'].get('報酬率')} MDD={got['stats'].get('MDD')}")
+except Exception as e:
+    ok('C6 bt_min.py 實跑結果與預期一致', False, f'執行失敗：{e} {out.stderr[:200]}')
+
+for n, c, note in res:
+    print(('PASS' if c else 'FAIL'), n, ('｜' + note) if note else '')
+print(f'合計：{sum(c for _, c, _ in res)}/{len(res)} PASS')
+sys.exit(0 if all(c for _, c, _ in res) else 1)
