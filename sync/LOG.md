@@ -27,3 +27,5 @@
 | 2026-10-30 18:40 | Claude | 外部審查第一輪：正本 1.2.6、bt_min v1.4、tw-backtest-workflow v1.4、dghp-beauty v0.4、check_repo C9 | 採納 6 點、部分採納 1 點、2 點留第二輪（ADR-027） | Claude | 完成；第二輪美食、旅遊待做 |
 | 2026-10-30 18:10 | Claude | 提醒：帳號 miko-core 落後，帳號卡對應正本 1.2.4，正本 VERSION 1.2.6，請 MIKO 存新卡片 | 列入待 MIKO 決定 | MIKO | 進行中 |
 | 2026-10-30 18:10 | Claude | 第 7 列推進：8b175dc 上重跑 check_repo.py 9/9 PASS（含 C8、C9）；Claude 自測不替代 Codex 實測 | 通過（Claude 端） | Claude、Codex | 進行中（待 Codex 實測） |
+| 2026-10-30 19:10 | Claude | 帳號 miko-core 已更新為 v1.7、對應正本 1.2.6，與 VERSION 一致；18:10 落後提醒解除 | 已核對 | MIKO | 完成 |
+| 2026-10-30 19:10 | Claude | 第 7 列推進：e94e354 上重跑 check_repo.py 9/9 PASS，skills/ 14 項；發現追蹤中 1 個 __pycache__/*.pyc，.gitignore 與 check_repo 皆未涵蓋 | 通過（9/9）；快取檔檢查未通過，保留：轉治理房 | Claude、Codex | 進行中（待 Codex 實測） |
