@@ -1,4 +1,5 @@
 # 版本紀錄（只新增）
+- 1.2.6（2026-10-30，ADR-027）：外部審查（69d68bb）後修正：Drive 常設授權寫明只給 Claude、其他平台交可貼用全文；版本衝突只比同一份文件的副本；存檔讀回改為內容比對，只讀到中繼資料標內容未驗證；tw-backtest-workflow v1.4（signal 只收到歷史、零量不成交、預留最低手續費、公司事件與 ETF 停止條件、雜湊不符停止）；dghp-beauty v0.4（預設定性比較、沒有評分規格不給分數、清單讀不到不做個人必要性排名）；tests 加 C9。
 - 1.2.5（2026-10-30，ADR-026）：§3 路由表加美妝醫美（dghp-beauty）與命理（dghp-metaphysical-integrated-analysis）；§4 公開摘要的專案類別加美妝、命理；個人清單與命理個人資料只放各平台專案檔，tests 加 C8 擋個人檔進 repo。
 - 1.2.4（2026-10-30，ADR-022）：§7 寫明 Gmail 以垃圾桶作為 _to_delete（N30）；adapters 的 ChatGPT 記憶句加「規則題先重讀正本對應段落」（針對 ChatGPT 新對話 T3、T4 未過）。
 - 1.2.3（2026-10-28，ADR-020）：新增 §4 同步與協作（Claude 與 GPT 每小時錯開檢查，sync/ 各寫各的檔，以 Claude 為主，決定記入 LOG.md）；§7 常設授權加 sync/；T14。

@@ -95,6 +95,39 @@ pf = [str(p.relative_to(R)) for p in R.rglob('*') if p.is_file() and '.git' not 
 gi = (R / '.gitignore').read_text(encoding='utf-8') if (R / '.gitignore').exists() else ''
 ok('C8 repo 沒有個人清單檔，.gitignore 已排除', not pf and '美妝_現有產品' in gi and '_個人資料' in gi, f'命中：{pf}')
 
+import importlib.util, tempfile
+note9, cond9 = '', False
+try:
+    spec = importlib.util.spec_from_file_location('bt', sd / 'bt_min.py'); bt = importlib.util.module_from_spec(spec); spec.loader.exec_module(bt)
+    syn = R / 'tests' / 'synthetic_cycle.csv'; dd = bt.load(str(syn)); tt, ee, oo, sk = bt.run(dd)
+    rows = {r['date']: r for r in dd}; Pm = bt.P; fee = lambda v: max(Pm['fee_min'], v * Pm['fee'])
+    led = all(abs(round(rows[x['exit']]['open'] * x['shares'] - fee(rows[x['exit']]['open'] * x['shares']) - rows[x['exit']]['open'] * x['shares'] * Pm['tax']
+                        - rows[x['entry']]['open'] * x['shares'] - fee(rows[x['entry']]['open'] * x['shares']), 1) - x['pnl']) < 0.11
+              and rows[x['entry']]['volume'] > 0 and rows[x['exit']]['volume'] > 0 for x in tt)
+    pn = [x['pnl'] for x in tt]; w9 = [x for x in pn if x > 0]; l9 = [-x for x in pn if x <= 0]; s9 = b9 = 0
+    for x in pn:
+        s9 = s9 + 1 if x <= 0 else 0; b9 = max(b9, s9)
+    st9 = bt.stats(tt, ee)
+    statok = st9['最大連敗'] == b9 and st9['交易次數（已平倉）'] == len(pn) and st9['PF'] == round(sum(w9) / sum(l9), 2)
+    cover = len(w9) >= 1 and len(l9) >= 2 and b9 >= 2 and len(sk) >= 1
+    orig = bt.signal; caught = []
+    for bad in (lambda d, i: 1 if d[i + 1]['open'] > d[i]['close'] else 0, lambda d, i: 1 if d[i + 1]['volume'] > d[i]['volume'] else 0):
+        bt.signal = bad
+        try:
+            bt.run(dd); ran = False
+        except SystemExit:
+            ran = True
+        caught.append(bt.check_no_lookahead(dd) is False and ran)
+    bt.signal = orig
+    ev = tempfile.NamedTemporaryFile('w', suffix='.csv', delete=False, encoding='utf-8'); ev.write('date,type\n' + dd[50]['date'] + ',除權息\n'); ev.close()
+    cli = lambda *a: subprocess.run([sys.executable, '-I', 'bt_min.py', str(syn), *a], cwd=sd, capture_output=True, text=True).returncode
+    stops = [cli('--events', ev.name) != 0, cli('--etf') != 0, cli('--expect-sha', '0' * 64) != 0, cli('--events', ev.name, '--adjusted') == 0]
+    cond9 = led and statok and cover and all(caught) and all(stops)
+    note9 = f'已平倉 {len(pn)} 筆（勝 {len(w9)}／敗 {len(l9)}，最大連敗 {b9}），零量順延 {len(sk)} 次；帳本 {led}、統計 {statok}、偷看未來被擋 {caught}、停止條件 {stops}'
+except Exception as ex:
+    note9 = f'執行失敗：{ex}'
+ok('C9 回測買賣帳本、偷看未來故障測試、公司事件與雜湊停止', cond9, note9)
+
 for n, c, note in res:
     print(('PASS' if c else 'FAIL'), n, ('｜' + note) if note else '')
 print(f'合計：{sum(c for _, c, _ in res)}/{len(res)} PASS')
