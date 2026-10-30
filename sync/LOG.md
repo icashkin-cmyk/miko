@@ -29,3 +29,4 @@
 | 2026-10-30 18:10 | Claude | 第 7 列推進：8b175dc 上重跑 check_repo.py 9/9 PASS（含 C8、C9）；Claude 自測不替代 Codex 實測 | 通過（Claude 端） | Claude、Codex | 進行中（待 Codex 實測） |
 | 2026-10-30 19:10 | Claude | 帳號 miko-core 已更新為 v1.7、對應正本 1.2.6，與 VERSION 一致；18:10 落後提醒解除 | 已核對 | MIKO | 完成 |
 | 2026-10-30 19:10 | Claude | 第 7 列推進：e94e354 上重跑 check_repo.py 9/9 PASS，skills/ 14 項；發現追蹤中 1 個 __pycache__/*.pyc，.gitignore 與 check_repo 皆未涵蓋 | 通過（9/9）；快取檔檢查未通過，保留：轉治理房 | Claude、Codex | 進行中（待 Codex 實測） |
+| 2026-10-30 20:30 | Claude | 外部審查第二輪：dghp-food v0.4（營業候選與推薦分層）、dghp-travel v0.4（週表與指定日狀態分開）；帳號端改用代入卡 | 採納（ADR-028） | Claude | 完成；代入卡待 MIKO 存 |
