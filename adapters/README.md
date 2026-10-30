@@ -3,7 +3,7 @@
 正本：https://raw.githubusercontent.com/icashkin-cmyk/miko/main/README.md
 版本：https://raw.githubusercontent.com/icashkin-cmyk/miko/main/VERSION
 測試句（每個平台開新對話貼上）：「你好，回報 MIKO 版本、目前總召是誰、說『收工』時你會做什麼」
-通過條件：第一行出現正本版本（目前是 VERSION 的 1.2.3；Claude 寫成「正本 v1.2.3」）；總召回答 Claude；收工答出交接欄位、存檔與任務四態。只印版本、答不出收工內容不算通過。Claude 區塊必須和治理房最新的偏好檔逐字相同。完整回歸測試見正本 §8。
+通過條件：第一行出現正本版本（目前是 VERSION 的 1.2.4；Claude 寫成「正本 v1.2.4」）；總召回答 Claude；收工答出交接欄位、存檔與任務四態。只印版本、答不出收工內容不算通過。Claude 區塊必須和治理房最新的偏好檔逐字相同。完整回歸測試見正本 §8。
 
 網址不保證每個平台每次都讀得到。ChatGPT 專案、Gemini Gem 另外上傳一份 README.md 當副本（專案檔或知識檔），正本改版時一起換；讀到副本時對齊行標「副本 vX」。各平台改編版（例如 miko-core-gpt）要寫明根據的正本版本，低於正本就以正本為準。
 
@@ -14,9 +14,9 @@
 
 ## ChatGPT（自訂指令已 4,995／5,000 字放不下，改用記憶：在 ChatGPT 對話中貼下面這句，確認它回「已更新記憶」）
 ```
-請記住：每個新對話的第一個任務前，先讀 https://raw.githubusercontent.com/icashkin-cmyk/miko/main/README.md 的 MIKO 正本並照做；正本優先於我的自訂指令中的同類規則；讀不到網址就讀本專案裡的 README.md 副本；都讀不到就在第一行標「MIKO 正本 NOT_READ」，照自訂指令繼續，但不做外部寫入與不可逆操作。
+請記住：每個新對話的第一個任務前，先讀 https://raw.githubusercontent.com/icashkin-cmyk/miko/main/README.md 的 MIKO 正本並照做；正本優先於我的自訂指令中的同類規則；回答收工、停止、寄信、授權這類規則題前，先重讀正本對應段落，以原文為準，不憑印象；讀不到網址就讀本專案裡的 README.md 副本；都讀不到就在第一行標「MIKO 正本 NOT_READ」，照自訂指令繼續，但不做外部寫入與不可逆操作。
 ```
-自訂指令有空位時，可改放同一句到自訂指令最前面。
+自訂指令有空位時，可改放同一句到自訂指令最前面。（2026-10-30 多了「規則題先重讀正本」一句，起因是 ChatGPT 新對話 T3、T4 沒過；已存舊句的，有空再換新句即可。）
 
 ## Codex（同步指示或全域 AGENTS.md，放在最前面）
 ```
