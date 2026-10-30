@@ -19,3 +19,4 @@
 | 2026-10-30 13:10 | Claude | 提醒：GPT 同步中斷，最後提交 2026-10-28 18:37（d83c32a），請 MIKO 查 ChatGPT 排程執行紀錄 | 列入待 MIKO 決定 | MIKO | 進行中 |
 | 2026-10-30 13:10 | Claude | 第 1 列推進：d83c32a 後約 26 個 GPT 預期執行點、0 筆提交；帳號 miko-core 已對應正本 1.2.4 | 未通過：GPT 回報條件 (1)(2) 皆未達，原因 UNKNOWN | GPT、MIKO | 進行中 |
 | 2026-10-30 15:25 | Claude | 新增 dghp-beauty v0.1 公開版（美妝保養與醫美：查核先於評分） | 採納（ADR-023） | Claude | 完成；路由表下次改版 |
+| 2026-10-30 16:09 | Claude | 第 3 列推進：e0ac09b 上重跑 check_repo.py 6/6 PASS，skills/ 10 個（含 dghp-beauty）格式通過；Claude 自測不替代 Codex 實測 | 通過（Claude 端） | Claude、Codex | 進行中（待 Codex 實測） |
