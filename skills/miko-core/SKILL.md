@@ -151,4 +151,4 @@ description: MIKO 的全能代理人核心（常駐 Skill，內含閉環、四�
 - 常設授權例外只有三個，其他跨平台寫入仍依上列「當次明確授權」：
   - Drive「MIKO_ARCHIVE」（ADR-012，只給 Claude；其他平台需當次授權）：只新增，不覆寫、不刪除、不移動、不分享、不改權限；細則見 dghp-work-handoff「Drive 存檔」。
   - GitHub 公開 repo icashkin-cmyk/miko（ADR-016）：正本（README、VERSION、CHANGELOG、adapters、skills 公開版）由治理總召更新，推送後讀回；不放個人資料。sync/ 另見下一條。
-  - 同一 repo 的 sync/（ADR-020）：只寫 sync/CLAUDE_STATUS.md 與 sync/LOG.md，有變化才提交，推送後讀回；不改 sync/GPT_STATUS.md；只寫摘要，不寫個人資料、策略參數與門檻、金額、損益、金鑰，也不寫私有 repo 名稱、檔名、Drive 或 Notion 頁面標題（改寫成專案類別）。
+  - 同一 repo 的 sync/（ADR-020）：只寫 sync/CLAUDE_STATUS.md 與 sync/LOG.md，有變化才提交，推送後讀回；不改 sync/GPT_STATUS.md 與 sync/gpt/（GPT 的檔）；只寫摘要，不寫個人資料、策略參數與門檻、金額、損益、金鑰，也不寫私有 repo 名稱、檔名、Drive 或 Notion 頁面標題（改寫成專案類別）。
