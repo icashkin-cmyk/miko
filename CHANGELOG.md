@@ -1,4 +1,6 @@
 # 版本紀錄（只新增）
+- 1.2.8（2026-10-30，ADR-030）：獨立稽核 AUD-023（9 點皆 PARTIAL）後修正：§1 VERSION 第 4 行加本檔 SHA-256、內容一改就升版號；§7 定義當次授權、Drive 例外寫明時機；bt_min v1.5（公司事件三選一必給、前段一致測試抓全樣本統計、偷看未來改為停止、順延取消、ETF 稅率 0.1%、股數公式、manifest_check）；check_repo C3 掃 .csv 與二進位、禁追蹤快取檔，C6、C9 加強，新增 C10；dghp-beauty v0.5、dghp-food v0.5、dghp-travel v0.5、四視角引擎 v3.2、miko-core v1.9。
+- 補記 ADR-028（2026-10-30，正本未升版）：dghp-food v0.4、dghp-travel v0.4（外部審查第二輪：營業候選與推薦分層、週表與指定日分開）。
 - 1.2.7（2026-10-30，ADR-029）：GPT 同步改為每輪新增 sync/gpt/GPT_STATUS_YYYYMMDD_HHMM.md，不再覆寫（GPT 平台覆寫既有檔需逐次核准，是 10-28 起同步停擺的原因）；Claude 讀最新一份。
 - 1.2.6（2026-10-30，ADR-027）：外部審查（69d68bb）後修正：Drive 常設授權寫明只給 Claude、其他平台交可貼用全文；版本衝突只比同一份文件的副本；存檔讀回改為內容比對，只讀到中繼資料標內容未驗證；tw-backtest-workflow v1.4（signal 只收到歷史、零量不成交、預留最低手續費、公司事件與 ETF 停止條件、雜湊不符停止）；dghp-beauty v0.4（預設定性比較、沒有評分規格不給分數、清單讀不到不做個人必要性排名）；tests 加 C9。
 - 1.2.5（2026-10-30，ADR-026）：§3 路由表加美妝醫美（dghp-beauty）與命理（dghp-metaphysical-integrated-analysis）；§4 公開摘要的專案類別加美妝、命理；個人清單與命理個人資料只放各平台專案檔，tests 加 C8 擋個人檔進 repo。

@@ -3,7 +3,7 @@ name: tw-backtest-workflow
 description: 臺股策略、月配息 ETF 或下跌預警的回測與改進時使用：把想法拆成可程式化規則、讀本機 FinMind 資料（雲端改用證交所官方日線）、用內附 bt_min.py 實算成本與統計、找虧損模式、樣本外驗證。先載入 miko-core，再依本 Skill 四段執行。一般投資問答、即時報價、台指期不使用。
 ---
 
-# 臺股回測工作流 v1.4｜2026-10-30 可執行版（對齊 DGHP 規則）
+# 臺股回測工作流 v1.5｜2026-10-30 可執行版（對齊 DGHP 規則）
 載入順序：先 miko-core（四視角主流程、品質閘門），再本 Skill；§1 問問題、§2～§3 解決、§4 後設、§6 檢查，對應 miko-core §2.4。v1.3 依 2026-10-26 實跑結果加入資料取得路徑、執行步驟與附錄 A 引擎（ADR-015）。
 
 ## 0. 作用域與權威（v1.1 新增）
@@ -39,9 +39,9 @@ description: 臺股策略、月配息 ETF 或下跌預警的回測與改進時�
 - 落地後先跑資料檢查：日期升冪、OHLC 合理、價格不為 0、收盤差等於官方漲跌欄（漲跌欄以 X 開頭是除權息日，跳過核對）；不符就停，不回測。官方日線是未還原價，跨除權息的報酬要另計股利或改用還原價，並在報告寫明。
 
 ## 3. 解決：回測計算（用程式，不心算）
-- 執行步驟：①把附錄 A 的 bt_min.py 寫成檔案，只改 signal() 實作使用者的規則（引擎只把當日以前的資料交給 signal()，讀到未來就停止），P 參數改資金、成本、移動停損；②執行 `python3 bt_min.py 資料.csv --expect-sha <manifest 的 SHA-256> [--events 事件.csv 或 --adjusted] [--etf]`（雜湊不符、原始價格跨公司事件、ETF 沒有事件檔也沒有還原價格，都會停止），保存 JSON 輸出（輸入 SHA-256、無 look-ahead 檢查、指標、逐筆交易、未平倉）；③同區間跑買進持有當基準；④依 §6 範本出比較表，交易次數不足就標樣本不足。引擎預設：期末未平倉以收盤價計未實現、不含股利。
+- 執行步驟：①把附錄 A 的 bt_min.py 寫成檔案，只改 signal() 實作使用者的規則（引擎只把當日以前的資料交給 signal()，讀到未來就停止），P 參數改資金、成本、移動停損；②執行 `python3 bt_min.py 資料.csv --expect-sha <manifest 的 SHA-256> (--events 事件.csv | --adjusted | --ignore-events) [--etf]`（雜湊不符、三選一沒給、原始價格跨公司事件、事件檔空白或缺欄、ETF 用 --ignore-events、偷看未來或全樣本統計，都會停止），保存 JSON 輸出（輸入 SHA-256、manifest_check、無 look-ahead 與前段一致檢查、指標、逐筆交易、未平倉）；manifest_check=NOT_CHECKED 的結果不得當正式結果；③同區間跑買進持有當基準；④依 §6 範本出比較表，交易次數不足就標樣本不足。引擎預設：期末未平倉以收盤價計未實現、不含股利。
 - 成本：手續費 0.1425%（可設折扣）、證交稅股票 0.3%／ETF 0.1%、滑價參數化；稅費率使用前查證現行值。
-- 成交規則：訊號隔日開盤成交；當日成交量為 0 不成交、順延到下一個有量的交易日；買進股數預留最低手續費，現金不得為負；漲跌停鎖死無法成交尚未模擬，遇到時標「未模擬」，不當成可成交。公司事件：沒有事件檔時輸出 corporate_events=NOT_CHECKED 並註明報酬不含股利；月配息 ETF 與含息報酬一律要事件檔或還原價格，否則 BLOCKED，不能只附一句提醒。
+- 成交規則：訊號隔日開盤成交；當日成交量為 0 不成交、順延到下一個有量的交易日，順延期間出現反向訊號就取消；買進股數從 int(現金÷價格) 往下找到含最低手續費付得起為止，現金不得為負；--etf 證交稅自動改 0.1%；漲跌停鎖死無法成交尚未模擬，遇到時標「未模擬」，不當成可成交。公司事件：沒有事件檔、還原價格或 --ignore-events 就停止；--ignore-events 只用於明知不含股利的個股研究，輸出標 IGNORED_BY_USER；月配息 ETF 與含息報酬一律要事件檔或還原價格，否則 BLOCKED。
 - 必報：淨利、報酬率、MDD、勝率、PF、交易次數、盈虧比、最大連敗。月配息加：含息總報酬、每月現金流、填息天數、溫度比較（領息 vs 再投入）。
 - 問「最多會輸多少」優先於「最多賺多少」。
 - DGHP 正式回測有實際結果時，依臺股專案底本 §6 逐欄提供全部 28 欄與適用性；底本全文 Claude 端 NOT_READ。欄名未取得前，標「28 欄未對齊（底本 NOT_READ）」，不得用自訂縮表冒充 28 欄（原件：不另縮表）；上列指標只能當補充摘要。缺值寫 UNKNOWN 或 NOT_AVAILABLE＋原因，不當 0。
@@ -72,16 +72,17 @@ description: 臺股策略、月配息 ETF 或下跌預警的回測與改進時�
 - 固定檢查寫成自動測試（無 look-ahead、成本已計、輸入 CSV 的 SHA-256 與 manifest 一致，不符就停止：--expect-sha），每次改版必跑，不靠提示詞提醒。
 - 流程表一律用 6 欄：步驟／交付物、負責人、前置依賴、驗收條件、證據位置、狀態與下一步（ADR-004）；交給 Codex 時用 19 欄 FINAL_HANDOFF。
 - DGHP 正式工程由 Codex 執行、Claude 總召審查（ADR-001，經 MIKO 轉貼）；Claude 也直接做驗證、探索與月配息專案。（v1.0 原句「Codex 執行、GPT 審查」已由 ADR-001 取代。）
-- 驗收：AC-S1 資料落地 CSV，附來源、區間、SHA-256；AC-S2 資料檢查 0 異常；AC-S3 no_lookahead 為 true，且 signal() 只收到歷史（引擎結構防護；用全域變數讀全樣本的寫法擋不住，審查時另看）；AC-S4 指標由程式輸出且含成本；AC-S5 有買進持有基準與樣本足夠判定；AC-S6 第一筆訊號與成交用獨立程式手算相符；AC-S7 公司事件已檢查或宣告還原價格（ETF 必須）；AC-S8 改引擎後 tests/check_repo.py 的 C9（買賣帳本獨立重算、偷看隔日開盤與量能的故障測試、公司事件與雜湊停止條件）全過。
+- 驗收：AC-S1 資料落地 CSV，附來源、區間、SHA-256；AC-S2 資料檢查 0 異常；AC-S3 no_lookahead 與 prefix_check 為 true，且 signal() 只收到歷史（截斷資料重跑，前段訊號必須相同，可抓讀輸入檔的全樣本統計；寫死其他路徑讀檔仍擋不住，signal() 不得讀檔）；AC-S4 指標由程式輸出且含成本；AC-S5 有買進持有基準與樣本足夠判定；AC-S6 第一筆訊號與成交用獨立程式手算相符；AC-S7 公司事件已檢查或宣告還原價格（ETF 必須）；AC-S8 改引擎後 tests/check_repo.py 的 C6、C9（獨立常數重算帳本並比固定值、偷看隔日開盤與量能、最後一天不出錯的偷看、全樣本統計、公司事件、雜湊、順延取消、ETF 稅率）全過。
 - 實跑題：「2330，2025-01～05，MA5／MA20 黃金交叉進場、死亡交叉或 12% 移動停損出場，5 萬元」。2026-10-26 實跑：證交所官方日線 95 列，資料檢查 0 異常；4/29 黃金交叉、4/30 開盤 901 元買 55 股；期末未平倉，含未實現 +3,559 元（7.12%），MDD −3.38%；同期買進持有 −4,808 元（−9.62%），MDD −30.42%；已平倉 0 筆，標樣本不足、不下優劣結論；第一筆訊號與成交手算相符。AC-S1～S6 全過。
-- 實跑紀錄（2026-10-30）：引擎 v1.4 重跑 2330 固定樣本，指標與未平倉完全相同；另用合成資料 tests/synthetic_cycle.csv 驗證賣出帳本 7 筆（勝 3、敗 4、最大連敗 2、零量順延 1 次），每筆損益由獨立公式重算相符。
+- 實跑紀錄（2026-10-30，v1.5）：2330 固定樣本含 2025-03-18 除息，給事件檔（scripts/ev_2330.csv）會停止；--ignore-events 下指標不變（同期買進持有 −9.62% 也不含股利）。引擎 v1.4 重跑 2330 固定樣本，指標與未平倉完全相同；另用合成資料 tests/synthetic_cycle.csv 驗證賣出帳本 7 筆（勝 3、敗 4、最大連敗 2、零量順延 1 次），每筆損益由獨立公式重算相符。
 
 ## 附錄 A：bt_min.py（最小回測引擎；寫成檔案後執行）
 ```python
-# bt_min.py｜tw-backtest-workflow 最小回測引擎 v1.4｜用法：python3 bt_min.py 資料.csv [--expect-sha HEX] [--events 事件.csv] [--adjusted] [--etf]
+# bt_min.py｜tw-backtest-workflow 最小回測引擎 v1.5｜用法：python3 bt_min.py 資料.csv (--events 事件.csv | --adjusted | --ignore-events) [--expect-sha HEX] [--etf]
 # CSV 欄位：date,open,high,low,close,volume（日期 YYYY-MM-DD 升冪）。改策略只改 signal()；引擎只把第 i 日以前（含）的資料交給 signal()。
-# 事件 CSV（選用）：date,type（除權息、除息、拆股、減資等）。原始價格跨事件就停止；已用還原價格時加 --adjusted。--etf 沒有事件檔也沒有 --adjusted 就停止。
-import csv, sys, json, hashlib, random
+# 事件 CSV：date,type（除權息、除息、拆股、減資等）。三選一必給：--events（原始價格跨事件就停止）、--adjusted（已用還原價格）、--ignore-events（明知不含股利，輸出標 IGNORED_BY_USER；ETF 不可用）。--etf 證交稅改 0.1%。
+# 防偷看未來：signal() 只拿到第 i 日以前；另做故障測試與前段一致測試（截斷資料重跑，前段訊號必須相同）。寫死路徑讀檔無法偵測，signal() 不得讀檔或用模組層級的全樣本統計。
+import csv, sys, json, hashlib, random, os, subprocess, tempfile
 P = dict(capital=50000, fee=0.001425, fee_min=1, tax=0.003, slip=0.0, trail=0.12)
 
 def stop(msg):
@@ -110,7 +111,7 @@ def safe_signal(d, i):  # 結構防護：只傳歷史；讀到第 i+1 日就停�
         stop('signal() 讀取第 i 日之後的資料（未來資料洩漏）')
 
 def buy_shares(cash, px):  # 預留最低手續費，買進後現金不得為負
-    n = int(max(cash - P['fee_min'], 0) / (px * (1 + P['fee'])))
+    n = int(cash / px)
     while n > 0 and px * n + max(P['fee_min'], px * n * P['fee']) > cash:
         n -= 1
     return n
@@ -137,7 +138,9 @@ def run(d):
         if sh:
             peak = max(peak, r['close'])
         s = safe_signal(d, i)
-        if sh == 0 and s == 1:
+        if pend and s == -pend:  # 委託順延期間出現反向訊號就取消
+            pend = 0
+        elif sh == 0 and s == 1:
             pend = 1
         elif sh and (s == -1 or r['close'] <= peak * (1 - P['trail'])):
             pend = -1
@@ -172,28 +175,65 @@ def check_no_lookahead(d, n=30):  # 故障測試：竄改未來各欄（開高�
             return False
     return True
 
-def corporate(d, events, adjusted, etf):
+def prefix_signals(p, k):  # 前段一致測試：只給前 k 列重跑，比對前段訊號
+    fd, tmp = tempfile.mkstemp(suffix='.csv')
+    try:
+        with os.fdopen(fd, 'w', encoding='utf-8') as f:
+            f.writelines(open(p, encoding='utf-8').readlines()[:k + 1])
+        r = subprocess.run([sys.executable, '-I', os.path.abspath(__file__), tmp, '--signals-only'], capture_output=True, text=True)
+        return json.loads(r.stdout) if r.returncode == 0 else None
+    finally:
+        os.remove(tmp)
+
+def corporate(d, events, adjusted, etf, ignore):
     if adjusted:
         return 'ADJUSTED_DECLARED'
     if events:
-        hit = [r for r in csv.DictReader(open(events, encoding='utf-8')) if d[0]['date'] < r['date'] <= d[-1]['date']]
+        rows = list(csv.DictReader(open(events, encoding='utf-8')))
+        if not rows or not {'date', 'type'} <= set(rows[0]):
+            stop('事件檔需有 date,type 欄位且至少一列（範圍外的事件也要列）')
+        hit = [r for r in rows if d[0]['date'] < r['date'] <= d[-1]['date']]
         if hit:
             stop(f"原始價格區間含公司事件 {[(h['date'], h.get('type', '')) for h in hit]}；請改用還原價格（--adjusted）或切開區間")
         return 'CHECKED_NONE_IN_RANGE'
     if etf:
         stop('ETF 回測需要事件檔（--events）或還原價格（--adjusted），否則不含股利且除息跳空會失真')
-    return 'NOT_CHECKED'
+    if ignore:
+        return 'IGNORED_BY_USER'
+    stop('未提供公司事件資訊：加 --events 事件.csv、--adjusted，或明知不含股利時加 --ignore-events')
 
 if __name__ == '__main__':
-    a = sys.argv[1:]; p = a[0]
-    opt = lambda k: a[a.index(k) + 1] if k in a else None
-    sha = hashlib.sha256(open(p, 'rb').read()).hexdigest()
-    if opt('--expect-sha') and opt('--expect-sha') != sha:
+    a = sys.argv[1:]
+    if not a or a[0].startswith('--'):
+        stop('第一個參數必須是資料 CSV')
+    p = a[0]
+
+    def opt(k):
+        if k not in a:
+            return None
+        j = a.index(k) + 1
+        if j >= len(a) or a[j].startswith('--'):
+            stop(f'{k} 後面缺值')
+        return a[j]
+    if '--signals-only' in a:
+        d = load(p); print(json.dumps([safe_signal(d, i) for i in range(len(d))])); sys.exit(0)
+    sha = hashlib.sha256(open(p, 'rb').read()).hexdigest(); want = opt('--expect-sha')
+    if want and want.lower() != sha:
         stop(f'輸入 CSV 的 SHA-256 與 manifest 不符（實際 {sha}）')
-    d = load(p); ce = corporate(d, opt('--events'), '--adjusted' in a, '--etf' in a); t, e, op, sk = run(d)
-    out = dict(engine='bt_min v1.4', input=p, sha256=sha, rows=len(d), range=[d[0]['date'], d[-1]['date']], params=P,
-               no_lookahead=check_no_lookahead(d), corporate_events=ce, skipped_zero_volume=sk, stats=stats(t, e), trades=t, open_position=op)
-    if ce == 'NOT_CHECKED':
-        out['note'] = '未檢查公司事件：報酬不含股利，跨除權息或拆股日的價差可能失真'
+    if '--etf' in a:
+        P['tax'] = 0.001
+    d = load(p); ce = corporate(d, opt('--events'), '--adjusted' in a, '--etf' in a, '--ignore-events' in a)
+    if not check_no_lookahead(d):
+        stop('故障測試：竄改未來資料會改變 signal()（寫法會用到未來資料）')
+    full = [safe_signal(d, i) for i in range(len(d))]
+    for k in sorted({len(d) // 3, len(d) // 2, len(d) * 2 // 3}):
+        if prefix_signals(p, k) != full[:k]:
+            stop(f'前段一致測試失敗（前 {k} 列）：signal() 依賴未提供的資料（全樣本統計或外部讀檔）')
+    t, e, op, sk = run(d)
+    out = dict(engine='bt_min v1.5', input=p, sha256=sha, manifest_check='MATCH' if want else 'NOT_CHECKED', rows=len(d),
+               range=[d[0]['date'], d[-1]['date']], params=P, no_lookahead=True, prefix_check=True, corporate_events=ce,
+               skipped_zero_volume=sk, stats=stats(t, e), trades=t, open_position=op)
+    if ce == 'IGNORED_BY_USER':
+        out['note'] = '使用者明知不含股利：報酬不含股利，跨除權息或拆股日的價差可能失真'
     print(json.dumps(out, ensure_ascii=False, indent=1))
 ```

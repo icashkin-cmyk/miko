@@ -1,7 +1,8 @@
-# bt_min.py｜tw-backtest-workflow 最小回測引擎 v1.4｜用法：python3 bt_min.py 資料.csv [--expect-sha HEX] [--events 事件.csv] [--adjusted] [--etf]
+# bt_min.py｜tw-backtest-workflow 最小回測引擎 v1.5｜用法：python3 bt_min.py 資料.csv (--events 事件.csv | --adjusted | --ignore-events) [--expect-sha HEX] [--etf]
 # CSV 欄位：date,open,high,low,close,volume（日期 YYYY-MM-DD 升冪）。改策略只改 signal()；引擎只把第 i 日以前（含）的資料交給 signal()。
-# 事件 CSV（選用）：date,type（除權息、除息、拆股、減資等）。原始價格跨事件就停止；已用還原價格時加 --adjusted。--etf 沒有事件檔也沒有 --adjusted 就停止。
-import csv, sys, json, hashlib, random
+# 事件 CSV：date,type（除權息、除息、拆股、減資等）。三選一必給：--events（原始價格跨事件就停止）、--adjusted（已用還原價格）、--ignore-events（明知不含股利，輸出標 IGNORED_BY_USER；ETF 不可用）。--etf 證交稅改 0.1%。
+# 防偷看未來：signal() 只拿到第 i 日以前；另做故障測試與前段一致測試（截斷資料重跑，前段訊號必須相同）。寫死路徑讀檔無法偵測，signal() 不得讀檔或用模組層級的全樣本統計。
+import csv, sys, json, hashlib, random, os, subprocess, tempfile
 P = dict(capital=50000, fee=0.001425, fee_min=1, tax=0.003, slip=0.0, trail=0.12)
 
 def stop(msg):
@@ -30,7 +31,7 @@ def safe_signal(d, i):  # 結構防護：只傳歷史；讀到第 i+1 日就停�
         stop('signal() 讀取第 i 日之後的資料（未來資料洩漏）')
 
 def buy_shares(cash, px):  # 預留最低手續費，買進後現金不得為負
-    n = int(max(cash - P['fee_min'], 0) / (px * (1 + P['fee'])))
+    n = int(cash / px)
     while n > 0 and px * n + max(P['fee_min'], px * n * P['fee']) > cash:
         n -= 1
     return n
@@ -57,7 +58,9 @@ def run(d):
         if sh:
             peak = max(peak, r['close'])
         s = safe_signal(d, i)
-        if sh == 0 and s == 1:
+        if pend and s == -pend:  # 委託順延期間出現反向訊號就取消
+            pend = 0
+        elif sh == 0 and s == 1:
             pend = 1
         elif sh and (s == -1 or r['close'] <= peak * (1 - P['trail'])):
             pend = -1
@@ -92,27 +95,64 @@ def check_no_lookahead(d, n=30):  # 故障測試：竄改未來各欄（開高�
             return False
     return True
 
-def corporate(d, events, adjusted, etf):
+def prefix_signals(p, k):  # 前段一致測試：只給前 k 列重跑，比對前段訊號
+    fd, tmp = tempfile.mkstemp(suffix='.csv')
+    try:
+        with os.fdopen(fd, 'w', encoding='utf-8') as f:
+            f.writelines(open(p, encoding='utf-8').readlines()[:k + 1])
+        r = subprocess.run([sys.executable, '-I', os.path.abspath(__file__), tmp, '--signals-only'], capture_output=True, text=True)
+        return json.loads(r.stdout) if r.returncode == 0 else None
+    finally:
+        os.remove(tmp)
+
+def corporate(d, events, adjusted, etf, ignore):
     if adjusted:
         return 'ADJUSTED_DECLARED'
     if events:
-        hit = [r for r in csv.DictReader(open(events, encoding='utf-8')) if d[0]['date'] < r['date'] <= d[-1]['date']]
+        rows = list(csv.DictReader(open(events, encoding='utf-8')))
+        if not rows or not {'date', 'type'} <= set(rows[0]):
+            stop('事件檔需有 date,type 欄位且至少一列（範圍外的事件也要列）')
+        hit = [r for r in rows if d[0]['date'] < r['date'] <= d[-1]['date']]
         if hit:
             stop(f"原始價格區間含公司事件 {[(h['date'], h.get('type', '')) for h in hit]}；請改用還原價格（--adjusted）或切開區間")
         return 'CHECKED_NONE_IN_RANGE'
     if etf:
         stop('ETF 回測需要事件檔（--events）或還原價格（--adjusted），否則不含股利且除息跳空會失真')
-    return 'NOT_CHECKED'
+    if ignore:
+        return 'IGNORED_BY_USER'
+    stop('未提供公司事件資訊：加 --events 事件.csv、--adjusted，或明知不含股利時加 --ignore-events')
 
 if __name__ == '__main__':
-    a = sys.argv[1:]; p = a[0]
-    opt = lambda k: a[a.index(k) + 1] if k in a else None
-    sha = hashlib.sha256(open(p, 'rb').read()).hexdigest()
-    if opt('--expect-sha') and opt('--expect-sha') != sha:
+    a = sys.argv[1:]
+    if not a or a[0].startswith('--'):
+        stop('第一個參數必須是資料 CSV')
+    p = a[0]
+
+    def opt(k):
+        if k not in a:
+            return None
+        j = a.index(k) + 1
+        if j >= len(a) or a[j].startswith('--'):
+            stop(f'{k} 後面缺值')
+        return a[j]
+    if '--signals-only' in a:
+        d = load(p); print(json.dumps([safe_signal(d, i) for i in range(len(d))])); sys.exit(0)
+    sha = hashlib.sha256(open(p, 'rb').read()).hexdigest(); want = opt('--expect-sha')
+    if want and want.lower() != sha:
         stop(f'輸入 CSV 的 SHA-256 與 manifest 不符（實際 {sha}）')
-    d = load(p); ce = corporate(d, opt('--events'), '--adjusted' in a, '--etf' in a); t, e, op, sk = run(d)
-    out = dict(engine='bt_min v1.4', input=p, sha256=sha, rows=len(d), range=[d[0]['date'], d[-1]['date']], params=P,
-               no_lookahead=check_no_lookahead(d), corporate_events=ce, skipped_zero_volume=sk, stats=stats(t, e), trades=t, open_position=op)
-    if ce == 'NOT_CHECKED':
-        out['note'] = '未檢查公司事件：報酬不含股利，跨除權息或拆股日的價差可能失真'
+    if '--etf' in a:
+        P['tax'] = 0.001
+    d = load(p); ce = corporate(d, opt('--events'), '--adjusted' in a, '--etf' in a, '--ignore-events' in a)
+    if not check_no_lookahead(d):
+        stop('故障測試：竄改未來資料會改變 signal()（寫法會用到未來資料）')
+    full = [safe_signal(d, i) for i in range(len(d))]
+    for k in sorted({len(d) // 3, len(d) // 2, len(d) * 2 // 3}):
+        if prefix_signals(p, k) != full[:k]:
+            stop(f'前段一致測試失敗（前 {k} 列）：signal() 依賴未提供的資料（全樣本統計或外部讀檔）')
+    t, e, op, sk = run(d)
+    out = dict(engine='bt_min v1.5', input=p, sha256=sha, manifest_check='MATCH' if want else 'NOT_CHECKED', rows=len(d),
+               range=[d[0]['date'], d[-1]['date']], params=P, no_lookahead=True, prefix_check=True, corporate_events=ce,
+               skipped_zero_volume=sk, stats=stats(t, e), trades=t, open_position=op)
+    if ce == 'IGNORED_BY_USER':
+        out['note'] = '使用者明知不含股利：報酬不含股利，跨除權息或拆股日的價差可能失真'
     print(json.dumps(out, ensure_ascii=False, indent=1))

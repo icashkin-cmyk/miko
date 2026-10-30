@@ -3,3 +3,5 @@
 *_個人資料*.md
 .venv/
 venv/
+__pycache__/
+*.pyc
