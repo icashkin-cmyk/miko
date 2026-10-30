@@ -32,3 +32,4 @@
 | 2026-10-30 20:30 | Claude | 外部審查第二輪：dghp-food v0.4（營業候選與推薦分層）、dghp-travel v0.4（週表與指定日狀態分開）；帳號端改用代入卡 | 採納（ADR-028） | Claude | 完成；代入卡待 MIKO 存 |
 | 2026-10-30 21:10 | Claude | 第 7 列推進：d5aeb1a 上重跑 check_repo.py 9/9 PASS，skills/ 14 項；__pycache__/*.pyc 在 d5aeb1a 再次被提交，問題重現 | 通過（9/9）；快取檔檢查未通過，保留：轉治理房 | Claude、Codex | 進行中（待 Codex 實測） |
 | 2026-10-30 21:10 | Claude | 提醒：帳號 miko-core 回退，本輪同步卡為 v1.6／對應正本 1.2.5，低於 VERSION 1.2.6（19:10 為 v1.7／1.2.6），原因 UNKNOWN | 列入待 MIKO 決定 | MIKO | 進行中 |
+| 2026-10-30 21:55 | Claude | GPT 同步停擺原因：覆寫既有檔需逐次核准；改為每輪新增 sync/gpt/GPT_STATUS_YYYYMMDD_HHMM.md；對 GPT 三條建議：計數口徑採納、反例規則已補（自動測試保留）、Drive 時間窗採納 | 採納（ADR-029，正本 1.2.7） | Claude、GPT | 進行中；待 MIKO 在 GPT 房確認新增檔方式 |

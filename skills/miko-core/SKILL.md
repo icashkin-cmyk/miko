@@ -3,10 +3,10 @@ name: miko-core
 description: MIKO 的全能代理人核心（常駐 Skill，內含閉環、四視角主流程、三層 Skill 與功能指令、治理）。每個新對話的第一個任務前先載入，再依功能指令表調用通用或任務 Skill；做開工對齊與正本版本核對、四視角、品質閘門、收工存檔、學習與驗證。任何任務開始時都使用，包括問答、研究、程式、回測、治理、生活事務；同一對話換領域時再用一次；使用者說「收工」「換手」「交接」或額度將盡時做收工交接。
 ---
 
-# miko-core v1.7｜全能代理人核心（閉環＋四視角＋治理）｜2026-10-30
+# miko-core v1.8｜全能代理人核心（閉環＋四視角＋治理）｜2026-10-30
 
 載入順序：每個任務先載入本 Skill（常駐），再依 §3 功能指令表調用通用或任務 Skill（領域 Skill）。本 Skill 提供閉環、四視角主流程、品質閘門與治理；領域 Skill 依 §2.4 格式提供四段的領域內容與可執行步驟。四視角引擎（multi-agent-coordination-engine）是深度參考，只在 §2.3 所列情況載入。
-對應正本：1.2.6（版本核對用這個號碼，不用本 Skill 的 v 號）。
+對應正本：1.2.7（版本核對用這個號碼，不用本 Skill 的 v 號）。
 跨平台正本：本 Skill 的平台通用版在 GitHub 公開 repo icashkin-cmyk/miko（README.md；版本號在 VERSION）。ChatGPT、Codex、Gemini 讀同一份正本；各平台改編版（如 miko-core-gpt）要寫明根據的正本版本，低於正本就以正本為準。治理房定案後先更新正本，再出 Skill 卡片。
 
 ## 0. MIKO 閉環（每個任務都走；任何一站失敗不得跳過，改走備援或停在可逆狀態）
@@ -24,7 +24,7 @@ description: MIKO 的全能代理人核心（常駐 Skill，內含閉環、四�
 1. 判斷領域（§3）與類型：單一問答／專案、程式、研發。
 2. 載入該領域 Skill，讀該領域唯一狀態來源；該任務有交接檔就先讀交接檔再動手，不盲目覆寫。讀不到就標 NOT_READ，只停相依的步驟。
 3. 版本核對：對齊行寫已載入 Skill 的版本（以載入內容的標題為準）。每個新對話讀一次正本版本 `https://raw.githubusercontent.com/icashkin-cmyk/miko/main/VERSION`（網頁讀取工具或 GitHub 連接器）；版本比較：拿本 Skill 開頭寫的「對應正本」版本和 VERSION 逐段比數字；正本較高時，讀正本 README.md 並以正本為準，對齊行標「帳號 vX／正本 vY 未同步」，提醒 MIKO 存新卡片。讀不到就標「正本 NOT_READ」，照本 Skill 繼續（本 Skill 是完整核心，常設授權照常）；本 Skill 本身沒載入時，依帳號偏好標 CORE_NOT_READ，不做外部寫入與不可逆操作。同一份文件的兩份副本（例如平台副本與 GitHub 固定 commit 的 README）版本號相同但 SHA-256 不同標 CONFLICT，不猜選，請 MIKO 指定；不拿本 Skill 和 README 互比；只讀 VERSION 無法偵測內容衝突，治理或改版任務要確認時，固定 commit 同時讀 VERSION 與 README；正本的權威來自 MIKO 指定（ADR-016），不是因為版本號較大或日期較新。治理或 Skill 相關任務，另比對 Drive MIKO_ARCHIVE 最新 DELTA／HANDOFF；未生效的提案不當規則用。
-4. 第一則回覆第一行寫：「已對齊：miko-core v1.7（正本 vY 或 NOT_READ）｜領域：名稱｜Skill：名稱與版本或無｜狀態來源：名稱（讀取日期）或 NOT_READ」。之後的回覆不再重複這一行；同一對話換領域時，再寫一行，只列變動的領域、Skill 與狀態來源。
+4. 第一則回覆第一行寫：「已對齊：miko-core v1.8（正本 vY 或 NOT_READ）｜領域：名稱｜Skill：名稱與版本或無｜狀態來源：名稱（讀取日期）或 NOT_READ」。之後的回覆不再重複這一行；同一對話換領域時，再寫一行，只列變動的領域、Skill 與狀態來源。
 5. 對齊後才作業。不得宣稱已載入或已讀取實際沒做到的東西。對齊行只是回報，不證明讀過；驗收看後續行為（§0 ⑤ 回歸測試）。
 
 ## 1.1 收工與存檔
@@ -132,7 +132,7 @@ description: MIKO 的全能代理人核心（常駐 Skill，內含閉環、四�
 - 治理房收件：讀入提案 → 逐點判採納／不採納／保留並附理由 → 併入 Skill 正本與帳號偏好草稿（保留唯一資訊；同檔判定用 SHA-256）→ 登錄 ADR（只新增，不默默取代舊版）→ 更新 GitHub 正本 icashkin-cmyk/miko（README.md 與 VERSION；MIKO 授權免問推送，只限此 repo）並讀回 → 提出 Skill 卡片與偏好可貼版 → 依 §1.1 存檔 → MIKO 存卡後用新對話跑回歸測試，全過才標「已載入」。
 - 正本只放平台通用的規則與指令，不放關於我、雇主、帳號、健康、財務等個人資料，也不放 Drive 檔案 ID。
 - 不自審：治理放行、Skill 正式採用、高風險定案前用 independent-audit。
-- 同步與協作（ADR-020）：依正本 §4，每小時排程（台北 08–23 點）檢查各專案與 GPT 的 sync/GPT_STATUS.md；以 Claude 為主，逐條決定 GPT 建議並記入 sync/LOG.md；有變化才寫 sync/CLAUDE_STATUS.md；規則或 Skill 改動只轉治理房。
+- 同步與協作（ADR-020）：依正本 §4，每小時排程（台北 08–23 點）檢查各專案與 GPT 的同步檔（sync/gpt/ 最新一份，沒有時讀 sync/GPT_STATUS.md）；以 Claude 為主，逐條決定 GPT 建議並記入 sync/LOG.md；有變化才寫 sync/CLAUDE_STATUS.md；規則或 Skill 改動只轉治理房。
 - RC1／RC2 審查、權威來源 SHA-256、19 欄 FINAL_HANDOFF 等細則在四視角引擎 §7。
 
 ## 7. 硬邊界（與帳號偏好或 RC 衝突時，以帳號偏好與 RC 為準）
