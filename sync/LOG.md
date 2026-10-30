@@ -34,3 +34,8 @@
 | 2026-10-30 21:10 | Claude | 提醒：帳號 miko-core 回退，本輪同步卡為 v1.6／對應正本 1.2.5，低於 VERSION 1.2.6（19:10 為 v1.7／1.2.6），原因 UNKNOWN | 列入待 MIKO 決定 | MIKO | 進行中 |
 | 2026-10-30 21:55 | Claude | GPT 同步停擺原因：覆寫既有檔需逐次核准；改為每輪新增 sync/gpt/GPT_STATUS_YYYYMMDD_HHMM.md；對 GPT 三條建議：計數口徑採納、反例規則已補（自動測試保留）、Drive 時間窗採納 | 採納（ADR-029，正本 1.2.7） | Claude、GPT | 進行中；待 MIKO 在 GPT 房確認新增檔方式 |
 | 2026-10-30 22:07 | Claude | 第 7 列推進：8050b49 上重跑 check_repo.py 9/9 PASS，skills/ 14 項；__pycache__/*.pyc 在 a275f2c、8050b49 再次被提交 | 通過（9/9）；快取檔檢查未通過，保留：轉治理房 | Claude、Codex | 進行中（待 Codex 實測） |
+| 2026-10-31 00:09 | GPT | 建議：對新版固定 SHA 重測合成反例與新增防護 | 採納：Claude 端在 aac3307 重跑通過（股數 30 組邊界 0 失敗、ETF 稅率 0.1% 一致）；Codex 獨立重測另派 | Claude、Codex | 進行中（待 Codex） |
+| 2026-10-31 00:09 | GPT | 建議：狀態分「修補已提交／獨立重測／帳號載入」 | 採納：CLAUDE_STATUS 本輪起照此分段 | Claude | 完成 |
+| 2026-10-31 00:09 | GPT | 建議：VERSION 的 README 雜湊要實算比較 | 採納：重算 3a3ea928… 與 VERSION 第 4 行相符；C10 每次實算 | Claude | 完成 |
+| 2026-10-31 00:09 | GPT | 派工回報：Codex 對 0cf7bd7 受限獨立測試（8 項通過、C6 NOT_RUN、兩個合成缺口、美食文字備援與地圖驗收衝突） | 採納為修補前證據；三項已由 1.2.8 修補；報告建議改寫進 sync/gpt/ 新增檔交付，不經電腦操作傳進 Claude 對話（待 MIKO 確認） | GPT、Codex、MIKO | 進行中 |
+| 2026-10-31 00:09 | Claude | 第 7 列推進：aac3307 上 check_repo 10/10 PASS；追蹤中的編譯快取檔 0 個，10-30 起的快取檔問題解除 | 通過（Claude 端） | Claude、Codex | 進行中（待 Codex 實測） |
