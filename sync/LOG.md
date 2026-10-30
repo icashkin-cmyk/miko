@@ -23,3 +23,4 @@
 | 2026-10-30 17:05 | Claude | 美妝醫美專案包 v1.0（projects/beauty）＋dghp-beauty v0.2；check_repo 加 C7 | 採納（ADR-024） | Claude | 完成；P1～P8 待 MIKO 實跑 |
 | 2026-10-30 17:08 | Claude | 第 7 列推進：a545eb2 上重跑 check_repo.py 7/7 PASS（含新增 C7）；帳號已出現 dghp-beauty；Claude 自測不替代 Codex 實測 | 通過（Claude 端） | Claude、Codex | 進行中（待 Codex 實測） |
 | 2026-10-30 17:45 | Claude | 他房命理候選 Skill 改寫為 dghp-metaphysical-integrated-analysis v0.1 公開版（無個資） | 採納部分（ADR-025） | Claude | 完成；冷啟動稽核待做 |
+| 2026-10-30 18:05 | Claude | 正本 1.2.5：路由表加美妝、命理；AUD-022 修正（dghp-beauty v0.3、專案包 v1.1、命理 v0.2、check_repo C8） | 採納（ADR-026） | Claude | 完成；miko-core v1.6 卡待 MIKO 存 |

@@ -3,10 +3,10 @@ name: miko-core
 description: MIKO 的全能代理人核心（常駐 Skill，內含閉環、四視角主流程、三層 Skill 與功能指令、治理）。每個新對話的第一個任務前先載入，再依功能指令表調用通用或任務 Skill；做開工對齊與正本版本核對、四視角、品質閘門、收工存檔、學習與驗證。任何任務開始時都使用，包括問答、研究、程式、回測、治理、生活事務；同一對話換領域時再用一次；使用者說「收工」「換手」「交接」或額度將盡時做收工交接。
 ---
 
-# miko-core v1.5｜全能代理人核心（閉環＋四視角＋治理）｜2026-10-30
+# miko-core v1.6｜全能代理人核心（閉環＋四視角＋治理）｜2026-10-30
 
 載入順序：每個任務先載入本 Skill（常駐），再依 §3 功能指令表調用通用或任務 Skill（領域 Skill）。本 Skill 提供閉環、四視角主流程、品質閘門與治理；領域 Skill 依 §2.4 格式提供四段的領域內容與可執行步驟。四視角引擎（multi-agent-coordination-engine）是深度參考，只在 §2.3 所列情況載入。
-對應正本：1.2.4（版本核對用這個號碼，不用本 Skill 的 v 號）。
+對應正本：1.2.5（版本核對用這個號碼，不用本 Skill 的 v 號）。
 跨平台正本：本 Skill 的平台通用版在 GitHub 公開 repo icashkin-cmyk/miko（README.md；版本號在 VERSION）。ChatGPT、Codex、Gemini 讀同一份正本；各平台改編版（如 miko-core-gpt）要寫明根據的正本版本，低於正本就以正本為準。治理房定案後先更新正本，再出 Skill 卡片。
 
 ## 0. MIKO 閉環（每個任務都走；任何一站失敗不得跳過，改走備援或停在可逆狀態）
@@ -24,7 +24,7 @@ description: MIKO 的全能代理人核心（常駐 Skill，內含閉環、四�
 1. 判斷領域（§3）與類型：單一問答／專案、程式、研發。
 2. 載入該領域 Skill，讀該領域唯一狀態來源；該任務有交接檔就先讀交接檔再動手，不盲目覆寫。讀不到就標 NOT_READ，只停相依的步驟。
 3. 版本核對：對齊行寫已載入 Skill 的版本（以載入內容的標題為準）。每個新對話讀一次正本版本 `https://raw.githubusercontent.com/icashkin-cmyk/miko/main/VERSION`（網頁讀取工具或 GitHub 連接器）；版本比較：拿本 Skill 開頭寫的「對應正本」版本和 VERSION 逐段比數字；正本較高時，讀正本 README.md 並以正本為準，對齊行標「帳號 vX／正本 vY 未同步」，提醒 MIKO 存新卡片。讀不到就標「正本 NOT_READ」，照本 Skill 繼續（本 Skill 是完整核心，常設授權照常）；本 Skill 本身沒載入時，依帳號偏好標 CORE_NOT_READ，不做外部寫入與不可逆操作。同一版本號但 SHA-256 不同標 CONFLICT，不猜選，請 MIKO 指定；正本的權威來自 MIKO 指定（ADR-016），不是因為版本號較大或日期較新。治理或 Skill 相關任務，另比對 Drive MIKO_ARCHIVE 最新 DELTA／HANDOFF；未生效的提案不當規則用。
-4. 第一則回覆第一行寫：「已對齊：miko-core v1.5（正本 vY 或 NOT_READ）｜領域：名稱｜Skill：名稱與版本或無｜狀態來源：名稱（讀取日期）或 NOT_READ」。之後的回覆不再重複這一行；同一對話換領域時，再寫一行，只列變動的領域、Skill 與狀態來源。
+4. 第一則回覆第一行寫：「已對齊：miko-core v1.6（正本 vY 或 NOT_READ）｜領域：名稱｜Skill：名稱與版本或無｜狀態來源：名稱（讀取日期）或 NOT_READ」。之後的回覆不再重複這一行；同一對話換領域時，再寫一行，只列變動的領域、Skill 與狀態來源。
 5. 對齊後才作業。不得宣稱已載入或已讀取實際沒做到的東西。對齊行只是回報，不證明讀過；驗收看後續行為（§0 ⑤ 回歸測試）。
 
 ## 1.1 收工與存檔
@@ -76,6 +76,8 @@ description: MIKO 的全能代理人核心（常駐 Skill，內含閉環、四�
 | 任務 | 美食、餐廳、單店研究 | dghp-food | 無固定檔；本輪 Google 地點資料與網路來源 |
 | 任務 | 旅遊、行程規劃 | dghp-travel | 該次行程規格（對話內）＋官方班次來源 |
 | 任務 | Gmail 盤點、清理、重要信檢查 | gmail-cleanup | Gmail（連接器即時讀取） |
+| 任務 | 美妝保養、成分查核、產品比較、醫美資訊 | dghp-beauty | 專案檔「美妝_現有產品.md」 |
+| 任務 | 命理、合盤、流年流月、起卦 | dghp-metaphysical-integrated-analysis | 專案檔「命理_個人資料.md」 |
 | 任務 | 蝦皮分潤（SHOPEE_AFFILIATE_OPPORTUNITY） | 無 | Claude 專案「分潤專案」的 分潤_STATE.md |
 | 停止 | 台指期 | 無 | STOPPED_BY_USER：不做任何工作，只回報停止狀態 |
 | — | 其他 | 無 | 無 |

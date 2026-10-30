@@ -79,12 +79,21 @@ if cond7:
             continue
         if any(c.strip() for c in line.strip().strip('|').split('|')):
             filled.append(line[:40])
+    sec = inv.split('## 膚況設定', 1)[1].split('\n## ', 1)[0] if '## 膚況設定' in inv else ''
+    for line in sec.split('\n'):
+        if line.startswith('- ') and '：' in line and line.split('：', 1)[1].strip():
+            filled.append(line[:40])
     tmiss = [f'P{i}' for i in range(1, 9) if f'| P{i} |' not in tst]
     cond7 = bool(pv and iv and sv and iv.group(1) == sv.group(1) and f'beauty-project v{pv.group(1)}' in rd
                  and f'beauty-project v{pv.group(1)}' in tst and '美妝_現有產品.md' in ins and not filled and not tmiss)
     note7 = (f"專案包 v{pv.group(1) if pv else None}／對應 dghp-beauty v{iv.group(1) if iv else None}／Skill v{sv.group(1) if sv else None}"
              f"；範本已填列 {len(filled)}；缺驗收題 {tmiss}")
-ok('C7 美妝專案包完整、版本對應、範本未含個人資料', cond7, note7)
+ok('C7 美妝專案包完整、版本對應、範本表格與膚況欄位未填', cond7, note7)
+
+pf = [str(p.relative_to(R)) for p in R.rglob('*') if p.is_file() and '.git' not in p.parts
+      and (p.name.startswith('美妝_現有產品') or re.search(r'_個人資料.*\.md$', p.name))]
+gi = (R / '.gitignore').read_text(encoding='utf-8') if (R / '.gitignore').exists() else ''
+ok('C8 repo 沒有個人清單檔，.gitignore 已排除', not pf and '美妝_現有產品' in gi and '_個人資料' in gi, f'命中：{pf}')
 
 for n, c, note in res:
     print(('PASS' if c else 'FAIL'), n, ('｜' + note) if note else '')
