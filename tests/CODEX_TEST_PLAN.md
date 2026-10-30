@@ -9,7 +9,7 @@
 
 ## 步驟
 1. 取得 repo：`git clone https://github.com/icashkin-cmyk/miko.git`（或 `git -C ~/miko pull --ff-only`），回報 `git log --oneline -1`。
-2. 自動檢查：在 repo 根目錄執行 `python3 tests/check_repo.py`，貼出完整輸出。通過條件：6/6 PASS。
+2. 自動檢查：在 repo 根目錄執行 `python3 tests/check_repo.py`，貼出完整輸出。通過條件：7/7 PASS。
 3. 回測引擎重算：進 `skills/tw-backtest-workflow/scripts/`，執行 `python3 bt_min.py 2330_202501_202505.csv`，另外用你自己寫的獨立程式手算第一筆訊號日期、成交價與股數，和 bt_min 的結果比對（Skill 驗收 AC-S6）。
 4. 規則體檢：讀 README.md 與 skills/*/SKILL.md，依四類（條件不完整／規則模糊／規則互相衝突／步驟容易被跳過）列問題，每條附檔名與行號；找不到就寫「未發現」與你檢查了什麼。
 5. 回歸測試：依 README §8，T1～T14 每題用一到兩句回答，並自己標 PASS／FAIL／UNKNOWN。

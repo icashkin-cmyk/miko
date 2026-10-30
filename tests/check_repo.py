@@ -56,6 +56,36 @@ try:
 except Exception as e:
     ok('C6 bt_min.py 實跑結果與預期一致', False, f'執行失敗：{e} {out.stderr[:200]}')
 
+bp = R / 'projects' / 'beauty'
+need = ['README.md', 'INSTRUCTIONS.md', 'INVENTORY_TEMPLATE.md', 'TESTS.md']
+miss7 = [f for f in need if not (bp / f).exists()]
+note7 = f'缺檔：{miss7}'
+cond7 = not miss7
+if cond7:
+    ins, inv, tst, rd = [(bp / f).read_text(encoding='utf-8') for f in ('INSTRUCTIONS.md', 'INVENTORY_TEMPLATE.md', 'TESTS.md', 'README.md')]
+    pv = re.search(r'beauty-project v([0-9.]+)', ins)
+    iv = re.search(r'對應 dghp-beauty v([0-9.]+)', ins)
+    skp = R / 'skills' / 'dghp-beauty' / 'SKILL.md'
+    sv = re.search(r'^# dghp-beauty v([0-9.]+)', skp.read_text(encoding='utf-8'), re.M) if skp.exists() else None
+    filled, hdr = [], False
+    for line in inv.split('\n'):
+        if not line.startswith('|'):
+            hdr = False
+            continue
+        if not hdr:
+            hdr = True
+            continue
+        if set(line) <= set('|-: '):
+            continue
+        if any(c.strip() for c in line.strip().strip('|').split('|')):
+            filled.append(line[:40])
+    tmiss = [f'P{i}' for i in range(1, 9) if f'| P{i} |' not in tst]
+    cond7 = bool(pv and iv and sv and iv.group(1) == sv.group(1) and f'beauty-project v{pv.group(1)}' in rd
+                 and f'beauty-project v{pv.group(1)}' in tst and '美妝_現有產品.md' in ins and not filled and not tmiss)
+    note7 = (f"專案包 v{pv.group(1) if pv else None}／對應 dghp-beauty v{iv.group(1) if iv else None}／Skill v{sv.group(1) if sv else None}"
+             f"；範本已填列 {len(filled)}；缺驗收題 {tmiss}")
+ok('C7 美妝專案包完整、版本對應、範本未含個人資料', cond7, note7)
+
 for n, c, note in res:
     print(('PASS' if c else 'FAIL'), n, ('｜' + note) if note else '')
 print(f'合計：{sum(c for _, c, _ in res)}/{len(res)} PASS')
