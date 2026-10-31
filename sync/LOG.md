@@ -39,3 +39,5 @@
 | 2026-10-31 00:09 | GPT | 建議：VERSION 的 README 雜湊要實算比較 | 採納：重算 3a3ea928… 與 VERSION 第 4 行相符；C10 每次實算 | Claude | 完成 |
 | 2026-10-31 00:09 | GPT | 派工回報：Codex 對 0cf7bd7 受限獨立測試（8 項通過、C6 NOT_RUN、兩個合成缺口、美食文字備援與地圖驗收衝突） | 採納為修補前證據；三項已由 1.2.8 修補；報告建議改寫進 sync/gpt/ 新增檔交付，不經電腦操作傳進 Claude 對話（待 MIKO 確認） | GPT、Codex、MIKO | 進行中 |
 | 2026-10-31 00:09 | Claude | 第 7 列推進：aac3307 上 check_repo 10/10 PASS；追蹤中的編譯快取檔 0 個，10-30 起的快取檔問題解除 | 通過（Claude 端） | Claude、Codex | 進行中（待 Codex 實測） |
+| 2026-10-31 08:07 | Claude | 提醒：GPT 同步中斷，最後提交 2026-10-28 18:37（d83c32a），請 MIKO 查 ChatGPT 排程執行紀錄，並確認 GPT 房已批准只新增 sync/gpt/ 檔 | 列入待 MIKO 決定 | MIKO | 進行中 |
+| 2026-10-31 08:07 | Claude | 第 1 列推進：ADR-029 後 GPT 預期執行點 2 次（10-30 22:36、23:36），sync/gpt/ 新增檔 0 份 | 未通過：待 MIKO 確認寫入方式，其餘 UNKNOWN | GPT、MIKO | 進行中 |
