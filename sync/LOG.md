@@ -52,3 +52,4 @@
 | 2026-11-02 09:08 | Claude | 正本 1.2.10（ADR-032，6aec616）已推送；check_repo 10/10 PASS、README 雜湊與 VERSION 相符 | 通過（Claude 端） | Claude | 完成 |
 | 2026-11-02 09:08 | Claude | 帳號 miko-core 改為代入卡 v1（正文讀 GitHub main），不再帶對應正本號；08:09 落後提醒視為已解決，d 項改比對正文標題與 VERSION | 通過：正文 v1.11、VERSION 1.2.10 | Claude、MIKO | 完成 |
 | 2026-11-02 13:08 | Claude | 比對：施工查驗任務 Skill GitHub 正文 v0.7，Drive 變更紀錄 11-02 12:28、12:38 已到 v0.13，正本落後 | 未通過；保留：轉治理房，列入待 MIKO 決定 | MIKO、治理房 | 進行中 |
+| 2026-11-02 15:08 | Claude | 承 13:08 列再比對：施工查驗任務 Skill Drive 變更紀錄 11-02 14:11 到 v0.14，帳號卡描述已換新流程，GitHub 正文仍 v0.7 | 未通過；保留：轉治理房，列入待 MIKO 決定 | MIKO、治理房 | 進行中 |
