@@ -12,7 +12,7 @@ chg = (R / 'CHANGELOG.md').read_text(encoding='utf-8')
 adp = (R / 'adapters' / 'README.md').read_text(encoding='utf-8')
 core = (R / 'skills' / 'miko-core' / 'SKILL.md').read_text(encoding='utf-8')
 m = re.search(r'對應正本：([0-9.]+)', core)
-ok('C1 版本一致', f'v{ver}｜' in readme and f'- {ver}（' in chg and f'VERSION 的 {ver}' in adp and m and m.group(1) == ver,
+ok('C1 版本一致', f'v{ver}｜' in readme and f'- {ver}（' in chg and f'VERSION 的 {ver}' in adp and f'正本 v{ver}」' in adp and m and m.group(1) == ver,
    f'VERSION={ver} miko-core 對應正本={m.group(1) if m else None}')
 
 bad = []
@@ -41,8 +41,8 @@ pyc = [str(f.relative_to(R)) for f in files if f.suffix == '.pyc' or '__pycache_
 hits += pyc
 ok('C3 公開檔（含 .csv、二進位、快取檔）無 email、本機路徑與私人關鍵字', not hits, f'命中：{hits[:5]}；私人關鍵字 {len(words)} 個')
 
-miss = [f'T{i}' for i in list(range(1, 15)) if f'| T{i} |' not in readme]
-ok('C4 回歸測試 T1～T14 都在正本 §8', not miss, f'缺：{miss}')
+miss = [f'T{i}' for i in list(range(1, 16)) if f'| T{i} |' not in readme]
+ok('C4 回歸測試 T1～T15 都在正本 §8', not miss, f'缺：{miss}')
 
 log = (R / 'sync' / 'LOG.md').read_text(encoding='utf-8') if (R / 'sync' / 'LOG.md').exists() else ''
 ok('C5 sync 檔存在且 LOG 有表頭', (R / 'sync' / 'CLAUDE_STATUS.md').exists() and '| 時間（台北） | 提出方 | 內容 | 決定 | 負責方 | 狀態 |' in log)
