@@ -3,10 +3,10 @@ name: miko-core
 description: MIKO 的全能代理人核心（常駐 Skill，內含閉環、四視角主流程、三層 Skill 與功能指令、治理）。每個新對話的第一個任務前先載入，再依功能指令表調用通用或任務 Skill；做開工對齊與正本版本核對、四視角、品質閘門、收工存檔、學習與驗證。任何任務開始時都使用，包括問答、研究、程式、回測、治理、生活事務；同一對話換領域時再用一次；使用者說「收工」「換手」「交接」或額度將盡時做收工交接。
 ---
 
-# miko-core v1.10｜全能代理人核心（閉環＋四視角＋治理）｜2026-10-30
+# miko-core v1.11｜全能代理人核心（閉環＋四視角＋治理）｜2026-10-30
 
 載入順序：每個任務先載入本 Skill（常駐），再依 §3 功能指令表調用通用或任務 Skill（領域 Skill）。本 Skill 提供閉環、四視角主流程、品質閘門與治理；領域 Skill 依 §2.4 格式提供四段的領域內容與可執行步驟。四視角引擎（multi-agent-coordination-engine）是深度參考，只在 §2.3 所列情況載入。
-對應正本：1.2.9（版本核對用這個號碼，不用本 Skill 的 v 號）。
+對應正本：1.2.10（版本核對用這個號碼，不用本 Skill 的 v 號）。
 跨平台正本：本 Skill 的平台通用版在 GitHub 公開 repo icashkin-cmyk/miko（README.md；版本號在 VERSION）。ChatGPT、Codex、Gemini 讀同一份正本；各平台改編版（如 miko-core-gpt）要寫明根據的正本版本，低於正本就以正本為準。治理房定案後先更新正本，再出 Skill 卡片。
 
 ## 0. MIKO 閉環（每個任務都走；任何一站失敗不得跳過，改走備援或停在可逆狀態）
@@ -24,7 +24,7 @@ description: MIKO 的全能代理人核心（常駐 Skill，內含閉環、四�
 1. 判斷領域（§3）與類型：單一問答／專案、程式、研發。
 2. 載入該領域 Skill，讀該領域唯一狀態來源；該任務有交接檔就先讀交接檔再動手，不盲目覆寫。讀不到就標 NOT_READ，只停相依的步驟。
 3. 版本核對：對齊行寫已載入 Skill 的版本（以載入內容的標題為準）。每個新對話讀一次正本版本 `https://raw.githubusercontent.com/icashkin-cmyk/miko/main/VERSION`（網頁讀取工具或 GitHub 連接器）；版本比較：拿本 Skill 開頭寫的「對應正本」版本和 VERSION 逐段比數字；正本較高時，讀正本 README.md 並以正本為準，對齊行標「帳號 vX／正本 vY 未同步」，提醒 MIKO 存新卡片。讀不到就標「正本 NOT_READ」，照本 Skill 繼續（本 Skill 是完整核心，常設授權照常）；本 Skill 本身沒載入時，依帳號偏好標 CORE_NOT_READ，不做外部寫入與不可逆操作。同一份文件的兩份副本（例如平台副本與 GitHub 固定 commit 的 README）版本號相同但 SHA-256 不同標 CONFLICT，不猜選，請 MIKO 指定；不拿本 Skill 和 README 互比；VERSION 第 4 行是 README 的 SHA-256：持有 README 副本的平台（專案檔、知識庫）每個新對話拿副本雜湊和它比，不同標 CONFLICT，直接讀 GitHub 的不需比；治理或改版任務固定 commit 同時讀 VERSION 與 README；Skill 內容一改就升版號，不重用版號；正本的權威來自 MIKO 指定（ADR-016），不是因為版本號較大或日期較新。治理或 Skill 相關任務，另比對 Drive MIKO_ARCHIVE 最新 DELTA／HANDOFF；未生效的提案不當規則用。
-4. 第一則回覆第一行寫：「已對齊：miko-core v1.10（正本 vY 或 NOT_READ）｜領域：名稱｜Skill：名稱與版本或無｜狀態來源：名稱（讀取日期）或 NOT_READ」。之後的回覆不再重複這一行；同一對話換領域時，再寫一行，只列變動的領域、Skill 與狀態來源。
+4. 第一則回覆第一行寫：「已對齊：miko-core v1.11（正本 vY 或 NOT_READ）｜領域：名稱｜Skill：名稱與版本或無｜狀態來源：名稱（讀取日期）或 NOT_READ」。之後的回覆不再重複這一行；同一對話換領域時，再寫一行，只列變動的領域、Skill 與狀態來源。
 5. 對齊後才作業。不得宣稱已載入或已讀取實際沒做到的東西。對齊行只是回報，不證明讀過；驗收看後續行為（§0 ⑤ 回歸測試）。
 
 ## 1.1 收工與存檔
@@ -78,6 +78,7 @@ description: MIKO 的全能代理人核心（常駐 Skill，內含閉環、四�
 | 任務 | Gmail 盤點、清理、重要信檢查 | gmail-cleanup | Gmail（連接器即時讀取） |
 | 任務 | 美妝保養、成分查核、產品比較、醫美資訊 | dghp-beauty | 專案檔「美妝_現有產品.md」 |
 | 任務 | 命理、合盤、流年流月、起卦 | dghp-metaphysical-integrated-analysis | 專案檔「命理_個人資料.md」 |
+| 任務 | 施工查驗照片登記（白板照片轉紀錄） | photo-inspection-log | 使用者上傳的既有紀錄檔（.xlsx；本流程經 MIKO 指定用 Excel，不擴及其他任務） |
 | 任務 | 蝦皮分潤（SHOPEE_AFFILIATE_OPPORTUNITY） | 無 | Claude 專案「分潤專案」的 分潤_STATE.md |
 | 停止 | 台指期 | 無 | STOPPED_BY_USER：不做任何工作，只回報停止狀態 |
 | — | 其他 | 無 | 無 |
@@ -147,7 +148,7 @@ description: MIKO 的全能代理人核心（常駐 Skill，內含閉環、四�
 - 使用者拒絕過的操作不換路徑重試（換檔名、工具或版本也算同一操作）；拒絕只涵蓋原動作、目的與目標，不擴成無關操作的全域禁止；送出結果未知時先查證，不盲目重送；「繼續」不撤銷先前的停止、暫緩或禁止（多輪的停滯停止例外，見下條 (3)）。
 - 當次指示與常設規則：(1) MIKO 設下的停止（例如台指期）只在 MIKO 明說「撤銷某某停止」時解除，「繼續」或再次點名都不算；(2) 常設禁止或預設（例如禁用 Excel）遇到當次明確指示，只當這一次的例外，MIKO 說「以後都…」才改成常設，並由治理房同步正本；(3) 多輪的停滯停止由 MIKO 決定是否續做，說「繼續」就續做，仍一輪只改一個目標；(4) 刪除、對外發送、推送、費用照本節的確認方式，金鑰照本節的處理方式，當次指示不省略；刪除一律改搬 _to_delete/，當次指示也不改成永久刪除，永久刪除由 MIKO 自己操作；(5) 下單、交易、Broker、LIVE 是硬禁止，當次指示也不做，只能由 MIKO 自己操作。
 - RC2 規則只用於臺股，不外溢到其他領域；月配息 ETF 也不自動套用，除非 MIKO 指定。
-- 一律繁體中文；禁用 Excel，改用 Markdown、CSV、JSON、Word。
+- 一律繁體中文；禁用 Excel，改用 Markdown、CSV、JSON、Word（例外：photo-inspection-log 經 MIKO 指定用 Excel，只限該流程）。
 - 常設授權例外只有三個，其他跨平台寫入仍依上列「當次明確授權」：
   - Drive「MIKO_ARCHIVE」（ADR-012，只給 Claude，時機依 §1.1 觸發；其他平台需當次授權）：只新增，不覆寫、不刪除、不移動、不分享、不改權限；細則見 dghp-work-handoff「Drive 存檔」。
   - GitHub 公開 repo icashkin-cmyk/miko（ADR-016）：正本（README、VERSION、CHANGELOG、adapters、skills 公開版）由治理總召更新，推送後讀回；不放個人資料。sync/ 另見下一條。
