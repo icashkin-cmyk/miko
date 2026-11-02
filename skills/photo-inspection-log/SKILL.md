@@ -1,315 +1,94 @@
 ---
-name: "photo-inspection-log"
-description: "施工查驗照片登記成 Excel：使用者上傳查驗白板照片、或回覆待確認的字要更新紀錄時使用。照片放左欄，右欄前兩行固定查驗時間、照片日期，再寫查驗項目、位置、檢查人員、查驗說明；簡體轉繁體，讀不清附放大圖問使用者。先載入 miko-core。"
+name: photo-inspection-log
+description: "施工查驗照片整理成公司格式「材料自主檢查照片」(Excel)：使用者在聊天室丟查驗白板照片（單張或一次上百張）就直接整理、更新；上傳上次的材料自主檢查照片.xlsx 就接續；回覆待確認的字就更新。依公司材料自主檢查表名詞抄寫，簡體轉繁體，讀不清附放大圖問使用者。"
 ---
 
-# photo-inspection-log v0.7｜施工查驗照片登記｜2026-10-31
+# photo-inspection-log v0.15｜施工查驗照片整理（公司格式為主）｜2026-11-02
 
-- 負責：把查驗照片逐張登記進 Excel，一張一列：A 欄照片、B 欄照片文字；使用者確認讀不清的字後更新該列。
-- 資料：使用者本輪上傳的照片；使用者上傳的既有紀錄檔（.xlsx）。
-- 連接器：無。排程：無。
-- 交回：更新後的 .xlsx（SendUserFile）；有讀不清的字時，另交放大對照圖與提問清單。
-- 先問使用者：讀不清或無法辨識的字（集中一次問）；固定欄位與基準不同時。
+- 負責：把查驗白板照片抄寫、確認，輸出公司格式「材料自主檢查照片.xlsx」。
+- 觸發（使用者指定）：使用者在聊天室丟照片＝要整理、更新，不先問要不要做、不先給計畫，直接跑完整流程交檔；只在讀不清的字、固定欄位不符時集中問。
+- 交付：只交一個檔「材料自主檢查照片.xlsx」（SendUserFile）；有待確認時另交放大圖。工作資料（原文、已確認詞彙、基準、分項工程）存在這個檔的隱藏工作表，下次上傳它就能接續。
+- 資料：聊天上傳的照片或 zip、Google Drive 照片資料夾（只讀）、已連線電腦的照片資料夾、上次的材料自主檢查照片.xlsx。
+- 程式：scripts/log_photo.py（v0.14）。每個新對話先取得程式，不要重寫：本 Skill 資料夾有 scripts/ 就 `cp <本 Skill 資料夾>/scripts/log_photo.py .`；沒有就 `curl -sSLO https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/photo-inspection-log/scripts/log_photo.py`（或用網頁讀取工具逐字取回存成 log_photo.py）。取不到才照本檔規則手動處理並告知使用者。
+- 公司名詞：材料自主檢查表名詞放在工作目錄 forms.csv（欄位：表號,工作表,材料/設備名稱,項目,品質管理標準）。本 Skill 資料夾有 forms.csv 或使用者提供時複製到工作目錄；沒有時設計/標準值改用白板內容。`python3 log_photo.py terms` 列出已載入的名詞。
 - Excel：使用者指定此流程用 Excel，屬本流程的例外，不擴及其他任務。
 
-## 活頁簿結構
-- 「照片紀錄」：A 照片、B 照片文字。表頭粗體灰底。B 欄前兩行固定是查驗時間、照片日期（整行粗體，不加顏色）；其餘每一行冒號前（含冒號，例：查驗項目：、（旁註：）粗體，冒號後一般字。B 欄含〔?〕的列自動標淺黃底，確認完自動清除。
-- 「基準」：固定欄位（工程名稱、監造單位、承造單位）。第一次出現的值成為基準，之後每張比對，不同就停下問。
-- 「已確認詞彙」：使用者確認過的寫法（白板原文、確認後、來源列、日期）。抄新照片前先查這張表，同樣的字形與詞直接沿用，不再問。
+## 流程（照片一進來就做完）
+1. 接續：使用者上傳上次的材料自主檢查照片.xlsx → `python3 log_photo.py restore 材料自主檢查照片.xlsx 照片紀錄.xlsx`（還原工作檔，原檔不改）。沒上傳、本對話也沒有工作檔 → 新建。
+2. 收照片：放進 incoming/（zip 直接給 zip 路徑）。超過 20 張請使用者改傳 zip、Drive 資料夾或已連線電腦的資料夾。`python3 log_photo.py prep incoming 照片紀錄.xlsx`：SHA-256 去重、讀 EXIF、依拍攝時間排序、轉正、產生判讀圖與格線圖、抄寫範本 text/NNN.tpl。
+3. 抄白板：看 photos/NNN_grid.jpg，複製範本成 text/NNN.txt。抄之前先看 `glossary`（詞庫、已確認詞彙）與公司名詞（terms）；字形相同就照寫，不再問。固定欄位（工程名稱、監造單位、承造單位）寫 fixed/NNN.txt。
+4. 讀不清：`crops` 放大（左原圖、右增強）、查簡體偏旁、對照工地常用詞與公司名詞；型號仍不確定就網路搜尋「品牌＋型號」，官方型錄或經銷頁完全相同才寫入並 `vocab` 記來源網址；都不行就寫〔?〕。
+5. 檢查：逐行數字數防漏字；OpenCC（s2t）只當偵測器逐字判斷（斗、台、冲常誤報）。
+6. 寫入：`python3 log_photo.py addmany 照片紀錄.xlsx`（百張時每 10 張一次、回一行進度；中斷後依 manifest.csv 的 todo 繼續）。
+7. 輸出：`python3 log_photo.py export 照片紀錄.xlsx 材料自主檢查照片.xlsx`，再用 LibreOffice 轉 PDF 抽看：每頁 3 張、文字沒被截斷。
+8. 讀回：`check`（每個分頁資料列＝照片數、照片固定在格子、沒有放錯分頁、合計＝清單）、`glossary` 看「疑似同物不同寫法」。
+9. 交檔＋提問：照「回覆格式」；有〔?N〕就附 `crops photos/NNN.jpg 待確認_MM-DD_第N張.png 編號:x0,y0,x1,y1 ...`（編號＝〔?N〕號）。
+10. 使用者回覆：`fix 照片紀錄.xlsx 分頁:列號 "原文字（含〔?N〕）" "確認後"`（同時記進已確認詞彙；改到日期會自動搬到該日分頁）→ 再 export → 交檔。分項工程名稱用 `sub 照片紀錄.xlsx "查驗項目" "分項工程名稱"`。自己抄錯用 `set`（不記進已確認詞彙）。
 
-## 回覆格式（使用者指定，2026-10-31，固定不變）
-每次回覆都照這個樣板，查驗時間與照片日期固定在最上面：
-```
-**第 3 列**｜已將「無」填入。
-**查驗時間**：2026-10-27（115.10.27）
-**照片日期**：2026-10-27
-**請確認**：
-1. 面盆型號：L331／L334？
-2. 排水器最後一字：器／部？
-```
-- 標題（列號、查驗時間、照片日期、請確認）用粗體。
-- 第一行：新增時「第 N 列｜已新增。」；使用者回覆後「第 N 列｜已將「X」填入。」；只提問時「第 N 列」。
-- 第二、三行：照抄 B 欄前兩行。
-- 「請確認：」之後條列，一題一行，附候選字；沒有待確認就省略這段。
-- 提醒（固定欄位不符等）放在最後一行。
-- 多列同時有待確認：每列一個區塊，依列號排序。
-- 不解釋判斷過程，不另起四段或流程鎖。
-- 回覆對應不到哪一題時，只問一行：「「X」是第幾題？」
+## 公司格式（材料自主檢查照片，依公司範例）
+- A4 直式、標楷體；每頁標題「材料自主檢查照片」（3 列合併、14 點）＋3 張照片＋頁碼；每天一個分頁，有待確認的分頁標籤黃色。
+- 每張 14 列：左 A:E 照片（固定在格子、置中）；右 F:I：分項工程名稱／檢查項目（3 列）、設計/標準值｜實測值（欄頭 1 列＋內容 7 列）、拍攝時間（民國，例 115年10月8日）、拍攝位置：工區內、棟別/層別/空間編號/空間位置（白板有位置就接在冒號後）。
+- 公司規則：
+  - 檢查項目：查驗項目去掉「材料進場」；對得到公司材料自主檢查表就用表上的材料/設備名稱（例 線槽 → 鋁製電纜線架）。
+  - 設計/標準值：對得到自主檢查表就用表上的品質管理標準，第一行寫材料名稱（例 鋁製電纜線架／廠牌:XX／直式電纜線架 300Wx100Hx3000L…）；同名多張用白板型號、規格數字比對，比不出唯一一張就用白板規格。對不到就用白板規格欄。
+  - 實測值：白板實測都對得上白板規格＝相符，實測值與設計/標準值同寫；不相符或對不到自主檢查表，就照白板實測（含數量）；白板沒有實測欄就照白板內容。
+  - 白板品名換成公司寫法（程式 NAMEMAP，例 鋁梯型直式 → 直式電纜線架）；新增對照先問使用者。
+  - 分項工程名稱：白板沒有；使用者給了就 `sub` 記住，之後同一查驗項目自動帶入；未填的在回覆問一次（一個查驗項目一題）。
+  - 拍攝時間用照片日期換民國；沒有照片日期用查驗時間；都沒有留空並在回覆說明。
+- 字太多自動縮字（10→7 點），還放不下才加高列，每頁放不下 3 張自動換頁。待確認〔?N〕紅字。
 
-## B 欄欄位（固定順序，一行一欄位）
+## 工作檔（照片紀錄.xlsx，只在工作目錄，不交付）
+- 每天一個分頁（名稱是日期，依查驗時間；讀不到用照片日期；都沒有放「日期未知」），A 照片（固定在該列格子）、B 照片文字；另有清單、基準、分項工程、已確認詞彙、詞庫。
+- B 欄固定順序，一行一欄位：
 ```
 查驗時間：2026-10-27（115.10.27）
 照片日期：2026-10-27
 查驗項目：（白板寫「檢查項目」也放這欄）
 位置：
 檢查人員：
-查驗說明：（白板有「品名 型號 數量」欄就照寫在冒號前）
-（白板內容逐行照抄，保留原分行、品名、型號、數量；旁註寫成「（旁註：…）」）
+查驗說明：（白板有「品名 型號 數量」等欄頭就寫在括號內，例 查驗說明（品名 規格｜實測｜數量）：）
+（白板內容逐行照抄，保留分行、品名、型號、數量；表格欄用「｜」分隔；旁註寫成「（旁註：…）」）
 ```
-值的寫法：
-- 前兩行固定順序與格式，一目了然：
-  - 查驗時間：白板的查驗日期換成西元 YYYY-MM-DD，括號附白板原樣（民國）。
-  - 照片日期：浮水印或 EXIF 的日期 YYYY-MM-DD；和查驗時間不同時，行尾加「（≠查驗時間）」。
-  - 讀不到只寫 UNKNOWN，不加原因；原因、日期來源寫在回覆。
-- 一律繁體字。手寫簡體轉繁體（自动→自動、龙头→龍頭、缝→縫）。
-- 讀不清的字：儲存格在該字位置標〔?〕，回覆中集中一次問。不猜字、不補型號。
-- 白板整張入鏡但沒有該欄：「—（白板無此欄）」。
-- 其他欄位白板被裁切或沒拍到：「UNKNOWN（原因）」。
+- 查驗時間：民國加 1911 換西元（用程式算），括號附白板原樣；照片日期：EXIF 或浮水印；兩者不同時程式自動加「（≠查驗時間）」紅字；讀不到只寫 UNKNOWN，原因寫在回覆。
+- 一律繁體；讀不清寫〔?〕（寫入時自動編號〔?1〕〔?2〕…紅字，確認過的號不重排）；不猜字、不補型號。白板整張入鏡但沒有該欄：「—（白板無此欄）」；被裁切或沒拍到：「UNKNOWN（原因）」。
+- 固定欄位第一次出現的值成為基準，之後不同就略過不寫並問。
 
-## ① 問問題
-- 必問：無，照片本身就是輸入。
-- 預設值：
-  - 使用者上傳了既有 .xlsx → 接在它後面（複製一份處理，不改原檔）。
-  - 沒上傳 → 本對話已有工作檔就接續；沒有就新建「照片紀錄.xlsx」。
-  - 一次多張 → 依上傳順序各一列。
-  - 使用者只回一個名字或詞（例：「某某某」「無」）→ 對應到字形與候選最吻合的那一處〔?〕更新，回覆照「回覆格式」樣板。
+## 詞庫與名詞
+- 公共工程同一物件重複多，全案寫法要一致：抄寫前看詞庫（＊＝使用者確認／型錄／匯入）、已確認詞彙、公司名詞；相同照寫，不同或型號有一碼看不清仍標〔?〕問，候選第一個放詞庫寫法。同系列型號常只差一碼（V2700／V2701 可能是不同品項），不憑詞庫補碼。
+- 寫入後看「疑似同物不同寫法」；同一張白板上並列的詞（上彎／下彎、P管／S管）視為不同物件。換新檔可 `glossary 新檔.xlsx --import 詞庫.csv`。
+- 公司給新的材料自主檢查表時，把名詞加進 forms.csv（同一張表用同一個表號）。
 
-## ② 解決
-1. 檔案：照片複製到工作目錄 photos/NNN.jpg；既有 .xlsx 複製到工作目錄；log_photo.py 寫到工作目錄（全文在下方）。
-2. 照片日期：PIL 讀 EXIF DateTimeOriginal → 裁四邊放大找浮水印 → 都沒有標 UNKNOWN。
-3. 抄白板：
-   - 分區裁切放大：上方欄位、左右兩欄內容、底列人員與日期、旁註。
-   - 逐行抄成繁體。能和照片裡包裝盒的印刷型號對照就對照；先查「已確認詞彙」。
-   - 查驗時間：民國年加 1911 換西元，用程式算。
-4. 讀不清的字，標〔?〕之前先做兩件事：
-   - 用 `crops` 放大單獨看那個字（左原圖、右增強：紅色通道＋自動對比＋銳化，藍筆在灰白板上會變成清楚的黑字），依下方「簡體偏旁表」換成繁體偏旁再認。
-   - 用工地與建材常用詞對照（例：拖布盆、排水器、龍頭、面盆）。
-   - 還是不確定才標〔?〕。
-5. 漏字檢查：小字與旁註抄完後，數白板該行的字數和抄寫的字數，對不上就重看。
-6. 簡體檢查：用 OpenCC（`pip install --break-system-packages opencc-python-reimplemented`，s2t）掃一遍抄寫結果，只當偵測器，命中的字逐一判斷。
-7. 寫入：B 欄文字存 text/NNN.txt，固定欄位存 fixed/NNN.txt（每行「欄位：值」）。
-   - 執行 `python3 log_photo.py add 照片紀錄.xlsx photos/NNN.jpg text/NNN.txt --fixed fixed/NNN.txt`。
-   - 結束碼 2：固定欄位與基準不同，未寫入，把差異給使用者確認。
-   - 結束碼 4：前兩行不是「查驗時間：」「照片日期：」，未寫入，改好 text/NNN.txt 再執行。
-8. 提問：
-   - 用 `python3 log_photo.py crops photos/NNN.jpg 待確認_照片N.png x0,y0,x1,y1 ...` 把每處讀不清的位置放大、編號（左原圖、右增強），拼成一張圖，用 SendUserFile 交給使用者。
-   - 問題照「回覆格式」條列，編號和圖上編號一致，每題一行附候選字（最多 3 個）。
-9. 使用者回覆後：
-   - 執行 `python3 log_photo.py fix 照片紀錄.xlsx 列號 "原文字（含〔?〕）" "確認後文字"`，同時記進「已確認詞彙」。
-   - 結束碼 3：找不到或不只一處，未寫入，改用更長的原文字重試。
-   - 同步更新 text/NNN.txt。
-   - 自己發現抄錯（不是使用者確認的）：改 text/NNN.txt 後執行 `python3 log_photo.py set 照片紀錄.xlsx 列號 text/NNN.txt`，不記進「已確認詞彙」，並在回覆說明。
-10. 讀回：
-    - `python3 log_photo.py check 照片紀錄.xlsx`：每列照片、查驗時間／照片日期、待確認數、UNKNOWN 數。
-    - 新增列時，再用 LibreOffice 轉 PDF，看新列文字沒被截斷。
-11. 交檔：SendUserFile，回覆照「回覆格式」。新對話第一次登記時，加一行提醒：要接續請上傳上次的 .xlsx（已確認詞彙存在檔裡，跟著檔案走）。
-
-簡體偏旁表（手寫常見）：
-| 簡體 | 繁體 | 例 |
-|---|---|---|
-| 纟 | 糸 | 缝→縫 |
-| 钅 | 金 | 镀→鍍、铜→銅 |
-| 讠 | 言 | 说→說 |
-| 门 | 門 | 闸→閘 |
-| 贝 | 貝 | 质→質 |
-| 车 | 車 | 软→軟 |
-| 页 | 頁 | 头→頭 |
-| 马 | 馬 | 码→碼 |
-| 鱼 | 魚 | 鲜→鮮 |
-| 饣 | 食 | 饮→飲 |
-| 见 | 見 | 观→觀 |
-| 风 | 風 | 风管→風管 |
-
-log_photo.py v0.6（每個新對話先寫到工作目錄）：
-```python
-# log_photo.py v0.6｜施工查驗照片登記：A 欄照片、B 欄照片文字，一張一列；B 欄前兩行固定為查驗時間、照片日期（整行粗體），其餘每行冒號前粗體
-# 用法：
-#   python3 log_photo.py add   紀錄.xlsx 照片.jpg 文字.txt [--fixed 固定欄位.txt]
-#   python3 log_photo.py fix   紀錄.xlsx 列號 "原文字" "確認後文字"
-#   python3 log_photo.py set   紀錄.xlsx 列號 文字.txt   （整格改寫，不記進已確認詞彙）
-#   python3 log_photo.py check 紀錄.xlsx
-#   python3 log_photo.py crops 照片.jpg 輸出.png x0,y0,x1,y1 [x0,y0,x1,y1 ...]   （左原圖、右增強，編號）
-# 結束碼：0 成功；2 固定欄位與基準不同；3 fix 找不到或不只一處；4 前兩行不是「查驗時間：」「照片日期：」（以上都未寫入）
-import sys, os, datetime
-from openpyxl import Workbook, load_workbook
-from openpyxl.drawing.image import Image as XLImage
-from openpyxl.styles import Alignment, Font, Border, Side, PatternFill
-from openpyxl.cell.rich_text import CellRichText, TextBlock
-from openpyxl.cell.text import InlineFont
-from PIL import Image as PILImage, ImageDraw, ImageFont, ImageOps, ImageFilter
-
-IMG_W, IMG_H_MAX = 320, 400                     # 照片顯示寬度與高度上限（像素）
-LINE = Side(style='thin', color='999999')
-BOX = Border(left=LINE, right=LINE, top=LINE, bottom=LINE)
-F, FB = Font(name='Arial', size=11), Font(name='Arial', size=11, bold=True)
-PENDING, NOFILL = PatternFill('solid', fgColor='FFF2CC'), PatternFill(fill_type=None)
-MAIN, BASE, VOCAB, Q = '照片紀錄', '基準', '已確認詞彙', '〔?〕'
-HEAD = ('查驗時間：', '照片日期：')            # B 欄固定前兩行
-HEADFILL = PatternFill('solid', fgColor='D9D9D9')
-
-def load(xlsx):
-    return load_workbook(xlsx, rich_text=True)  # 保留粗體
-
-def rich(text):                                 # 前兩行粗體，其餘一般
-    lines = text.split('\n')
-    if len(lines) < 2 or not (lines[0].startswith(HEAD[0]) and lines[1].startswith(HEAD[1])):
-        print(f'STOP 前兩行必須是「{HEAD[0]}」「{HEAD[1]}」，未寫入'); sys.exit(4)
-    TOP = InlineFont(rFont='Arial', sz=11, b=True)                   # 前兩行：整行粗體（不加顏色，部分手機預覽會吃掉帶顏色的粗體）
-    LAB = InlineFont(rFont='Arial', sz=11, b=True)                   # 冒號前：粗體
-    TXT = InlineFont(rFont='Arial', sz=11)
-    segs = []
-    for i, ln in enumerate(lines):
-        nl = '\n' if i else ''
-        if i < 2:
-            segs.append((TOP, nl + ln))
-        elif '：' in ln:                        # 任何一行冒號前（含冒號）粗體
-            k, v = ln.split('：', 1); segs += [(LAB, nl + k + '：'), (TXT, v)]
-        else:
-            segs.append((TXT, nl + ln))
-    out = []                                    # 相鄰同字型合併
-    for f, t in segs:
-        if not t: continue
-        if out and out[-1][0] is f: out[-1] = (f, out[-1][1] + t)
-        else: out.append((f, t))
-    return CellRichText([TextBlock(f, t) for f, t in out])
-
-def style_head(ws):                             # 表頭：粗體、灰底、置中
-    for c in ws[1][:2]:
-        c.font = FB; c.fill = HEADFILL; c.border = BOX
-        c.alignment = Alignment(horizontal='center', vertical='center')
-
-def sheet(wb, name, head, widths):
-    if name in wb.sheetnames:
-        return wb[name]
-    ws = wb.create_sheet(name); ws.append(head)
-    for c in ws[1]: c.font = FB
-    for col, w in zip('ABCD', widths): ws.column_dimensions[col].width = w
-    return ws
-
-def mark(ws):                                   # B 欄含〔?〕標淺黃底，確認完自動清除
-    for r in range(2, ws.max_row + 1):
-        c = ws[f'B{r}']
-        c.fill = PENDING if Q in str(c.value or '') else NOFILL
-
-def fit(ws, r, text, img_h=0):                  # 中文行高約 17 點
-    need = max(img_h * 0.75 + 6, (text.count('\n') + 1) * 17 + 8)
-    ws.row_dimensions[r].height = max(need, ws.row_dimensions[r].height or 0)
-
-def parse(path):
-    out = {}
-    for ln in open(path, encoding='utf-8'):
-        if '：' in ln:
-            k, v = ln.split('：', 1); out[k.strip()] = v.strip()
-    return out
-
-def add(xlsx, img_path, txt_path, fixed_path=None):
-    if os.path.exists(xlsx):
-        wb = load(xlsx); ws = wb[MAIN] if MAIN in wb.sheetnames else wb.worksheets[0]
-        row = ws.max_row + 1
-    else:
-        wb = Workbook(); ws = wb.active; ws.title = MAIN
-        ws['A1'], ws['B1'] = '照片', '照片文字'
-        ws.column_dimensions['A'].width, ws.column_dimensions['B'].width = 47, 60
-        ws.freeze_panes = 'A2'; row = 2
-    if fixed_path:                              # 固定欄位：第一次出現的值成為基準，之後不同就停
-        fixed = parse(fixed_path)
-        base = sheet(wb, BASE, ['欄位', '值'], [12, 50])
-        known = {r[0]: r[1] for r in base.iter_rows(min_row=2, values_only=True) if r[0]}
-        diff = [f'{k}：基準「{known[k]}」／本張「{v}」' for k, v in fixed.items() if k in known and known[k] != v]
-        if diff:
-            print('STOP 固定欄位與基準不同，未寫入：\n' + '\n'.join(diff)); sys.exit(2)
-        for k, v in fixed.items():
-            if k not in known: base.append([k, v])
-    ws.page_setup.orientation = 'landscape'
-    ws.sheet_properties.pageSetUpPr.fitToPage = True
-    ws.page_setup.fitToWidth, ws.page_setup.fitToHeight = 1, 0
-    w, h = PILImage.open(img_path).size
-    s = min(IMG_W / w, IMG_H_MAX / h)
-    img = XLImage(img_path); img.width, img.height = round(w * s), round(h * s)
-    ws.add_image(img, f'A{row}')
-    text = open(txt_path, encoding='utf-8').read().strip()
-    value = rich(text)
-    c = ws[f'B{row}']; c.value = value; c.font = FB; c.border = BOX   # 儲存格字型也設粗體：預覽忽略第一段格式時，第一行仍是粗體
-    c.alignment = Alignment(wrap_text=True, vertical='top')
-    ws[f'A{row}'].border = BOX
-    fit(ws, row, text, img.height); mark(ws); style_head(ws); wb.save(xlsx)
-    print(f'OK 第 {row} 列：{os.path.basename(img_path)}；待確認 {text.count(Q)} 處')
-
-def fix(xlsx, row, old, new):                   # 使用者確認後更新，並記進已確認詞彙
-    row = int(row)
-    wb = load(xlsx); ws = wb[MAIN]
-    c = ws[f'B{row}']; v = str(c.value or '')
-    n = v.count(old)
-    if n != 1:
-        print(f'STOP 第 {row} 列找到 {n} 處「{old}」，未寫入'); sys.exit(3)
-    t = v.replace(old, new); c.value = rich(t); c.font = FB
-    fit(ws, row, t)
-    sheet(wb, VOCAB, ['白板原文（待確認）', '確認後', '來源列', '確認日期'], [32, 32, 8, 12]).append(
-        [old, new, row, datetime.date.today().isoformat()])
-    mark(ws); style_head(ws); wb.save(xlsx)
-    print(f'OK 第 {row} 列已更新；本列還有 {t.count(Q)} 處待確認')
-
-def set_text(xlsx, row, txt_path):              # 整格改寫（格式調整或自己抄錯），不記進已確認詞彙
-    row = int(row); t = open(txt_path, encoding='utf-8').read().strip()
-    wb = load(xlsx); ws = wb[MAIN]; c = ws[f'B{row}']; c.value = rich(t); c.font = FB
-    fit(ws, row, t); mark(ws); style_head(ws); wb.save(xlsx)
-    print(f'OK 第 {row} 列已改寫；待確認 {t.count(Q)} 處')
-
-def check(xlsx):                                # 唯讀：每列照片、待確認、UNKNOWN 數
-    wb = load(xlsx); ws = wb[MAIN]
-    imgs = sorted(i.anchor._from.row + 1 for i in ws._images)
-    print(f'資料列 {ws.max_row - 1}；照片所在列 {imgs}')
-    for r in range(2, ws.max_row + 1):
-        v = str(ws[f'B{r}'].value or '')
-        top = '／'.join(v.split('\n')[:2])
-        print(f'第 {r} 列：照片{"有" if r in imgs else "無"}｜{top}｜待確認 {v.count(Q)}｜UNKNOWN {v.count("UNKNOWN")}')
-    if VOCAB in wb.sheetnames:
-        print('已確認詞彙：' + '；'.join(f'{a}→{b}' for a, b, *_ in wb[VOCAB].iter_rows(min_row=2, values_only=True)))
-
-def enhance(c):                                 # 白板藍黑筆：取紅色通道（筆跡最暗）＋自動對比＋銳化
-    r = c.split()[0]
-    return ImageOps.autocontrast(r, cutoff=2).filter(ImageFilter.UnsharpMask(radius=2, percent=180, threshold=2)).convert('RGB')
-
-def crops(img_path, out, boxes):                # 讀不清的位置放大、編號，左原圖右增強，拼成一張
-    im = PILImage.open(img_path).convert('RGB'); font = ImageFont.load_default(size=36); tiles = []
-    for i, b in enumerate(boxes, 1):
-        x0, y0, x1, y1 = map(int, b.split(','))
-        c = im.crop((x0, y0, x1, y1)); s = min(560 / c.width, 180 / c.height)
-        c = c.resize((round(c.width * s), round(c.height * s)), PILImage.LANCZOS)
-        t = PILImage.new('RGB', (c.width * 2 + 90, c.height + 16), 'white')
-        t.paste(c, (60, 8)); t.paste(enhance(c), (c.width + 80, 8))
-        ImageDraw.Draw(t).text((12, 8), str(i), fill='red', font=font); tiles.append(t)
-    W = max(t.width for t in tiles); H = sum(t.height for t in tiles)
-    canvas = PILImage.new('RGB', (W, H), 'white'); y = 0
-    for t in tiles: canvas.paste(t, (0, y)); y += t.height
-    canvas.save(out); print(f'OK {len(tiles)} 處放大圖：{out}')
-
-if __name__ == '__main__':
-    a = sys.argv[1:]
-    if a[0] == 'add':
-        add(a[1], a[2], a[3], a[a.index('--fixed') + 1] if '--fixed' in a else None)
-    elif a[0] == 'fix':
-        fix(*a[1:5])
-    elif a[0] == 'set':
-        set_text(*a[1:4])
-    elif a[0] == 'check':
-        check(a[1])
-    elif a[0] == 'crops':
-        crops(a[1], a[2], a[3:])
+## 回覆格式（使用者指定，固定不變）
 ```
+**2026-10-27｜第 1 張**｜已將「無」填入。
+**查驗時間**：2026-10-27（115.10.27）
+**照片日期**：2026-10-27
+**請確認**：
+1. 面盆型號：L331／L334？
+2. 排水器最後一字：器／部？
+```
+- 位置用「日期｜第 N 張」（當天第 N 張＝工作檔列號 − 1）；標題粗體。第一行：新增「已新增。」、回覆後「已將「X」填入。」、只提問時只寫位置。第二、三行照抄查驗時間、照片日期。
+- 「請確認」一題一行、附候選字（最多 3 個）；題號＝格子裡的〔?N〕＝放大圖編號；沒有就省略。
+- 批次：進度只回一行「已完成 30／100 張」；結束先一行總結（寫入幾張、略過幾張、待確認幾張、材料自主檢查照片 N 頁），再接有待確認的區塊（一則最多 10 張）。分項工程名稱未填的另列「請確認」。提醒放最後一行。
+- 使用者只回一個詞（例「王小明」「無」）→ 更新字形與候選最吻合的那一處；對應不到只問一行「「X」是第幾題？」。
+- 不解釋判斷過程。新對話第一次交檔加一行：下次接續請上傳這次的材料自主檢查照片.xlsx。
 
-## ③ 後設（常見錯誤）
-- 藍筆在灰白板、反光或陰影下對比低：一律先看增強圖再判斷（例：L33? 的尾字在增強圖才看出像 4）。
-- 簡體偏旁寫得潦草時最難認（例：纟寫成一筆鋸齒，沒認出「縫」）：先放大、查偏旁表，還是不確定才問。
-- 小字與旁註容易漏字（例：漏抄「塞」）：抄完逐行數字數。
-- 手寫型號容易混淆的字：1／7、0／D、5／S、2／Z、V／1/。要和照片裡包裝盒上的印刷型號對得上才算確定，否則標〔?〕。
-- 數量和型號尾碼黏在一起（例：LF6450N 6）：看同欄其他數量的對齊位置，仍不確定就問。
-- 照常用詞自動補字（例：把像「部」的字寫成「器」）：字形和常用詞不一致時標〔?〕問，不自己補。
-- 浮水印時間是相機設定的時間，不保證正確；和查驗時間不同時兩個都寫（照片日期行加「（≠查驗時間）」），不自行判斷哪個對。
-- 聊天上傳常去掉 EXIF；讀不到不代表照片沒有拍攝時間。
-- OpenCC 會誤報：斗→鬥、台→臺；冲要看上下文，是沖水的「沖」還是衝擊的「衝」。只當偵測器，不自動替換。
-- 新對話時工作檔不在：沒上傳上次的 .xlsx 就會新建一份，已確認詞彙也會跟著遺失。
-- 日期格式不一（標籤不同、括號附註過長）：前兩行只放日期，附註寫在回覆。
-- 帶顏色的粗體在部分手機預覽不顯示（2026-11-01 查驗時間行看不到粗體）：前兩行只用粗體不加顏色，儲存格字型也設粗體。
-- 部分手機預覽不顯示同一格內的部分粗體：使用者說看不到粗體時，先問用哪個 App 開檔，再決定是否改版面。
-- 回覆太長或格式不固定：一律照樣板（列號行、查驗時間、照片日期、題目），不解釋怎麼判斷、不重述已知事項。
+## 常見錯誤
+- 每個新對話重寫整份程式，耗大量額度：從 scripts/ 複製或從 GitHub 下載。
+- 交兩個檔讓使用者搞混：只交材料自主檢查照片.xlsx，工作資料藏在隱藏工作表（v0.14 起）。
+- 聊天直接上傳的照片常沒有 EXIF；zip、Drive、電腦資料夾的原檔通常有。浮水印時間不保證正確，和查驗時間不同兩個都寫。
+- 藍筆在灰白板、反光下對比低：先看增強圖。簡體偏旁潦草最難認（纟寫成一筆鋸齒＝縫）。小字與旁註容易漏字（漏抄「塞」）。照常用詞自動補字（把像「部」的字寫成「器」）要避免。
+- 手寫型號易混：1／7、0／D、5／S、2／Z、V／1/；數量和型號尾碼黏在一起（LF6450N 6）看同欄對齊再判斷。
+- 沒有 LibreOffice 時跳過轉 PDF，回覆說明未做版面抽看。
+- Excel 與 LibreOffice 換行位置不同：字寬估算抓寬；輸出後一定轉 PDF 抽看。
+- 帶顏色的粗體在部分手機預覽不顯示：前兩行只用粗體不加顏色。
 
-## ④ 檢查
-- AC-1：新列 A 欄有照片，B 欄依固定順序 6 個欄位齊全（沒有值也有標記）；前兩行是查驗時間、照片日期，整行粗體，日期為 YYYY-MM-DD 或 UNKNOWN；其餘每行冒號前粗體；表頭粗體灰底。
-- AC-2：check 讀回，既有列的照片數與文字不變。
-- AC-3：民國換西元用程式算；照片日期和查驗時間不同時，照片日期行尾有「（≠查驗時間）」。
-- AC-4：B 欄全為繁體（OpenCC 命中逐字判過）；每個〔?〕都有附放大圖的提問；含〔?〕的列是黃底，沒有〔?〕的列不是。
-- AC-5：fix 只改一處，並記進已確認詞彙；找不到時結束碼 3、檔案不變；固定欄位不符時結束碼 2、前兩行格式不符時結束碼 4，檔案都不變（SHA-256 前後相同）。
-- AC-6：使用者上傳的原檔沒被覆寫；PDF 預覽新列文字沒被截斷。
-- AC-7：每次回覆照樣板：第一行列號，第二、三行查驗時間與照片日期，再條列題目（一題一行），標題粗體；不解釋判斷過程。
-- 實跑題：上傳一張有浮水印日期、民國查驗日期、整張入鏡的白板照，再回覆一個待確認字。通過條件：AC-1～AC-7 全過，回覆的字更新到正確那一處，並出現在已確認詞彙。（2026-10-31 以衛生設備材料進場照片、回覆「某某某」「無」「6是數量」實跑通過；v0.5 格式與增強圖同日實跑；v0.6 冒號前粗體 2026-11-01 實跑；v0.7 拿掉顏色後使用者確認粗體可見）
+## 檢查（驗收）
+- AC-1：材料自主檢查照片.xlsx：A4 直式、標楷體、每頁標題＋3 張＋頁碼、每天一個分頁；每張照片在該張 A:E 區塊內；LibreOffice 轉 PDF 文字不截斷。
+- AC-2：公司規則：對得到自主檢查表時檢查項目與設計/標準值用表上寫法（第一行材料名稱）；相符時實測值與設計/標準值同寫；拍攝時間為民國年月日。
+- AC-3：交付檔有隱藏工作表「原文」「基準」「已確認詞彙」（有分項工程時含「分項工程」）；restore 後重新 export，可見內容逐格相同、照片數相同。
+- AC-4：工作檔 check：每個分頁資料列＝照片數、照片固定在格子、放錯分頁「無」、合計＝清單；〔?N〕紅字、題號＝放大圖編號＝格內編號。
+- AC-5：fix 只改一處並記進已確認詞彙；找不到結束碼 3；固定欄位不符（2）、前兩行格式不符（4）、照片重複（5）、位置寫錯（6）都不寫入。
+- AC-6：同一批 prep 重跑新增 0 張；同一天 7 張輸出成 3 頁（3＋3＋1）。
+- 實跑題：新對話丟 1 張有浮水印日期、民國查驗日期的白板照 → 直接交材料自主檢查照片.xlsx（不先問要不要做）；再回覆一個待確認字 → 更新到正確那一處並出現在已確認詞彙；再開新對話上傳該檔＋1 張新照片 → restore 後新增成功、舊資料不變。
+- 測試紀錄（2026-11-02）：程式 v0.14 改從 forms.csv 載入名詞，輸出與內建名詞版逐格相同；沒有 forms.csv 時改用白板內容。5 張實際紀錄 export→restore→再 export：可見內容逐格相同、照片 5＝5、工作檔原文一致、已確認詞彙與基準完整；線槽列設計/標準值與實測值同為自主檢查表「鋁製電纜線架」寫法；同一天 7 張 → 3 頁。
