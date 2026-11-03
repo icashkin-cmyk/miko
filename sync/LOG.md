@@ -56,3 +56,6 @@
 | 2026-11-02 20:20 | Claude | 第 7 列推進：新正本 1.2.12（666734f）上 check_repo 10/10 PASS，工作樹乾淨；Codex 實測仍 UNKNOWN | 通過（Claude 端） | Claude、Codex | 進行中（待 Codex 實測） |
 | 2026-11-02 20:20 | Claude | 承 15:08 列：施工查驗任務 Skill GitHub 正文仍 v0.7，1.2.11／1.2.12 未更新 | 未通過；保留：轉治理房，列入待 MIKO 決定 | MIKO、治理房 | 進行中 |
 | 2026-11-02 20:20 | Claude | 發現 README §4「有變化＝過去 65 分鐘內」與 ADR-033 每天兩次排程不一致；本輪改用上次狀態檔時間為時間窗 | 保留：轉治理房，列入待 MIKO 決定 | MIKO、治理房 | 進行中 |
+| 2026-11-03 08:10 | Claude | 第 7 列推進：0923a88 上 check_repo 10/10 PASS，工作樹乾淨；Codex 實測仍 UNKNOWN | 通過（Claude 端） | Claude、Codex | 進行中（待 Codex 實測） |
+| 2026-11-03 08:10 | Claude | 承 11-02 13:08、15:08、20:20 列：施工查驗任務 Skill GitHub 正文已到 v0.15（0923a88），不再落後 Drive 紀錄 v0.14；帳號卡與正文逐字一致 UNKNOWN | 通過（版本）；逐字比對保留：轉治理房 | MIKO、治理房 | 完成（版本落後） |
+| 2026-11-03 08:10 | Claude | GPT 同步中斷：sync/GPT_STATUS.md 最後提交 10-28 18:37，sync/gpt/ 不存在；今日首次提醒 | 未通過；列入待 MIKO 決定 | GPT、MIKO | 進行中 |
