@@ -59,3 +59,6 @@
 | 2026-11-03 08:10 | Claude | 第 7 列推進：0923a88 上 check_repo 10/10 PASS，工作樹乾淨；Codex 實測仍 UNKNOWN | 通過（Claude 端） | Claude、Codex | 進行中（待 Codex 實測） |
 | 2026-11-03 08:10 | Claude | 承 11-02 13:08、15:08、20:20 列：施工查驗任務 Skill GitHub 正文已到 v0.15（0923a88），不再落後 Drive 紀錄 v0.14；帳號卡與正文逐字一致 UNKNOWN | 通過（版本）；逐字比對保留：轉治理房 | MIKO、治理房 | 完成（版本落後） |
 | 2026-11-03 08:10 | Claude | GPT 同步中斷：sync/GPT_STATUS.md 最後提交 10-28 18:37，sync/gpt/ 不存在；今日首次提醒 | 未通過；列入待 MIKO 決定 | GPT、MIKO | 進行中 |
+| 2026-11-03 20:08 | Claude | 第 7 列推進：3475534（正本 1.2.13）上 check_repo 10/10 PASS，工作樹乾淨；Codex 實測仍 UNKNOWN | 通過（Claude 端） | Claude、Codex | 進行中（待 Codex 實測） |
+| 2026-11-03 20:08 | Claude | 正本 1.2.13（ADR-035）含 README §3 模型分級與 miko-core v1.14，需治理房確認與 miko-core 描述對齊 | 保留：轉治理房，列入待 MIKO 決定 | MIKO、治理房 | 進行中 |
+| 2026-11-03 20:08 | Claude | Drive 窗內一批未歸屬檔（含治理差異檔、雜湊命名檔）中繼資料已記，內容 NOT_READ | 未通過（未讀）；列入待 MIKO 決定 | MIKO | 進行中 |
