@@ -3,7 +3,7 @@ name: dghp-travel
 description: 旅遊與行程規劃（一日遊、多日遊、跨縣市、交通與住宿整合）時使用：先依 USER_GOAL 分流，路線先行、閉環返程、官方班次與備案；含餐飲節點時交給 dghp-food。先載入 miko-core，再依本 Skill 的四段可執行步驟（天氣→地點與營業→班次→時間軸→判定）完成。純找吃的或單店研究不使用。
 ---
 
-# dghp-travel v0.5｜旅遊行程規劃（Claude 版，可執行）｜2026-10-30
+# dghp-travel v0.6｜旅遊行程規劃（Claude 版，可執行）｜2026-10-30
 來源：Codex Skill dghp-travel-field-manual 1.1.0-CANDIDATE（治理整包快照）＋綜合區專案指令 §5–6＋MIKO 2026-10 指示。本 Skill 是 Claude 端精簡 Candidate，不宣稱等同原件；原件沒有、由 Claude 端加上的整合項標「（Claude 端整合）」。
 載入順序：先 miko-core（四視角主流程、品質閘門），再本 Skill；以下依 miko-core §2.4 提供四段內容。v0.2 依 2026-10-26 實跑結果改寫（ADR-015）。
 
@@ -49,3 +49,11 @@ description: 旅遊與行程規劃（一日遊、多日遊、跨縣市、交通�
 
 ## 6. 禁止
 直線距離冒充導航時間；他日班表冒充當日；Google 星等冒充品質；沒取得 Google 資料卻標已核實；UNKNOWN 當 0、False 或通過；捏造班次、票價、營業時間；沒有返程仍標可執行；只換一餐卻整個重排。寵物只在明確同行時才啟動同行檢查，並重驗當日狀態。
+
+## 7. 檢核程式（ADR-037，2026-11-04 併入）
+- 程式在本 Skill 的 scripts/：itinerary_check.py（行程檢核）、food_pool.py（美食候選池）、tests/（45 項）、README.md（輸入格式）。不連網、不需第三方套件。
+- 取得（每個新對話第一次需要時做一次；下載或測試失敗就照本檔規則人工檢核並說明原因，不重寫程式）：`mkdir -p ft/tests ft/examples && cd ft && B=https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/dghp-travel/scripts && for f in itinerary_check.py food_pool.py README.md tests/test_rules.py; do curl -sSLf -o $f $B/$f; done && python3 -I -B -m unittest discover -s tests`（45 項全過才使用）
+- 何時跑：行程定稿前，把行程寫成 JSON（格式見 README.md 與 examples/；README 是 v0.1 說明，v0.1.1 另加 trip.home、交通段 evidence.source_url／evidence.checked_at、access_min，以 tests/ 為準）→ `python3 -I itinerary_check.py 行程.json --out out`。
+- 判定照程式輸出：EXECUTABLE（可執行）、有風險、INCOMPLETE_UNVERIFIED（未完整驗證）、NOT_EXECUTABLE（不可執行）。不得把程式的未驗證改寫成可執行；人工判斷與程式不同時兩個都寫並說明。
+- 程式檢查：回程最後一段必須抵達 home；「已核班次」必須附官方網址與查核日期；每段大眾運輸預留進站、步行、購票、候車時間（未填預設 10 分鐘）與轉乘緩衝；營業時間與最後點餐。
+- 尚未做（程式 README 列的 P2）：輸出表未顯示接駁、餐飲證據與最後一哩；TDX 取資料程式不在本版。

@@ -1,0 +1,95 @@
+{
+  "_note": "結構示範用虛構資料：站名、班次、店名、證據網址皆非真實查證結果",
+  "trip": {
+    "title": "範例一日遊（虛構）",
+    "date": "2026-10-24",
+    "origin": "甲站",
+    "home_deadline": "23:30",
+    "modes_allowed": [
+      "walk",
+      "transit",
+      "ebike",
+      "micro_e2w"
+    ],
+    "licensed_driver": false,
+    "min_transfer_buffer_min": 15,
+    "exclude_keywords": [
+      "夜市"
+    ],
+    "home": "甲站"
+  },
+  "steps": [
+    {
+      "id": "S1",
+      "type": "transport",
+      "mode": "transit",
+      "name": "甲站→範例站",
+      "service": "區間車 示範0001",
+      "start": "08:10",
+      "end": "09:05",
+      "date_specific_verified": true,
+      "budget": "NT$100",
+      "from": "甲站",
+      "to": "範例站",
+      "access_min": 10,
+      "evidence": {
+        "source_url": "https://www.railway.gov.tw/示範用-非真實查證",
+        "checked_at": "2026-10-19"
+      }
+    },
+    {
+      "id": "S2",
+      "type": "spot",
+      "name": "範例景點",
+      "start": "09:20",
+      "end": "11:40",
+      "budget": "NT$0"
+    },
+    {
+      "id": "S3",
+      "type": "food",
+      "category": "正餐",
+      "name": "範例食堂",
+      "start": "12:00",
+      "end": "13:10",
+      "entity_status": "GOOGLE_ENTITY_VERIFIED",
+      "food_review": "DONE",
+      "route_fit": "DONE",
+      "open_at_arrival": true,
+      "last_order": "13:30",
+      "wait_min": 15,
+      "dine_min": 40,
+      "signature": "示範定食",
+      "price": "NT$250",
+      "source_date": "2026-10-19",
+      "budget": "NT$250"
+    },
+    {
+      "id": "S4",
+      "type": "transport",
+      "mode": "transit",
+      "name": "範例站→甲站（回程）",
+      "service": "區間車 示範0002",
+      "start": "13:40",
+      "end": "14:35",
+      "date_specific_verified": true,
+      "is_return": true,
+      "budget": "NT$100",
+      "from": "範例站",
+      "to": "甲站",
+      "access_min": 10,
+      "evidence": {
+        "source_url": "https://www.railway.gov.tw/示範用-非真實查證",
+        "checked_at": "2026-10-19"
+      }
+    }
+  ],
+  "backups": [
+    {
+      "id": "A",
+      "trigger": "回程班次延誤",
+      "action": "改搭下一班合法可搭班次並重算",
+      "return": "最晚班次須在 23:30 前到家"
+    }
+  ]
+}

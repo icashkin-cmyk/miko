@@ -1,0 +1,6 @@
+name,branch,category,road_km,entity_status,business_status,open_at_target,quality_score,review_window,signature,price,source_date,search_angle
+範例麵店,,小吃,1.2,GOOGLE_ENTITY_VERIFIED,OPERATIONAL,TRUE,82,0-30,示範乾麵,NT$60,2026-10-19,同義詞
+範例冰室,,甜點,2.4,GOOGLE_ENTITY_VERIFIED,OPERATIONAL,TRUE,88,31-90,示範剉冰,NT$90,2026-10-19,地方稱呼
+範例茶行,,飲品,0.8,NOT_VERIFIED,OPERATIONAL,TRUE,75,0-30,示範紅茶,NT$40,2026-10-19,代表餐點
+範例遠店,,小吃,6.5,GOOGLE_ENTITY_VERIFIED,OPERATIONAL,TRUE,95,0-30,示範肉燥飯,NT$50,2026-10-19,鄰近街區
+範例休店,,正餐,1.0,GOOGLE_ENTITY_VERIFIED,CLOSED_TEMPORARILY,,80,0-30,示範火鍋,NT$400,2026-10-19,同義詞

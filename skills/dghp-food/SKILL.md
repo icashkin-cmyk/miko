@@ -3,7 +3,7 @@ name: dghp-food
 description: 找吃的、餐廳推薦、單店研究時使用（常查地區由使用者設定）：多角度建候選池防漏、本輪 Google 實體核驗、近期評論判斷品質、抵達時營業核對。先載入 miko-core，再依本 Skill 的四段可執行步驟（Google 地點搜尋→篩選→地圖）完成。行程規劃不使用，改用 dghp-travel。
 ---
 
-# dghp-food v0.5｜美食與單店研究（Claude 版，可執行）｜2026-10-30
+# dghp-food v0.6｜美食與單店研究（Claude 版，可執行）｜2026-10-30
 來源：綜合區專案指令 §5–6、dghp-travel-field-manual §6（Travel×Food）、MIKO 陳述（常查地區由使用者設定）、ADR-003（FOOD 現行線為 dghp-food-discovery-coverage 1.4.0，狀態 CURRENT_WITH_KNOWN_DEFECTS）。1.4.0 套件全文不在 Claude 端（NOT_READ）；本 Skill 是 Claude 端精簡 Candidate，不宣稱等同 1.4.0。原件沒有、由 Claude 端補上的作法標「（Claude 補充）」，待與 1.4.0 原件對齊。
 已知缺陷（ADR-003，10-19 五組測試）：T3 規則與 Hash 同改即可通過、缺發布基準綁定；T4 前台「必吃」類斷言漏檢；T5 標籤空白變形（如「首 選」）漏檢。本 Skill 以 §6 禁止條款補 T4、T5；T3 屬套件發布層，不在本 Skill 範圍。
 載入順序：先 miko-core（四視角主流程、品質閘門），再本 Skill；以下 §1～§4 依 miko-core §2.4 提供四段內容。v0.2 依 2026-10-26 實跑結果改寫（ADR-015）。
@@ -55,3 +55,9 @@ description: 找吃的、餐廳推薦、單店研究時使用（常查地區由�
 
 ## 6. 禁止
 未取得 Google 資料卻標已核實；星等冒充品質；前台使用「必吃」「首選」「第一名」「必點」等斷言，包含加空白或符號的變形（如「首 選」「必-吃」）（ADR-003 T4、T5）；UNKNOWN 當 0 或通過；為湊數放寬使用者條件；捏造營業時間、價格或評論內容。
+
+## 7. 檢核程式（ADR-037，2026-11-04 併入）
+- 候選池排名程式 food_pool.py 放在 dghp-travel 的 scripts/（與行程檢核共用測試）。取得：`mkdir -p ft/tests ft/examples && cd ft && B=https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/dghp-travel/scripts && for f in itinerary_check.py food_pool.py README.md tests/test_rules.py; do curl -sSLf -o $f $B/$f; done && python3 -I -B -m unittest discover -s tests`（45 項全過才使用）
+- 何時跑：候選店核實後，寫成 scripts/README.md 規定的 CSV（道路距離、類別、Google 實體、營業狀態、目標時段營業、180 日內評論核實欄）→ `python3 -I food_pool.py 候選池.csv --radius-km 半徑 --top N --out out`。
+- 規則照程式：半徑以道路距離為準不放寬；五類（正餐／小吃／甜點／飲品／伴手禮）分開排；四項核實都過才進排名；合格不足不補；距離與評分數值不合理直接排除。結論只寫「目前核實到的候選」。
+- 下載或測試失敗：照本檔 §2 人工流程做並說明原因，不重寫程式。
