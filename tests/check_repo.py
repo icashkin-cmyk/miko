@@ -158,7 +158,8 @@ low = []
 try:
     for f in sorted((R / 'skills').glob('*/SKILL.md')):
         rel = f.relative_to(R).as_posix()
-        old = subprocess.run(['git', '-C', str(R), 'show', f'HEAD:{rel}'], capture_output=True, text=True)
+        base = os.environ.get('MIKO_BASE', 'HEAD')   # CI 用 MIKO_BASE=推送前的 commit，比對本次推送
+        old = subprocess.run(['git', '-C', str(R), 'show', f'{base}:{rel}'], capture_output=True, text=True)
         if old.returncode != 0: continue
         new = f.read_text(encoding='utf-8')
         if new == old.stdout: continue

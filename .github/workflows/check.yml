@@ -1,0 +1,23 @@
+# 每次推送 main 自動跑 check_repo（含 C11 Skill 保真：比對推送前版本；C8／C12 私密字用 repo Secret MIKO_PRIVATE_WORDS，未設定時只做格式檢查）
+name: check_repo
+on:
+  push:
+    branches: [main]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install openpyxl
+      - name: check_repo
+        env:
+          MIKO_PRIVATE_WORDS: ${{ secrets.MIKO_PRIVATE_WORDS }}
+          MIKO_BASE: ${{ github.event.before }}
+        run: |
+          if ! git cat-file -e "$MIKO_BASE^{commit}" 2>/dev/null; then export MIKO_BASE=HEAD~1; fi
+          python3 -I -B tests/check_repo.py
