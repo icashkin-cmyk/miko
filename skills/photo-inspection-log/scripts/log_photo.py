@@ -923,7 +923,9 @@ if __name__ == '__main__':
     elif cmd == 'glossary': glossary(a[1], opt(a, '--import'))
     elif cmd == 'grid': grid(a[1], a[2])
     elif cmd == 'crops': crops(a[1], a[2], a[3:])
-    elif cmd == 'export': export(a[1], a[2] if len(a) > 2 else '材料自主檢查照片.xlsx')
+    elif cmd == 'export':
+        # v0.17 起交付一律走 make_entries.py → build_company.py（依範本版面）；本指令的舊版面不再交付
+        sys.stderr.write('export 已停用：請改用 make_entries.py + build_company.py（見 SKILL.md 第二節）\n'); sys.exit(7)
     elif cmd == 'sub': sub(a[1], a[2], a[3])
     elif cmd == 'terms': terms(*a[1:2])
     elif cmd == 'restore': restore(a[1], a[2])
