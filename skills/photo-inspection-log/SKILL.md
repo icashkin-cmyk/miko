@@ -3,7 +3,7 @@ name: "photo-inspection-log"
 description: "施工查驗照片整理成公司格式「材料自主檢查照片」(Excel)：使用者在聊天室丟查驗白板照片就整理、更新；上傳上次的材料自主檢查照片.xlsx 就接續；回覆待確認的字就更新。版面依公司範本，名稱與品號依材料表（範本內的材料表分頁）。讀不清附放大圖問使用者。先載入 miko-core。"
 ---
 
-# photo-inspection-log v0.18｜施工查驗照片整理（依公司範本）｜2026-11-04
+# photo-inspection-log v0.18.1｜施工查驗照片整理（依公司範本）｜2026-11-04
 
 v0.18：流程採 v0.17（整包＋範本＋build_company＋preflight）；v0.17 精簡時拿掉的 v0.16 抄寫、詞庫、物件辨識、回覆格式、常見錯誤、偏旁表、驗收條目全部補回（舊版 export 步驟已由 build_company 取代，其餘照舊適用）。
 
@@ -19,6 +19,7 @@ v0.18：流程採 v0.17（整包＋範本＋build_company＋preflight）；v0.17
   - scripts/log_photo.py（白板照片讀取、抄寫、詞庫、回覆格式）
   - scripts/forms.csv（材料表名詞，給 log_photo.py terms 與詞庫用）
   - scripts/preflight.py（開工與交檔的防呆檢查）
+- zip 安裝：本 Skill 資料夾已有 scripts/（含範本與 forms.csv）時，`mkdir -p work && cp -r <本 Skill 資料夾>/scripts work/ && cd work`，不必下載；再跑 preflight start。
 - 下載（每個新對話執行一次，逐一下載，任一失敗就停止並告知使用者）：
   `mkdir -p work/scripts && cd work && B=https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/photo-inspection-log/scripts && for f in log_photo.py build_company.py make_entries.py forms.csv preflight.py; do curl -sSLf -o scripts/$f $B/$f; done && curl -sSLf -o scripts/材料自主檢查照片_範本.xlsx "$B/材料自主檢查照片_範本.xlsx"`
 - 下載失敗（網路被擋）：請使用者直接上傳整包 zip；不得只用其中一部分，也不得自行改寫程式。
