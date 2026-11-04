@@ -64,3 +64,4 @@
 | 2026-11-03 20:08 | Claude | Drive 窗內一批未歸屬檔（含治理差異檔、雜湊命名檔）中繼資料已記，內容 NOT_READ | 未通過（未讀）；列入待 MIKO 決定 | MIKO | 進行中 |
 | 2026-11-04 08:08 | Claude | 提醒：GPT 同步中斷，最後提交 2026-10-28 18:37（d83c32a），已逾 6 天；請 MIKO 查 ChatGPT 排程執行紀錄，並確認 GPT 房已批准只新增 sync/gpt/ 檔 | 列入待 MIKO 決定 | MIKO | 進行中 |
 | 2026-11-04 08:08 | Claude | 第 7 列推進：ae70fb6 上 check_repo 10/10 PASS，工作樹乾淨；Codex 實測仍 UNKNOWN | 通過（Claude 端） | Claude、Codex | 進行中（待 Codex 實測） |
+| 2026-11-04 19:30 | Claude | 承 11-04 08:08 兩列（第 7 列 Codex 實測、GPT 同步中斷）：MIKO 同意 Claude 優先，正本 1.2.16（ADR-039）寫明 2026-11-02 起 Codex 與 GPT 同步停用；兩列前提已不存在 | 結案：不再追蹤 Codex 實測、不再提醒 GPT 同步 | Claude | 完成 |
