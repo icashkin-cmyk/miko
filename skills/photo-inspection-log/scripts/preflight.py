@@ -44,7 +44,9 @@ def deliver(xlsx, entries_path):
     n = len(entries)
     wb = load_workbook(xlsx); ws = wb.active
     pages = math.ceil(n / 3)
-    check("只有一個分頁", len(wb.sheetnames) == 1, str(wb.sheetnames))
+    vis = [w.title for w in wb.worksheets if w.sheet_state == "visible"]
+    check("只有一個可見分頁", len(vis) == 1, str(vis))
+    check("有隱藏「原文」（restore 可接續）", "原文" in wb.sheetnames and wb["原文"].sheet_state == "hidden", str(wb.sheetnames))
     check("頁數 = ceil(筆數/3)", ws.max_row >= pages * 46 - 1 and ws.max_row <= pages * 46 + 1, f"筆數 {n}、頁數 {pages}、列數 {ws.max_row}")
     check("照片數 = 有圖的筆數", len(ws._images) == sum(1 for e in entries if e.get("photo") and os.path.exists(e["photo"])), f"圖 {len(ws._images)}")
     for p in range(pages):
