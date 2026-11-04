@@ -152,6 +152,37 @@ vl = (R / 'VERSION').read_text(encoding='utf-8').split('\n')
 rsha = hashlib.sha256((R / 'README.md').read_bytes()).hexdigest()
 ok('C10 VERSION 第 4 行等於 README 的 SHA-256', len(vl) > 3 and vl[3].strip() == rsha, f'README={rsha[:12]}')
 
+# C11 Skill 保真：改過的 skills/*/SKILL.md 與上一版（HEAD）比，子句保留率要 ≥ 90%；刪除要在正文「## 刪除清單」逐條列出理由
+def _seg(t): return [x.strip(' -`') for x in re.split(r'[，；。\n：]', t) if len(x.strip(' -`')) >= 6]
+low = []
+try:
+    for f in sorted((R / 'skills').glob('*/SKILL.md')):
+        rel = f.relative_to(R).as_posix()
+        old = subprocess.run(['git', '-C', str(R), 'show', f'HEAD:{rel}'], capture_output=True, text=True)
+        if old.returncode != 0: continue
+        new = f.read_text(encoding='utf-8')
+        if new == old.stdout: continue
+        so = _seg(old.stdout); kept = sum(1 for x in so if x in new); rate = kept / len(so) if so else 1
+        if rate < 0.9 and '## 刪除清單' not in new: low.append(f'{rel} 保留 {kept}/{len(so)}')
+    ok('C11 Skill 改版不得大量精簡（子句保留 ≥ 90%，否則要有刪除清單）', not low, '；'.join(low) or '無改動或保留足夠')
+except Exception as ex:
+    ok('C11 Skill 改版不得大量精簡（子句保留 ≥ 90%，否則要有刪除清單）', False, f'執行失敗：{ex}')
+
+# C12 私密字也掃 skills/ 下的 xlsx 與 csv 內容（C8 只掃文字檔；2026-11-04 範本曾夾帶工程名稱）
+try:
+    from openpyxl import load_workbook
+    words = [w for w in os.environ.get('MIKO_PRIVATE_WORDS', '').split(',') if w]
+    hit = []
+    for f in list((R / 'skills').rglob('*.xlsx')) + list((R / 'skills').rglob('*.csv')):
+        if f.suffix == '.xlsx':
+            txt = ' '.join(str(c.value) for ws in load_workbook(f, read_only=True).worksheets for r in ws.iter_rows() for c in r if c.value is not None)
+        else:
+            txt = f.read_text(encoding='utf-8-sig', errors='ignore')
+        hit += [f'{f.name}:{w}' for w in words if w in txt]
+    ok('C12 xlsx／csv 內容無私密字', not hit, f'掃描字數 {len(words)}；命中：{hit}')
+except Exception as ex:
+    ok('C12 xlsx／csv 內容無私密字', False, f'執行失敗：{ex}')
+
 for n, c, note in res:
     print(('PASS' if c else 'FAIL'), n, ('｜' + note) if note else '')
 print(f'合計：{sum(c for _, c, _ in res)}/{len(res)} PASS')
