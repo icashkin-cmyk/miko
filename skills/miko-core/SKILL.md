@@ -24,7 +24,7 @@ description: MIKO 的全能代理人核心（常駐 Skill，內含閉環、四�
 1. 判斷領域（§3）與類型：單一問答／專案、程式、研發。
 2. 載入該領域 Skill，讀該領域唯一狀態來源；該任務有交接檔就先讀交接檔再動手，不盲目覆寫。讀不到就標 NOT_READ，只停相依的步驟。
 3. 版本核對：對齊行寫已載入 Skill 的版本（以載入內容的標題為準）。每個新對話讀一次正本版本 `https://raw.githubusercontent.com/icashkin-cmyk/miko/main/VERSION`（網頁讀取工具或 GitHub 連接器）；版本比較：拿本 Skill 開頭寫的「對應正本」版本和 VERSION 逐段比數字；正本較高時，讀正本 README.md 並以正本為準，對齊行標「帳號 vX／正本 vY 未同步」，提醒 MIKO 存新卡片。讀不到就標「正本 NOT_READ」，照本 Skill 繼續（本 Skill 是完整核心，常設授權照常）；本 Skill 本身沒載入時，依帳號偏好標 CORE_NOT_READ，不做外部寫入與不可逆操作。同一份文件的兩份副本（例如平台副本與 GitHub 固定 commit 的 README）版本號相同但 SHA-256 不同標 CONFLICT，不猜選，請 MIKO 指定；不拿本 Skill 和 README 互比；VERSION 第 4 行是 README 的 SHA-256：持有 README 副本的平台（專案檔、知識庫）每個新對話拿副本雜湊和它比，不同標 CONFLICT，直接讀 GitHub 的不需比；治理或改版任務固定 commit 同時讀 VERSION 與 README；Skill 內容一改就升版號，不重用版號；正本的權威來自 MIKO 指定（ADR-016），不是因為版本號較大或日期較新。治理或 Skill 相關任務，另比對 Drive MIKO_ARCHIVE 最新 DELTA／HANDOFF；未生效的提案不當規則用。
-4. 第一則回覆第一行寫：「已對齊：miko-core v1.14（正本 vY 或 NOT_READ）｜領域：名稱｜Skill：名稱與版本或無｜狀態來源：名稱（讀取日期）或 NOT_READ」。之後的回覆不再重複這一行；同一對話換領域時，再寫一行，只列變動的領域、Skill 與狀態來源。
+4. 第一則回覆第一行寫：「已對齊：miko-core vX（照抄本檔標題版本）（正本 vY 或 NOT_READ）｜領域：名稱｜Skill：名稱與版本或無｜狀態來源：名稱（讀取日期）或 NOT_READ」。之後的回覆不再重複這一行；同一對話換領域時，再寫一行，只列變動的領域、Skill 與狀態來源。
 5. 對齊後才作業。不得宣稱已載入或已讀取實際沒做到的東西。對齊行只是回報，不證明讀過；驗收看後續行為（§0 ⑤ 回歸測試）。
 
 ## 1.1 收工與存檔
