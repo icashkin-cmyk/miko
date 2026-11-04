@@ -1,5 +1,6 @@
-# build_company.py v0.2｜依「材料自主檢查照片」範例版面（tools/template_company.xlsx）產出公司格式
-# 用法：python3 build_company.py entries.json 輸出.xlsx
+# build_company.py v0.3｜依「材料自主檢查照片」範例版面（tools/template_company.xlsx）產出公司格式
+# 用法：python3 build_company.py entries.json 輸出.xlsx [照片紀錄.xlsx]
+#   v0.3：給照片紀錄.xlsx 時，把工作資料（原文、基準、分項工程、已確認詞彙）存進輸出檔的隱藏工作表，下次 log_photo.py restore 可接續。
 # entries.json：[{"sec":分項工程名稱,"item":檢查項目,"design":[行...],"measured":[行...],
 #                "shot":"115年10月8日","loc":"工區內","bldg":"","photo":"照片路徑或空"}]
 # 版面：每頁 46 列；3 個區塊，每塊 14 列（A:E 照片、F:I 資訊）；A46 頁碼。全部複製自範例，不另設計。
@@ -38,9 +39,9 @@ def put(ws, row, col, text, size=10, align_top=True):
     c.alignment = Alignment(horizontal="left", vertical="top", wrap_text=True) if align_top else Alignment(horizontal="center", vertical="center")
     return c
 
-def build(entries, out):
+def build(entries, out, record=None):
     tpl = load_workbook(TPL)[TPL_SHEET]
-    wb = Workbook(); ws = wb.active; ws.title = "材料自主檢查照片"
+    wb = Workbook(); ws = wb.active; ws.title = "材料自主檢查照片"; raw = []
     for col, dim in tpl.column_dimensions.items():
         if dim.width: ws.column_dimensions[col].width = dim.width
     pages = max(1, -(-len(entries) // 3))
@@ -54,6 +55,7 @@ def build(entries, out):
             i = p * 3 + b
             if i >= len(entries): break
             e = entries[i]; top = off + BLOCK_TOP[b]
+            if e.get('_sheet') and e.get('_row'): raw.append((e['_sheet'], e['_row'], ws.title, top))
             put(ws, top, 6, f"分項工程名稱：{e.get('sec') or '【待確認】'}\n檢查項目：{e.get('item') or '【待確認】'}")
             put(ws, top + 4, 6, "\n".join(e.get("design") or ["【待確認】"]))
             put(ws, top + 4, 8, "\n".join(e.get("measured") or ["【待填】"]))
@@ -69,10 +71,15 @@ def build(entries, out):
     ws.print_area = f"A1:I{pages * PAGE_ROWS}"
     ws.page_setup.paperSize = ws.PAPERSIZE_A4
     ws.page_setup.orientation = "portrait"
+    if record:
+        sys.path.insert(0, HERE); import log_photo as lp
+        rec = lp.load(record)
+        rows = [[d, r, s, t, rec[d].cell(r, 2).value] for d, r, s, t in raw if d in rec.sheetnames]
+        lp.keep(rec, wb, rows)
     wb.save(out)
     return len(entries), pages
 
 if __name__ == "__main__":
     data = json.load(open(sys.argv[1], encoding="utf-8"))
-    n, pg = build(data, sys.argv[2])
+    n, pg = build(data, sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else None)
     print(f"寫入 {n} 筆，{pg} 頁 → {sys.argv[2]}")

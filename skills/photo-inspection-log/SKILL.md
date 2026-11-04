@@ -3,7 +3,7 @@ name: "photo-inspection-log"
 description: "施工查驗照片整理成公司格式「材料自主檢查照片」(Excel)：使用者在聊天室丟查驗白板照片就整理、更新；上傳上次的材料自主檢查照片.xlsx 就接續；回覆待確認的字就更新。版面依公司範本，名稱與品號依材料表（範本內的材料表分頁）。讀不清附放大圖問使用者。先載入 miko-core。"
 ---
 
-# photo-inspection-log v0.17｜施工查驗照片整理（依公司範本）｜2026-11-04
+# photo-inspection-log v0.17.1｜施工查驗照片整理（依公司範本）｜2026-11-04
 
 ## 一、整包取得（缺一不可）
 本 Skill 必須整包使用，檔案一起下載，缺少範本就停止，不得自行排版。
@@ -35,7 +35,7 @@ description: "施工查驗照片整理成公司格式「材料自主檢查照片
    - design（設計/標準值）：對到材料表（範本內的材料表分頁）就用材料表的品質管理標準，第一行寫材料名稱；對不到就用白板規格，並在回覆列為「未建檔」。
    - measured（實測值）：白板有實測就照寫；白板沒有實測欄的，留空並在回覆說明（【待填】）。
    - shot / loc / bldg：照 make_entries.py 產生的值；棟別留空，由使用者提供。
-5. 產出：`python3 scripts/build_company.py entries.json 材料自主檢查照片.xlsx`（版面複製自範本，每頁 3 筆，A4 直式）。
+5. 產出：`python3 scripts/build_company.py entries.json 材料自主檢查照片.xlsx 照片紀錄.xlsx`（版面複製自範本，每頁 3 筆，A4 直式）。第三個參數一定要給：工作資料（原文、基準、分項工程、已確認詞彙）會存進交付檔的隱藏工作表，下次第 1 步 restore 才能接續；沒給 restore 會 STOP。
 6. 檢查：用 LibreOffice 轉 PDF 抽看，照片在格內、文字沒有截斷；確認筆數＝entries 筆數、頁數＝ceil(筆數/3)。
 7. 交檔：只交「材料自主檢查照片.xlsx」，有待確認時另交放大圖（`python3 scripts/log_photo.py crops ...`）。
 
