@@ -1,4 +1,4 @@
-# make_entries.py v0.1｜把 照片紀錄.xlsx（log_photo.py 產生）轉成 entries.json，供 build_company.py 產出公司格式
+# make_entries.py v0.2｜把 照片紀錄.xlsx（log_photo.py 產生）轉成 entries.json，供 build_company.py 產出公司格式
 # 用法：python3 make_entries.py 照片紀錄.xlsx entries.json 照片目錄
 # 只做機械轉換：時間、位置、白板文字原樣放入。分項工程名稱、設計/標準值（材料表對照）、實測值、棟別一律留空，由 Claude 依範本與材料表填入，填不出的保持【待確認】。
 import sys, re, io, os, json
@@ -25,9 +25,11 @@ def roc(iso):
 
 def main(src, out, photo_dir):
     os.makedirs(photo_dir, exist_ok=True)
-    wb = load_workbook(src); entries = []; k = 0
+    wb = load_workbook(src); entries = []; k = 0; miss = []
+    import re as _re
+    subs = {r[0]: r[1] for r in wb['分項工程'].iter_rows(min_row=2, values_only=True) if r and r[0]} if '分項工程' in wb.sheetnames else {}
     for ws in wb.worksheets:
-        if ws.title in ("清單", "基準", "已確認詞彙", "詞庫"): continue
+        if not (ws.title == '日期未知' or _re.fullmatch(r'\d{4}-\d{2}-\d{2}', ws.title)): continue   # v0.2：只讀每日分頁（v0.1 會把「分項工程」當成照片列）
         imgs = {im.anchor._from.row + 1: im for im in ws._images}
         for r in range(2, ws.max_row + 1):
             t = ws.cell(r, 2).value
@@ -36,12 +38,14 @@ def main(src, out, photo_dir):
             if im is not None:
                 p = os.path.join(photo_dir, f"{k:03d}.jpg")
                 PI.open(io.BytesIO(im._data())).convert("RGB").save(p, quality=85)
-            entries.append({"sec": "", "item": d["項目"].replace("材料進場", "").strip(),
+            if not p: miss.append(f'{ws.title} 第 {r} 列')
+            entries.append({"sec": subs.get(d["項目"], "") or subs.get(d["項目"].replace("材料進場", "").strip(), ""), "item": d["項目"].replace("材料進場", "").strip(),
                             "design": [s for s in d["說明"] if s][:12], "measured": [],
                             "shot": roc(d["日期"]) if d["日期"] and "UNKNOWN" not in d["日期"] else "【待確認】",
                             "loc": "工區內", "bldg": "", "photo": p,
                             "_sheet": ws.title, "_row": r})
     json.dump(entries, open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    if miss: print('STOP 缺照片：' + '、'.join(miss) + '（照片紀錄該列沒有照片，不得交檔）'); sys.exit(8)
     return len(entries)
 
 if __name__ == "__main__":

@@ -48,6 +48,7 @@ def deliver(xlsx, entries_path):
     check("只有一個可見分頁", len(vis) == 1, str(vis))
     check("有隱藏「原文」（restore 可接續）", "原文" in wb.sheetnames and wb["原文"].sheet_state == "hidden", str(wb.sheetnames))
     check("頁數 = ceil(筆數/3)", ws.max_row >= pages * 46 - 1 and ws.max_row <= pages * 46 + 1, f"筆數 {n}、頁數 {pages}、列數 {ws.max_row}")
+    check("每筆都有照片檔", all(e.get("photo") and os.path.exists(e["photo"]) for e in entries), str([i + 1 for i, e in enumerate(entries) if not (e.get("photo") and os.path.exists(e["photo"]))]))
     check("照片數 = 有圖的筆數", len(ws._images) == sum(1 for e in entries if e.get("photo") and os.path.exists(e["photo"])), f"圖 {len(ws._images)}")
     for p in range(pages):
         check(f"第 {p + 1} 頁頁碼", str(ws.cell(p * 46 + 46, 1).value) == str(p + 1))
