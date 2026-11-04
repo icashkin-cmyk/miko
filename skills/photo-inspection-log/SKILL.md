@@ -13,11 +13,19 @@ description: "施工查驗照片整理成公司格式「材料自主檢查照片
   - scripts/make_entries.py（照片紀錄 → entries.json）
   - scripts/log_photo.py（白板照片讀取、抄寫、詞庫、回覆格式）
   - scripts/forms.csv（材料表名詞，給 log_photo.py terms 與詞庫用）
+  - scripts/preflight.py（開工與交檔的防呆檢查）
 - 下載（每個新對話執行一次，逐一下載，任一失敗就停止並告知使用者）：
-  `mkdir -p work/scripts && cd work && B=https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/photo-inspection-log/scripts && for f in log_photo.py build_company.py make_entries.py forms.csv; do curl -sSLf -o scripts/$f $B/$f; done && curl -sSLf -o scripts/材料自主檢查照片_範本.xlsx "$B/材料自主檢查照片_範本.xlsx"`
+  `mkdir -p work/scripts && cd work && B=https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/photo-inspection-log/scripts && for f in log_photo.py build_company.py make_entries.py forms.csv preflight.py; do curl -sSLf -o scripts/$f $B/$f; done && curl -sSLf -o scripts/材料自主檢查照片_範本.xlsx "$B/材料自主檢查照片_範本.xlsx"`
 - 下載失敗（網路被擋）：請使用者直接上傳整包 zip；不得只用其中一部分，也不得自行改寫程式。
 
+## 一之二、防呆（一條龍，必須遵守）
+- 開工第一步：`python3 scripts/preflight.py start`。任一項 FAIL 就停止，請使用者上傳整包 zip，不得開始處理照片。
+- 交檔前：`python3 scripts/preflight.py deliver 材料自主檢查照片.xlsx entries.json`。任一項 FAIL 不得交檔。
+- 不得使用 `log_photo.py export`（已停用，會回傳結束碼 7）。交付檔只能由 build_company.py 產生。
+- 範本與材料表是唯一版面與名詞依據；範本中不得有公式（已清除，preflight 會檢查）。
+
 ## 二、流程
+0. 開工：`python3 scripts/preflight.py start`（必須全部 PASS）。
 1. 接續：使用者上傳上次的材料自主檢查照片.xlsx → `python3 scripts/log_photo.py restore 材料自主檢查照片.xlsx 照片紀錄.xlsx`。沒上傳 → 新建工作檔。
 2. 收照片：`python3 scripts/log_photo.py prep incoming 照片紀錄.xlsx` → 抄寫白板（text/NNN.txt）→ `addmany`。
 3. 產生 entries：`python3 scripts/make_entries.py 照片紀錄.xlsx entries.json photos_out`。
@@ -54,6 +62,8 @@ description: "施工查驗照片整理成公司格式「材料自主檢查照片
 - 實跑題：新對話上傳 1 張白板照片 → 整包下載 → 產出 材料自主檢查照片.xlsx，回覆格式符合第三節。
 
 ## 六、測試紀錄（2026-11-04）
+- 整包從 GitHub 下載到乾淨資料夾後，preflight start 全部 PASS；build 2 頁、5 張照片；preflight deliver 全部 PASS。
+- 缺檔時 preflight start 回報 FAIL 並停止。
 - 範本與材料表合併為一個檔（範本分頁＋10 個材料表分頁），GitHub commit ea98eba。
 - build_company.py 用 5 筆既有紀錄測試：2 頁，照片在格內；LibreOffice 版面與範本相同。
 - 線槽「鋁梯型直式」對應材料表「鋁製電纜線架」：設計/標準值用材料表寫法。
