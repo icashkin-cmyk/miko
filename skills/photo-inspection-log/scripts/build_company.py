@@ -36,6 +36,17 @@ def copy_page(tpl_ws, wb_ws, offset):
 
 import math
 OVERFLOW = []  # 內容放不進格子（縮到最小字級仍超出）的紀錄，交檔時須列在回覆
+
+def compact(line):
+    # 只去掉無資訊的「—」占位與完全相同的重複片段；其餘資訊一律保留
+    parts = []
+    for seg in line.split("｜"):
+        seg = seg.strip()
+        if seg in ("", "—", "-", "－"): continue
+        if parts and parts[-1] == seg: continue
+        parts.append(seg)
+    return "｜".join(parts) if parts else line
+
 def fit_size(lines, width_pt=88, height_pt=96, hi=10, lo=8):
     # 內容格為 F:G 或 H:I 兩欄（約 88pt 可用寬）× 7 列（約 108pt 可用高，範本列高 16.2）
     # 從 10pt 逐步縮到 8pt；仍放不下則自尾端截行，加註「…另 N 行見原文分頁」，並記入 OVERFLOW
@@ -86,7 +97,7 @@ def build(entries, out, record=None):
             e = entries[i]; top = off + BLOCK_TOP[b]
             if e.get('_sheet') and e.get('_row'): raw.append((e['_sheet'], e['_row'], ws.title, top))
             put(ws, top, 6, f"分項工程名稱：{e.get('sec') or '【待確認】'}\n檢查項目：{e.get('item') or '【待確認】'}")
-            dl = e.get("design") or ["【待確認】"]; ml = e.get("measured") or ["【待填】"]
+            dl = [compact(x) for x in (e.get("design") or ["【待確認】"])]; ml = [compact(x) for x in (e.get("measured") or ["【待填】"])]
             ds, dl, dtr = fit_size(dl); ms, ml, mtr = fit_size(ml)
             c = put(ws, top + 4, 6, "\n".join(dl)); set_size(c, ds)
             c = put(ws, top + 4, 8, "\n".join(ml)); set_size(c, ms)
