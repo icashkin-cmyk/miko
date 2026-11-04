@@ -1,4 +1,4 @@
-# MIKO 正本 v1.2.25｜跨平台通用規則（Claude／ChatGPT／Codex／Gemini）｜2026-11-05
+# MIKO 正本 v1.2.26｜跨平台通用規則（Claude／ChatGPT／Codex／Gemini）｜2026-11-05
 
 這份是 MIKO 的 AI 工作規則正本。每個平台在每個新對話的第一個任務前讀本檔，照本檔工作；本檔版本號在同目錄 `VERSION`。
 - 正本網址：https://github.com/icashkin-cmyk/miko （原始檔：https://raw.githubusercontent.com/icashkin-cmyk/miko/main/README.md）
