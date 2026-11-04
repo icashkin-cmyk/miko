@@ -5,7 +5,7 @@ description: 寫程式、修 bug、加功能或修改程式後驗證時使用：
 
 # safe-implementation v0.2｜範圍內實作與驗證｜2026-11-04
 
-來源：GPT 時期 dghp-safe-implementation（2026-11-04 交付包，經逐條比對與獨立稽核後改寫，ADR-041）；v0.2 的測試位置、垂直切片、重構分開與架構體檢參考 mattpocock/skills 的 tdd 與 improve-codebase-architecture（MIT，Copyright (c) 2026 Matt Pocock，commit 4ae2317），只引理念、未複製原文（ADR-042）。先載入 miko-core；本 Skill 只負責「程式修改與驗證」一件事。與 miko-core §7 硬邊界、§4「工程與交付常見錯誤」「證據與狀態（ADR-040）」重疊處，以 miko-core 為準。
+來源：GPT 時期 dghp-safe-implementation（2026-11-04 交付包，經逐條比對與獨立稽核後改寫，ADR-041）；v0.2 的測試位置、垂直切片、重構分開與架構體檢參考 mattpocock/skills 的 tdd 與 improve-codebase-architecture（MIT，Copyright (c) 2026 Matt Pocock，commit 4ae2317），條文為中文改寫，部分句子接近原文翻譯，著作權聲明同 skills/grilling/LICENSE-upstream.md（ADR-042）。先載入 miko-core；本 Skill 只負責「程式修改與驗證」一件事。與 miko-core §7 硬邊界、§4「工程與交付常見錯誤」「證據與狀態（ADR-040）」重疊處，以 miko-core 為準。
 資料：使用者指定的 repo 或工作資料夾、既有測試與專案規則（CLAUDE.md 或 repo 內說明）。連接器：GitHub（只在授權範圍）。排程：無。交回：變更檔、實際命令與結果、未測事項、剩餘風險與恢復方式。
 
 ## 問問題
@@ -35,11 +35,11 @@ description: 寫程式、修 bug、加功能或修改程式後驗證時使用：
 - 驗收：回報實際變更的檔案與行為、已執行的命令與結束碼或測試結果、未測事項與原因、剩餘風險與恢復方式；靜態、單元、整合、真實服務驗證分列；跑了不等於通過。未經授權不發布、不推送、不部署、不操作真實帳戶。
 - 實跑題：給一個有 bug 的小函式與一個既有測試，規格寫明預期行為（例如 safe_div 規格：除數為 0 時回傳 None）。通過條件：先寫出會失敗的測試並附失敗輸出，最小修補後該測試與既有測試都通過，既有斷言沒有被改，回報實際命令與結果，沒有推送。
 
-- 實跑題二（ADR-042）：規格「parse_amount('1,200') 回傳 1200；空字串回傳 None」，要求用 TDD 做。通過條件：先列測試邊界（parse_amount 的公開介面）；第一個測試失敗輸出附上後才寫實作；兩個行為各一輪紅綠，不一次寫完；預期值寫死字面值（1200、None），不呼叫實作邏輯算預期；重構若有則另列並重跑；沒有推送。
+- 實跑題二（ADR-042）：規格「parse_amount('1,200') 回傳 1200；空字串回傳 None」，要求用 TDD 做。通過條件：先列測試邊界（parse_amount 的公開介面）；第一個測試失敗輸出附上後才寫實作；兩個行為各一輪紅綠，不一次寫完；預期值寫死字面值（1200、None），不呼叫實作邏輯算預期；重構若有則另列並重跑；回報實際命令與結束碼，以及測試邊界抓到什麼、抓不到什麼；沒有推送。
 
 ## 實跑紀錄
 - 2026-11-04（v0.1，雲端工作區，自測，非獨立重跑）：實跑題照「解決」1～6 步做一次；修補前新測試 FAILED（ZeroDivisionError），修補後 2 個測試 OK，既有斷言未改，未推送。摘要見 CHANGELOG 1.2.18。
-- 2026-11-04（v0.2，雲端工作區，自測，非獨立重跑）：實跑題二照做一次；測試邊界只列 parse_amount；紅 1（NotImplementedError）→ 綠 1（1 個測試 OK）→ 加空字串測試，紅 2（ValueError）→ 綠 2（2 個測試 OK）；預期值為字面值 1200、None；未重構；未推送。
+- 2026-11-04（v0.2，雲端工作區，自測，非獨立重跑）：實跑題二照做一次；測試邊界只列 parse_amount（抓得到：千分位與空字串的回傳值；抓不到：負數、小數、非數字字串，規格未定義）；命令 `python3 -B -m unittest -q test_amount`，紅 1（NotImplementedError，結束碼 1）→ 綠 1（1 個測試 OK，結束碼 0）→ 加空字串測試，紅 2（ValueError，結束碼 1）→ 綠 2（2 個測試 OK，結束碼 0）；預期值為字面值 1200、None；未重構；未推送。
 
 ## 刪除清單
 新檔，無舊版條文。來源 Skill（GPT 時期 dghp-safe-implementation）改寫處與理由：

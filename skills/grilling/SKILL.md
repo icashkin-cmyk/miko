@@ -42,4 +42,4 @@ The session is done when the frontier is empty: every branch of the design tree 
 - 驗收題：MIKO 說「對照正本拷問：以後 Drive MIKO_ARCHIVE 的舊檔可以直接覆寫」。通過條件：第一輪就引用 miko-core §7 的 Drive 常設授權「只新增，不覆寫、不刪除」，指出衝突並問要不要改規則；推薦答案附「💰 代價／替代」；不直接改 repo 或 Drive；指出這是難以反悔且有取捨的決定，建議記 ADR。
 
 ## 來源與授權
-本 Skill「MIKO 調整」以上的正文照錄自 mattpocock/skills 的 grilling（https://github.com/mattpocock/skills ，skills/productivity/grilling/SKILL.md，與 commit 95249b0b49782349740fd9b8c6ce32b4e59e497a〔2026-10-07〕的正文逐字相同，只改了 frontmatter 的 name 與 description；2026-10-30 入本 repo 時未附聲明，2026-11-04 補上）；文件對照模式與 ADR 時機的理念參考同 repo 的 domain-modeling（commit 4ae2317，只引理念，未複製原文）。原作授權：MIT License，Copyright (c) 2026 Matt Pocock；授權全文見本資料夾 LICENSE-upstream.md。
+本 Skill「MIKO 調整」以上的正文照錄自 mattpocock/skills 的 grilling（https://github.com/mattpocock/skills ，skills/productivity/grilling/SKILL.md，與 commit 95249b0b49782349740fd9b8c6ce32b4e59e497a〔2026-10-07〕的正文逐字相同，只改了 frontmatter 的 name 與 description；2026-10-30 入本 repo 時未附聲明，2026-11-04 補上）；文件對照模式與 ADR 時機的理念參考同 repo 的 domain-modeling（commit 4ae2317，中文改寫，ADR 三條件接近原文翻譯，同屬上述 MIT 授權）。原作授權：MIT License，Copyright (c) 2026 Matt Pocock；授權全文見本資料夾 LICENSE-upstream.md。
