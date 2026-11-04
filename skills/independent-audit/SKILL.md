@@ -3,7 +3,7 @@ name: independent-audit
 description: 獨立稽核：治理放行、規則或 Skill 修改、正式交付、醫療與財務等高風險結論定案前，或使用者說「稽核」「獨立驗證」「外部審查」「體檢」時使用（「架構體檢」「程式庫體檢」是程式架構，歸 safe-implementation，不用本 Skill）。用沒看過草稿的冷啟動子代理（或換一個模型）只依交付物、原需求與來源逐條驗收；不自審，不為省 token 使用。
 ---
 
-# independent-audit v0.6｜獨立稽核與體檢｜2026-11-05
+# independent-audit v0.7｜獨立稽核與體檢｜2026-11-05
 依據：ADR-001（不自審）、ADR-007（子代理只用於高風險獨立驗證）、v3.1 §3.9（四視角共用同一模型的盲點，不算獨立驗證；引擎 v3.2 起在 §3 第 9 點「自審限制」）、H-01（模型自述不能當證據，要看行為與證據）。
 
 ## 1. 何時用
@@ -47,7 +47,7 @@ description: 獨立稽核：治理放行、規則或 Skill 修改、正式交付
 2. 連接器：Drive、Gmail、Notion、GitHub 各做一次唯讀測試；Drive MIKO_ARCHIVE 與 GitHub 正本另做一次寫入讀回（只在常設授權範圍內）；斷線或授權過期就列出。
 3. 版本：帳號已存 Skill 的版本、MIKO 正本 VERSION（icashkin-cmyk/miko）、Drive 最新 DELTA 三者比對，不一致就列出。
 4. 規則：依 §3 的四類（條件不完整、規則模糊、規則互相衝突、步驟容易被跳過）掃 miko-core 與異動過的 Skill，只產出問題清單。
-5. §2.4 逐步閘門（ADR-050）：依 skills/README.md「領域 Skill 採用狀態」表，列出已採用但「解決」節逐步閘門未補齊或未核對的 Skill；有這類 Skill 就不算「體檢正常」；writer 不是總召的 Skill（photo-inspection-log、tw-backtest-workflow）列成給該 writer 的建議，不因此判體檢異常。
+5. §2.4 逐步閘門（ADR-050）：依 skills/README.md「領域 Skill 採用狀態」表，列出已採用但「解決」節逐步閘門未補齊或未核對的 Skill；其中「已改動『解決』節步驟卻沒補齊」的才算異常、不算「體檢正常」；1.2.25 前採用、還沒改過「解決」節而標「未核對」的，依 miko-core §2.4 不改判，只列成待補清單，不因此判體檢異常（ADR-051）；writer 不是總召的 Skill（photo-inspection-log、tw-backtest-workflow）列成給該 writer 的建議，不因此判體檢異常。
 6. 全部正常只回一行「體檢正常」與檢查時間；有異常逐項寫發生什麼、可能原因、建議修法，動手修之前先問 MIKO。
 
 ## 7. 檢查（驗收；2026-11-05 總檢補，正本 1.2.27）
