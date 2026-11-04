@@ -33,6 +33,31 @@ def copy_page(tpl_ws, wb_ws, offset):
             t.alignment = copy.copy(s.alignment); t.number_format = s.number_format
             if not isinstance(t, MergedCell): t.value = s.value  # 沿用範本的標籤（標題、設計/標準值、實測值…）；合併格非錨點不寫
 
+
+import math
+OVERFLOW = []  # 內容放不進格子（縮到最小字級仍超出）的紀錄，交檔時須列在回覆
+def fit_size(lines, width_pt=88, height_pt=96, hi=10, lo=8):
+    # 內容格為 F:G 或 H:I 兩欄（約 88pt 可用寬）× 7 列（約 108pt 可用高，範本列高 16.2）
+    # 從 10pt 逐步縮到 8pt；仍放不下則自尾端截行，加註「…另 N 行見原文分頁」，並記入 OVERFLOW
+    def lines_needed(ls, sz):
+        n = 0
+        for line in ls:
+            w = sum(sz * (1.0 if ord(ch) > 127 else 0.55) for ch in line)
+            n += max(1, math.ceil(w / width_pt))
+        return n
+    for sz in (10, 9.5, 9, 8.5, 8):
+        if lines_needed(lines, sz) * sz * 1.6 <= height_pt: return sz, lines, False
+    keep = list(lines)
+    while len(keep) > 1:
+        keep.pop()
+        shown = keep + [f"…另 {len(lines) - len(keep)} 行見原文分頁"]
+        if lines_needed(shown, 8) * 8 * 1.6 <= height_pt: return 8, shown, True
+    return 8, lines, True
+
+def set_size(cell, s):
+    f = copy.copy(cell.font); f.sz = s
+    cell.font = f
+
 def put(ws, row, col, text, size=10, align_top=True):
     # 只寫值，沿用範本格的字型與對齊（與範例一致）
     ws.cell(row, col).value = text
@@ -61,8 +86,12 @@ def build(entries, out, record=None):
             e = entries[i]; top = off + BLOCK_TOP[b]
             if e.get('_sheet') and e.get('_row'): raw.append((e['_sheet'], e['_row'], ws.title, top))
             put(ws, top, 6, f"分項工程名稱：{e.get('sec') or '【待確認】'}\n檢查項目：{e.get('item') or '【待確認】'}")
-            put(ws, top + 4, 6, "\n".join(e.get("design") or ["【待確認】"]))
-            put(ws, top + 4, 8, "\n".join(e.get("measured") or ["【待填】"]))
+            dl = e.get("design") or ["【待確認】"]; ml = e.get("measured") or ["【待填】"]
+            ds, dl, dtr = fit_size(dl); ms, ml, mtr = fit_size(ml)
+            c = put(ws, top + 4, 6, "\n".join(dl)); set_size(c, ds)
+            c = put(ws, top + 4, 8, "\n".join(ml)); set_size(c, ms)
+            if dtr: OVERFLOW.append((i + 1, "設計/標準值", e.get("item")))
+            if mtr: OVERFLOW.append((i + 1, "實測值", e.get("item")))
             put(ws, top + 11, 6, f"拍攝時間：{e.get('shot') or '【待確認】'}")
             put(ws, top + 12, 6, f"拍攝位置：{e.get('loc') or '工區內'}")
             put(ws, top + 13, 6, f"棟別/層別/空間編號/空間位置：{e.get('bldg') or '【待填】'}")
@@ -90,3 +119,5 @@ if __name__ == "__main__":
     data = json.load(open(sys.argv[1], encoding="utf-8"))
     n, pg = build(data, sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else None)
     print(f"寫入 {n} 筆，{pg} 頁 → {sys.argv[2]}")
+    for no, col, item in OVERFLOW:
+        print(f"【超出格子】第 {no} 筆（{item}）{col}：設計/實測內容已截行（8pt 仍放不下），完整內容保留在 entries.json 與原文分頁，請在回覆列出並確認")
