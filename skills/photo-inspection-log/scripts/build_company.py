@@ -9,6 +9,7 @@ from openpyxl import load_workbook, Workbook
 from openpyxl.drawing.image import Image as XI
 from openpyxl.styles import Alignment
 from openpyxl.worksheet.pagebreak import Break
+from openpyxl.cell.cell import MergedCell
 from openpyxl.drawing.spreadsheet_drawing import TwoCellAnchor, AnchorMarker
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -17,14 +18,7 @@ TPL_SHEET = "範本"
 PAGE_ROWS, BLOCK_TOP, PHOTO_BOX = 46, [4, 18, 32], (340, 290)
 
 def copy_page(tpl_ws, wb_ws, offset):
-    for r in range(1, PAGE_ROWS + 1):
-        for c in range(1, 10):
-            s = tpl_ws.cell(r, c); t = wb_ws.cell(r + offset, c)
-            if s.has_style:
-                t.font = copy.copy(s.font); t.border = copy.copy(s.border)
-                t.alignment = copy.copy(s.alignment); t.number_format = s.number_format
-            if s.value is not None and r == 1:
-                t.value = s.value  # 只有標題列沿用範本文字
+    # 先合併，再套樣式（openpyxl 合併會重置被合併格的樣式，順序不可對調）
     for rng in tpl_ws.merged_cells.ranges:
         if rng.max_row <= PAGE_ROWS:
             wb_ws.merge_cells(start_row=rng.min_row + offset, start_column=rng.min_col,
@@ -32,12 +26,17 @@ def copy_page(tpl_ws, wb_ws, offset):
     for r in range(1, PAGE_ROWS + 1):
         h = tpl_ws.row_dimensions[r].height
         if h: wb_ws.row_dimensions[r + offset].height = h
+    for r in range(1, PAGE_ROWS + 1):
+        for c in range(1, 10):
+            s = tpl_ws.cell(r, c); t = wb_ws.cell(r + offset, c)
+            t.font = copy.copy(s.font); t.border = copy.copy(s.border)
+            t.alignment = copy.copy(s.alignment); t.number_format = s.number_format
+            if not isinstance(t, MergedCell): t.value = s.value  # 沿用範本的標籤（標題、設計/標準值、實測值…）；合併格非錨點不寫
 
 def put(ws, row, col, text, size=10, align_top=True):
-    c = ws.cell(row, col, text)
-    c.font = copy.copy(ws.cell(row, col).font)
-    c.alignment = Alignment(horizontal="left", vertical="top", wrap_text=True) if align_top else Alignment(horizontal="center", vertical="center")
-    return c
+    # 只寫值，沿用範本格的字型與對齊（與範例一致）
+    ws.cell(row, col).value = text
+    return ws.cell(row, col)
 
 def build(entries, out, record=None):
     tpl = load_workbook(TPL)[TPL_SHEET]
@@ -51,6 +50,11 @@ def build(entries, out, record=None):
         ws.cell(off + 1, 1).value = "材料自主檢查照片"
         ws.cell(off + PAGE_ROWS, 1).value = p + 1
         ws.row_breaks.append(Break(id=off + PAGE_ROWS))
+        for b in range(3):
+            top = off + BLOCK_TOP[b]
+            for col, row_off in ((6, 0), (6, 4), (8, 4), (6, 11), (6, 12), (6, 13)):
+                cell = ws.cell(top + row_off, col)
+                if not isinstance(cell, MergedCell): cell.value = None  # 清除範本的範例內容，之後只寫入實際資料
         for b in range(3):
             i = p * 3 + b
             if i >= len(entries): break
@@ -69,6 +73,9 @@ def build(entries, out, record=None):
                                            to=AnchorMarker(col=5, row=top + 13))
                 ws.add_image(img)
     ws.print_area = f"A1:I{pages * PAGE_ROWS}"
+    tm = load_workbook(TPL)[TPL_SHEET].page_margins
+    ws.page_margins = copy.copy(tm)  # 邊界與範本相同（不用 openpyxl 預設值，否則每頁會被切成兩頁）
+    ws.print_options.horizontalCentered = False
     ws.page_setup.paperSize = ws.PAPERSIZE_A4
     ws.page_setup.orientation = "portrait"
     if record:
