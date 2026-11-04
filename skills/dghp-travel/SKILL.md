@@ -52,7 +52,7 @@ description: 旅遊與行程規劃（一日遊、多日遊、跨縣市、交通�
 
 ## 7. 檢核程式（ADR-037，2026-11-04 併入）
 - 程式在本 Skill 的 scripts/：itinerary_check.py（行程檢核）、food_pool.py（美食候選池）、tests/（45 項）、README.md（輸入格式）。不連網、不需第三方套件。
-- 取得（每個新對話第一次需要時做一次；下載或測試失敗就照本檔規則人工檢核並說明原因，不重寫程式）：`mkdir -p ft/tests ft/examples && cd ft && B=https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/dghp-travel/scripts && for f in itinerary_check.py food_pool.py README.md tests/test_rules.py; do curl -sSLf -o $f $B/$f; done && python3 -I -B -m unittest discover -s tests`（45 項全過才使用）
+- 取得（每個新對話第一次需要時做一次；下載或測試失敗就照本檔規則人工檢核並說明原因，不重寫程式）：`mkdir -p ft/tests ft/examples && cd ft && B=https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/dghp-travel/scripts && for f in itinerary_check.py food_pool.py README.md tests/test_rules.py examples/範例_一日遊.json examples/範例_候選池.csv; do curl -sSLf -o "$f" "$B/$f"; done && python3 -I -B -m unittest discover -s tests`（45 項全過才使用）
 - 何時跑：行程定稿前，把行程寫成 JSON（格式見 README.md 與 examples/；README 是 v0.1 說明，v0.1.1 另加 trip.home、交通段 evidence.source_url／evidence.checked_at、access_min，以 tests/ 為準）→ `python3 -I itinerary_check.py 行程.json --out out`。
 - 判定照程式輸出：EXECUTABLE（可執行）、有風險、INCOMPLETE_UNVERIFIED（未完整驗證）、NOT_EXECUTABLE（不可執行）。不得把程式的未驗證改寫成可執行；人工判斷與程式不同時兩個都寫並說明。
 - 程式檢查：回程最後一段必須抵達 home；「已核班次」必須附官方網址與查核日期；每段大眾運輸預留進站、步行、購票、候車時間（未填預設 10 分鐘）與轉乘緩衝；營業時間與最後點餐。
