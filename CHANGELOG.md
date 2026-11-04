@@ -1,4 +1,5 @@
 # 版本紀錄（只新增）
+- 1.2.17（2026-11-04，ADR-040）：套用舊總召房補丁 ADR039.patch（SHA-256 前 16 碼 f8d47aa5342d49de，原建在 1.2.15 上、與已推的 ADR-039 撞號，MIKO 指示改號）的內容：§4 加「工程與證據」摘要；miko-core v1.18 §4 加工程與交付常見錯誤 5 條（整包、單一 writer、端到端到接續、驗證對總數、乾淨資料夾實跑）與證據與狀態 8 條（狀態分層、稽核分母、自測／獨立重跑分開、規則凍結、閘門風險機會、封存清單、固定格式、換聊天室）；tw-backtest-workflow v1.8 §0 加狀態階梯。補丁中的權責舊句（Codex 工程執行）不套用，以 1.2.16 為準。來源：總召陷阱清單、GPT 記憶匯入去重結案。
 - 1.2.16（2026-11-04，ADR-039）：MIKO 同意「Claude 優先」：2026-11-02 起 ChatGPT 付費方案與 Codex 停用，工程執行與程式 repo 單一 writer 改為 Claude（雲端實跑或產生終端機指令由 MIKO 在 Mac 執行），正式交付交獨立稽核；免費版 ChatGPT、Gemini 只作臨時第二意見；GPT 同步停用、不再提醒中斷。README §3 派工列、§4 同步與派工、§6 權責、§7 寫入者；miko-core v1.17、tw-backtest-workflow v1.7、dghp-work-handoff、multi-agent-coordination-engine §7.1、adapters Codex 段、MACE §7.8、skills/README、CODEX_TEST_PLAN 標歷史。舊句以「原寫」「2026-11-02 前為」保留，不刪除。
 - 1.2.15（2026-11-04，ADR-038）：§4 加省額度（15～20 則交接、編輯原訊息、合併提問、檔案放專案、說明寫偏好）與長任務驗收；tw-backtest-workflow v1.6 加多角色研究分工（掃描、新聞、情緒、圖表、風險、決策；只研究不下單）；miko-core v1.16。
 - 1.2.14（2026-11-04，ADR-036）：§4 加「寫 Prompt／Skill／交接」六條（衝突優先序、驗收標準與範例、分級標註、走工具取事實、指令與資料分隔、A/B 驗證不採信自述）與「Skill 改版」規則（局部修改、刪除清單、C11／C12）；check_repo 新增 C11、C12；miko-core v1.15。

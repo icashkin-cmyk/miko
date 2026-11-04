@@ -3,7 +3,7 @@ name: tw-backtest-workflow
 description: 臺股策略、月配息 ETF 或下跌預警的回測與改進時使用：把想法拆成可程式化規則、讀本機 FinMind 資料（雲端改用證交所官方日線）、用內附 bt_min.py 實算成本與統計、找虧損模式、樣本外驗證。先載入 miko-core，再依本 Skill 四段執行。一般投資問答、即時報價、台指期不使用。
 ---
 
-# 臺股回測工作流 v1.7｜2026-11-04 可執行版（對齊 DGHP 規則）
+# 臺股回測工作流 v1.8｜2026-11-04 可執行版（對齊 DGHP 規則）
 載入順序：先 miko-core（四視角主流程、品質閘門），再本 Skill；§1 問問題、§2～§3 解決、§4 後設、§6 檢查，對應 miko-core §2.4。v1.3 依 2026-10-26 實跑結果加入資料取得路徑、執行步驟與附錄 A 引擎（ADR-015）。
 
 ## 0. 作用域與權威（v1.1 新增）
@@ -12,6 +12,7 @@ description: 臺股策略、月配息 ETF 或下跌預警的回測與改進時�
 - 月配息專案（MONTHLY_INCOME_DASHBOARD）：標的是 ETF，屬另一個領域，RC2 與上面的普通股限制不適用。
 - 權責：Claude 是總召（ADR-001），負責驗證、探索、審查與放行；工程執行由 Claude 負責（雲端工作區實跑，或產生終端機指令由 MIKO 在 Mac 執行；2026-11-02 前為「Codex 負責工程執行」，ADR-039）；送審與結論由 MIKO 轉貼。STOP_FOR_GPT_REVIEW 等門檻只由總召以正式審查紀錄放行，不自審解鎖。
 - 台指期維持停止；下單、交易、Broker、LIVE 一律不做。
+- 狀態階梯（ADR-040，承襲 DGHP 2026-09-13 規則）：草案 DRAFT／CANDIDATE → 測試通過 TESTED → 回測結果 RESEARCH_RESULT；任何 AI 都不得自行升格為 Canonical、Strict Release 或 LIVE，升格由 MIKO 決定（KEEP／MODIFY／REJECT）。PAPER 測試不等於 LIVE；合成測試或有限工程檢查通過，不代表完整回測、Strict PIT 或策略放行。
 
 原則：AI 做繁瑣驗證與篩選，進場／停損／正式採用由 MIKO 決定。回測結果不是未來保證，也不是交易訊號。
 
