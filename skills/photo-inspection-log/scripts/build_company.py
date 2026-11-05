@@ -47,6 +47,26 @@ def compact(line):
         parts.append(seg)
     return "｜".join(parts) if parts else line
 
+def pack_lines(lines, width_pt, size=10):
+    # 合併寬格時，把相鄰的短行併成同一行（以「 ｜ 」連接），不改動文字內容，只減少行數
+    def w(t): return sum(size * (1.0 if ord(ch) > 127 else 0.55) for ch in t)
+    out = []
+    for line in lines:
+        if out and w(out[-1] + " ｜ " + line) <= width_pt: out[-1] = out[-1] + " ｜ " + line
+        else: out.append(line)
+    return out
+
+def merge_design_wide(ws, top):
+    # 區塊內 設計/實測 欄改為 F:I 合併（僅用於設計超出且實測未填的區塊）
+    h, r0, r1 = top + 3, top + 4, top + 10
+    for rng in (f"F{h}:G{h}", f"H{h}:I{h}", f"F{r0}:G{r1}", f"H{r0}:I{r1}"):
+        ws.unmerge_cells(rng)
+    for r in range(h, r1 + 1):
+        for col in (8, 9):
+            cell = ws.cell(r, col)
+            if not isinstance(cell, MergedCell): cell.value = None
+    ws.merge_cells(f"F{h}:I{h}"); ws.merge_cells(f"F{r0}:I{r1}")
+
 FONT_NAME = "標楷體"  # 範例全部使用標楷體
 def fit_lines(lines, size=10, width_pt=88, height_pt=108):
     # 字型與字級固定（與範例相同：內容 10pt），不縮字；放不下時自尾端截行，加註「…另 N 行見原文分頁」
@@ -110,9 +130,18 @@ def build(entries, out, record=None):
             put(ws, top, 6, f"分項工程名稱：{e.get('sec') or '【待確認】'}\n檢查項目：{e.get('item') or '【待確認】'}")
             dl = [compact(x) for x in (e.get("design") or ["【待確認】"])]; ml = [compact(x) for x in (e.get("measured") or ["【待填】"])]
             dl, dtr = fit_lines(dl); ml, mtr = fit_lines(ml)
-            c = put(ws, top + 4, 6, "\n".join(dl)); set_font(c, 10)
-            c = put(ws, top + 4, 8, "\n".join(ml)); set_font(c, 10)
-            if dtr: OVERFLOW.append((i + 1, "設計/標準值", e.get("item")))
+            if dtr and all(x == "【待填】" for x in ml):
+                # 設計內容超出、實測尚未填：合併 F:I 為一格，讓設計內容完整顯示（不縮字）
+                merge_design_wide(ws, top)
+                dl, dtr = fit_lines(pack_lines(e.get("design") or ["【待確認】"], 176), width_pt=176)
+                c = put(ws, top + 4, 6, "\n".join(dl)); set_font(c, 10)
+                c = put(ws, top + 3, 6, "設計/標準值"); set_font(c, 11)
+                if dtr: OVERFLOW.append((i + 1, "設計/標準值", e.get("item")))
+                ml = None
+            else:
+                c = put(ws, top + 4, 6, "\n".join(dl)); set_font(c, 10)
+                c = put(ws, top + 4, 8, "\n".join(ml)); set_font(c, 10)
+            if dtr and ml is not None: OVERFLOW.append((i + 1, "設計/標準值", e.get("item")))
             if mtr: OVERFLOW.append((i + 1, "實測值", e.get("item")))
             put(ws, top + 11, 6, f"拍攝時間：{e.get('shot') or '【待確認】'}")
             put(ws, top + 12, 6, f"拍攝位置：{e.get('loc') or '工區內'}")
