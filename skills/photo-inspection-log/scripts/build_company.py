@@ -47,32 +47,34 @@ def compact(line):
         parts.append(seg)
     return "｜".join(parts) if parts else line
 
-def fit_size(lines, width_pt=88, height_pt=96, hi=10, lo=8):
-    # 內容格為 F:G 或 H:I 兩欄（約 88pt 可用寬）× 7 列（約 108pt 可用高，範本列高 16.2）
-    # 從 10pt 逐步縮到 8pt；仍放不下則自尾端截行，加註「…另 N 行見原文分頁」，並記入 OVERFLOW
-    def lines_needed(ls, sz):
+FONT_NAME = "標楷體"  # 範例全部使用標楷體
+def fit_lines(lines, size=10, width_pt=88, height_pt=108):
+    # 字型與字級固定（與範例相同：內容 10pt），不縮字；放不下時自尾端截行，加註「…另 N 行見原文分頁」
+    def need(ls):
         n = 0
         for line in ls:
-            w = sum(sz * (1.0 if ord(ch) > 127 else 0.55) for ch in line)
+            w = sum(size * (1.0 if ord(ch) > 127 else 0.55) for ch in line)
             n += max(1, math.ceil(w / width_pt))
         return n
-    for sz in (10, 9.5, 9, 8.5, 8):
-        if lines_needed(lines, sz) * sz * 1.6 <= height_pt: return sz, lines, False
+    if need(lines) * size * 1.35 <= height_pt: return lines, False
     keep = list(lines)
     while len(keep) > 1:
         keep.pop()
         shown = keep + [f"…另 {len(lines) - len(keep)} 行見原文分頁"]
-        if lines_needed(shown, 8) * 8 * 1.6 <= height_pt: return 8, shown, True
-    return 8, lines, True
+        if need(shown) * size * 1.35 <= height_pt: return shown, True
+    return lines, True
 
-def set_size(cell, s):
-    f = copy.copy(cell.font); f.sz = s
+def set_font(cell, size=None):
+    f = copy.copy(cell.font)
+    f.name = FONT_NAME
+    if size: f.sz = size
     cell.font = f
 
 def put(ws, row, col, text, size=10, align_top=True):
     # 只寫值，沿用範本格的字型與對齊（與範例一致）
-    ws.cell(row, col).value = text
-    return ws.cell(row, col)
+    c = ws.cell(row, col); c.value = text
+    if not isinstance(c, MergedCell): set_font(c)  # 字型固定為標楷體，字級沿用範本
+    return c
 
 def build(entries, out, record=None):
     # 以範本活頁簿為底（預設字型 新細明體 12 與範例相同），只保留輸出分頁
@@ -107,9 +109,9 @@ def build(entries, out, record=None):
             if e.get('_sheet') and e.get('_row'): raw.append((e['_sheet'], e['_row'], ws.title, top))
             put(ws, top, 6, f"分項工程名稱：{e.get('sec') or '【待確認】'}\n檢查項目：{e.get('item') or '【待確認】'}")
             dl = [compact(x) for x in (e.get("design") or ["【待確認】"])]; ml = [compact(x) for x in (e.get("measured") or ["【待填】"])]
-            ds, dl, dtr = fit_size(dl); ms, ml, mtr = fit_size(ml)
-            c = put(ws, top + 4, 6, "\n".join(dl)); set_size(c, ds)
-            c = put(ws, top + 4, 8, "\n".join(ml)); set_size(c, ms)
+            dl, dtr = fit_lines(dl); ml, mtr = fit_lines(ml)
+            c = put(ws, top + 4, 6, "\n".join(dl)); set_font(c, 10)
+            c = put(ws, top + 4, 8, "\n".join(ml)); set_font(c, 10)
             if dtr: OVERFLOW.append((i + 1, "設計/標準值", e.get("item")))
             if mtr: OVERFLOW.append((i + 1, "實測值", e.get("item")))
             put(ws, top + 11, 6, f"拍攝時間：{e.get('shot') or '【待確認】'}")
@@ -147,4 +149,4 @@ if __name__ == "__main__":
     n, pg = build(data, sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else None)
     print(f"寫入 {n} 筆，{pg} 頁 → {sys.argv[2]}")
     for no, col, item in OVERFLOW:
-        print(f"【超出格子】第 {no} 筆（{item}）{col}：設計/實測內容已截行（8pt 仍放不下），完整內容保留在 entries.json 與原文分頁，請在回覆列出並確認")
+        print(f"【超出格子】第 {no} 筆（{item}）{col}：設計/實測內容已截行（10pt 仍放不下），完整內容保留在 entries.json 與原文分頁，請在回覆列出並確認")
