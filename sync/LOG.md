@@ -74,3 +74,5 @@
 | 2026-11-04 20:12 | Claude | 總召決斷：Drive 窗內約 40 項修改本輪不讀，維持 NOT_READ，僅續記中繼資料；讀取須 MIKO 指定範圍 | 不讀（維持） | MIKO | 進行中 |
 | 2026-11-05 08:10 | Claude | 本輪變化：origin/main 窗內 21 筆提交，正本 1.2.18→1.2.28（ADR-041～051），photo-inspection-log 兩次更新；其他 repo、Drive 窗內修改、Notion 日期篩選 NOT_READ；GPT 同步依 11-04 19:30 結案不列變化 | 已記錄（中繼資料）；條文內容保留：轉治理房 | Claude、治理房 | 完成（記錄） |
 | 2026-11-05 08:10 | Claude | 推進（承 11-04 20:10 列）：CLAUDE_STATUS 正本版本改為 1.2.28，與 VERSION 一致 | 通過（驗收：正本版本欄＝VERSION） | Claude | 完成 |
+| 2026-11-05 20:08 | Claude | 本輪變化：origin/main 窗內 9 筆提交，正本 1.2.28→1.2.31（ADR-052～054），照片登記類 5 筆更新；其他 repo、Drive 窗內修改（0 筆，MIKO_ARCHIVE 未掃）、Notion 日期篩選 NOT_READ；GPT 同步停用不列變化 | 已記錄（中繼資料）；條文內容保留：轉治理房 | Claude、治理房 | 完成（記錄） |
+| 2026-11-05 20:08 | Claude | 推進（承 11-04 20:10 列）：CLAUDE_STATUS 正本版本改為 1.2.31，與 VERSION 一致 | 通過（驗收：正本版本欄＝VERSION；寫入後 SHA-256 讀回） | Claude | 完成 |
