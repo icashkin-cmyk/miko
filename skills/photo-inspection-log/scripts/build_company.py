@@ -75,8 +75,12 @@ def put(ws, row, col, text, size=10, align_top=True):
     return ws.cell(row, col)
 
 def build(entries, out, record=None):
-    tpl = load_workbook(TPL)[TPL_SHEET]
-    wb = Workbook(); ws = wb.active; ws.title = "材料自主檢查照片"; raw = []
+    # 以範本活頁簿為底（預設字型 新細明體 12 與範例相同），只保留輸出分頁
+    wb = load_workbook(TPL); tpl = wb[TPL_SHEET]
+    ws = wb.create_sheet("材料自主檢查照片", 0); raw = []
+    ws.sheet_format = copy.copy(tpl.sheet_format)  # 預設列高 16.2、基準欄寬 8（與範例相同）
+    for name in list(wb.sheetnames):
+        if name != ws.title: del wb[name]
     for col, dim in tpl.column_dimensions.items():
         if dim.width: ws.column_dimensions[col].width = dim.width
     pages = max(1, -(-len(entries) // 3))
@@ -93,7 +97,12 @@ def build(entries, out, record=None):
                 if not isinstance(cell, MergedCell): cell.value = None  # 清除範本的範例內容，之後只寫入實際資料
         for b in range(3):
             i = p * 3 + b
-            if i >= len(entries): break
+            if i >= len(entries):
+                # 空白區塊：與範例末頁空白區相同，只保留「拍攝位置：工區內」與棟別標籤
+                top = off + BLOCK_TOP[b]
+                put(ws, top + 12, 6, "拍攝位置：工區內")
+                put(ws, top + 13, 6, "棟別/層別/空間編號/空間位置")
+                continue
             e = entries[i]; top = off + BLOCK_TOP[b]
             if e.get('_sheet') and e.get('_row'): raw.append((e['_sheet'], e['_row'], ws.title, top))
             put(ws, top, 6, f"分項工程名稱：{e.get('sec') or '【待確認】'}\n檢查項目：{e.get('item') or '【待確認】'}")
@@ -105,17 +114,24 @@ def build(entries, out, record=None):
             if mtr: OVERFLOW.append((i + 1, "實測值", e.get("item")))
             put(ws, top + 11, 6, f"拍攝時間：{e.get('shot') or '【待確認】'}")
             put(ws, top + 12, 6, f"拍攝位置：{e.get('loc') or '工區內'}")
-            put(ws, top + 13, 6, f"棟別/層別/空間編號/空間位置：{e.get('bldg') or '【待填】'}")
+            bl = e.get('bldg')
+            put(ws, top + 13, 6, f"棟別/層別/空間編號/空間位置：{bl}" if bl else "棟別/層別/空間編號/空間位置")
             if e.get("photo") and os.path.exists(e["photo"]):
                 # 照片錨定在 A:E × 本區 14 列（與範例相同：兩格錨點，填滿照片格）
                 img = XI(e["photo"])
-                img.anchor = TwoCellAnchor(_from=AnchorMarker(col=0, row=top - 1),
-                                           to=AnchorMarker(col=5, row=top + 13))
+                img.width, img.height = 302, 226  # 與範例的圖片 xfrm 相同（2875930×2156190 EMU）
+                # 與範例相同：起點 A 欄 +95250 EMU、列 +148590 EMU；終點 E 欄 +532780 EMU、列 +10445 EMU（區塊 12 列）
+                img.anchor = TwoCellAnchor(_from=AnchorMarker(col=0, colOff=95250, row=top, rowOff=148590),
+                                           to=AnchorMarker(col=4, colOff=532780, row=top + 11, rowOff=10445 if b == 0 else 10446))
                 ws.add_image(img)
     ws.print_area = f"A1:I{pages * PAGE_ROWS}"
     tm = load_workbook(TPL)[TPL_SHEET].page_margins
     ws.page_margins = copy.copy(tm)  # 邊界與範本相同（不用 openpyxl 預設值，否則每頁會被切成兩頁）
-    ws.print_options.horizontalCentered = False
+    ws.page_margins.header = ws.page_margins.footer = 0.31496062992125984  # 與範例逐位相同
+    ws.print_options.horizontalCentered = True   # 與範例相同
+    ws.print_options.verticalCentered = True
+    ws.sheet_view.zoomScale = 160               # 與範例相同
+    ws.sheet_view.view = "pageBreakPreview"; ws.sheet_view.zoomScaleSheetLayoutView = 160; ws.sheet_view.tabSelected = True  # 與範例相同
     ws.page_setup.paperSize = ws.PAPERSIZE_A4
     ws.page_setup.orientation = "portrait"
     if record:
