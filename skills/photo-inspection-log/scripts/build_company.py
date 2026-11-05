@@ -153,6 +153,7 @@ def build(entries, out, record=None):
                 # 設計內容超出、實測尚未填：合併 F:I 為一格，讓設計內容完整顯示（不縮字）
                 merge_design_wide(ws, top)
                 dl = pack_lines([compact(x) for x in (e.get("design") or ["【待確認】"])], 176)
+                dl = dl + ["實測值：【待填】"]  # 合併後實測欄消失，保留待填提示（決議第 7 項）
                 grew = grow_block(ws, top, need_pt(dl, 176)); dtr = False
                 c = put(ws, top + 4, 6, "\n".join(dl)); set_font(c, 10)
                 c = put(ws, top + 3, 6, "設計/標準值"); set_font(c, 11)
