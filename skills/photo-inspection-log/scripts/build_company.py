@@ -62,7 +62,7 @@ def need_pt(lines, width_pt, size=10):
     n = 0
     for line in lines:
         n += max(1, math.ceil(w(line) / width_pt))
-    return n * size * 1.35 + 4
+    return (n + 1) * size * 1.35 + 4  # 多留一行安全餘量，避免末行被裁切
 
 def grow_block(ws, top, need):
     # 內容列 top+4..top+10 的總高度至少為 need；僅超出時才加高（不影響未超出的區塊）
@@ -144,7 +144,7 @@ def build(entries, out, record=None):
                 put(ws, top + 12, 6, "拍攝位置：工區內")
                 put(ws, top + 13, 6, "棟別/層別/空間編號/空間位置")
                 continue
-            e = entries[i]; top = off + BLOCK_TOP[b]
+            e = entries[i]; top = off + BLOCK_TOP[b]; grew = False
             if e.get('_sheet') and e.get('_row'): raw.append((e['_sheet'], e['_row'], ws.title, top))
             put(ws, top, 6, f"分項工程名稱：{e.get('sec') or '【待確認】'}\n檢查項目：{e.get('item') or '【待確認】'}")
             dl = [compact(x) for x in (e.get("design") or ["【待確認】"])]; ml = [compact(x) for x in (e.get("measured") or ["【待填】"])]
@@ -153,13 +153,13 @@ def build(entries, out, record=None):
                 # 設計內容超出、實測尚未填：合併 F:I 為一格，讓設計內容完整顯示（不縮字）
                 merge_design_wide(ws, top)
                 dl = pack_lines([compact(x) for x in (e.get("design") or ["【待確認】"])], 176)
-                grow_block(ws, top, need_pt(dl, 176)); dtr = False
+                grew = grow_block(ws, top, need_pt(dl, 176)); dtr = False
                 c = put(ws, top + 4, 6, "\n".join(dl)); set_font(c, 10)
                 c = put(ws, top + 3, 6, "設計/標準值"); set_font(c, 11)
                 if dtr: OVERFLOW.append((i + 1, "設計/標準值", e.get("item")))
                 ml = None
             else:
-                grow_block(ws, top, max(need_pt(dl, 88), need_pt(ml, 88)))
+                grew = grow_block(ws, top, max(need_pt(dl, 88), need_pt(ml, 88)))
                 c = put(ws, top + 4, 6, "\n".join(dl)); set_font(c, 10)
                 c = put(ws, top + 4, 8, "\n".join(ml)); set_font(c, 10)
             if dtr and ml is not None: OVERFLOW.append((i + 1, "設計/標準值", e.get("item")))
@@ -171,16 +171,26 @@ def build(entries, out, record=None):
             if e.get("photo") and os.path.exists(e["photo"]):
                 # 照片錨定在 A:E × 本區 14 列（與範例相同：兩格錨點，填滿照片格）
                 img = XI(e["photo"])
-                img.width, img.height = 302, 226  # 與範例的圖片 xfrm 相同（2875930×2156190 EMU）
-                # 與範例相同：起點 A 欄 +95250 EMU、列 +148590 EMU；終點 E 欄 +532780 EMU、列 +10445 EMU（區塊 12 列）
-                img.anchor = TwoCellAnchor(_from=AnchorMarker(col=0, colOff=95250, row=top, rowOff=148590),
-                                           to=AnchorMarker(col=4, colOff=532780, row=top + 11, rowOff=10445 if b == 0 else 10446))
+                if not grew:
+                    # 未加高：與範例相同，兩格錨點，照片填滿 A:E × 12 列
+                    img.anchor = TwoCellAnchor(_from=AnchorMarker(col=0, colOff=95250, row=top, rowOff=148590),
+                                               to=AnchorMarker(col=4, colOff=532780, row=top + 11, rowOff=10445 if b == 0 else 10446))
+                else:
+                    # 已加高：照片維持原尺寸（不隨列高拉伸），左上角對齊區塊
+                    from openpyxl.drawing.spreadsheet_drawing import OneCellAnchor
+                    from openpyxl.drawing.xdr import XDRPositiveSize2D
+                    img.anchor = OneCellAnchor(_from=AnchorMarker(col=0, colOff=95250, row=top, rowOff=148590),
+                                               ext=XDRPositiveSize2D(cx=2875930, cy=2156190))
                 ws.add_image(img)
     # 加高列後若單頁高度超過未加高時的高度，整張工作表等比縮小到同一頁高（未加高時維持 100%，與範例相同）
     dflt = ws.sheet_format.defaultRowHeight or 16.2
     max_h = max(sum((ws.row_dimensions[r].height or dflt) for r in range(off + 1, off + PAGE_ROWS + 1)) for off in range(0, pages * PAGE_ROWS, PAGE_ROWS))
+    # 列印寬度固定為一頁寬（A:I 全部放進同一頁寬，避免 H:I 被拆到另一頁）；高度由分頁符號控制
+    ws.sheet_properties.pageSetUpPr.fitToPage = True
+    ws.page_setup.fitToWidth = 1
+    ws.page_setup.fitToHeight = 0
     if getattr(ws, "_grown", False):
-        ws.page_setup.scale = min(100, int(PAGE_ROWS * 16.2 / max_h * 100))  # 有加高列時才縮放，以未加高的單頁高度為準
+        ws.page_setup.scale = None  # 有加高列時由 fitToWidth 控制比例
     ws.print_area = f"A1:I{pages * PAGE_ROWS}"
     tm = load_workbook(TPL)[TPL_SHEET].page_margins
     ws.page_margins = copy.copy(tm)  # 邊界與範本相同（不用 openpyxl 預設值，否則每頁會被切成兩頁）
