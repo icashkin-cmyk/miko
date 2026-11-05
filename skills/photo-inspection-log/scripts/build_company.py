@@ -56,6 +56,24 @@ def pack_lines(lines, width_pt, size=10):
         else: out.append(line)
     return out
 
+def need_pt(lines, width_pt, size=10):
+    # 完整顯示所需高度（點）：行數 × 行高（10pt × 1.35）
+    def w(t): return sum(size * (1.0 if ord(ch) > 127 else 0.55) for ch in t)
+    n = 0
+    for line in lines:
+        n += max(1, math.ceil(w(line) / width_pt))
+    return n * size * 1.35 + 4
+
+def grow_block(ws, top, need):
+    # 內容列 top+4..top+10 的總高度至少為 need；僅超出時才加高（不影響未超出的區塊）
+    rows = list(range(top + 4, top + 11))
+    cur = sum((ws.row_dimensions[r].height or 16.2) for r in rows)
+    if need <= cur: return False
+    each = round(need / len(rows) + 0.05, 2)
+    for r in rows: ws.row_dimensions[r].height = max(each, 16.2)
+    ws._grown = True
+    return True
+
 def merge_design_wide(ws, top):
     # 區塊內 設計/實測 欄改為 F:I 合併（僅用於設計超出且實測未填的區塊）
     h, r0, r1 = top + 3, top + 4, top + 10
@@ -77,6 +95,7 @@ def fit_lines(lines, size=10, width_pt=88, height_pt=108):
             n += max(1, math.ceil(w / width_pt))
         return n
     if need(lines) * size * 1.35 <= height_pt: return lines, False
+    return lines, True  # 不截行：內容完整保留，由列高擴充處理（見 grow_block）
     keep = list(lines)
     while len(keep) > 1:
         keep.pop()
@@ -133,12 +152,14 @@ def build(entries, out, record=None):
             if dtr and all(x == "【待填】" for x in ml):
                 # 設計內容超出、實測尚未填：合併 F:I 為一格，讓設計內容完整顯示（不縮字）
                 merge_design_wide(ws, top)
-                dl, dtr = fit_lines(pack_lines(e.get("design") or ["【待確認】"], 176), width_pt=176)
+                dl = pack_lines([compact(x) for x in (e.get("design") or ["【待確認】"])], 176)
+                grow_block(ws, top, need_pt(dl, 176)); dtr = False
                 c = put(ws, top + 4, 6, "\n".join(dl)); set_font(c, 10)
                 c = put(ws, top + 3, 6, "設計/標準值"); set_font(c, 11)
                 if dtr: OVERFLOW.append((i + 1, "設計/標準值", e.get("item")))
                 ml = None
             else:
+                grow_block(ws, top, max(need_pt(dl, 88), need_pt(ml, 88)))
                 c = put(ws, top + 4, 6, "\n".join(dl)); set_font(c, 10)
                 c = put(ws, top + 4, 8, "\n".join(ml)); set_font(c, 10)
             if dtr and ml is not None: OVERFLOW.append((i + 1, "設計/標準值", e.get("item")))
@@ -155,6 +176,11 @@ def build(entries, out, record=None):
                 img.anchor = TwoCellAnchor(_from=AnchorMarker(col=0, colOff=95250, row=top, rowOff=148590),
                                            to=AnchorMarker(col=4, colOff=532780, row=top + 11, rowOff=10445 if b == 0 else 10446))
                 ws.add_image(img)
+    # 加高列後若單頁高度超過未加高時的高度，整張工作表等比縮小到同一頁高（未加高時維持 100%，與範例相同）
+    dflt = ws.sheet_format.defaultRowHeight or 16.2
+    max_h = max(sum((ws.row_dimensions[r].height or dflt) for r in range(off + 1, off + PAGE_ROWS + 1)) for off in range(0, pages * PAGE_ROWS, PAGE_ROWS))
+    if getattr(ws, "_grown", False):
+        ws.page_setup.scale = min(100, int(PAGE_ROWS * 16.2 / max_h * 100))  # 有加高列時才縮放，以未加高的單頁高度為準
     ws.print_area = f"A1:I{pages * PAGE_ROWS}"
     tm = load_workbook(TPL)[TPL_SHEET].page_margins
     ws.page_margins = copy.copy(tm)  # 邊界與範本相同（不用 openpyxl 預設值，否則每頁會被切成兩頁）
