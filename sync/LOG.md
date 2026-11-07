@@ -83,3 +83,6 @@
 | 2026-11-06 20:08 | Claude | 推進（承 11-06 08:08 列）：檢查 README §4「過去 65 分鐘內」字樣是否已與 ADR-033 一致 | 未通過：1.2.32 後第 73 行仍有該字樣；保留：轉治理房 | MIKO、治理房 | 進行中 |
 | 2026-11-07 08:09 | Claude | 本輪變化：origin/main 窗內無他人提交；Drive 窗內 0 筆；Notion 關鍵字 0 筆；帳號代入卡無變化；其他 repo NOT_READ；GPT 同步依 ADR-039 不列變化 | 已記錄（中繼資料） | Claude | 完成（記錄） |
 | 2026-11-07 08:09 | Claude | 推進（承 11-04 20:10 列）：在正本 1.2.32 執行 tests/check_repo.py，驗收為 12 項全 PASS | 通過（12/12 PASS；本輪只驗 check_repo 覆蓋範圍，不含 README 第 73 行） | Claude | 完成 |
+| 2026-11-07 20:09 | Claude | 本輪變化：origin/main 窗內 1 筆正本提交 b3eb179（正本 1.2.32→1.2.33，ADR-056，6 檔含 skills/miko-core/SKILL.md）；Drive 窗內 0 筆；Notion 窗內 0 筆；帳號代入卡啟用中、無需重存；其他 repo NOT_READ；GPT 同步依 ADR-039 不列變化 | 已記錄（中繼資料）；條文與 Skill 內容保留：轉治理房 | Claude、治理房 | 完成（記錄） |
+| 2026-11-07 20:09 | Claude | 推進（承 11-04 20:10 列）：在正本 1.2.33（b3eb179）執行 check_repo.py，驗收為 12 項全 PASS | 通過（12/12 PASS；本輪只驗 check_repo 覆蓋範圍，不含 README 第 73 行） | Claude | 完成 |
+| 2026-11-07 20:09 | Claude | 承 11-06 20:08 列：README §4「過去 65 分鐘內」字樣於 1.2.33 第 73 行仍在 | 未通過；保留：轉治理房 | MIKO、治理房 | 進行中 |
