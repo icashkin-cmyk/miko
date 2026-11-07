@@ -16,3 +16,5 @@
 | tw-backtest-workflow | v1.8 | 已採用 | 未核對（writer：臺股專案） |
 | safe-implementation | v0.2 | 已採用 | 未核對（通用 Skill，有可執行步驟，比照列出） |
 | label-foreign-text | v0.1 | 已採用（實跑題 2026-11-08 雲端冷啟動 PASS，見 CHANGELOG 1.2.34） | 已補齊（新寫，正本 1.2.34） |
+
+指令六欄（ADR-058，miko-core §2.4）：上表 Skill 都在正本 1.2.35 之前採用，尚未補齊六欄（ID、觸發條件、操作要求、禁止事項、驗收證據、失敗處理），下次新增或改動指令條目時補齊，並在本註記列出已補齊的 Skill 與版本。目前已補齊：無。
