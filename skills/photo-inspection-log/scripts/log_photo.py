@@ -1,4 +1,4 @@
-# log_photo.py v0.14｜施工查驗照片登記（支援一次上百張）：每天一個分頁；A 欄照片（固定在格子裡）、B 欄照片文字，一張一列；自動整理詞庫
+# log_photo.py v0.15｜施工查驗照片登記（支援一次上百張）：每天一個分頁；A 欄照片（固定在格子裡）、B 欄照片文字，一張一列；自動整理詞庫
 # 視覺：待確認處自動編號〔?1〕〔?2〕並標紅字，和提問、放大圖同號；分頁標籤黃色＝有待確認；表頭顯示張數與待確認列數；清單可點擊跳到該列
 # 分頁：依 B 欄「查驗時間」的日期（YYYY-MM-DD）分頁；查驗時間讀不到用照片日期；都沒有放「日期未知」。不同天不會接在同一頁。
 # 位置寫法：「分頁:列號」，例 2026-10-15:3；分頁可只寫月日（10-15:3）；只有一個分頁時可只寫列號。
@@ -18,6 +18,8 @@
 #   python3 log_photo.py sub       紀錄.xlsx "查驗項目" "分項工程名稱"  記下分項工程名稱，export 時填入
 #   python3 log_photo.py terms     [自主檢查名詞.csv]                  列出 forms.csv 的材料自主檢查表名詞
 #   python3 log_photo.py restore   材料自主檢查照片.xlsx 紀錄.xlsx       新對話接續：從公司格式檔的隱藏工作表還原工作檔（原文、照片、詞彙、基準、分項工程）
+#   python3 log_photo.py base      紀錄.xlsx 欄位 [欄位 ...]｜--all     使用者確認後，把「基準待確認」的欄位寫進「基準」（v0.15，P4）
+# v0.15：固定欄位第一次出現只放「基準待確認」並印「新基準：欄位＝值（來源：原檔名）」，使用者確認後用 base 寫入基準；questions 第一行改為「日期｜第 N 張｜原檔名」（P5）
 # 交付：只交「材料自主檢查照片.xlsx」（公司格式）；工作資料藏在它的隱藏工作表，下次上傳這一個檔就能接續。
 # 結束碼：0 成功；2 固定欄位與基準不同；3 fix 找不到或不只一處；4 前兩行不是「查驗時間：」「照片日期：」；5 照片重複；6 位置寫法不對或找不到分頁（以上都未寫入）
 import sys, os, re, csv, hashlib, zipfile, datetime
@@ -49,7 +51,9 @@ UNK = '日期未知'
 HEAD = ('查驗時間：', '照片日期：')            # B 欄固定前兩行
 MF = ['nnn', '原檔名', 'sha256', 'exif時間', '照片日期', '狀態', '列號']
 GLOSS, CATS = '詞庫', ['查驗項目', '人名', '廠牌', '品名用語', '型號', '位置']
-TAIL = [INDEX, BASE, '分項工程', VOCAB, GLOSS]              # 每日分頁之後的工作表順序
+PEND = '基準待確認'                             # v0.15：固定欄位第一次出現先放這裡，使用者確認後才進基準
+NEW_BASE = []                                   # 本次新出現、待使用者確認的固定欄位（印在回覆）
+TAIL = [INDEX, BASE, PEND, '分項工程', VOCAB, GLOSS]              # 每日分頁之後的工作表順序
 MODEL = re.compile(r'(?<![A-Za-z0-9])[A-Z]{1,3}\d{3,5}[A-Z]{0,2}\d?(?![A-Za-z0-9])')      # 例：LF1124P、EF4005、V2700
 NAME = re.compile(r'[一-鿿][一-鿿0-9°A-Za-z ]*[一-鿿]')            # 一行裡第一段中文品名或用語
 DATE = re.compile(r'\d{4}-\d{2}-\d{2}')
@@ -408,10 +412,15 @@ def add_one(wb, img_path, text, fixed=None, sha=None, name=None):
     if fixed:
         base = sheet(wb, BASE, ['欄位', '值'], [12, 50])
         known = {r[0]: r[1] for r in base.iter_rows(min_row=2, values_only=True) if r[0]}
+        pend = sheet(wb, PEND, ['欄位', '值', '來源'], [12, 50, 24])   # v0.15：待使用者確認的基準也拿來比對
+        for r in pend.iter_rows(min_row=2, values_only=True):
+            if r[0] and r[0] not in known: known[r[0]] = r[1]
         diff = [f'{k}：基準「{known[k]}」／本張「{v}」' for k, v in fixed.items() if k in known and known[k] != v]
         if diff: raise Stop(2, '固定欄位與基準不同：' + '；'.join(diff))
         for k, v in fixed.items():
-            if k not in known: base.append([k, v])
+            if k not in known:                  # 舊版直接 base.append([k, v])；v0.15 改為先待確認（P4）
+                pend.append([k, v, name or os.path.basename(img_path)])
+                NEW_BASE.append(f'新基準：{k}＝{v}（來源：{name or os.path.basename(img_path)}）')
     ws = day_sheet(wb, day_of(text)); row = ws.max_row + 1
     w, h = PILImage.open(img_path).size
     s = min(IMG_W / w, IMG_H_MAX / h)
@@ -432,6 +441,7 @@ def add(xlsx, img_path, txt_path, fixed_path=None, sha=None, name=None):
         print(f'STOP {e.msg}，未寫入'); sys.exit(e.code)
     finish(wb, xlsx)
     print(f'OK {s} 第 {row} 列：{os.path.basename(img_path)}；待確認 {qcount(text)} 處')
+    for m in NEW_BASE: print(m + '｜請使用者確認後執行 base 寫入基準')
 
 def addmany(xlsx, mpath='manifest.csv'):        # 百張批次：一次載入、一次存檔
     rows = list(csv.DictReader(open(mpath, encoding='utf-8')))
@@ -456,6 +466,7 @@ def addmany(xlsx, mpath='manifest.csv'):        # 百張批次：一次載入、
     rng = '、'.join(f'{s} 第 {min(v)}～{max(v)} 列' if len(v) > 1 else f'{s} 第 {v[0]} 列' for s, v in sorted(per.items())) or '無'
     print(f'OK 寫入 {len(done)} 張（{rng}，含待確認 {sum(1 for *_, q in done if q)} 列）｜未寫入 {len(skip)}｜尚未抄寫 {waiting}')
     for s in skip: print('未寫入：' + s)
+    for m in NEW_BASE: print(m + '｜請使用者確認後執行 base 寫入基準')
 
 def fix(xlsx, spec, old, new, source='使用者'):
     wb = load(xlsx)
@@ -601,7 +612,8 @@ def questions(xlsx):                            # 依回覆樣板輸出，再由
             v = str(ws[f'B{r}'].value or '')
             if not qcount(v): continue
             ls = v.split('\n')
-            print(f'**{ws.title}｜第 {r} 列**\n**查驗時間**：{ls[0].split("：",1)[1]}\n**照片日期**：{ls[1].split("：",1)[1]}\n**請確認**：')
+            nm = next((x[1] for x in (wb[INDEX].iter_rows(min_row=2, values_only=True) if INDEX in wb.sheetnames else []) if x[0] == r and (x[7] or LEGACY) == ws.title), None) or 'UNKNOWN（清單無原檔名）'
+            print(f'**{ws.title}｜第 {r - 1} 張｜{nm}**\n**查驗時間**：{ls[0].split("：",1)[1]}\n**照片日期**：{ls[1].split("：",1)[1]}\n**請確認**：')
             for ln in ls:                       # 題號＝格子裡的〔?N〕號，和放大圖編號一致
                 for k in QRE.findall(ln): print(f'{k}. {ln}')
             print()
@@ -866,11 +878,11 @@ def keep(wb, ob, raw):                          # 把工作資料存進交付檔
     for d, r, s, t, text in raw:
         x = ix.get((d, r)) or [None] * 8
         ws.append([d, r, x[1], x[2], s, t, text])
-    for name in (BASE, SUB, VOCAB):
+    for name in (BASE, PEND, SUB, VOCAB):
         if name not in wb.sheetnames: continue
         cp = ob.create_sheet(name)
         for row in wb[name].iter_rows(values_only=True): cp.append(list(row))
-    for name in (RAW, BASE, SUB, VOCAB):
+    for name in (RAW, BASE, PEND, SUB, VOCAB):
         if name in ob.sheetnames: ob[name].sheet_state = 'hidden'
     ob.active = 0
 
@@ -879,7 +891,7 @@ def restore(src, xlsx):                         # 公司格式檔 → 工作檔�
     ob = load_workbook(src, rich_text=True)
     if RAW not in ob.sheetnames: print(f'STOP {src} 沒有「{RAW}」工作表（不是本 Skill 輸出的檔），未還原'); sys.exit(6)
     wb = open_book(xlsx); os.makedirs('photos', exist_ok=True); n = miss = 0
-    for name in (BASE, SUB, VOCAB):
+    for name in (BASE, PEND, SUB, VOCAB):
         if name in ob.sheetnames:
             ws = sheet(wb, name, [c.value for c in ob[name][1]], [30] * 8)
             have = {tuple(r) for r in ws.iter_rows(min_row=2, values_only=True)}
@@ -894,6 +906,17 @@ def restore(src, xlsx):                         # 公司格式檔 → 工作檔�
         except Stop as e: print(f'略過 {d} 第 {r} 列：{e.msg}')
     finish(wb, xlsx)
     print(f'OK 還原 {n} 張到 {xlsx}' + (f'｜缺照片 {miss} 張未還原' if miss else ''))
+
+def base_ok(xlsx, keys):                        # v0.15：使用者確認後，把「基準待確認」的欄位搬進「基準」
+    wb = load(xlsx)
+    if PEND not in wb.sheetnames: print('STOP 沒有待確認的基準，未寫入'); sys.exit(3)
+    pend = wb[PEND]; base = sheet(wb, BASE, ['欄位', '值'], [12, 50]); done = []
+    for r in range(pend.max_row, 1, -1):
+        k, v = pend.cell(r, 1).value, pend.cell(r, 2).value
+        if k and (keys == ['--all'] or k in keys):
+            base.append([k, v]); pend.delete_rows(r); done.append(f'{k}＝{v}')
+    if not done: print('STOP 找不到指定的待確認欄位，未寫入'); sys.exit(3)
+    finish(wb, xlsx); print('OK 寫入基準：' + '；'.join(reversed(done)))
 
 def sub(xlsx, item, name):                      # 記下「查驗項目 → 分項工程名稱」，export 時填進分項工程名稱
     wb = load(xlsx); ws = sheet(wb, SUB, ['查驗項目', '分項工程名稱'], [30, 30])
@@ -927,5 +950,6 @@ if __name__ == '__main__':
         # v0.17 起交付一律走 make_entries.py → build_company.py（依範本版面）；本指令的舊版面不再交付
         sys.stderr.write('export 已停用：請改用 make_entries.py + build_company.py（見 SKILL.md 第二節）\n'); sys.exit(7)
     elif cmd == 'sub': sub(a[1], a[2], a[3])
+    elif cmd == 'base': base_ok(a[1], a[2:])
     elif cmd == 'terms': terms(*a[1:2])
     elif cmd == 'restore': restore(a[1], a[2])

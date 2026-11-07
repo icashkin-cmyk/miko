@@ -1,6 +1,10 @@
-# build_company.py v0.3｜依「材料自主檢查照片」範例版面（tools/template_company.xlsx）產出公司格式
+# build_company.py v0.4｜依「材料自主檢查照片」範例版面（scripts/材料自主檢查照片_範本.xlsx 的「範本」分頁；v0.3 檔頭寫 tools/template_company.xlsx 為舊路徑）產出公司格式
 # 用法：python3 build_company.py entries.json 輸出.xlsx [照片紀錄.xlsx]
 #   v0.3：給照片紀錄.xlsx 時，把工作資料（原文、基準、分項工程、已確認詞彙）存進輸出檔的隱藏工作表，下次 log_photo.py restore 可接續。
+#   v0.4（2026-11-07，補記 c12d817～963caf7 的改動並升版）：字型固定標楷體、內容固定 10pt、不縮字不截行；內容超出時加高該區塊內容列（grow_block），
+#         設計超出且實測未填時合併 F:I 並加一行「實測值：【待填】」（決議第 7 項）；棟別未填只留標籤（同範例，決議第 8 項）；
+#         PDF 一頁寬（fitToWidth=1）；照片未加高區塊用兩格錨點、加高區塊固定尺寸對齊左上；「超出格子」訊息改為說明已加高（舊訊息誤寫「已截行」）。
+#   待 MIKO 決定：加高列與整張縮放是否接受；電腦版 Excel 看不到照片（A／B／C 測試檔待回報）。
 # entries.json：[{"sec":分項工程名稱,"item":檢查項目,"design":[行...],"measured":[行...],
 #                "shot":"115年10月8日","loc":"工區內","bldg":"","photo":"照片路徑或空"}]
 # 版面：每頁 46 列；3 個區塊，每塊 14 列（A:E 照片、F:I 資訊）；A46 頁碼。全部複製自範例，不另設計。
@@ -215,4 +219,5 @@ if __name__ == "__main__":
     n, pg = build(data, sys.argv[2], sys.argv[3] if len(sys.argv) > 3 else None)
     print(f"寫入 {n} 筆，{pg} 頁 → {sys.argv[2]}")
     for no, col, item in OVERFLOW:
-        print(f"【超出格子】第 {no} 筆（{item}）{col}：設計/實測內容已截行（10pt 仍放不下），完整內容保留在 entries.json 與原文分頁，請在回覆列出並確認")
+        # v0.3 舊訊息寫「已截行（10pt 仍放不下）」，但 v0.4 起 fit_lines 不截行、由 grow_block 加高列高完整顯示，舊訊息與實際不符
+        print(f"【超出格子】第 {no} 筆（{item}）{col}：內容超出範本格高，已加高該區塊列高完整顯示（未截行、未縮字），請在回覆列出，並用 PDF 抽看該頁")
