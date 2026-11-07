@@ -15,3 +15,4 @@
 | photo-inspection-log | v0.19 | 已採用 | 未核對（writer：照片專案） |
 | tw-backtest-workflow | v1.8 | 已採用 | 未核對（writer：臺股專案） |
 | safe-implementation | v0.2 | 已採用 | 未核對（通用 Skill，有可執行步驟，比照列出） |
+| label-foreign-text | v0.1 | 已採用（實跑題 2026-11-08 雲端冷啟動 PASS，見 CHANGELOG 1.2.34） | 已補齊（新寫，正本 1.2.34） |
