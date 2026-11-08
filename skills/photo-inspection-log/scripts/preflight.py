@@ -1,4 +1,4 @@
-# preflight.py v0.1｜防呆：每個對話開工前與交檔前執行；任一項 FAIL 就停止，不得交檔
+# preflight.py v0.2｜防呆：每個對話開工前與交檔前執行；任一項 FAIL 就停止，不得交檔
 # 用法：
 #   python3 scripts/preflight.py start                     開工檢查（整包是否齊全、範本是否正確）
 #   python3 scripts/preflight.py deliver 材料自主檢查照片.xlsx entries.json   交檔前檢查（版面、筆數、頁數、照片數）
@@ -52,6 +52,13 @@ def deliver(xlsx, entries_path):
     check("照片數 = 有圖的筆數", len(ws._images) == sum(1 for e in entries if e.get("photo") and os.path.exists(e["photo"])), f"圖 {len(ws._images)}")
     for p in range(pages):
         check(f"第 {p + 1} 頁頁碼", str(ws.cell(p * 46 + 46, 1).value) == str(p + 1))
+    mf = os.path.join(os.path.dirname(os.path.abspath(entries_path)), "manifest.csv")   # v0.2（報告 P7）：每張照片都已讀並寫入
+    if os.path.exists(mf):
+        rows = list(csv.DictReader(open(mf, encoding="utf-8")))
+        left = [f"{r['nnn']} {r['原檔名']}（{r['狀態']}）" for r in rows if r.get("狀態") != "done"]
+        check("manifest 每張照片都已讀並寫入（狀態 done）", not left, "未完成：" + "、".join(left) if left else f"{len(rows)} 張")
+    else:
+        print("WARN 工作目錄沒有 manifest.csv：無法勾稽每張照片都已讀（restore 接續且本批沒有新照片時可忽略，回覆須說明）")
     unresolved = [e for e in entries if "【待確認】" in str(e.get("sec", "")) or not e.get("sec")]
     print(f"待確認分項：{len(unresolved)} 筆（交檔時須在回覆列出）")
     print("交檔結果：" + ("全部 PASS，可以交檔" if all(results) else "有 FAIL，不得交檔"))

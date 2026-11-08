@@ -1,4 +1,4 @@
-# log_photo.py v0.15｜施工查驗照片登記（支援一次上百張）：每天一個分頁；A 欄照片（固定在格子裡）、B 欄照片文字，一張一列；自動整理詞庫
+# log_photo.py v0.16｜施工查驗照片登記（支援一次上百張）：每天一個分頁；A 欄照片（固定在格子裡）、B 欄照片文字，一張一列；自動整理詞庫
 # 視覺：待確認處自動編號〔?1〕〔?2〕並標紅字，和提問、放大圖同號；分頁標籤黃色＝有待確認；表頭顯示張數與待確認列數；清單可點擊跳到該列
 # 分頁：依 B 欄「查驗時間」的日期（YYYY-MM-DD）分頁；查驗時間讀不到用照片日期；都沒有放「日期未知」。不同天不會接在同一頁。
 # 位置寫法：「分頁:列號」，例 2026-10-15:3；分頁可只寫月日（10-15:3）；只有一個分頁時可只寫列號。
@@ -18,10 +18,11 @@
 #   python3 log_photo.py sub       紀錄.xlsx "查驗項目" "分項工程名稱"  記下分項工程名稱，export 時填入
 #   python3 log_photo.py terms     [自主檢查名詞.csv]                  列出 forms.csv 的材料自主檢查表名詞
 #   python3 log_photo.py restore   材料自主檢查照片.xlsx 紀錄.xlsx       新對話接續：從公司格式檔的隱藏工作表還原工作檔（原文、照片、詞彙、基準、分項工程）
-#   python3 log_photo.py base      紀錄.xlsx 欄位 [欄位 ...]｜--all     使用者確認後，把「基準待確認」的欄位寫進「基準」（v0.15，P4）
-# v0.15：固定欄位第一次出現只放「基準待確認」並印「新基準：欄位＝值（來源：原檔名）」，使用者確認後用 base 寫入基準；questions 第一行改為「日期｜第 N 張｜原檔名」（P5）
+#   python3 log_photo.py base      紀錄.xlsx 欄位 [欄位 ...]｜--all     使用者確認後，把「基準待確認」的欄位寫進「基準」（v0.15，報告 P3）
+# v0.15：固定欄位第一次出現只放「基準待確認」並印「新基準：欄位＝值（來源：原檔名）」，使用者確認後用 base 寫入基準（報告 P3）；questions 第一行改為「日期｜第 N 張｜原檔名」（報告 P5）
+# v0.16：addmany 要求 text/NNN.txt 第一行「來源：photos/NNN_grid.jpg（原檔名）」且與 manifest 相同才寫入（不符或沒寫：結束碼 9、狀態 stop9），寫入時去掉這行（報告 P5／P7）
 # 交付：只交「材料自主檢查照片.xlsx」（公司格式）；工作資料藏在它的隱藏工作表，下次上傳這一個檔就能接續。
-# 結束碼：0 成功；2 固定欄位與基準不同；3 fix 找不到或不只一處；4 前兩行不是「查驗時間：」「照片日期：」；5 照片重複；6 位置寫法不對或找不到分頁（以上都未寫入）
+# 結束碼：0 成功；2 固定欄位與基準不同；3 fix 找不到或不只一處；4 前兩行不是「查驗時間：」「照片日期：」；5 照片重複；6 位置寫法不對或找不到分頁；9 來源行缺少或與 manifest 不符（以上都未寫入）
 import sys, os, re, csv, hashlib, zipfile, datetime
 from openpyxl import Workbook, load_workbook
 from openpyxl.drawing.image import Image as XLImage
@@ -418,7 +419,7 @@ def add_one(wb, img_path, text, fixed=None, sha=None, name=None):
         diff = [f'{k}：基準「{known[k]}」／本張「{v}」' for k, v in fixed.items() if k in known and known[k] != v]
         if diff: raise Stop(2, '固定欄位與基準不同：' + '；'.join(diff))
         for k, v in fixed.items():
-            if k not in known:                  # 舊版直接 base.append([k, v])；v0.15 改為先待確認（P4）
+            if k not in known:                  # 舊版直接 base.append([k, v])；v0.15 改為先待確認（報告 P3）
                 pend.append([k, v, name or os.path.basename(img_path)])
                 NEW_BASE.append(f'新基準：{k}＝{v}（來源：{name or os.path.basename(img_path)}）')
     ws = day_sheet(wb, day_of(text)); row = ws.max_row + 1
@@ -443,17 +444,26 @@ def add(xlsx, img_path, txt_path, fixed_path=None, sha=None, name=None):
     print(f'OK {s} 第 {row} 列：{os.path.basename(img_path)}；待確認 {qcount(text)} 處')
     for m in NEW_BASE: print(m + '｜請使用者確認後執行 base 寫入基準')
 
+SRC = re.compile(r'^來源：photos/(\d{3})_grid\.jpg（(.+)）\s*$')
+def check_source(text, nnn, name):              # v0.16（報告 P5／P7）：text/NNN.txt 第一行必須寫明讀的是哪張照片，和 manifest 一致才寫入
+    first, _, rest = text.partition('\n'); m = SRC.match(first.strip())
+    want = f'來源：photos/{nnn}_grid.jpg（{name}）'
+    if not m: raise Stop(9, f'第一行不是來源行，應為「{want}」（沒有開這張照片就不得寫入）')
+    if m.group(1) != nnn or m.group(2) != name: raise Stop(9, f'來源行「{first.strip()}」與 manifest 不符，應為「{want}」（可能對錯張）')
+    return rest.strip()
+
 def addmany(xlsx, mpath='manifest.csv'):        # 百張批次：一次載入、一次存檔
     rows = list(csv.DictReader(open(mpath, encoding='utf-8')))
     wb = open_book(xlsx)
     done, skip, waiting = [], [], 0
     for r in rows:
-        if r['狀態'] != 'todo': continue
+        if r['狀態'] != 'todo' and not r['狀態'].startswith('stop'): continue   # v0.16：stopN 修正 text 後可重跑（舊版只跑 todo，stop 的列永遠不再處理）
         t = f"text/{r['nnn']}.txt"
         if not os.path.exists(t): waiting += 1; continue
         fx = f"fixed/{r['nnn']}.txt"
         text = open(t, encoding='utf-8').read().strip()
         try:
+            text = check_source(text, r['nnn'], r['原檔名'])   # v0.16：先確認這段字對應哪張照片，不符不寫入
             s, n = add_one(wb, f"photos/{r['nnn']}_xl.jpg", text, parse(fx) if os.path.exists(fx) else None, r['sha256'], r['原檔名'])
             r['狀態'], r['列號'] = 'done', f'{s}:{n}'; done.append((s, n, qcount(text)))
         except Stop as e:
