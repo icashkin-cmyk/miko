@@ -14,7 +14,7 @@
 | tw-alert-check | v0.2 | 已採用 | 未核對（同上；「解決」節為 §2 流程） |
 | photo-inspection-log | v0.22 | 已採用 | 未核對（writer：照片專案） |
 | tw-backtest-workflow | v1.8 | 已採用 | 未核對（writer：臺股專案） |
-| safe-implementation | v0.2 | 已採用 | 未核對（通用 Skill，有可執行步驟，比照列出） |
+| safe-implementation | v0.3 | v0.2 已採用；v0.3 已推上 main 但不標已採用：本版改動「解決」1 與「檢查」節指令條目卻未補六欄（ADR-058 缺欄不得標已採用），總召 2026-11-09 裁定本版只局部加兩句、不整份改寫，六欄與逐步閘門排在 16 Skill 分批升級的 safe-implementation 站補齊；補齊前照 v0.3 全文執行（ADR-065） | 未核對（通用 Skill，有可執行步驟，比照列出；本版改了「解決」節，補齊排程同左） |
 | label-foreign-text | v0.1 | 已採用（實跑題 2026-11-08 雲端冷啟動 PASS，見 CHANGELOG 1.2.34） | 已補齊（新寫，正本 1.2.34） |
 | make-skill | v0.2 | 已採用（實跑題 T-MS1～T-MS3 2026-11-08 雲端冷啟動 PASS，見 CHANGELOG 1.2.39；v0.2 的 T-MS4 PASS，見 CHANGELOG 1.2.41；T-MS1 兩輪受測者在 S7 NOT_RUN 下做了 S8，屬跳站，閘門有效性待實跑環境再驗） | 已補齊（新寫，正本 1.2.39；七欄表含 P／C／J） |
 
