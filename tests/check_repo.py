@@ -9,6 +9,7 @@ def ok(name, cond, note=''):
 # C11 Skill 保真：改過的 skills/*/SKILL.md 與上一版（HEAD）比，子句保留率要 ≥ 90%；刪除要在正文「## 刪除清單」逐條列出理由
 # 1.2.41（P-I1、P-I2）：只認行首「## 刪除清單」標題；保留率 < 90% 時刪除清單節要比上一版多出新條目；訊息寫實際保留率；
 # 沒逐字保留的子句即使 PASS 也逐條列出（只顯示不擋）；可單獨執行：python3 tests/check_repo.py --only C11
+# 1.2.43：新舊兩邊都把同目錄 references/*.md 併進來比（搬到附檔不算遺失）；references/MOVED.md 提到的附檔要存在
 def _seg(t): return [x.strip(' -`') for x in re.split(r'[，；。\n：]', t) if len(x.strip(' -`')) >= 6]
 def _dl(t):   # 所有行首「## 刪除清單」節的條目行（到下一個 ## 標題或檔尾）；條目＝以「- 」開頭且含「：」或「理由」；只驗形式，內容由 make-skill S5 與稽核看
     out = set()
@@ -16,6 +17,14 @@ def _dl(t):   # 所有行首「## 刪除清單」節的條目行（到下一個 
         out |= {x.strip() for x in m.group(1).splitlines() if x.strip().startswith('- ') and ('：' in x or '理由' in x)}
     return out
 c11_lost = []
+def _refs_old(base, d):   # 上一版同目錄 references/*.md 全文（1.2.43：搬到附檔的句子算保留）
+    ls = subprocess.run(['git', '-C', str(R), 'ls-tree', '-r', '--name-only', base, f'{d}/references/'], capture_output=True, text=True)
+    out = ''
+    for n in sorted(x for x in ls.stdout.splitlines() if x.endswith('.md') and not x.endswith('/MOVED.md')):
+        out += '\n' + subprocess.run(['git', '-C', str(R), 'show', f'{base}:{n}'], capture_output=True, text=True).stdout
+    return out
+def _refs_new(f):
+    return ''.join('\n' + x.read_text(encoding='utf-8') for x in sorted((f.parent / 'references').glob('*.md')) if x.name != 'MOVED.md')   # MOVED.md 是對照表，不算保留
 def c11():
     low, info = [], []
     try:
@@ -24,12 +33,19 @@ def c11():
             base = os.environ.get('MIKO_BASE', 'HEAD')   # CI 用 MIKO_BASE=推送前的 commit，比對本次推送
             old = subprocess.run(['git', '-C', str(R), 'show', f'{base}:{rel}'], capture_output=True, text=True)
             if old.returncode != 0: continue
-            new = f.read_text(encoding='utf-8')
-            if new == old.stdout: continue
-            so = _seg(old.stdout); miss = [x for x in so if x not in new]; kept = len(so) - len(miss); rate = kept / len(so) if so else 1
-            added = _dl(new) - _dl(old.stdout)
+            skill_new = f.read_text(encoding='utf-8')
+            new = skill_new + _refs_new(f); oldt = old.stdout + _refs_old(base, f.parent.relative_to(R).as_posix())
+            mv = f.parent / 'references' / 'MOVED.md'   # 搬移對照：每列提到的 references/檔名 要存在
+            if mv.exists():
+                gone = sorted({x for x in re.findall(r'references/([\w.-]+\.md)', mv.read_text(encoding='utf-8')) if not (f.parent / 'references' / x).exists()})
+                if gone: low.append(f'{rel} 的 references/MOVED.md 指到不存在的附檔：{gone}')
+            unref = [x.name for x in sorted((f.parent / 'references').glob('*.md')) if x.name != 'MOVED.md' and f'references/{x.name}' not in skill_new]
+            if unref: low.append(f'{rel} 的附檔沒有在 SKILL.md 正文提到（references/檔名）：{unref}')   # 1.2.43 稽核：防止刪掉正文句子塞進沒有指回的附檔
+            if new == oldt: continue
+            so = _seg(oldt); miss = [x for x in so if x not in new]; kept = len(so) - len(miss); rate = kept / len(so) if so else 1
+            added = _dl(skill_new) - _dl(old.stdout)
             if miss: c11_lost.append((rel, miss))
-            msg = f'{rel} 保留 {kept}/{len(so)}={rate:.3f}'
+            msg = f'{rel}（含 references/）保留 {kept}/{len(so)}={rate:.3f}'
             if rate < 0.9 and not added: low.append(msg + '，行首「## 刪除清單」節本次沒有新增條目（條目以「- 」開頭且含「：」或「理由」，只驗形式）')
             else: info.append(msg + (f'，刪除清單新增 {len(added)} 行' if rate < 0.9 else ''))
         ok('C11 Skill 改版不得大量精簡（子句保留 ≥ 90%，否則行首「## 刪除清單」本次要有新增條目）', not low, '；'.join(low + info) or '無改動')
@@ -68,10 +84,15 @@ for p in sorted((R / 'skills').glob('*/SKILL.md')):
     h1 = re.search(r'^# (.*)$', t[fm.end():] if fm else t, re.M)   # 1.2.41（P-I3）：frontmatter 後第一個 # 標題要含 v數字；caveman、grilling、dghp-work-handoff 補完前只提示不擋
     if not (h1 and re.search(r'v\d', h1.group(1))): nover.append(p.parent.name)
     name = re.search(r'^name:\s*"?([^"\n]+)"?\s*$', fm.group(1), re.M) if fm else None
-    desc = re.search(r'^description:\s*\S', fm.group(1), re.M) if fm else None
+    desc = re.search(r'^description:[ \t]*\S', fm.group(1), re.M) if fm else None   # 1.2.43 稽核：同一行要有內容，不跨行吃到下一個欄位（刻意比 YAML 嚴：description 第一行必須有字）
     if not (fm and name and desc and name.group(1).strip() == p.parent.name):
-        bad.append(p.parent.name)
-ok('C2 Skill 開頭格式（name 與資料夾同名、有 description）', not bad, f'不合格：{bad}；提示（不擋）標題沒有版號：{nover}')
+        bad.append(p.parent.name); continue
+    nm = name.group(1).strip()   # 1.2.43（R1，Agent Skills 規格）：name 只能小寫英數與單一連字號、≤ 64 字；description ≤ 1024 字
+    dm = re.search(r'^description:[ \t]*(.*)\n?((?:(?:[ \t]+.*)?\n)*)', fm.group(1) + '\n', re.M)   # 1.2.43 稽核：YAML 區塊純量（> 或 |）與縮排續行併起來量
+    dv = (dm.group(1).strip().lstrip('>|-').strip() + ' ' + ' '.join(x.strip() for x in dm.group(2).splitlines())).strip().strip('"').strip("'")
+    if not re.fullmatch(r'[a-z0-9]+(-[a-z0-9]+)*', nm) or len(nm) > 64: bad.append(f'{p.parent.name}（name 格式或長度）')
+    if len(dv) > 1024: bad.append(f'{p.parent.name}（description {len(dv)} 字 > 1024）')
+ok('C2 Skill 開頭格式（name 與資料夾同名、小寫連字號 ≤ 64 字、description ≤ 1024 字）', not bad, f'不合格：{bad}；提示（不擋）標題沒有版號：{nover}')
 
 words = [w for w in os.environ.get('MIKO_PRIVATE_WORDS', '').split(',') if w]
 pat = re.compile(r'[\w.+-]+@[\w-]+\.(com|tw|net|org)|/home/|/Users/|~/[A-Z]' + ''.join('|' + re.escape(w) for w in words))
@@ -89,8 +110,8 @@ pyc = [str(f.relative_to(R)) for f in files if f.suffix == '.pyc' or '__pycache_
 hits += pyc
 ok('C3 公開檔（含 .csv、二進位、快取檔）無 email、本機路徑與私人關鍵字', not hits, f'命中：{hits[:5]}；私人關鍵字 {len(words)} 個')
 
-miss = [t for t in [f'T{i}' for i in range(1, 38)] + ['T15B', 'T15C', 'T15D', 'T15E', 'T29B'] if f'| {t} |' not in readme]
-ok('C4 回歸測試 T1～T37、T15B～T15E 與 T29B 都在正本 §8', not miss, f'缺：{miss}')
+miss = [t for t in [f'T{i}' for i in range(1, 44)] + ['T15B', 'T15C', 'T15D', 'T15E', 'T29B'] if f'| {t} |' not in readme]
+ok('C4 回歸測試 T1～T43、T15B～T15E 與 T29B 都在正本 §8', not miss, f'缺：{miss}')
 
 log = (R / 'sync' / 'LOG.md').read_text(encoding='utf-8') if (R / 'sync' / 'LOG.md').exists() else ''
 ok('C5 sync 檔存在且 LOG 有表頭', (R / 'sync' / 'CLAUDE_STATUS.md').exists() and '| 時間（台北） | 提出方 | 內容 | 決定 | 負責方 | 狀態 |' in log)
@@ -241,5 +262,30 @@ try:
     ok('C13 不得提交本機設定、環境變數、憑證檔與金鑰樣式', not bad13, f'共 {len(bad13)} 筆；命中（只列檔名與類型）：{bad13[:8]}')
 except Exception as ex:
     ok('C13 不得提交本機設定、環境變數、憑證檔與金鑰樣式', False, f'執行失敗：{ex}')
+
+# C14 skill_lint 不倒退（1.2.43，R2）：tests/lint_ratchet.txt 列的是已過升級站的 Skill，這些 Skill 的 skill_lint 不得 FAIL；清單每過一站由升級串加一行
+try:
+    lr = [x.split('#')[0].strip() for x in (R / 'tests' / 'lint_ratchet.txt').read_text(encoding='utf-8').splitlines()]
+    lr = [x for x in lr if x]; bad14 = []
+    for sk in lr:
+        f = R / 'skills' / sk / 'SKILL.md'
+        out = subprocess.run([sys.executable, '-I', '-B', str(R / 'skills' / 'make-skill' / 'scripts' / 'skill_lint.py'), str(f)], capture_output=True, text=True)
+        if out.returncode != 0: bad14.append(sk)
+    ok('C14 已過升級站的 Skill，skill_lint 不得退回 FAIL', lr and not bad14, f'清單 {len(lr)} 個：{lr}；FAIL：{bad14}')
+except Exception as ex:
+    ok('C14 已過升級站的 Skill，skill_lint 不得退回 FAIL', False, f'執行失敗：{ex}')
+
+# C15 出處編號提示（1.2.43，R3；只提示不擋）：skills/ 正文引用的 ADR 編號要在 CHANGELOG 或 README 找得到；已知記在別處的列 tests/c15_exceptions.txt
+try:
+    ex15 = {x.split()[0] for x in (R / 'tests' / 'c15_exceptions.txt').read_text(encoding='utf-8').splitlines() if x.strip() and not x.startswith('#')}
+    src15 = chg + readme
+    refs15 = set()
+    for f in sorted((R / 'skills').rglob('*.md')):
+        refs15 |= set(re.findall(r'ADR-\d{3}', f.read_text(encoding='utf-8')))
+    miss15 = sorted(x for x in refs15 if x not in src15 and x not in ex15)
+    ok('C15 出處編號提示（只提示不擋）：正文引用的 ADR 在 CHANGELOG 或 README 有出處', True,
+       f'引用 {len(refs15)} 個；例外 {len(ex15 & refs15)} 個（出處未核實，見 tests/c15_exceptions.txt）；找不到出處：{miss15 or "無"}')
+except Exception as ex:
+    ok('C15 出處編號提示（只提示不擋）：正文引用的 ADR 在 CHANGELOG 或 README 有出處', True, f'提示項執行失敗（不擋）：{ex}')
 
 report()
