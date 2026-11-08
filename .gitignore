@@ -5,3 +5,18 @@
 venv/
 __pycache__/
 *.pyc
+
+# 金鑰與本機設定不進版控（2026-11-08 金鑰外洩防護）
+# Claude Code 本機權限檔（"Yes, and don't ask again" 寫入的 allow 規則可能含指令裡的 Token）
+**/.claude/settings.local.json
+**/.claude/*.local.json
+# 環境變數與憑證檔
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+.netrc
+secrets.toml
