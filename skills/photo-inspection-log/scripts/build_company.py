@@ -1,9 +1,10 @@
-# build_company.py v0.4｜依「材料自主檢查照片」範例版面（scripts/材料自主檢查照片_範本.xlsx 的「範本」分頁；v0.3 檔頭寫 tools/template_company.xlsx 為舊路徑）產出公司格式
+# build_company.py v0.5｜依「材料自主檢查照片」範例版面（scripts/材料自主檢查照片_範本.xlsx 的「範本」分頁；v0.3 檔頭寫 tools/template_company.xlsx 為舊路徑）產出公司格式
 # 用法：python3 build_company.py entries.json 輸出.xlsx [照片紀錄.xlsx]
 #   v0.3：給照片紀錄.xlsx 時，把工作資料（原文、基準、分項工程、已確認詞彙）存進輸出檔的隱藏工作表，下次 log_photo.py restore 可接續。
 #   v0.4（2026-11-07，補記 c12d817～963caf7 的改動並升版）：字型固定標楷體、內容固定 10pt、不縮字不截行；內容超出時加高該區塊內容列（grow_block），
 #         設計超出且實測未填時合併 F:I 並加一行「實測值：【待填】」（決議第 7 項）；棟別未填只留標籤（同範例，決議第 8 項）；
 #         PDF 一頁寬（fitToWidth=1）；照片未加高區塊用兩格錨點、加高區塊固定尺寸對齊左上；「超出格子」訊息改為說明已加高（舊訊息誤寫「已截行」）。
+#   v0.5（2026-11-08，MIKO 決定卡「留空白」）：照片與材料表都沒有的資訊只留標籤、冒號後空白，不再寫【待確認】【待填】（取代決議第 7 項的【待填】）；合併區塊最後一行改為「實測值：」。
 #   待 MIKO 決定：加高列與整張縮放是否接受；電腦版 Excel 看不到照片（A／B／C 測試檔待回報）。
 # entries.json：[{"sec":分項工程名稱,"item":檢查項目,"design":[行...],"measured":[行...],
 #                "shot":"115年10月8日","loc":"工區內","bldg":"","photo":"照片路徑或空"}]
@@ -150,14 +151,15 @@ def build(entries, out, record=None):
                 continue
             e = entries[i]; top = off + BLOCK_TOP[b]; grew = False
             if e.get('_sheet') and e.get('_row'): raw.append((e['_sheet'], e['_row'], ws.title, top))
-            put(ws, top, 6, f"分項工程名稱：{e.get('sec') or '【待確認】'}\n檢查項目：{e.get('item') or '【待確認】'}")
-            dl = [compact(x) for x in (e.get("design") or ["【待確認】"])]; ml = [compact(x) for x in (e.get("measured") or ["【待填】"])]
+            # v0.5：沒有資訊留空白（v0.4 寫【待確認】／【待填】）
+            put(ws, top, 6, f"分項工程名稱：{e.get('sec') or ''}\n檢查項目：{e.get('item') or ''}")
+            dl = [compact(x) for x in (e.get("design") or [])]; ml = [compact(x) for x in (e.get("measured") or [])]
             dl, dtr = fit_lines(dl); ml, mtr = fit_lines(ml)
-            if dtr and all(x == "【待填】" for x in ml):
+            if dtr and not ml:
                 # 設計內容超出、實測尚未填：合併 F:I 為一格，讓設計內容完整顯示（不縮字）
                 merge_design_wide(ws, top)
-                dl = pack_lines([compact(x) for x in (e.get("design") or ["【待確認】"])], 176)
-                dl = dl + ["實測值：【待填】"]  # 合併後實測欄消失，保留待填提示（決議第 7 項）
+                dl = pack_lines([compact(x) for x in (e.get("design") or [])], 176)
+                dl = dl + ["實測值："]  # 合併後實測欄消失，保留標籤（v0.4 為「實測值：【待填】」，v0.5 依 MIKO 決定留空白）
                 grew = grow_block(ws, top, need_pt(dl, 176)); dtr = False
                 c = put(ws, top + 4, 6, "\n".join(dl)); set_font(c, 10)
                 c = put(ws, top + 3, 6, "設計/標準值"); set_font(c, 11)
@@ -165,11 +167,11 @@ def build(entries, out, record=None):
                 ml = None
             else:
                 grew = grow_block(ws, top, max(need_pt(dl, 88), need_pt(ml, 88)))
-                c = put(ws, top + 4, 6, "\n".join(dl)); set_font(c, 10)
-                c = put(ws, top + 4, 8, "\n".join(ml)); set_font(c, 10)
+                c = put(ws, top + 4, 6, "\n".join(dl) or None); set_font(c, 10)
+                c = put(ws, top + 4, 8, "\n".join(ml) or None); set_font(c, 10)
             if dtr and ml is not None: OVERFLOW.append((i + 1, "設計/標準值", e.get("item")))
             if mtr: OVERFLOW.append((i + 1, "實測值", e.get("item")))
-            put(ws, top + 11, 6, f"拍攝時間：{e.get('shot') or '【待確認】'}")
+            put(ws, top + 11, 6, f"拍攝時間：{e.get('shot') or ''}")
             put(ws, top + 12, 6, f"拍攝位置：{e.get('loc') or '工區內'}")
             bl = e.get('bldg')
             put(ws, top + 13, 6, f"棟別/層別/空間編號/空間位置：{bl}" if bl else "棟別/層別/空間編號/空間位置")

@@ -1,6 +1,7 @@
-# make_entries.py v0.2｜把 照片紀錄.xlsx（log_photo.py 產生）轉成 entries.json，供 build_company.py 產出公司格式
+# make_entries.py v0.3｜把 照片紀錄.xlsx（log_photo.py 產生）轉成 entries.json，供 build_company.py 產出公司格式
 # 用法：python3 make_entries.py 照片紀錄.xlsx entries.json 照片目錄
 # 只做機械轉換：時間、位置、白板文字原樣放入。分項工程名稱、設計/標準值（材料表對照）、實測值、棟別一律留空，由 Claude 依範本與材料表填入，填不出的保持【待確認】。
+# v0.3（2026-11-08，MIKO 決定卡「留空白」）：日期讀不到時 shot 為空字串（v0.2 為【待確認】），Excel 只留「拍攝時間：」標籤。
 import sys, re, io, os, json
 from openpyxl import load_workbook
 from PIL import Image as PI
@@ -21,7 +22,7 @@ def parse(text):
 
 def roc(iso):
     m = re.search(r"(\d{4})-(\d{2})-(\d{2})", iso or "")
-    return f"{int(m.group(1)) - 1911}年{int(m.group(2))}月{int(m.group(3))}日" if m else "【待確認】"
+    return f"{int(m.group(1)) - 1911}年{int(m.group(2))}月{int(m.group(3))}日" if m else ""
 
 def main(src, out, photo_dir):
     os.makedirs(photo_dir, exist_ok=True)
@@ -41,7 +42,7 @@ def main(src, out, photo_dir):
             if not p: miss.append(f'{ws.title} 第 {r} 列')
             entries.append({"sec": subs.get(d["項目"], "") or subs.get(d["項目"].replace("材料進場", "").strip(), ""), "item": d["項目"].replace("材料進場", "").strip(),
                             "design": [s for s in d["說明"] if s][:12], "measured": [],
-                            "shot": roc(d["日期"]) if d["日期"] and "UNKNOWN" not in d["日期"] else "【待確認】",
+                            "shot": roc(d["日期"]) if d["日期"] and "UNKNOWN" not in d["日期"] else "",
                             "loc": "工區內", "bldg": "", "photo": p,
                             "_sheet": ws.title, "_row": r})
     json.dump(entries, open(out, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
