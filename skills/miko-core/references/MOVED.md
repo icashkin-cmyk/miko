@@ -29,3 +29,15 @@
 | references/engineering-pitfalls.md | 9de4c2e2b3c22fe89085f277a11633799a1b7588f56f721eeda5ba89a4c5417d | 9de4c2e2b3c22fe89085f277a11633799a1b7588f56f721eeda5ba89a4c5417d | 相同 |
 | references/evidence-states.md | 14ef6763222c0a647c3c7cb64bc6dd2b76f0cad3c8473c72317bb03ed8477dbc | 14ef6763222c0a647c3c7cb64bc6dd2b76f0cad3c8473c72317bb03ed8477dbc | 相同 |
 | references/core-index.md | b7c10679b75612437c204cd3db39cdf19b5d7b430649cba72caca752f666be05 | 7451f110f5ef8af88e05be1444b890962890fd7392f9476ae4c7d21e9cbf9af7 | 不同（搬移後修改，見下方逐條） |
+
+## 1.2.45 搬移後修改（ADR-068，只新增；上方兩張表不改）
+- core-index.md 的 K9：括號尾加「同一則兼有停止與硬禁止時第二行（非新對話時第一行，換領域對齊行也不寫）STOPPED_BY_USER、接硬禁止說明、最後一行照寫，1.2.45 P12」。
+- research-and-dating.md：「任務不涉及任何來源日期時不用列（ADR-047）。」之後加一句日期一行的範圍（只在引用外部來源時寫；只讀 VERSION 對齊、停止回覆不寫；1.2.45 P13）；原句不改。
+- skill-testing.md：「修規則要對準通則」子項下加一個子子項「新題的用詞」（新題的題目、觸發詞與 forbidden 不得照抄這次修補新增的關鍵用詞或例詞，領域名稱、狀態標籤等固定名詞不算；1.2.45 P15）；原句不改。
+- 這三處修改後，三個附檔的區段雜湊和上方兩張表不同；上方兩張表不改。本版改後的整檔 SHA-256（整個檔案，不是上方表的區段雜湊）如下，之後再改這三檔時在本檔新增一節：
+
+| 附檔 | 1.2.45 整檔 SHA-256 |
+|---|---|
+| references/core-index.md | 52bcb76e01ff717d2f95ecbfd50ce2a58414a813a3e2116d1f1bc4a3b629cd1b |
+| references/research-and-dating.md | 441d93c0ba7f414e936efbd88736cb6e332f4b734a1c68a0df83cd6064ceb78a |
+| references/skill-testing.md | 68b20b26c09921ad711590b7628642faa08b2dfb7a6a8ae2f069df546a9cf65d |
