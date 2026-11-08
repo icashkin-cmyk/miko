@@ -1,4 +1,4 @@
-# 每次推送 main 自動跑 check_repo（含 C11 Skill 保真：比對推送前版本；C8／C12 私密字用 repo Secret MIKO_PRIVATE_WORDS，未設定時只做格式檢查）
+# 每次推送 main 自動跑 check_repo（含 C11 Skill 保真：比對推送前版本；C3／C12 私密字用 repo Secret MIKO_PRIVATE_WORDS，未設定時只做格式檢查；C13 擋本機設定、環境變數、憑證檔與金鑰樣式）
 name: check_repo
 on:
   push:

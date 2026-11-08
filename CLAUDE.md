@@ -16,7 +16,7 @@
 README 標題版本、VERSION 四行（第 4 行是 README 的 SHA-256）、CHANGELOG.md 新增一行（只新增）、adapters/README.md 版本、skills/miko-core/SKILL.md 的「對應正本」；並在 Drive MIKO_ARCHIVE 存一份 DELTA（治理專案指示「正本改版」；check_repo C1、C10 檢查版本一致與 SHA-256）。
 
 ## 推送前後
-- 推送前執行 python3 -I -B tests/check_repo.py，私密字清單用環境變數 MIKO_PRIVATE_WORDS 帶入，12 項全過才推；清單不得寫進 repo、commit 訊息或任何公開檔（治理專案指示「推送前必做」）。會跑到 MIKO 暫停中任務的檢查項怎麼標，依 skills/make-skill S9。
+- 推送前執行 python3 -I -B tests/check_repo.py，私密字清單用環境變數 MIKO_PRIVATE_WORDS 帶入，13 項全過才推；清單不得寫進 repo、commit 訊息或任何公開檔（治理專案指示「推送前必做」）。會跑到 MIKO 暫停中任務的檢查項怎麼標，依 skills/make-skill S9。
 - 規則或 Skill 修改先經獨立稽核，不自審（skills/independent-audit §3 擇一方式）；稽核後再改任何一個字要重新稽核（miko-core ADR-050）。
 - 推送後確認 GitHub Actions check_repo 通過，raw 讀回主要檔案比對 SHA-256（治理專案指示，推送後確認；skills/make-skill S10）。
 

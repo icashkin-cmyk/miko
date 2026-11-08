@@ -6,6 +6,52 @@ res = []
 def ok(name, cond, note=''):
     res.append((name, bool(cond), note))
 
+# C11 Skill 保真：改過的 skills/*/SKILL.md 與上一版（HEAD）比，子句保留率要 ≥ 90%；刪除要在正文「## 刪除清單」逐條列出理由
+# 1.2.41（P-I1、P-I2）：只認行首「## 刪除清單」標題；保留率 < 90% 時刪除清單節要比上一版多出新條目；訊息寫實際保留率；
+# 沒逐字保留的子句即使 PASS 也逐條列出（只顯示不擋）；可單獨執行：python3 tests/check_repo.py --only C11
+def _seg(t): return [x.strip(' -`') for x in re.split(r'[，；。\n：]', t) if len(x.strip(' -`')) >= 6]
+def _dl(t):   # 所有行首「## 刪除清單」節的條目行（到下一個 ## 標題或檔尾）；條目＝以「- 」開頭且含「：」或「理由」；只驗形式，內容由 make-skill S5 與稽核看
+    out = set()
+    for m in re.finditer(r'^## 刪除清單[^\n]*\n(.*?)(?=^## |\Z)', t, re.M | re.S):
+        out |= {x.strip() for x in m.group(1).splitlines() if x.strip().startswith('- ') and ('：' in x or '理由' in x)}
+    return out
+c11_lost = []
+def c11():
+    low, info = [], []
+    try:
+        for f in sorted((R / 'skills').glob('*/SKILL.md')):
+            rel = f.relative_to(R).as_posix()
+            base = os.environ.get('MIKO_BASE', 'HEAD')   # CI 用 MIKO_BASE=推送前的 commit，比對本次推送
+            old = subprocess.run(['git', '-C', str(R), 'show', f'{base}:{rel}'], capture_output=True, text=True)
+            if old.returncode != 0: continue
+            new = f.read_text(encoding='utf-8')
+            if new == old.stdout: continue
+            so = _seg(old.stdout); miss = [x for x in so if x not in new]; kept = len(so) - len(miss); rate = kept / len(so) if so else 1
+            added = _dl(new) - _dl(old.stdout)
+            if miss: c11_lost.append((rel, miss))
+            msg = f'{rel} 保留 {kept}/{len(so)}={rate:.3f}'
+            if rate < 0.9 and not added: low.append(msg + '，行首「## 刪除清單」節本次沒有新增條目（條目以「- 」開頭且含「：」或「理由」，只驗形式）')
+            else: info.append(msg + (f'，刪除清單新增 {len(added)} 行' if rate < 0.9 else ''))
+        ok('C11 Skill 改版不得大量精簡（子句保留 ≥ 90%，否則行首「## 刪除清單」本次要有新增條目）', not low, '；'.join(low + info) or '無改動')
+    except Exception as ex:
+        ok('C11 Skill 改版不得大量精簡（子句保留 ≥ 90%，否則行首「## 刪除清單」本次要有新增條目）', False, f'執行失敗：{ex}')
+
+def report():
+    for n, c, note in res:
+        print(('PASS' if c else 'FAIL'), n, ('｜' + note) if note else '')
+    for rel, miss in c11_lost:
+        print(f'C11 遺失子句（只顯示不擋，逐條要有處置：改寫到哪、搬到哪或進刪除清單）{rel} 共 {len(miss)} 條：')
+        for x in miss: print('  - ' + x)
+    print(f'合計：{sum(c for _, c, _ in res)}/{len(res)} PASS')
+    sys.exit(0 if all(c for _, c, _ in res) else 1)
+
+ONLY = sys.argv[sys.argv.index('--only') + 1] if '--only' in sys.argv and sys.argv.index('--only') + 1 < len(sys.argv) else None
+if '--only' in sys.argv and ONLY != 'C11':
+    print(f'--only 目前只支援 C11，收到：{ONLY}'); sys.exit(2)
+if ONLY == 'C11':
+    c11(); report()
+
+
 readme = (R / 'README.md').read_text(encoding='utf-8')
 ver = (R / 'VERSION').read_text(encoding='utf-8').split('\n')[0].strip()
 chg = (R / 'CHANGELOG.md').read_text(encoding='utf-8')
@@ -15,15 +61,17 @@ m = re.search(r'對應正本：([0-9.]+)', core)
 ok('C1 版本一致', f'v{ver}｜' in readme and f'- {ver}（' in chg and f'VERSION 的 {ver}' in adp and f'正本 v{ver}」' in adp and m and m.group(1) == ver,
    f'VERSION={ver} miko-core 對應正本={m.group(1) if m else None}')
 
-bad = []
+bad, nover = [], []
 for p in sorted((R / 'skills').glob('*/SKILL.md')):
     t = p.read_text(encoding='utf-8')
     fm = re.match(r'^---\n(.*?)\n---\n', t, re.S)
+    h1 = re.search(r'^# (.*)$', t[fm.end():] if fm else t, re.M)   # 1.2.41（P-I3）：frontmatter 後第一個 # 標題要含 v數字；caveman、grilling、dghp-work-handoff 補完前只提示不擋
+    if not (h1 and re.search(r'v\d', h1.group(1))): nover.append(p.parent.name)
     name = re.search(r'^name:\s*"?([^"\n]+)"?\s*$', fm.group(1), re.M) if fm else None
     desc = re.search(r'^description:\s*\S', fm.group(1), re.M) if fm else None
     if not (fm and name and desc and name.group(1).strip() == p.parent.name):
         bad.append(p.parent.name)
-ok('C2 Skill 開頭格式（name 與資料夾同名、有 description）', not bad, f'不合格：{bad}')
+ok('C2 Skill 開頭格式（name 與資料夾同名、有 description）', not bad, f'不合格：{bad}；提示（不擋）標題沒有版號：{nover}')
 
 words = [w for w in os.environ.get('MIKO_PRIVATE_WORDS', '').split(',') if w]
 pat = re.compile(r'[\w.+-]+@[\w-]+\.(com|tw|net|org)|/home/|/Users/|~/[A-Z]' + ''.join('|' + re.escape(w) for w in words))
@@ -41,8 +89,8 @@ pyc = [str(f.relative_to(R)) for f in files if f.suffix == '.pyc' or '__pycache_
 hits += pyc
 ok('C3 公開檔（含 .csv、二進位、快取檔）無 email、本機路徑與私人關鍵字', not hits, f'命中：{hits[:5]}；私人關鍵字 {len(words)} 個')
 
-miss = [t for t in [f'T{i}' for i in range(1, 30)] + ['T15B', 'T15C', 'T15D', 'T15E', 'T29B'] if f'| {t} |' not in readme]
-ok('C4 回歸測試 T1～T29、T15B～T15E 與 T29B 都在正本 §8', not miss, f'缺：{miss}')
+miss = [t for t in [f'T{i}' for i in range(1, 38)] + ['T15B', 'T15C', 'T15D', 'T15E', 'T29B'] if f'| {t} |' not in readme]
+ok('C4 回歸測試 T1～T37、T15B～T15E 與 T29B 都在正本 §8', not miss, f'缺：{miss}')
 
 log = (R / 'sync' / 'LOG.md').read_text(encoding='utf-8') if (R / 'sync' / 'LOG.md').exists() else ''
 ok('C5 sync 檔存在且 LOG 有表頭', (R / 'sync' / 'CLAUDE_STATUS.md').exists() and '| 時間（台北） | 提出方 | 內容 | 決定 | 負責方 | 狀態 |' in log)
@@ -152,22 +200,8 @@ vl = (R / 'VERSION').read_text(encoding='utf-8').split('\n')
 rsha = hashlib.sha256((R / 'README.md').read_bytes()).hexdigest()
 ok('C10 VERSION 第 4 行等於 README 的 SHA-256', len(vl) > 3 and vl[3].strip() == rsha, f'README={rsha[:12]}')
 
-# C11 Skill 保真：改過的 skills/*/SKILL.md 與上一版（HEAD）比，子句保留率要 ≥ 90%；刪除要在正文「## 刪除清單」逐條列出理由
-def _seg(t): return [x.strip(' -`') for x in re.split(r'[，；。\n：]', t) if len(x.strip(' -`')) >= 6]
-low = []
-try:
-    for f in sorted((R / 'skills').glob('*/SKILL.md')):
-        rel = f.relative_to(R).as_posix()
-        base = os.environ.get('MIKO_BASE', 'HEAD')   # CI 用 MIKO_BASE=推送前的 commit，比對本次推送
-        old = subprocess.run(['git', '-C', str(R), 'show', f'{base}:{rel}'], capture_output=True, text=True)
-        if old.returncode != 0: continue
-        new = f.read_text(encoding='utf-8')
-        if new == old.stdout: continue
-        so = _seg(old.stdout); kept = sum(1 for x in so if x in new); rate = kept / len(so) if so else 1
-        if rate < 0.9 and '## 刪除清單' not in new: low.append(f'{rel} 保留 {kept}/{len(so)}')
-    ok('C11 Skill 改版不得大量精簡（子句保留 ≥ 90%，否則要有刪除清單）', not low, '；'.join(low) or '無改動或保留足夠')
-except Exception as ex:
-    ok('C11 Skill 改版不得大量精簡（子句保留 ≥ 90%，否則要有刪除清單）', False, f'執行失敗：{ex}')
+# C11 定義在檔頭（可用 --only C11 單獨執行）
+c11()
 
 # C12 私密字也掃 skills/ 下的 xlsx 與 csv 內容（C8 只掃文字檔；2026-11-04 範本曾夾帶工程名稱）
 try:
@@ -184,7 +218,28 @@ try:
 except Exception as ex:
     ok('C12 xlsx／csv 內容無私密字', False, f'執行失敗：{ex}')
 
-for n, c, note in res:
-    print(('PASS' if c else 'FAIL'), n, ('｜' + note) if note else '')
-print(f'合計：{sum(c for _, c, _ in res)}/{len(res)} PASS')
-sys.exit(0 if all(c for _, c, _ in res) else 1)
+# C13 不得提交本機設定、環境變數、憑證檔與金鑰樣式（1.2.41；金鑰外洩防護串 2026-11-08 提案）
+# 命中只印「檔名：類型」，不印字串；本檔自身含樣式定義，不掃
+import fnmatch
+BAN13 = ['.env', '.env.*', '*.key', '*.pem', '*.p12', '*.pfx', '.netrc', 'secrets.toml']
+KEYPAT = {
+    'anthropic': r'sk-ant-[A-Za-z0-9_\-]{20,}', 'openai': r'sk-(proj-)?[A-Za-z0-9]{20,}',
+    'github': r'(ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{40,}',
+    'google': r'AIza[0-9A-Za-z_\-]{35}|GOCSPX-[A-Za-z0-9_\-]{20,}', 'aws': r'AKIA[0-9A-Z]{16}',
+    'slack': r'xox[baprs]-[A-Za-z0-9\-]{10,}', 'private_key': r'-----BEGIN [A-Z ]*PRIVATE KEY-----',
+    'assign': r'(?i)(api[_-]?key|token|secret|password|passwd)\s*[:=]\s*["\']?[A-Za-z0-9_\-\.]{24,}',
+}
+bad13 = []
+try:
+    for f in files:
+        rel = f.relative_to(R).as_posix(); name = f.name
+        if name != '.env.example' and (('/.claude/' in '/' + rel and name.endswith('.local.json')) or any(fnmatch.fnmatch(name, b) for b in BAN13)):
+            bad13.append(f'{rel}：禁止提交的檔')
+        if f.is_file() and name != 'check_repo.py':
+            tx = f.read_bytes().decode('utf-8', 'ignore')
+            bad13 += [f'{rel}：{k}' for k, pt in KEYPAT.items() if re.search(pt, tx)]
+    ok('C13 不得提交本機設定、環境變數、憑證檔與金鑰樣式', not bad13, f'共 {len(bad13)} 筆；命中（只列檔名與類型）：{bad13[:8]}')
+except Exception as ex:
+    ok('C13 不得提交本機設定、環境變數、憑證檔與金鑰樣式', False, f'執行失敗：{ex}')
+
+report()
