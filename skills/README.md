@@ -11,7 +11,7 @@
 | dghp-travel | v0.6 | 已採用 | 未核對（同上） |
 | dghp-metaphysical-integrated-analysis | v0.2 | 已採用 | 未核對（同上） |
 | gmail-cleanup | v0.3 | 已採用 | 未核對（同上；「解決」節為 §2 清理判定） |
-| tw-alert-check | v0.4 | v0.2 已採用；v0.4（1.2.45 在 §2 開頭加「凌晨說明天」兩天都給、AC-W9，ADR-068）同樣不標已採用，理由同 v0.3；v0.3 已推上 main 但不標已採用：本版在 §2 流程加第 0 步（困難卡）與 §1 一句（同機關兩頁不一致標 CONFLICT）卻未補六欄（ADR-058 缺欄不得標已採用），照 1.2.42 safe-implementation 的前例，六欄與逐步閘門排在 tw-alert-check 升級站補齊；補齊前照 v0.4 全文執行（ADR-066、ADR-068） | 未核對（同上；「解決」節為 §2 流程） |
+| tw-alert-check | v0.5 | v0.2 已採用；v0.5（1.2.48 在 §3 加日期行每個官方來源一行、AC-W10，ADR-071）同樣不標已採用，理由同 v0.3；v0.4（1.2.45 在 §2 開頭加「凌晨說明天」兩天都給、AC-W9，ADR-068）同樣不標已採用，理由同 v0.3；v0.3 已推上 main 但不標已採用：本版在 §2 流程加第 0 步（困難卡）與 §1 一句（同機關兩頁不一致標 CONFLICT）卻未補六欄（ADR-058 缺欄不得標已採用），照 1.2.42 safe-implementation 的前例，六欄與逐步閘門排在 tw-alert-check 升級站補齊；補齊前照 v0.5 全文執行（ADR-066、ADR-068、ADR-071） | 未核對（同上；「解決」節為 §2 流程） |
 | photo-inspection-log | v0.22 | 已採用 | 未核對（writer：照片專案） |
 | tw-backtest-workflow | v1.8 | 已採用 | 未核對（writer：臺股專案） |
 | safe-implementation | v0.3 | v0.2 已採用；v0.3 已推上 main 但不標已採用：本版改動「解決」1 與「檢查」節指令條目卻未補六欄（ADR-058 缺欄不得標已採用），總召 2026-11-09 裁定本版只局部加兩句、不整份改寫，六欄與逐步閘門排在 16 Skill 分批升級的 safe-implementation 站補齊；補齊前照 v0.3 全文執行（ADR-065） | 未核對（通用 Skill，有可執行步驟，比照列出；本版改了「解決」節，補齊排程同左） |
