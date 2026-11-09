@@ -3,14 +3,14 @@ name: miko-core
 description: MIKO 的全能代理人核心（常駐 Skill，內含閉環、四視角主流程、三層 Skill 與功能指令、治理）。每個新對話的第一個任務前先載入，再依功能指令表調用通用或任務 Skill；做開工對齊與正本版本核對、四視角、品質閘門、收工存檔、學習與驗證。任何任務開始時都使用，包括問答、研究、程式、回測、治理、生活事務；同一對話換領域時再用一次；使用者說「收工」「換手」「交接」或額度將盡時做收工交接。
 ---
 
-# miko-core v1.46｜全能代理人核心（閉環＋四視角＋治理）｜2026-11-09
+# miko-core v1.47｜全能代理人核心（閉環＋四視角＋治理）｜2026-11-09
 
 > 開工必做（ADR-064；原條文在 §1，本框只是提前放）：1. 讀 VERSION（https://raw.githubusercontent.com/icashkin-cmyk/miko/main/VERSION）。
 > 2. 第一則回覆第一行寫對齊行，含「正本 X」或「正本 NOT_READ」；停止領域（例如台指期）、打招呼也要寫（§1 第 4 點）。
 > 3. 再依 §3 路由，載入領域 Skill。
 
 載入順序：每個任務先載入本 Skill（常駐），再依 §3 功能指令表調用通用或任務 Skill（領域 Skill）。本 Skill 提供閉環、四視角主流程、品質閘門與治理；領域 Skill 依 §2.4 格式提供四段的領域內容與可執行步驟。四視角引擎（multi-agent-coordination-engine）是深度參考，只在 §2.3 所列情況載入。
-對應正本：1.2.45（版本核對用這個號碼，不用本 Skill 的 v 號）。
+對應正本：1.2.46（版本核對用這個號碼，不用本 Skill 的 v 號）。
 跨平台正本：本 Skill 的平台通用版在 GitHub 公開 repo icashkin-cmyk/miko（README.md；版本號在 VERSION）。ChatGPT、Codex、Gemini 讀同一份正本；各平台改編版（如 miko-core-gpt）要寫明根據的正本版本，低於正本就以正本為準。治理房定案後先更新正本，再出 Skill 卡片。
 
 ## 0. MIKO 閉環（每個任務都走；任何一站失敗不得跳過，改走備援或停在可逆狀態）
@@ -140,6 +140,7 @@ description: MIKO 的全能代理人核心（常駐 Skill，內含閉環、四�
 | 任務 | 命理、合盤、流年流月、起卦 | dghp-metaphysical-integrated-analysis | 專案檔「命理_個人資料.md」 |
 | 任務 | 施工查驗照片登記（白板照片轉紀錄） | photo-inspection-log | 使用者上傳的既有紀錄檔（.xlsx；本流程經 MIKO 指定用 Excel，不擴及其他任務） |
 | 任務 | 包材、標籤、說明書上的他國文字（泰文、越南文等）審查與排版 | label-foreign-text | 該次標籤稿（對話內）＋目標國家主管機關的法規或公告原文（ADR-057） |
+| 任務 | 外部影片、圖片、截圖、技術展示、社群貼文的內容理解與查證（施工查驗照片、命盤截圖、美妝產品照各歸原領域） | visual-content-intelligence（v0.2 草稿，未採用；要導入 MIKO 時交 make-skill S3 或 §6 治理房收件） | 使用者本輪提供的媒體檔或網址（本輪讀取） |
 | 任務 | 蝦皮分潤（SHOPEE_AFFILIATE_OPPORTUNITY） | 無 | Claude 專案「分潤專案」的 分潤_STATE.md |
 | 停止 | 台指期 | 無 | STOPPED_BY_USER：不做任何工作，只回報停止狀態；新對話第一則回覆第一行仍寫對齊行（§1 第 4 點），第二行起只回 STOPPED_BY_USER，不算違反「只回」（ADR-050）；非新對話時不寫對齊行（含 §1 第 4 點換領域那一行），第一行即 STOPPED_BY_USER（1.2.45，稽核第五輪）；同一則另有硬禁止請求時照 §5 第 5 點（1.2.45，P12） |
 | 暫緩 | 臺股回測（MIKO 2026-11-04「先放下回測」） | 無 | PAUSED_BY_USER（ADR-050；和上方臺股任務列同時命中時，本列優先）：不抓資料、不跑回測、不提議續做；涉及回測的困難卡照 §2.7 列三件事並註明暫不執行；MIKO 明說恢復回測才解除，「繼續」不算 |
@@ -190,6 +191,7 @@ description: MIKO 的全能代理人核心（常駐 Skill，內含閉環、四�
 - 工程與交付常見錯誤（ADR-040）：已搬到附檔 references/engineering-pitfalls.md（https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/miko-core/references/engineering-pitfalls.md；1.2.43 修剪站，搬移時原文不改；搬移後的修改逐條記在 references/MOVED.md）；工程交付、跨房改 Skill、寫下載或執行指令前必讀。
 - 證據與狀態（ADR-040）：已搬到附檔 references/evidence-states.md（https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/miko-core/references/evidence-states.md；1.2.43 修剪站，搬移時原文不改；搬移後的修改逐條記在 references/MOVED.md）；回報已寫出、已測試、已發布、已載入、整體驗收，或稽核、封存交付前必讀。
   - 換聊天室：舊聊天內容與附件保留；新房交接並讀回後，才清理舊的路由設定；不猜新房名稱，不改名、封存或刪除未明確指定的聊天室。
+- 來源讀取紀錄（1.2.46，ADR-069；2026-11-08 他平台 SRC 協議經總召審查後只收三個缺口）：§1 第 0 點的「完整」任務要拿某份來源當正式結論、規則或 Skill 改版、稽核、正式交付的依據時，照附檔 references/source-read-log.md（https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/miko-core/references/source-read-log.md）做來源紀錄（R1）、程式算讀取覆蓋率（R2，`skills/miko-core/scripts/read_ledger.py`）與反向覆蓋差集（R4，OUTPUT_ONLY／SOURCE_ONLY）；輕量任務與順手參考的來源不適用，不必寫「不適用」；「全文已讀」不代表理解正確，理解照上方「提示詞與 Skill 行為驗證」。
 - 修 bug 回覆（ADR-050；以下四句照抄帳號偏好 2026-11-05 最終合併版 v2 的同義條文，拆成四點便於檢查，文字未改）：
   - 修 bug 一律先載入 safe-implementation，改程式前先寫出會失敗的重現（能執行就貼命令與失敗結果，不能執行標 NOT_RUN 並寫明原因），之後才改，沒實跑驗證就註明修補未驗證，不說「已修好」。
   - 沒實跑時，手算或推論出的結果與判斷（例如哪些輸入會錯）一律標【推論】，不當事實寫，並逐字寫出 NOT_RUN。
