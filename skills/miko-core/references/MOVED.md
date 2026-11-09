@@ -41,3 +41,6 @@
 | references/core-index.md | 52bcb76e01ff717d2f95ecbfd50ce2a58414a813a3e2116d1f1bc4a3b629cd1b |
 | references/research-and-dating.md | 441d93c0ba7f414e936efbd88736cb6e332f4b734a1c68a0df83cd6064ceb78a |
 | references/skill-testing.md | 68b20b26c09921ad711590b7628642faa08b2dfb7a6a8ae2f069df546a9cf65d |
+
+## 1.2.47 勘誤（ADR-070，只新增）
+- 上方「本版推送時的區段雜湊」表 core-index.md 那列的「見下方逐條」應為「見上方逐條」：K9 的修改說明在該表上方（「搬移後的內容修改」那一條）。表格儲存格不改，以本條為準。
