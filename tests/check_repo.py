@@ -60,15 +60,15 @@ def report():
         print(f'C11 遺失子句（只顯示不擋，逐條要有處置：改寫到哪、搬到哪或進刪除清單）{rel} 共 {len(miss)} 條：')
         for x in miss: print('  - ' + x)
     for n in NR:
-        print('NOT_RUN', n, '｜回測 PAUSED_BY_USER，不執行 bt_min.py，不算 PASS')
-    tail = f'；NOT_RUN {len(NR)} 項（{"、".join(n.split()[0] for n in NR)}，PAUSED_BY_USER，不算 PASS）' if NR else ''
+        print('NOT_RUN', n, '｜帶 --skip-backtest 略過，不執行 bt_min.py，不算 PASS')
+    tail = f'；NOT_RUN {len(NR)} 項（{"、".join(n.split()[0] for n in NR)}，--skip-backtest 略過，不算 PASS）' if NR else ''
     print(f'合計：{sum(c for _, c, _ in res)}/{len(res)} PASS' + tail)
     if NR and os.environ.get('GITHUB_ACTIONS') == 'true':   # CI 頁面的警示與摘要也寫 NOT_RUN，不寫成 PASS
-        print(f'::warning title=check_repo NOT_RUN::{"、".join(n.split()[0] for n in NR)} NOT_RUN（PAUSED_BY_USER），不算 PASS')
+        print(f'::warning title=check_repo NOT_RUN::{"、".join(n.split()[0] for n in NR)} NOT_RUN（--skip-backtest 略過），不算 PASS')
         sp = os.environ.get('GITHUB_STEP_SUMMARY')
         if sp:
             with open(sp, 'a', encoding='utf-8') as fh:
-                fh.write(f'## check_repo\n\n- {"、".join(n.split()[0] for n in NR)} NOT_RUN（PAUSED_BY_USER），不算 PASS\n- 合計：{sum(c for _, c, _ in res)}/{len(res)} PASS\n' + ''.join(f'- FAIL {n}\n' for n, c, _ in res if not c) + ''.join(f'- NOT_RUN {n}（PAUSED_BY_USER，不算 PASS）\n' for n in NR))
+                fh.write(f'## check_repo\n\n- {"、".join(n.split()[0] for n in NR)} NOT_RUN（--skip-backtest 略過），不算 PASS\n- 合計：{sum(c for _, c, _ in res)}/{len(res)} PASS\n' + ''.join(f'- FAIL {n}\n' for n, c, _ in res if not c) + ''.join(f'- NOT_RUN {n}（--skip-backtest 略過，不算 PASS）\n' for n in NR))
     sys.exit(0 if all(c for _, c, _ in res) else 1)
 
 ONLY = sys.argv[sys.argv.index('--only') + 1] if '--only' in sys.argv and sys.argv.index('--only') + 1 < len(sys.argv) else None
@@ -78,6 +78,7 @@ if ONLY == 'C11':
     c11(); report()
 
 # 1.2.44（ADR-067）：--skip-backtest 略過 C6、C9（兩項會執行回測引擎 bt_min.py）；回測 PAUSED_BY_USER 期間 CI 與本機都帶這個參數；MIKO 明說恢復回測後從 check.yml 拿掉
+# 1.2.51（ADR-074，取代 ADR-067 的方向）：MIKO 2026-11-09 決策 C6、C9 是固定樣本的引擎回歸檢查，不算違反回測暫停；CI 不再帶這個參數，本機只當選項
 SKIP_BT = '--skip-backtest' in sys.argv
 
 
@@ -130,7 +131,7 @@ log = (R / 'sync' / 'LOG.md').read_text(encoding='utf-8') if (R / 'sync' / 'LOG.
 ok('C5 sync 檔存在且 LOG 有表頭', (R / 'sync' / 'CLAUDE_STATUS.md').exists() and '| 時間（台北） | 提出方 | 內容 | 決定 | 負責方 | 狀態 |' in log)
 
 sd = R / 'skills' / 'tw-backtest-workflow' / 'scripts'
-if SKIP_BT:   # 1.2.44（ADR-067）：回測 PAUSED_BY_USER 期間不執行 bt_min.py，標 NOT_RUN，不算 PASS
+if SKIP_BT:   # 1.2.44（ADR-067）起的選項；1.2.51（ADR-074）起只在本機明確帶參數時略過：不執行 bt_min.py，標 NOT_RUN，不算 PASS
     NR.append('C6 bt_min.py 實跑結果與預期一致（含除息日樣本：給事件檔就停止）')
 else:
     exp = json.loads((R / 'tests' / 'expected_bt_min.json').read_text(encoding='utf-8'))
