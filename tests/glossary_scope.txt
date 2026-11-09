@@ -1,0 +1,9 @@
+# C16 名詞檢查範圍（1.2.53，ADR-076）：列在這裡的檔，skills/miko-core/references/term-definitions.md 每個短名第一次出現的那一行（frontmatter、程式碼區塊與 H1 標題不算）要有緊鄰的「短名（正式名稱：…」，H1 下第一個非空行是名詞行
+# 先收總召是 writer 的檔；其他 Skill 由各自的 writer 照提案改完、本機 C16 PASS 後加一行；移除要寫進 CHANGELOG 並附理由；miko-core references/ 其他附檔、CLAUDE.md、skills/README.md 總召是 writer，下一版補名詞行後加入（1.2.53 稽核第二輪 #11）
+README.md
+skills/miko-core/SKILL.md
+skills/make-skill/SKILL.md
+skills/multi-agent-coordination-engine/SKILL.md
+skills/independent-audit/SKILL.md
+skills/dghp-work-handoff/SKILL.md
+skills/grilling/SKILL.md

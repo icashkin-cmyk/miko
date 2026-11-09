@@ -124,8 +124,8 @@ pyc = [str(f.relative_to(R)) for f in files if f.suffix == '.pyc' or '__pycache_
 hits += pyc
 ok('C3 公開檔（含 .csv、二進位、快取檔）無 email、本機路徑與私人關鍵字', not hits, f'命中：{hits[:5]}；私人關鍵字 {len(words)} 個')
 
-miss = [t for t in [f'T{i}' for i in range(1, 50)] + ['T15B', 'T15C', 'T15D', 'T15E', 'T29B'] if f'| {t} |' not in readme]
-ok('C4 回歸測試 T1～T49、T15B～T15E 與 T29B 都在正本 §8', not miss, f'缺：{miss}')
+miss = [t for t in [f'T{i}' for i in range(1, 54)] + ['T15B', 'T15C', 'T15D', 'T15E', 'T29B'] if f'| {t} |' not in readme]
+ok('C4 回歸測試 T1～T53、T15B～T15E 與 T29B 都在正本 §8', not miss, f'缺：{miss}')
 
 log = (R / 'sync' / 'LOG.md').read_text(encoding='utf-8') if (R / 'sync' / 'LOG.md').exists() else ''
 ok('C5 sync 檔存在且 LOG 有表頭', (R / 'sync' / 'CLAUDE_STATUS.md').exists() and '| 時間（台北） | 提出方 | 內容 | 決定 | 負責方 | 狀態 |' in log)
@@ -307,5 +307,16 @@ try:
        f'引用 {len(refs15)} 個；例外 {len(ex15 & refs15)} 個（出處未核實，見 tests/c15_exceptions.txt）；找不到出處：{miss15 or "無"}')
 except Exception as ex:
     ok('C15 出處編號提示（只提示不擋）：正文引用的 ADR 在 CHANGELOG 或 README 有出處', True, f'提示項執行失敗（不擋）：{ex}')
+
+# C16 詞彙定義表與第一次出現（1.2.53，ADR-076；MIKO 2026-11-09 短名詞要寫正式名稱、完整定義放 references/term-definitions.md）：
+# 定義表每個名詞十一節齊全、類型五選一、短名與正式名稱不重複；tests/glossary_scope.txt 列的檔，每個短名第一次出現就有緊鄰的「短名（正式名稱：…」、H1 下第一個非空行是名詞行。
+# 邏輯在 skills/miko-core/scripts/terms_check.py（代入卡等 repo 外的檔用同一支實跑）；不在定義表裡的新造短名詞檢查不到
+try:
+    sc16 = [x.split()[0] for x in (R / 'tests' / 'glossary_scope.txt').read_text(encoding='utf-8').splitlines() if x.strip() and not x.startswith('#')]
+    r16 = subprocess.run([sys.executable, '-I', '-B', str(R / 'skills' / 'miko-core' / 'scripts' / 'terms_check.py'), str(R / 'skills' / 'miko-core' / 'references' / 'term-definitions.md')] + [str(R / x) for x in sc16], capture_output=True, text=True)
+    lines16 = r16.stdout.strip().splitlines()
+    ok('C16 詞彙定義表十一節齊全，範圍內各檔短名第一次出現就寫正式名稱', r16.returncode == 0 and sc16, f'範圍 {len(sc16)} 檔；' + '；'.join(lines16[:4]))
+except Exception as ex:
+    ok('C16 詞彙定義表十一節齊全，範圍內各檔短名第一次出現就寫正式名稱', False, f'執行失敗：{ex}')
 
 report()
