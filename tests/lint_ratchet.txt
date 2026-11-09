@@ -1,3 +1,4 @@
 # C14 棘輪清單：已通過升級站的 Skill（skill_lint PASS），之後不得退回 FAIL
 # 每過一站由升級串加一行；移除要寫進 CHANGELOG 並附理由
 make-skill   # 1.2.39 起 PASS
+visual-content-intelligence   # 1.2.46 起 PASS（新寫，ADR-069）

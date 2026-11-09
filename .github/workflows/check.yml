@@ -30,6 +30,11 @@ jobs:
         if: always()
         working-directory: skills/dghp-travel/scripts
         run: python3 -I -B -m unittest discover -s tests
+      - name: visual-content-intelligence 與 read_ledger 程式測試（1.2.46 ADR-069；先裝 ffmpeg，結束碼 5＝媒體題 NOT_RUN 也判紅）
+        if: always()
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+          python3 -I -B -W ignore skills/visual-content-intelligence/scripts/test_vci.py
       - name: photo-inspection-log 程式冒煙測試
         if: always()
         run: python3 -I -B tests/test_photo_scripts.py

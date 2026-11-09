@@ -1,0 +1,26 @@
+{
+ "file": "ledger_src.md",
+ "file_sha256": "c164fb517fd3a0a9082b1de5b63e0d08ff6a8f436288fa6faeab9676604f4518",
+ "bytes": 682,
+ "lines": 25,
+ "lines_per_chunk": 10,
+ "bytes_per_chunk": 24000,
+ "chunks_total": 3,
+ "chunks": [
+  {
+   "k": 1,
+   "start": 1,
+   "end": 10
+  },
+  {
+   "k": 2,
+   "start": 11,
+   "end": 20
+  },
+  {
+   "k": 3,
+   "start": 21,
+   "end": 25
+  }
+ ]
+}

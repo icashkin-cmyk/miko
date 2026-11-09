@@ -1,0 +1,10 @@
+INFO K2 影格覆蓋 3/4
+INFO K5 SOURCE_ONLY（只提示）：沒有被任何建議引用的主張 ['C2', 'C3', 'C4']
+FAIL K2 只看了 3/4 張影格，complete 不得為 true
+FAIL K4 C2 引用的影格 4 不在 frames_viewed（沒看過的畫面不得描述）
+FAIL K4 C3 是推論，status 只能 INFERENCE 或 UNKNOWN
+FAIL K4 C3 標 VERIFIED 但 evidence 缺 url 或日期一行
+FAIL K5 OUTPUT_ONLY：P2 引用不存在的主張 ['C9']
+FAIL K5 P2 miko_refs 要寫成 路徑@commit（7～40 位 hex），才看得出讀的是哪一版
+FAIL K7 PROPOSAL.md 漏寫 ['P2']
+FAIL 共 7 項
