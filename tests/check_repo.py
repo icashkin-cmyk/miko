@@ -6,6 +6,8 @@ res = []
 NR = []   # NOT_RUN 項（1.2.44）：只列名稱與原因，不算 PASS 也不算 FAIL
 def ok(name, cond, note=''):
     res.append((name, bool(cond), note))
+def _pw():   # 1.2.54（ADR-077）：私密字清單可用半形逗號、全形逗號、頓號或換行分隔，去掉前後空白；原本只切半形逗號，用全形逗號或換行分隔時 12 個字會被當成 1 個；限制：字本身含這些分隔符時會被切成幾段（只會多報、不會漏掃），清單裡的字不要含逗號、頓號
+    return [w.strip() for w in re.split(r'[,，、\r\n]', os.environ.get('MIKO_PRIVATE_WORDS', '')) if w.strip()]
 
 # C11 Skill 保真：改過的 skills/*/SKILL.md 與上一版（HEAD）比，子句保留率要 ≥ 90%；刪除要在正文「## 刪除清單」逐條列出理由
 # 1.2.41（P-I1、P-I2）：只認行首「## 刪除清單」標題；保留率 < 90% 時刪除清單節要比上一版多出新條目；訊息寫實際保留率；
@@ -63,6 +65,11 @@ def report():
         print('NOT_RUN', n, '｜帶 --skip-backtest 略過，不執行 bt_min.py，不算 PASS')
     tail = f'；NOT_RUN {len(NR)} 項（{"、".join(n.split()[0] for n in NR)}，--skip-backtest 略過，不算 PASS）' if NR else ''
     print(f'合計：{sum(c for _, c, _ in res)}/{len(res)} PASS' + tail)
+    # 1.2.54（ADR-077）：沒帶私密字清單時，C3／C12 只做格式檢查；明白印出來，不改 PASS／FAIL 判定（1.2.52 查到 CI 讀到空值）
+    if not _pw():
+        print('提示：私人關鍵字 0 個（MIKO_PRIVATE_WORDS 沒帶或是空值），C3／C12 沒有掃私密字，只做格式檢查')
+        if os.environ.get('GITHUB_ACTIONS') == 'true':
+            print('::warning title=check_repo 私密字 0 個::MIKO_PRIVATE_WORDS 讀到空值，C3／C12 只做格式檢查、沒有掃私密字；請確認 repo Secret 是否已設定')
     if NR and os.environ.get('GITHUB_ACTIONS') == 'true':   # CI 頁面的警示與摘要也寫 NOT_RUN，不寫成 PASS
         print(f'::warning title=check_repo NOT_RUN::{"、".join(n.split()[0] for n in NR)} NOT_RUN（--skip-backtest 略過），不算 PASS')
         sp = os.environ.get('GITHUB_STEP_SUMMARY')
@@ -108,7 +115,7 @@ for p in sorted((R / 'skills').glob('*/SKILL.md')):
     if len(dv) > 1024: bad.append(f'{p.parent.name}（description {len(dv)} 字 > 1024）')
 ok('C2 Skill 開頭格式（name 與資料夾同名、小寫連字號 ≤ 64 字、description ≤ 1024 字）', not bad, f'不合格：{bad}；提示（不擋）標題沒有版號：{nover}')
 
-words = [w for w in os.environ.get('MIKO_PRIVATE_WORDS', '').split(',') if w]
+words = _pw()
 pat = re.compile(r'[\w.+-]+@[\w-]+\.(com|tw|net|org)|/home/|/Users/|~/[A-Z]' + ''.join('|' + re.escape(w) for w in words))
 hits = []
 if (R / '.git').exists():
@@ -124,8 +131,8 @@ pyc = [str(f.relative_to(R)) for f in files if f.suffix == '.pyc' or '__pycache_
 hits += pyc
 ok('C3 公開檔（含 .csv、二進位、快取檔）無 email、本機路徑與私人關鍵字', not hits, f'命中：{hits[:5]}；私人關鍵字 {len(words)} 個')
 
-miss = [t for t in [f'T{i}' for i in range(1, 54)] + ['T15B', 'T15C', 'T15D', 'T15E', 'T29B'] if f'| {t} |' not in readme]
-ok('C4 回歸測試 T1～T53、T15B～T15E 與 T29B 都在正本 §8', not miss, f'缺：{miss}')
+miss = [t for t in [f'T{i}' for i in range(1, 55)] + ['T15B', 'T15C', 'T15D', 'T15E', 'T29B'] if f'| {t} |' not in readme]
+ok('C4 回歸測試 T1～T54、T15B～T15E 與 T29B 都在正本 §8', not miss, f'缺：{miss}')
 
 log = (R / 'sync' / 'LOG.md').read_text(encoding='utf-8') if (R / 'sync' / 'LOG.md').exists() else ''
 ok('C5 sync 檔存在且 LOG 有表頭', (R / 'sync' / 'CLAUDE_STATUS.md').exists() and '| 時間（台北） | 提出方 | 內容 | 決定 | 負責方 | 狀態 |' in log)
@@ -247,7 +254,7 @@ c11()
 # C12 私密字也掃 skills/ 下的 xlsx 與 csv 內容（C8 只掃文字檔；2026-11-04 範本曾夾帶工程名稱）
 try:
     from openpyxl import load_workbook
-    words = [w for w in os.environ.get('MIKO_PRIVATE_WORDS', '').split(',') if w]
+    words = _pw()
     hit = []
     for f in list((R / 'skills').rglob('*.xlsx')) + list((R / 'skills').rglob('*.csv')):
         if f.suffix == '.xlsx':
