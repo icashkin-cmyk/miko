@@ -3,6 +3,8 @@ name: "grilling"
 description: "逐輪拷問計畫或決策直到雙方理解一致。使用者說 grill、grill me、「拷問我」「對照文件拷問」「壓力測試這個方案」「逐題問到清楚」時使用；一般問答不使用。"
 ---
 
+> 名詞（1.2.53，ADR-076）：本檔短名詞第一次出現在這一行，寫成「短名（正式名稱）【類型】」；每個名詞的定義、觸發條件、執行動作、輸出／證據、完成判準、失敗處理見 miko-core「## 名詞表」（https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/miko-core/SKILL.md）。治理（正式名稱：規則版本、變更、授權、審查與正式放行管理）【流程】；正本（正式名稱：GitHub 上的正式規則來源與目前採用版本）【限制】。
+
 Interview the user relentlessly until you reach a shared understanding. Map this as a **design tree**: every decision branches into the decisions that hang off it.
 
 Work the tree in **rounds**. The **frontier** is every decision whose prerequisites are already settled: the questions you can ask _now_ without guessing at answers you haven't heard yet. Ask the whole frontier in one round: number each question and give your recommended answer. Then wait for the user's answers before the next round.
