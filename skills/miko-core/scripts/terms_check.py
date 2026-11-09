@@ -48,25 +48,35 @@ def body(text):
     return out, h1
 
 def tag_map(text):
-    return {m.group(1).strip(): m.group(2).strip() for m in re.finditer(r'^## (.+)\n### 正式名稱\n.*\n### 類型\n(.+)$', text, re.M)}
+    tags = {}
+    for b in re.split(r'^(?=## )', text, flags=re.M):
+        if not b.startswith('## '):
+            continue
+        m = re.search(r'^### 類型\s*\n(.*?)(?=^### |\Z)', b, re.M | re.S)
+        tags[b.splitlines()[0][3:].strip()] = m.group(1).strip() if m else ''
+    return tags
 
 def check_file(text, terms, tags=None):
     bad = []
     ls, h1 = body(text)
+    start = next((i for i in range((h1 or 0), len(ls)) if ls[i].strip()), None)
+    block = set()
+    if start is not None and ls[start].startswith('> 名詞'):
+        i = start
+        while i < len(ls) and ls[i].startswith('>'):
+            block.add(i); i += 1
     used = False
     for s, formal in terms:
-        for l in ls:
+        for i, l in enumerate(ls):
             if s in PAREN.sub('', l):
                 used = True
                 if not re.search(re.escape(f'{s}（正式名稱：{formal}') + '[）；]', l):
                     bad.append(f'「{s}」第一次出現的那一行沒有「{s}（正式名稱：{formal}）」：{l.strip()[:50]}')
-                elif tags and l.lstrip().startswith('> 名詞') and f'{s}（正式名稱：{formal}）{tags.get(s, "")}' not in l:
-                    bad.append(f'「{s}」在名詞行沒有緊接類型標籤 {tags.get(s)}：{l.strip()[:50]}')
+                elif tags is not None and i in block and f'{s}（正式名稱：{formal}）{tags.get(s, "")}' not in l:
+                    bad.append(f'「{s}」在名詞行沒有緊接類型標籤 {tags.get(s, "（定義表沒有類型）")}：{l.strip()[:50]}')
                 break
-    if used:
-        nxt = next((l for l in ls[(h1 or 0):] if l.strip()), '')
-        if not nxt.startswith('> 名詞'):
-            bad.append('H1 下第一個非空行不是「> 名詞」名詞行')
+    if used and start is None or used and not ls[start].startswith('> 名詞'):
+        bad.append('H1 下第一個非空行不是「> 名詞」名詞行')
     return bad
 
 def main(argv):
