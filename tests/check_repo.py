@@ -131,8 +131,8 @@ pyc = [str(f.relative_to(R)) for f in files if f.suffix == '.pyc' or '__pycache_
 hits += pyc
 ok('C3 公開檔（含 .csv、二進位、快取檔）無 email、本機路徑與私人關鍵字', not hits, f'命中：{hits[:5]}；私人關鍵字 {len(words)} 個')
 
-miss = [t for t in [f'T{i}' for i in range(1, 59)] + ['T15B', 'T15C', 'T15D', 'T15E', 'T29B'] if f'| {t} |' not in readme]
-ok('C4 回歸測試 T1～T58、T15B～T15E 與 T29B 都在正本 §8', not miss, f'缺：{miss}')
+miss = [t for t in [f'T{i}' for i in range(1, 61)] + ['T15B', 'T15C', 'T15D', 'T15E', 'T29B'] if f'| {t} |' not in readme]
+ok('C4 回歸測試 T1～T60、T15B～T15E 與 T29B 都在正本 §8', not miss, f'缺：{miss}')
 
 log = (R / 'sync' / 'LOG.md').read_text(encoding='utf-8') if (R / 'sync' / 'LOG.md').exists() else ''
 ok('C5 sync 檔存在且 LOG 有表頭', (R / 'sync' / 'CLAUDE_STATUS.md').exists() and '| 時間（台北） | 提出方 | 內容 | 決定 | 負責方 | 狀態 |' in log)
