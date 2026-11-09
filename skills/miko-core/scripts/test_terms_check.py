@@ -33,6 +33,9 @@ cases = [
     ('程式碼區塊裡的「# 」不當成 H1、區塊內短名不算', run(DEFS, '```\n# 註解 甲詞\n```\n# 標題 v1\n\n> 名詞：甲詞（正式名稱：甲類的完整說法）【檢核】。\n'), 0),
     ('受檢檔沒用到短名（不檢查）', run(DEFS, '# 標題 v1\n無關內容\n'), 0),
     ('frontmatter 與 H1 裡的短名不算第一次出現', run(DEFS, GOOD), 0),
+    ('名詞行類型標籤錯（【其他】）', run(DEFS, '# 標題 v1\n\n> 名詞：甲詞（正式名稱：甲類的完整說法）【其他】。\n'), 1),
+    ('正式名稱後多字（前綴不算）', run(DEFS, '# 標題 v1\n\n> 名詞：甲詞（正式名稱：甲類的完整說法加字）【檢核】。\n'), 1),
+    ('正文第一次出現用「；」接出處（允許）', run(DEFS, '# 標題 v1\n\n> 名詞：另述\n\n- 甲詞（正式名稱：甲類的完整說法；1.2.53）：內容\n'), 0),
     ('沒給參數', subprocess.run([sys.executable, '-I', '-B', str(HERE / 'terms_check.py')], capture_output=True).returncode, 2),
 ]
 bad = [c for c in cases if c[1] != c[2]]

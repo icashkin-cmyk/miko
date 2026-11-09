@@ -4,6 +4,7 @@
 #   每節有內容（至少 2 個字，不能只寫「見…」）；類型五選一（【流程】【輸出】【檢核】【限制】【處置】）；短名與正式名稱都不重複
 # 檢查 2（受檢檔）：先去掉 frontmatter、``` 程式碼區塊與第一個 H1；每個短名第一次出現的那一行，要有緊鄰的「短名（正式名稱：正式名稱」；
 #   找短名時先把該行各個「（正式名稱：…）」括號內文字拿掉，避免正式名稱裡的字被當成另一個短名（例：「出口」的正式名稱含「困難卡」）
+#   正式名稱後要接「）」或「；」（不得多字）；在名詞行裡還要緊接該名詞的類型標籤（1.2.53 稽核第二輪）
 # 檢查 3（受檢檔）：檔內有用到任何短名時，H1 下第一個非空行要是「> 名詞」開頭的名詞行
 # 已知限制：不在定義表裡的新造短名詞檢查不到，靠 miko-core §4「名詞寫法」與稽核（README §8 T52）
 # 結束碼：0 全過；1 有不合格；2 參數錯或讀不到檔
@@ -46,7 +47,10 @@ def body(text):
         out.append(l)
     return out, h1
 
-def check_file(text, terms):
+def tag_map(text):
+    return {m.group(1).strip(): m.group(2).strip() for m in re.finditer(r'^## (.+)\n### 正式名稱\n.*\n### 類型\n(.+)$', text, re.M)}
+
+def check_file(text, terms, tags=None):
     bad = []
     ls, h1 = body(text)
     used = False
@@ -54,8 +58,10 @@ def check_file(text, terms):
         for l in ls:
             if s in PAREN.sub('', l):
                 used = True
-                if f'{s}（正式名稱：{formal}' not in l:
-                    bad.append(f'「{s}」第一次出現的那一行沒有「{s}（正式名稱：{formal}」：{l.strip()[:50]}')
+                if not re.search(re.escape(f'{s}（正式名稱：{formal}') + '[）；]', l):
+                    bad.append(f'「{s}」第一次出現的那一行沒有「{s}（正式名稱：{formal}）」：{l.strip()[:50]}')
+                elif tags and l.lstrip().startswith('> 名詞') and f'{s}（正式名稱：{formal}）{tags.get(s, "")}' not in l:
+                    bad.append(f'「{s}」在名詞行沒有緊接類型標籤 {tags.get(s)}：{l.strip()[:50]}')
                 break
     if used:
         nxt = next((l for l in ls[(h1 or 0):] if l.strip()), '')
@@ -74,7 +80,7 @@ def main(argv):
     terms, bad = parse(defs)
     fails = [f'定義表：{x}' for x in bad]
     for f, t in others:
-        fails += [f'{f}：{x}' for x in check_file(t, terms)]
+        fails += [f'{f}：{x}' for x in check_file(t, terms, tag_map(defs))]
     print(f'名詞 {len(terms)} 個；檢查檔 {len(others)} 個；不合格 {len(fails)} 項')
     for x in fails: print('  - ' + x)
     print('PASS' if not fails else 'FAIL')
