@@ -4,15 +4,17 @@
 # 用法：python3 -I -B flowlock_check.py <回覆檔.md> [...]；判分、稽核、冷啟動回歸時用，對話中的回覆不在 repo 裡，check_repo 攔不到（只能靠本工具與測題）。
 # 算法（miko-core §5 第 1、2、5 點）：
 #   1. 最後一個非空行要以「流程鎖：」開頭（§5 第 5 點：流程鎖之後不再寫任何內容）；解析「通過 N 項／降級 N 項／UNKNOWN N 項」。
-#   2. 計數範圍：去掉 ``` 程式碼區塊與流程鎖那一行（括號內逐條列出的降級、UNKNOWN 標籤是重述，不重複計數）。
+#   2. 計數範圍：去掉 ``` 程式碼區塊、流程鎖那一行，以及緊接在流程鎖之前、以「降級」或「UNKNOWN」開頭的逐條清單行（§5 第 5 點允許降級與 UNKNOWN 寫在括號裡或流程鎖之前，都是重述，不重複計數；1.2.64 稽核第二輪）。
 #   3. 通過＝【來源：…】【工具：…】【使用者…】【常識…】；降級＝【推論…】【未查證…】；UNKNOWN＝【UNKNOWN…】；
 #      【流程】【輸出】【檢核】【限制】【處置】是規則類型標籤，不計數。標籤後可帶補充（例：【推論，只加句不刪】），照前綴分類。
 #   4. 三數各自相符才 PASS（不只比總數）。
 # 已知限制：只核計數與位置，不核「來源真的支持這句」（§5 第 5 點另查三件，仍靠人或稽核）；一個檔只當一則回覆；
 #   正文引述規則時提到的標籤名（例：「要標【推論】」）也會被計數，這類回覆判 FAIL 時改人工數（1.2.64 稽核第一輪反例）；
-#   標籤寫法不照 §5 第 2 點（例：【使用者提供】【工具 wc】）不計數。
-# 不適用（結束碼 3）：停止回覆（有 STOPPED_BY_USER、沒有流程鎖行，§5 第 5 點本來就不寫）；
-#   流程鎖行寫「完整版見交付檔」且回覆內沒有任何行內標籤（標籤照 §5 第 5 點寫在交付檔，改對交付檔跑）。
+#   標籤寫法不照 §5 第 2 點（例：【使用者提供】【工具 wc】）不計數；行內程式碼（`…`）裡的標籤會被計數；
+#   流程鎖行前有「>」「- 」、用半形冒號、括號跨行都判 FAIL（偏嚴，改人工核）。
+# 不適用（結束碼 3）：純停止回覆（有 STOPPED_BY_USER、沒有流程鎖行、沒有任何行內標籤，且去掉對齊行後非空行不超過 3 行；§5 第 5 點本來就不寫）；
+#   有回答其他內容（有行內標籤或超過 3 行）卻沒寫流程鎖的，照樣判 FAIL（1.2.64 稽核第二輪）；
+#   流程鎖行寫「完整版見交付檔」且回覆內沒有任何行內標籤（標籤照 §5 第 5 點寫在交付檔，宣告數改對交付檔跑本工具核）。
 #   流程鎖行前後的 ** 粗體記號會先去掉再判。
 # 結束碼：0 全部相符；1 有不符或沒有流程鎖行；2 參數錯或讀不到檔；3 不適用（見上；多個檔時有任一不符仍回 1）
 import re, sys, pathlib
@@ -29,13 +31,18 @@ def check(text):
     last = lines[-1].strip().strip('*').strip()
     m = LOCK.match(last)
     if not m:
-        if 'STOPPED_BY_USER' in text and not any(l.strip().strip('*').strip().startswith('流程鎖：') for l in lines):
-            return None, '不適用：停止回覆不寫流程鎖（§5 第 5 點）'
+        rest = [l for l in lines if l.strip() and not l.strip().startswith('已對齊：')]
+        if ('STOPPED_BY_USER' in text and not TAG.search(text) and len(rest) <= 3
+                and not any(l.strip().strip('*').strip().startswith('流程鎖：') for l in lines)):
+            return None, '不適用：純停止回覆不寫流程鎖（§5 第 5 點）'
         anywhere = [i + 1 for i, l in enumerate(lines) if l.strip().strip('*').strip().startswith('流程鎖：')]
         return False, (f'流程鎖不在最後一行（出現在第 {anywhere} 行）' if anywhere else '沒有流程鎖行')
     said = tuple(int(x) for x in m.groups())
+    k = len(lines) - 1
+    while k > 0 and (not lines[k - 1].strip() or re.match(r'^[\s>*-]*(降級|UNKNOWN)', lines[k - 1])):
+        k -= 1
     body, fence = [], False
-    for l in lines[:-1]:
+    for l in lines[:k]:
         if l.strip().startswith('```'):
             fence = not fence
             continue
