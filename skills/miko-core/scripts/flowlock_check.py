@@ -8,8 +8,13 @@
 #   3. 通過＝【來源：…】【工具：…】【使用者…】【常識…】；降級＝【推論…】【未查證…】；UNKNOWN＝【UNKNOWN…】；
 #      【流程】【輸出】【檢核】【限制】【處置】是規則類型標籤，不計數。標籤後可帶補充（例：【推論，只加句不刪】），照前綴分類。
 #   4. 三數各自相符才 PASS（不只比總數）。
-# 已知限制：只核計數與位置，不核「來源真的支持這句」（§5 第 5 點另查三件，仍靠人或稽核）；一個檔只當一則回覆。
-# 結束碼：0 全部相符；1 有不符或沒有流程鎖行；2 參數錯或讀不到檔
+# 已知限制：只核計數與位置，不核「來源真的支持這句」（§5 第 5 點另查三件，仍靠人或稽核）；一個檔只當一則回覆；
+#   正文引述規則時提到的標籤名（例：「要標【推論】」）也會被計數，這類回覆判 FAIL 時改人工數（1.2.64 稽核第一輪反例）；
+#   標籤寫法不照 §5 第 2 點（例：【使用者提供】【工具 wc】）不計數。
+# 不適用（結束碼 3）：停止回覆（有 STOPPED_BY_USER、沒有流程鎖行，§5 第 5 點本來就不寫）；
+#   流程鎖行寫「完整版見交付檔」且回覆內沒有任何行內標籤（標籤照 §5 第 5 點寫在交付檔，改對交付檔跑）。
+#   流程鎖行前後的 ** 粗體記號會先去掉再判。
+# 結束碼：0 全部相符；1 有不符或沒有流程鎖行；2 參數錯或讀不到檔；3 不適用（見上；多個檔時有任一不符仍回 1）
 import re, sys, pathlib
 LOCK = re.compile(r'^流程鎖：通過\s*(\d+)\s*項／降級\s*(\d+)\s*項／UNKNOWN\s*(\d+)\s*項')
 TAG = re.compile(r'【(來源|工具)[：:][^】]*】|【(使用者|常識|推論|未查證|UNKNOWN)(?:[，,：:、（(][^】]*)?】')
@@ -21,9 +26,12 @@ def check(text):
         lines.pop()
     if not lines:
         return False, '空檔'
-    m = LOCK.match(lines[-1].strip())
+    last = lines[-1].strip().strip('*').strip()
+    m = LOCK.match(last)
     if not m:
-        anywhere = [i + 1 for i, l in enumerate(lines) if l.strip().startswith('流程鎖：')]
+        if 'STOPPED_BY_USER' in text and not any(l.strip().strip('*').strip().startswith('流程鎖：') for l in lines):
+            return None, '不適用：停止回覆不寫流程鎖（§5 第 5 點）'
+        anywhere = [i + 1 for i, l in enumerate(lines) if l.strip().strip('*').strip().startswith('流程鎖：')]
         return False, (f'流程鎖不在最後一行（出現在第 {anywhere} 行）' if anywhere else '沒有流程鎖行')
     said = tuple(int(x) for x in m.groups())
     body, fence = [], False
@@ -37,19 +45,25 @@ def check(text):
     for t in TAG.finditer('\n'.join(body)):
         got[KIND[t.group(1) or t.group(2)]] += 1
     got = tuple(got)
+    if got == (0, 0, 0) and '交付檔' in last:
+        return None, '不適用：行內標籤寫在交付檔（§5 第 5 點），請改對交付檔跑'
     note = f'宣告 通過 {said[0]}／降級 {said[1]}／UNKNOWN {said[2]}；可數 通過 {got[0]}／降級 {got[1]}／UNKNOWN {got[2]}'
     return said == got, note
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print('用法：python3 -I -B flowlock_check.py <回覆檔.md> [...]'); sys.exit(2)
-    bad = 0
+    bad = na = 0
     for a in sys.argv[1:]:
         try:
             txt = pathlib.Path(a).read_text(encoding='utf-8')
         except OSError as e:
             print(f'讀不到 {a}：{e}'); sys.exit(2)
         good, note = check(txt)
+        if good is None:
+            na += 1
+            print('NOT_APPLICABLE', a, '｜' + note)
+            continue
         bad += not good
         print(('PASS' if good else 'FAIL'), a, '｜' + note)
-    sys.exit(1 if bad else 0)
+    sys.exit(1 if bad else (3 if na else 0))

@@ -34,7 +34,7 @@ Finding _facts_ is your job, never the user's. When a frontier question needs a 
 The session is done when the frontier is empty: every branch of the design tree visited, nothing left silently assumed. Do not act on it until the user confirms you have reached a shared understanding.
 
 ## MIKO 調整（2026-10-30，H-06；與上文衝突時以這節為準）
-- 只在 MIKO 明確啟動時用（說 grill、拷問、壓力測試、逐題問到清楚），一般問答與小問題不用。
+- 只在 MIKO 明確啟動時用（說 grill、grill me、/grill-me、grill-me、拷問、壓力測試、逐題問到清楚；1.2.64 補斜線寫法），一般問答與小問題不用。
 - 每題的推薦答案要附代價與一個替代做法。MIKO 回「是」只代表接受那一題的推薦答案，不代表授權任何外部操作或整包同意。
 - 已經決定的事不重問；低風險細節直接採合理假設並註明，不為追問而追問。
 - 查事實自己用工具查；只有大量、可平行的查找才開子代理（miko-core §4 多代理規則），不為每個小問題派子代理。

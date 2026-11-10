@@ -26,7 +26,7 @@ jobs:
       - name: miko-core terms_check 測試（21 題，1.2.53 ADR-076）
         if: always()
         run: python3 -I -B skills/miko-core/scripts/test_terms_check.py
-      - name: miko-core flowlock_check 測試（11 題，1.2.64 ADR-087）
+      - name: miko-core flowlock_check 測試（14 題，1.2.64 ADR-087）
         if: always()
         run: python3 -I -B skills/miko-core/scripts/test_flowlock_check.py
       - name: make-skill skill_lint 測試（14 題）
