@@ -1,7 +1,9 @@
 ---
 name: "grilling"
-description: "逐輪拷問計畫或決策直到雙方理解一致。使用者說 grill、grill me、「拷問我」「對照文件拷問」「壓力測試這個方案」「逐題問到清楚」時使用；一般問答不使用。"
+description: "逐輪拷問計畫或決策直到雙方理解一致。使用者說 grill、grill me、/grill-me、grill-me、「拷問我」「對照文件拷問」「壓力測試這個方案」「逐題問到清楚」時使用；一般問答不使用。"
 ---
+
+# grilling v1.0｜逐輪拷問到理解一致｜2026-11-10
 
 > 名詞（1.2.53，ADR-076）：本檔短名詞第一次出現在這一行，寫成「短名（正式名稱）【類型】」；每個名詞的定義、觸發條件、執行動作、輸出格式、完成判準、失敗處理、不適用情況、相關名詞見 MIKO 核心詞彙與行為定義表（skills/miko-core/references/term-definitions.md，https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/miko-core/references/term-definitions.md）。治理（正式名稱：規則版本、變更、授權、審查與正式放行管理）【流程】；正本（正式名稱：GitHub 上的正式規則來源與目前採用版本）【限制】。
 
