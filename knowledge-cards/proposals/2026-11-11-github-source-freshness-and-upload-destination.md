@@ -63,7 +63,9 @@ https://api.github.com/repos/icashkin-cmyk/miko/commits?path=VERSION&per_page=5
 
 ### 3. 固定 commit 讀取正本內容
 
-取得最新 commit 後，所有同一輪核對的 VERSION、CHANGELOG、README、Skill 與 references，必須改用固定 commit URL：
+固定 commit 取 main 目前 HEAD（`commits?sha=main&per_page=1` 第一筆完整 SHA），不是第 2 步的 VERSION 最新修改 commit：VERSION 之後 main 可能又改了其他檔。第 2 步的 commit 只作版本變更證據。（審查補充，2026-11-11：原稿用 VERSION 最新修改 commit 當固定 commit，實測會讀到落後的 CHANGELOG 與 Skill 卻仍 PASS。）
+
+取得固定 commit 後，所有同一輪核對的 VERSION、CHANGELOG、README、Skill 與 references，必須改用固定 commit URL：
 
 ```text
 https://raw.githubusercontent.com/icashkin-cmyk/miko/<固定commit>/<檔案路徑>

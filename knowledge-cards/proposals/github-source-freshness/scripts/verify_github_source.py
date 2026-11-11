@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify GitHub VERSION metadata, fixed-commit contents, freshness headers, and README SHA."""
+"""Verify GitHub VERSION metadata, main-HEAD fixed-commit contents, freshness headers, and README SHA."""
 from __future__ import annotations
 
 import argparse
@@ -82,13 +82,17 @@ def main() -> int:
         result["version_commit"] = commit
         result["version_commit_short"] = commit[:7]
         result["version_commit_message"] = commits[0].get("commit", {}).get("message", "")
+        head_url = f"https://api.github.com/repos/{args.repo}/commits?sha=main&per_page=1"
+        head = json.loads(get(head_url, API_HEADERS))[0]["sha"]
+        result["main_head_commit"] = head
+        result["main_head_commit_short"] = head[:7]
     except Exception as exc:  # noqa: BLE001
         errors.append(f"VERSION commit UNKNOWN: {type(exc).__name__}: {exc}")
         result["status"] = "UNKNOWN"
         return write_result(result, args.output)
 
     try:
-        version_fixed = get(raw_url(args.repo, commit, "VERSION"), RAW_HEADERS).decode("utf-8")
+        version_fixed = get(raw_url(args.repo, head, "VERSION"), RAW_HEADERS).decode("utf-8")
         if version_api != version_fixed:
             errors.append("CONFLICT: API VERSION differs from fixed-commit VERSION")
             result["status"] = "CONFLICT"
@@ -109,7 +113,7 @@ def main() -> int:
 
     for path in args.paths:
         try:
-            content = get(raw_url(args.repo, commit, path), RAW_HEADERS)
+            content = get(raw_url(args.repo, head, path), RAW_HEADERS)
             digest = hashlib.sha256(content).hexdigest()
             result["files"][path] = {"status": "PASS", "sha256": digest, "bytes": len(content)}  # type: ignore[index]
         except urllib.error.HTTPError as exc:
@@ -126,6 +130,17 @@ def main() -> int:
         if actual != version_lines[3]:
             errors.append(f"CONFLICT: README SHA expected {version_lines[3]}, got {actual}")
             result["status"] = "CONFLICT"
+
+    try:
+        head_after = json.loads(get(head_url, API_HEADERS))[0]["sha"]
+        if head_after != head:
+            errors.append(f"STALE: main moved during read ({head[:7]} -> {head_after[:7]}); rerun")
+            if result["status"] == "PASS":
+                result["status"] = "STALE"
+    except Exception as exc:  # noqa: BLE001
+        errors.append(f"main HEAD recheck UNKNOWN: {type(exc).__name__}: {exc}")
+        if result["status"] == "PASS":
+            result["status"] = "UNKNOWN"
 
     return write_result(result, args.output)
 

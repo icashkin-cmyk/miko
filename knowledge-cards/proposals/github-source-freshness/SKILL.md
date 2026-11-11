@@ -36,19 +36,22 @@ User-Agent: miko-github-source-freshness
 
 記錄：`path`、blob `sha`、`size`、base64 `content`、查詢時間（Asia/Taipei）。解碼內容後確認 VERSION 至少有版本、日期、ADR 與 README SHA-256 四行。
 
-### 站 2：API 取得 VERSION 最新修改 commit
+### 站 2：API 取得 VERSION 最新修改 commit 與 main 目前 HEAD
 
-再讀：
+再讀兩個：
 
 ```text
 https://api.github.com/repos/<owner>/<repo>/commits?path=VERSION&per_page=5
+https://api.github.com/repos/<owner>/<repo>/commits?sha=main&per_page=1
 ```
 
-使用相同 API headers。取第一筆實際回應的完整 commit SHA、短碼、時間與 commit message。不得用記憶、附件、舊對話或先前回應的 commit 代替。
+使用相同 API headers。第一個取第一筆的完整 commit SHA、短碼、時間與 commit message，記為「VERSION 最新修改 commit」，只作為版本變更證據。第二個取 main 目前 HEAD 的完整 commit SHA，記為「固定 commit」，站 3 所有檔案都用它讀。不得用記憶、附件、舊對話或先前回應的 commit 代替。
+
+不可把 VERSION 最新修改 commit 當固定 commit：VERSION 之後 main 可能又改了 CHANGELOG、Skill、sync 等其他檔，用較舊的 commit 讀會得到舊內容卻仍然比對通過（實例：2026-11-11 VERSION 最後修改在 4cae500，之後 main 80b082c 又改了 CHANGELOG.md 與 skills/miko-core/SKILL.md，用 4cae500 讀這兩檔的 SHA-256 與 main 不同）。
 
 ### 站 3：固定 commit 讀內容
 
-以站 2 的完整 SHA 建立固定 URL：
+以站 2 的 main HEAD 完整 SHA（固定 commit）建立固定 URL：
 
 ```text
 https://raw.githubusercontent.com/<owner>/<repo>/<full-commit>/<path>
@@ -94,8 +97,8 @@ python3 scripts/verify_github_source.py \
 
 工具會：
 
-- 以 API headers 讀 `VERSION` metadata 與 VERSION commit history。
-- 以固定 commit 和零快取 headers 讀指定檔案。
+- 以 API headers 讀 `VERSION` metadata、VERSION commit history 與 main 目前 HEAD。
+- 以 main HEAD 固定 commit 和零快取 headers 讀指定檔案；讀完再查一次 main HEAD，若已變動標 `STALE`，需重跑。
 - 比對 API VERSION 與固定 commit VERSION。
 - 以 SHA-256 比對 VERSION 第 4 行宣告的 README 雜湊。
 - 輸出 JSON 證據，包含版本、ADR、commit、讀取時間、每個檔案的狀態與錯誤。
@@ -131,8 +134,8 @@ VERSION 第 4 行是 README SHA-256，不是 Git commit；兩者必須分開記�
 只有以下全部成立才可標示來源核對完成：
 
 - API Contents 成功取得 VERSION metadata 與內容。
-- VERSION 最新修改 commit 已由 API 實際取得。
-- 同一固定 commit 已讀取所有本輪必要檔案。
+- VERSION 最新修改 commit 與 main 目前 HEAD 已由 API 實際取得。
+- 同一個 main HEAD 固定 commit 已讀取所有本輪必要檔案，且讀完後 main HEAD 未變動。
 - 必要 raw requests 帶有零快取 headers；可用時含 cache-busting。
 - API、固定 commit 內容與 README SHA-256 比對通過。
 - 證據含版本、ADR、commit、讀取時間、來源 URL、SHA-256 與狀態。
