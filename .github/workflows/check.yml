@@ -36,20 +36,64 @@ jobs:
         if: always()
         working-directory: skills/dghp-travel/scripts
         run: python3 -I -B -m unittest discover -s tests
-      - name: visual-content-intelligence 與 read_ledger 程式測試（1.2.46 ADR-069；ffmpeg 裝成功才跑，失敗或逾時標 NOT_RUN 不判紅，MIKO 2026-11-11 放寬；ffmpeg 已裝時 test_vci 失敗照樣紅，結束碼 5 照樣紅）
+      - name: ffmpeg 快取鍵（系統版本加 runner 映像版本；env 的 ImageVersion 在 with 裡讀不到，所以先在 shell 算）
+        id: ffkey
+        if: always()
+        run: echo "key=ffmpeg-debs-$(. /etc/os-release; echo "$VERSION_ID")-${ImageVersion:-noimg}" >> "$GITHUB_OUTPUT"
+      - name: ffmpeg 套件快取還原（apt 套件庫不可用時不再依賴它；快取鍵含 runner 映像版本）
+        id: ffcache
+        if: always()
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/ffdebs
+          key: ${{ steps.ffkey.outputs.key }}
+      - name: visual-content-intelligence 與 read_ledger 程式測試（1.2.46 ADR-069；ffmpeg 優先用快取的 .deb 離線安裝，沒有快取才走 apt；都失敗標 NOT_RUN 不判紅，MIKO 2026-11-11 放寬；ffmpeg 已裝時 test_vci 失敗照樣紅，結束碼 5 照樣紅）
         if: always()
         timeout-minutes: 8
         run: |
+          # 恢復條件：Ubuntu 套件庫恢復、或快取／預裝取得 ffmpeg 後，確認此步印「ffmpeg 來源」不是 none 且 test_vci 有實際跑；長期 NOT_RUN 要處理（1.2.70 稽核建議）
           APT="-o Acquire::http::Timeout=10 -o Acquire::Retries=2"
-          if timeout 150 sudo apt-get $APT update -qq && timeout 200 sudo apt-get $APT install -y -qq ffmpeg && command -v ffmpeg >/dev/null; then
+          mkdir -p ~/ffdebs
+          SRC=none; WHY=""
+          have_ff() { command -v ffmpeg >/dev/null && command -v ffprobe >/dev/null; }
+          if have_ff; then SRC=preinstalled
+          else
+            if ls ~/ffdebs/*.deb >/dev/null 2>&1; then
+              if sudo dpkg -i ~/ffdebs/*.deb >/dev/null 2>&1 && have_ff; then SRC=cache; else WHY="快取 dpkg 安裝失敗；"; fi
+            else WHY="無快取；"; fi
+            if [ "$SRC" = none ]; then
+              timeout 150 sudo apt-get $APT update -qq && rc=0 || rc=$?; [ $rc -ne 0 ] && WHY="${WHY}apt update 失敗 rc=$rc；"
+              if [ $rc -eq 0 ]; then
+                timeout 200 sudo apt-get $APT install -y -qq --download-only ffmpeg && rc=0 || rc=$?
+                if [ $rc -ne 0 ]; then WHY="${WHY}apt 下載 ffmpeg 失敗 rc=$rc；"
+                else
+                  cp /var/cache/apt/archives/*.deb ~/ffdebs/ 2>/dev/null || true
+                  timeout 100 sudo apt-get $APT install -y -qq ffmpeg && rc=0 || rc=$?
+                  if [ $rc -ne 0 ]; then WHY="${WHY}apt 安裝 ffmpeg 失敗 rc=$rc；"
+                  elif ! have_ff; then WHY="${WHY}安裝後 PATH 找不到 ffmpeg 或 ffprobe；"
+                  else SRC=apt; fi
+                fi
+              fi
+            fi
+          fi
+          echo "ffmpeg 來源：$SRC $WHY"
+          echo "FF_SRC=$SRC" >> "$GITHUB_ENV"
+          if [ "$SRC" != none ]; then
             python3 -I -B -W ignore skills/visual-content-intelligence/scripts/test_vci.py
           else
-            echo "::warning title=NOT_RUN::apt 安裝 ffmpeg 失敗或逾時，visual-content-intelligence 測試 NOT_RUN（不是 PASS）"
+            echo "::warning title=NOT_RUN::ffmpeg 無法取得（$WHY），visual-content-intelligence 測試 NOT_RUN（不是 PASS）"
             {
               echo "## ⚠️ NOT_RUN：visual-content-intelligence／read_ledger 測試"
-              echo "apt 安裝 ffmpeg 失敗或逾時（Ubuntu 套件庫不可達），此步沒有執行測試，**不是 PASS**。其餘步驟照常。恢復後請重跑 CI。"
+              echo "原因：$WHY"
+              echo "此步沒有執行測試，**不是 PASS**。其餘步驟照常。恢復後請重跑 CI，確認「ffmpeg 來源」不是 none。"
             } >> "$GITHUB_STEP_SUMMARY"
           fi
+      - name: ffmpeg 套件快取儲存（只在 apt 路徑成功、且無既有快取時存）
+        if: always() && env.FF_SRC == 'apt' && steps.ffcache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ~/ffdebs
+          key: ${{ steps.ffkey.outputs.key }}
       - name: photo-inspection-log 程式冒煙測試
         if: always()
         run: python3 -I -B tests/test_photo_scripts.py
