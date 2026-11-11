@@ -1,1 +1,0 @@
-[ -f tests/check_repo.py ] || fail '找不到 tests/check_repo.py，無法驗證' '確認在 miko repo 根目錄、分支未刪檢查程式' 'git push'

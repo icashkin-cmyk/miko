@@ -1,1 +1,0 @@
-OUT=$(MIKO_BASE="$BASE" python3 -I -B tests/check_repo.py 2>&1); RC=$?

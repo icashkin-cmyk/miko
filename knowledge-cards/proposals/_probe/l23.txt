@@ -1,1 +1,0 @@
-[ $RC -eq 0 ] || fail "check_repo 結束碼 $RC" '看上方 FAIL 行逐項修' 'python3 -I -B tests/check_repo.py'

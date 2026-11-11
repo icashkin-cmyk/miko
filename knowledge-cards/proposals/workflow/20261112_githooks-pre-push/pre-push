@@ -7,7 +7,7 @@ cd "$ROOT" || exit 1
 fail() { printf '[pre-push] 擋下：%s\n[pre-push] 修正建議：%s\n[pre-push] 重新執行：%s\n' "$1" "$2" "$3" >&2; exit 1; }
 
 [ -f tests/check_repo.py ] || fail '找不到 tests/check_repo.py，無法驗證' '確認在 miko repo 根目錄、分支未刪檢查程式' 'git push'
-[ -n "${MIKO_PRIVATE_WORDS:-}" ] || fail 'MIKO_PRIVATE_WORDS 沒帶，C3／C12 不會掃私密字' '照專案指示把私密字清單帶進環境變數（不寫進任何檔案）' 'MIKO_PRIVATE_WORDS="<照專案指示>" git push'
+[ -n "${MIKO_PRIVATE_WORDS:-}" ] || fail 'MIKO_PRIVATE_WORDS 沒帶，C3／C12 沒有掃私密字' '請用環境變數提供清單，不寫進任何檔案' 'MIKO_PRIVATE_WORDS=... git push'
 
 # 底本：遠端已有的 commit（git 由 stdin 給「本地ref 本地sha 遠端ref 遠端sha」），讓 C11 比的是遠端版而不是 HEAD
 ZERO=0000000000000000000000000000000000000000

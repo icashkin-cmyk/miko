@@ -1,1 +1,0 @@
-# miko repo pre-push 檢查（提案，未進正本）。找不到 check_repo、MIKO_PRIVATE_WORDS 為空、結束碼非 0、輸出有 FAIL／NOT_RUN 行或缺「合計」行都擋（ADR-065）。

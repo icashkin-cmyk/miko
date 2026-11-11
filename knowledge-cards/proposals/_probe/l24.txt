@@ -1,1 +1,0 @@
-printf '%s\n' "$OUT" | grep -qE '^(FAIL|NOT_RUN) ' && fail '輸出有 FAIL 或 NOT_RUN 行（結束碼 0 不能單獨算通過）' '看上方 FAIL／NOT_RUN 行；推送要全部 PASS' 'python3 -I -B tests/check_repo.py'

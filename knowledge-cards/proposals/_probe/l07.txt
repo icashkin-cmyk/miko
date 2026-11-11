@@ -1,1 +1,0 @@
-fail() { printf '[pre-push] 擋下：%s\n[pre-push] 修正建議：%s\n[pre-push] 重新執行：%s\n' "$1" "$2" "$3" >&2; exit 1; }
