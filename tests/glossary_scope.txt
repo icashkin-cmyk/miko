@@ -7,3 +7,6 @@ skills/multi-agent-coordination-engine/SKILL.md
 skills/independent-audit/SKILL.md
 skills/dghp-work-handoff/SKILL.md
 skills/grilling/SKILL.md
+knowledge-cards/README.md
+knowledge-cards/proposals/README.md
+knowledge-cards/K01.md
