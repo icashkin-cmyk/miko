@@ -7,26 +7,30 @@
 #   標籤照 §5 第 5 點寫在交付檔時，改對交付檔跑。對這些回覆跑本工具會判 FAIL「沒有流程鎖行」或計數不符，不代表違規。
 # 算法（miko-core §5 第 1、2、5、8 點）：
 #   1. 最後一個非空行要以「流程鎖：」開頭（前後的 ** 粗體記號先去掉）；解析「通過 N 項／降級 N 項／UNKNOWN N 項」。沒有就 FAIL。
-#   2. 結尾段＝流程鎖行往上、到第一個空行為止的連續非空行。結尾段裡，以「降級」或「UNKNOWN」開頭（前面可有 -、*、>、編號）的行是
-#      重述清單的標題行；標題行之後、同在結尾段內、以 -、*、編號開頭的子項目行也算重述；以「任務四態」開頭的行略過。
+#   2. 結尾段＝從流程鎖行往上，連續由下列幾種行組成的範圍（遇到其他行就停；1.2.64 稽核第四輪起空行不再中斷）：
+#      空行；以「任務四態」開頭的行；重述清單標題行（開頭可有 -、*、>、#、編號或（1），接「降級」「UNKNOWN」「推論與未查證」或「逐條列出降級」）；
+#      子項目行（以 -、*、1.、1、、(1)、（1） 開頭），但子項目只在它上方的結尾段裡有標題行時才算重述。
 #      重述行與流程鎖行（括號內）的標籤不計數（§5 第 5 點允許降級與 UNKNOWN 寫在括號裡或流程鎖之前；第 8 點任務四態寫在流程鎖之前）。
-#   3. 其餘行去掉 ``` 程式碼區塊後計數：通過＝【來源：…】【工具：…】【使用者…】【常識…】；降級＝【推論…】【未查證…】；UNKNOWN＝【UNKNOWN…】；
+#   3. 其餘行去掉 ``` 或 ~~~ 程式碼區塊後計數：通過＝【來源：…】【工具：…】【使用者…】【常識…】；降級＝【推論…】【未查證…】；UNKNOWN＝【UNKNOWN…】；
 #      【流程】【輸出】【檢核】【限制】【處置】是規則類型標籤，不計數。標籤後可帶補充（例：【推論，只加句不刪】），照前綴分類。
-#      ``` 沒有閉合就 FAIL（不猜後面算不算程式碼）。
+#      程式碼區塊沒有閉合就 FAIL（不猜後面算不算程式碼）。
 #   4. 三數各自相符才 PASS（不只比總數）。
 # 已知限制（判 FAIL 或 PASS 都要人再看的情形）：只核計數與位置，不核「來源真的支持這句」（§5 第 5 點另查三件）；一個檔只當一則回覆；
 #   結尾段裡以「降級：」「UNKNOWN：」開頭的真實主張也會被當成重述、不計數（可能假 PASS；這種寫法本身易混，判分時人工看結尾段）；
 #   正文引述規則時提到的標籤名（例：「要標【推論】」）、行內程式碼（`…`）裡的標籤都會被計數；
 #   流程鎖行同一行括號外續寫的內容與標籤不計數；
+#   重述清單只排除、不核對：清單列的條數和流程鎖宣告的降級／UNKNOWN 數不一致時（例：宣告降級 0 卻列 2 條），本工具看不出來；
+#   不帶符號的子項目、標題不在上列字樣內（例：「以下是推估：」）的重述清單會被當正文重複計數、判 FAIL（改人工核）；
+#   四個反引號包三個反引號這類巢狀程式碼區塊會被切錯；
 #   標籤寫法不照 §5 第 2 點（例：【使用者提供】【工具 wc】）不計數；
-#   流程鎖行前有「>」「- 」「## 」、用半形冒號或半形斜線、括號跨行都判 FAIL（偏嚴，改人工核）。
+#   流程鎖行前有「>」「- 」「## 」、用半形冒號或半形斜線、括號跨行都判 FAIL（偏嚴，改人工核；訊息寫「流程鎖格式不符」）。
 # 結束碼：0 全部相符；1 有不符、沒有流程鎖行或程式碼區塊沒閉合；2 參數錯或讀不到檔
 import re, sys, pathlib
-LOCK = re.compile(r'^流程鎖：通過\s*(\d+)\s*項／降級\s*(\d+)\s*項／UNKNOWN\s*(\d+)\s*項')
+LOCK = re.compile(r'^流程鎖：\s*通過\s*(\d+)\s*項\s*／\s*降級\s*(\d+)\s*項\s*／\s*UNKNOWN\s*(\d+)\s*項')
 TAG = re.compile(r'【(來源|工具)[：:][^】]*】|【(使用者|常識|推論|未查證|UNKNOWN)(?:[，,：:、（(][^】]*)?】')
 KIND = {'來源': 0, '工具': 0, '使用者': 0, '常識': 0, '推論': 1, '未查證': 1, 'UNKNOWN': 2}
-HEAD = re.compile(r'^[\s>*\-]*(?:\d+[.、)）]\s*)?(降級|UNKNOWN)')
-SUB = re.compile(r'^\s*(?:[-*]|\d+[.、)）])\s')
+HEAD = re.compile(r'^[\s>*#\-]*(?:(?:\d+[.、)）]|[（(]\d+[）)])\s*)?(?:降級|UNKNOWN|推論與未查證|逐條列出降級)')
+SUB = re.compile(r'^\s*(?:[-*]|\d+[.、)）]|[（(]\d+[）)])\s*')
 STATE = re.compile(r'^[\s>*\-]*任務四態')
 
 def check(text):
@@ -39,25 +43,31 @@ def check(text):
     m = LOCK.match(last)
     if not m:
         anywhere = [i + 1 for i, l in enumerate(lines) if l.strip().strip('*').strip().startswith('流程鎖：')]
+        if last.startswith('流程鎖'):
+            return False, '流程鎖格式不符（要寫「流程鎖：通過 N 項／降級 N 項／UNKNOWN N 項」）'
         return False, (f'流程鎖不在最後一行（出現在第 {anywhere} 行）' if anywhere else '沒有流程鎖行')
     said = tuple(int(x) for x in m.groups())
     k = len(lines) - 1
-    while k > 0 and lines[k - 1].strip():
-        k -= 1
+    while k > 0:
+        l = lines[k - 1]
+        if not l.strip() or STATE.match(l) or HEAD.match(l) or SUB.match(l):
+            k -= 1
+        else:
+            break
     skip, in_list = set(), False
     for i in range(k, len(lines) - 1):
         l = lines[i]
         if HEAD.match(l):
             skip.add(i); in_list = True
-        elif in_list and SUB.match(l):
+        elif in_list and SUB.match(l) and l.strip():
             skip.add(i)
-        elif STATE.match(l):
-            in_list = False
+        elif not l.strip():
+            continue
         else:
             in_list = False
     body, fence = [], False
     for i, l in enumerate(lines[:-1]):
-        if l.strip().startswith('```'):
+        if l.strip().startswith('```') or l.strip().startswith('~~~'):
             fence = not fence
             continue
         if not fence and i not in skip:

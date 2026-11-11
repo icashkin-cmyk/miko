@@ -102,7 +102,7 @@ bad, nover = [], []
 for p in sorted((R / 'skills').glob('*/SKILL.md')):
     t = p.read_text(encoding='utf-8')
     fm = re.match(r'^---\n(.*?)\n---\n', t, re.S)
-    h1 = re.search(r'^# (.*)$', t[fm.end():] if fm else t, re.M)   # 1.2.41（P-I3）：frontmatter 後第一個 # 標題要含 v數字；caveman、grilling、dghp-work-handoff 補完前只提示不擋
+    h1 = re.search(r'^# (.*)$', t[fm.end():] if fm else t, re.M)   # 1.2.41（P-I3）：frontmatter 後第一個 # 標題要含 v數字；caveman、grilling、dghp-work-handoff 補完前只提示不擋（1.2.64 grilling、dghp-work-handoff 已補 v1.0，剩 caveman）
     if not (h1 and re.search(r'v\d', h1.group(1))): nover.append(p.parent.name)
     name = re.search(r'^name:\s*"?([^"\n]+)"?\s*$', fm.group(1), re.M) if fm else None
     desc = re.search(r'^description:[ \t]*\S', fm.group(1), re.M) if fm else None   # 1.2.43 稽核：同一行要有內容，不跨行吃到下一個欄位（刻意比 YAML 嚴：description 第一行必須有字）
