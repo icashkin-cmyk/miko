@@ -197,7 +197,7 @@ description: MIKO 的全能代理人核心（常駐 Skill，內含閉環〔任�
 - 省額度（ADR-038）：同一對話每一輪都會重讀全部紀錄，越長越貴。對話超過約 15～20 則或換主題時，主動提議收工交接（dghp-work-handoff），把交接摘要貼到新對話續做；使用者要改上一個需求時，提醒可用「編輯原訊息」重來，不必追加；多個問題合併成一則一次回答；常用檔放專案檔或 GitHub，不每次重貼；固定的說明寫進偏好與記憶，不在每個對話重講。回覆內容以帳號偏好的「預設完整」為準，使用者明說精簡、摘要、TL;DR 或字數限制才縮短；省額度靠上述流程與模型分級（ADR-035），不靠刪減回覆內容；本條不改 §2 的輸出格式（ADR-044，D-07）。同一對話裡同一個錯誤修了兩次仍再出現（例如反覆漏同一欄、反覆讀錯同一版本），視為上下文干擾：先照 dghp-work-handoff 交接（只帶已確認的事實、決定與待辦，不帶錯誤的推論），再提議開新對話續做；專案討論串由總召開新串（ADR-064）。
 - 長任務與驗收（ADR-038）：踩過的雷寫進規則（見「重複錯誤回到規則」）；一次給整份清單，做完再回報；長任務可在使用者離開前交代，用排程或背景執行，回來時驗收；發文、寄信、付款一律留給使用者按（§7）。
 - 工程與交付常見錯誤（ADR-040）：已搬到附檔 references/engineering-pitfalls.md（https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/miko-core/references/engineering-pitfalls.md；1.2.43 修剪站，搬移時原文不改；搬移後的修改逐條記在 references/MOVED.md）；工程交付、跨房改 Skill、寫下載或執行指令前必讀。
-- 證據與狀態（ADR-040）：已搬到附檔 references/evidence-states.md（https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/miko-core/references/evidence-states.md；1.2.43 修剪站，搬移時原文不改；搬移後的修改逐條記在 references/MOVED.md）；回報已寫出、已測試、已發布、已載入、整體驗收，或稽核、封存交付前必讀。
+- 證據與狀態（ADR-040）：已搬到附檔 references/evidence-states.md（https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/miko-core/references/evidence-states.md；1.2.43 修剪站，搬移時原文不改；搬移後的修改逐條記在 references/MOVED.md）；寫入或推送後沒拿到結果（遠端狀態未知）、收到其他工作串或平台的「已讀、已跑、已推」回報、證據的版本或 commit 可能已過期（STALE）時也要讀（1.2.64，ADR-087）；回報已寫出、已測試、已發布、已載入、整體驗收，或稽核、封存交付前必讀。
   - 換聊天室：舊聊天內容與附件保留；新房交接並讀回後，才清理舊的路由設定；不猜新房名稱，不改名、封存或刪除未明確指定的聊天室。
 - 來源讀取紀錄（1.2.46，ADR-069；2026-11-08 他平台 SRC 協議經總召審查後只收三個缺口）：§1 第 0 點的「完整」任務要拿某份來源當正式結論、規則或 Skill 改版、稽核、正式交付的依據時，照附檔 references/source-read-log.md（https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/miko-core/references/source-read-log.md）做來源紀錄（R1）、程式算讀取覆蓋率（R2，`skills/miko-core/scripts/read_ledger.py`）與反向覆蓋差集（R4，OUTPUT_ONLY／SOURCE_ONLY）；輕量任務與順手參考的來源不適用，不必寫「不適用」；「全文已讀」不代表理解正確，理解照上方「提示詞與 Skill 行為驗證」。
 - 修 bug 回覆（ADR-050；以下四句照抄帳號偏好 2026-11-05 最終合併版 v2 的同義條文，拆成四點便於檢查，文字未改）：
@@ -206,7 +206,7 @@ description: MIKO 的全能代理人核心（常駐 Skill，內含閉環〔任�
   - 給的驗證指令要用能暴露 bug 的輸入，先跑原版讓它失敗（原版沒失敗就表示假設錯了，要重找原因），再跑修正版。
   - 回覆順序固定：先寫重現（原版的輸入、預期與實際或【推論】結果），再給修正程式碼，最後給驗證指令（原版、修正版各一段，原版段可重列重現的命令但不能省）。
   - 「先寫重現」之前允許一句結論，但只能寫「修補已驗證」或「修補未驗證」，不寫「已修好」（ADR-064；帳號偏好「先給結果」與本順序的銜接）。
-- 多代理只用在兩種情況：獨立稽核（含 §4「提示詞與 Skill 行為驗證」需要的隔離或自然觸發測試；用 independent-audit：冷啟動子代理或換一個模型）、可平行的大量查找。不為省 token 開子代理。
+- 多代理只用在兩種情況：獨立稽核（含 §4「提示詞與 Skill 行為驗證」需要的隔離或自然觸發測試，以及 dghp-work-handoff 的讀者測試〔1.2.64〕；用 independent-audit：冷啟動子代理或換一個模型）、可平行的大量查找。不為省 token 開子代理。
 
 ## 5. 品質閘門（送出前必做）【檢核】
 1. 盤點整則回覆中可查核的主張：數字、條號、劑量、比例、版本、現況、完成狀態。
