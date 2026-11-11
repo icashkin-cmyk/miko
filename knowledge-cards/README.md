@@ -19,8 +19,8 @@
 - PR 內文必填：目標路徑、完整檔案內容或 diff、字數與名詞檢查結果、和其他卡片或正本的衝突檢查、還不知道的事（UNKNOWN）；合併後 Manus 總召讀回 main 上的檔案，回報 commit、路徑與內容是否一致。
 - Manus 總召不得直接寫入 main，也不得以「Claude 讀不到 GitHub」為由改成直寫：Claude 的工作串讀得到 GitHub、看得到 PR；只有總召對話那一層沒有讀取工具，那時由總召派工作串實讀，回報寫明是哪個工作串讀的。
 - 卡片 PR 只改本資料夾，不升正本版本、不加 CHANGELOG；Claude 總召合併前照正本 README §6 確認，卡片內容涉及規則改動時改走正本改版與獨立稽核。
-- Manus 總召的寫入方式：開分支 → 改本資料夾的檔案 → 開 PR → GitHub Actions check_repo 通過 → Claude 總召審查（只查是否和正本衝突、有無私密字或金鑰）→ MIKO 或 Claude 總召合併。不直推 main，不改本資料夾以外的檔案。
-- Manus 要有 GitHub 寫入權，需要 MIKO 親手授權；授權前 Manus 只產出全文，由 MIKO 轉給 Claude 總召代放。金鑰或 Token 不寫進任何檔案、PR 或對話。
+- Manus 總召的寫入方式：開分支 → 改本資料夾的檔案 → 開 PR → GitHub Actions check_repo 通過 → Claude 總召審查（查是否和正本衝突、有無私密字或金鑰、內容欄 ≤ 1,000 字元、名詞行；合併前在本機帶私密字清單跑 check_repo，16 項全過才合併）→ MIKO 或 Claude 總召合併。不直推 main，不改本資料夾以外的檔案。
+- Manus 要有 GitHub 寫入權，需要 MIKO 親手授權；授權前 Manus 只產出全文，由 MIKO 轉給 Claude 總召代放；代放時 Claude 總召同樣開分支＋PR，PR 內文照本節必填。新卡加進 tests/glossary_scope.txt（C16 名詞檢查範圍）由 Claude 總召在合併時一併處理。金鑰或 Token 不寫進任何檔案、PR 或對話。
 - 試行：MIKO 說停止或改回，就恢復成 Claude 總召唯一寫入；已合併的卡片保留。
 
 ## 卡片狀態
