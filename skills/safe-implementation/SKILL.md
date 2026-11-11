@@ -48,4 +48,4 @@ description: 寫程式、修 bug、加功能或修改程式後驗證時使用：
 - 「適用 AGENTS」改為「專案規則（CLAUDE.md 或 repo 內說明）」：AGENTS.md 是 Codex 時期的落點，Codex 已停用（ADR-039）。
 - 「可獨立研究、測試或審查時才委派」改為依 miko-core §4：原句允許為測試開子代理，與 §4 多代理限制衝突。
 - 「不要順手改 Canonical」改寫為「正本或權威資料」：Canonical 是 DGHP 用語，意思保留。
-- v0.4（正本 1.2.71，ADR-094）：只改指向，規則不變：第 8 行授權檔路徑 skills/grilling/LICENSE-upstream.md → skills/_retired/grilling/LICENSE-upstream.md；第 32 行「MIKO 說拷問時才改用 grilling 逐題定」→「改逐題確認（grilling 已退休）」。理由：grilling 於 2026-11-12 退休，原檔移到 skills/_retired/。
+- v0.4（正本 1.2.71，ADR-094）：(1) 只改指向：第 8 行授權檔路徑 skills/grilling/LICENSE-upstream.md → skills/_retired/grilling/LICENSE-upstream.md；(2) 規則改變：第 32 行「MIKO 說拷問時才改用 grilling 逐題定」→「改逐題確認（grilling 已退休）」，grilling 的一輪題數、推薦答案等做法不再適用（同 miko-core v1.72 刪除清單 (3)）。理由：grilling 於 2026-11-12 退休，原檔移到 skills/_retired/。
