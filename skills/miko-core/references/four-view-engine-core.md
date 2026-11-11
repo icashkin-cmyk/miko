@@ -1,6 +1,6 @@
 # 四視角引擎 §0～§5 原文（2026-11-12 自 v3.3 逐字搬入，未改寫）
 
-來源：skills/multi-agent-coordination-engine/SKILL.md v3.3（2026-11-09）第 6～243 行（標題至 §5 結尾），逐字搬入；§6～§7 在同目錄 governance-module.md。2026-11-12 退休四視角引擎（原檔移到 skills/_retired/），本檔保留 DEEP 定義、優先序（No Silent Supersession）、流程鎖細則、完整四段模板等仍有效的規則，避免因退休失去唯一條文。本檔內「本 Skill」「§N」等自指，指原四視角引擎 v3.3；其中與 miko-core 重複的條文以 miko-core 為準（miko-core §7 衝突勝出順序）。
+來源：skills/multi-agent-coordination-engine/SKILL.md v3.3（2026-11-09）第 6～243 行（標題至 §5 結尾），逐字搬入；§6～§7 在同目錄 governance-module.md。2026-11-12 退休四視角引擎（原檔移到 skills/_retired/），本檔保留 DEEP 定義、優先序（No Silent Supersession）、流程鎖細則、完整四段模板等仍有效的規則，避免因退休失去唯一條文。本檔內「本 Skill」「§N」等自指，指原四視角引擎 v3.3。
 
 # MIKO 四視角引擎 v3.3｜問問題 → 解決 → 後設 → 檢查（含治理模組）｜2026-11-09
 
