@@ -7,9 +7,13 @@
 set -euo pipefail
 SRC=$(cd "$(dirname "$0")" && pwd)
 DST=${1:?用法：bash install_hooks.sh <miko repo 路徑>}
+git -C "$DST" rev-parse --git-dir >/dev/null 2>&1 || { echo "$DST 不是 git repo，不安裝" >&2; exit 1; }
 HP=$(git -C "$DST" config core.hooksPath || true)
 [ -z "$HP" ] || { echo "這個 repo 設了 core.hooksPath=$HP，本檔不覆蓋設定；請手動處理" >&2; exit 1; }
-HD=$(cd "$DST" && cd "$(git rev-parse --git-path hooks)" && pwd)
+HREL=$(git -C "$DST" rev-parse --git-path hooks)
+[ -n "$HREL" ] || { echo "查不到 hooks 目錄，不安裝" >&2; exit 1; }
+(cd "$DST" && mkdir -p "$HREL")
+HD=$(cd "$DST" && cd "$HREL" && pwd)
 [ ! -e "$HD/pre-push" ] || cp "$HD/pre-push" "$HD/pre-push.bak.$(date +%Y%m%d%H%M%S)"
 cp "$SRC/pre-push" "$HD/pre-push"
 chmod +x "$HD/pre-push"

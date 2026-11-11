@@ -1,26 +1,47 @@
 #!/usr/bin/env bash
 # miko repo pre-push 檢查（提案，未進正本）。找不到 check_repo、MIKO_PRIVATE_WORDS 為空、結束碼非 0、輸出有 FAIL／NOT_RUN 行或缺「合計」行都擋（ADR-065）。
+# 檢查對象是目前工作樹：要推送的 ref 必須等於 HEAD 且工作樹乾淨，否則擋（避免檢查的不是被推送的內容）。純刪除分支的推送直接放行。
 # 不做不可逆操作：不自動修、不 stash、不改遠端。緊急略過要在回報寫明並附理由。
 set -uo pipefail
 ROOT=$(git rev-parse --show-toplevel) || exit 1
 cd "$ROOT" || exit 1
 fail() { printf '[pre-push] 擋下：%s\n[pre-push] 修正建議：%s\n[pre-push] 重新執行：%s\n' "$1" "$2" "$3" >&2; exit 1; }
 
+# git 由 stdin 給每個 ref 一行：本地ref 本地sha 遠端ref 遠端sha。先讀完存起來。
+ZERO=0000000000000000000000000000000000000000
+BASE=""; PUSHED=""; N=0
+while read -r _lr ls _rr rs; do
+  [ -n "${ls:-}" ] || continue
+  [ "$ls" != "$ZERO" ] || continue          # 刪除遠端分支：沒有內容要檢查
+  N=$((N + 1))
+  case " $PUSHED " in *" $ls "*) ;; *) PUSHED="$PUSHED $ls" ;; esac
+  if [ -z "$BASE" ] && [ -n "${rs:-}" ] && [ "$rs" != "$ZERO" ] && git cat-file -e "$rs^{commit}" 2>/dev/null; then BASE=$rs; fi
+done
+if [ "$N" -eq 0 ]; then printf '[pre-push] 只有刪除分支，沒有內容要檢查，放行\n'; exit 0; fi
+
 [ -f tests/check_repo.py ] || fail '找不到 tests/check_repo.py，無法驗證' '確認在 miko repo 根目錄、分支未刪檢查程式' 'git push'
 [ -n "${MIKO_PRIVATE_WORDS:-}" ] || fail 'MIKO_PRIVATE_WORDS 沒帶，C3／C12 沒有掃私密字' '請用環境變數提供清單，不寫進任何檔案' 'MIKO_PRIVATE_WORDS=... git push'
 
-# 底本：遠端已有的 commit（git 由 stdin 給「本地ref 本地sha 遠端ref 遠端sha」），讓 C11 比的是遠端版而不是 HEAD
-ZERO=0000000000000000000000000000000000000000
-BASE=""
-while read -r _lr _ls _rr rs; do
-  if [ -n "${rs:-}" ] && [ "$rs" != "$ZERO" ] && git cat-file -e "$rs^{commit}" 2>/dev/null; then BASE=$rs; fi
+HEADSHA=$(git rev-parse HEAD) || exit 1
+for sha in $PUSHED; do
+  [ "$sha" = "$HEADSHA" ] || fail "要推送的內容（${sha:0:7}）不是目前 HEAD（${HEADSHA:0:7}），本檔只檢查工作樹" '先 checkout 要推送的分支，一次只推一個分支' 'git checkout <分支> && git push'
 done
-[ -n "$BASE" ] || BASE=$(git rev-parse -q --verify HEAD~1 || true)
+[ -z "$(git status --porcelain)" ] || fail '工作樹有未提交或未追蹤的檔案，檢查結果不代表被推送的內容' 'commit 或移開這些檔案後再推' 'git status'
+
+# 底本（C11 比對用）：遠端已有的 commit；新分支退回與 origin/main 的共同祖先，再退回 HEAD~1，最後用 HEAD。永遠不傳空字串。
+if [ -z "$BASE" ]; then BASE=$(git merge-base HEAD origin/main 2>/dev/null || true); fi
+if [ -z "$BASE" ]; then BASE=$(git rev-parse -q --verify HEAD~1 || true); fi
+[ -n "$BASE" ] || BASE=$HEADSHA
 
 printf '[pre-push] 執行 check_repo（MIKO_BASE=%s）\n' "${BASE:0:7}"
 OUT=$(MIKO_BASE="$BASE" python3 -I -B tests/check_repo.py 2>&1); RC=$?
 printf '%s\n' "$OUT"
 [ $RC -eq 0 ] || fail "check_repo 結束碼 $RC" '看上方 FAIL 行逐項修' 'python3 -I -B tests/check_repo.py'
-printf '%s\n' "$OUT" | grep -qE '^(FAIL|NOT_RUN) ' && fail '輸出有 FAIL 或 NOT_RUN 行（結束碼 0 不能單獨算通過）' '看上方 FAIL／NOT_RUN 行；推送要全部 PASS' 'python3 -I -B tests/check_repo.py'
-printf '%s\n' "$OUT" | grep -qE '^合計：[0-9]+/[0-9]+ PASS' || fail '輸出缺「合計」行，無法確認檢查跑完' '直接執行 check_repo 看是否中途當掉' 'python3 -I -B tests/check_repo.py'
+# 不用「printf | grep -q」管線：grep 提早結束會讓 printf 吃 SIGPIPE，pipefail 下結束碼是 141，會放行 FAIL。
+if grep -E '^(FAIL|NOT_RUN) ' <<<"$OUT" >/dev/null; then
+  fail '輸出有 FAIL 或 NOT_RUN 行（結束碼 0 不能單獨算通過）' '看上方 FAIL／NOT_RUN 行；推送要全部 PASS' 'python3 -I -B tests/check_repo.py'
+fi
+if ! grep -E '^合計：[0-9]+/[0-9]+ PASS' <<<"$OUT" >/dev/null; then
+  fail '輸出缺「合計」行，無法確認檢查跑完' '直接執行 check_repo 看是否中途當掉' 'python3 -I -B tests/check_repo.py'
+fi
 printf '[pre-push] 通過\n'
