@@ -1,0 +1,33 @@
+# 診斷用（不合併）：A/B 對照 ubuntu-latest 與 ubuntu-24.04 的 DNS 與 apt，全程唯讀、不裝 apt 工具
+name: diag_ab
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  diag:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 8
+    steps:
+      - name: 診斷
+        run: |
+          set +e
+          date -u +%FT%TZ
+          echo "=== os-release ==="; head -3 /etc/os-release
+          echo "=== resolv.conf ==="; cat /etc/resolv.conf
+          echo "=== resolvectl ==="; command -v resolvectl && resolvectl status 2>&1 | head -20
+          echo "=== ip route ==="; ip route
+          echo "=== getent（系統解析）==="
+          for h in archive.ubuntu.com azure.archive.ubuntu.com security.ubuntu.com packages.microsoft.com github.com ghcr.io; do echo "-- $h"; timeout 15 getent ahosts $h | head -2; echo "rc=$?"; done
+          echo "=== dig/nslookup 是否存在 ==="; command -v dig nslookup
+          echo "=== curl HTTP ==="
+          for u in http://azure.archive.ubuntu.com/ubuntu/dists/noble/InRelease http://archive.ubuntu.com/ubuntu/dists/noble/InRelease http://security.ubuntu.com/ubuntu/dists/noble-security/InRelease https://packages.microsoft.com/ https://ghcr.io/v2/; do
+            curl -sS -m 15 -o /dev/null -w "%{http_code} %{time_total}s $u\n" "$u" 2>&1
+          done
+          echo "=== ffmpeg 預裝 ==="; command -v ffmpeg ffprobe; ffmpeg -version 2>&1 | head -1
+          echo "=== apt update（120 秒上限）==="
+          timeout 120 sudo apt-get -o Acquire::http::Timeout=10 -o Acquire::Retries=3 update; echo "update rc=$?"
+          date -u +%FT%TZ
