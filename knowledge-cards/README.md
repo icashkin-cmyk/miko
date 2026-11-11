@@ -23,6 +23,26 @@
 - Manus 要有 GitHub 寫入權，需要 MIKO 親手授權；授權前 Manus 只產出全文，由 MIKO 轉給 Claude 總召代放；代放時 Claude 總召同樣開分支＋PR，PR 內文照本節必填。新卡加進 tests/glossary_scope.txt（C16 名詞檢查範圍）由 Claude 總召在合併時一併處理。金鑰或 Token 不寫進任何檔案、PR 或對話。
 - 試行：MIKO 說停止或改回，就恢復成 Claude 總召唯一寫入；已合併的卡片保留。
 
+## 提案區（1.2.69，ADR-092）
+
+MIKO 2026-11-11 22:35（台北）在總召專案回「１」，選「放寬提案區範圍」。只放寬提案可以針對的對象與放置位置；寫入者、PR 流程、審查與放行都不變。
+
+| 項目 | 規則 |
+|---|---|
+| 可提案的對象 | 任何對象：Skill、tests、workflow（.github/）、規則（README、miko-core）、文件、設定 |
+| 放哪裡 | 一律先放 knowledge-cards/proposals/<類型>/，<類型> 用 skills、tests、workflow、rules、docs 其中之一，沒有適合的先問 Claude 總召；一件提案一個子資料夾或一個檔 |
+| 內容形式 | 文字或「完整替換稿」（整個檔改完後的全文，標明要取代哪個路徑）；不要只貼片段；放 proposals/ 的 SKILL.md 格式檔只是提案，不會被啟用 |
+| Manus 仍不能做 | 改 knowledge-cards/ 以外的路徑；審查；放行；合併；登錄 ADR；改版本號 |
+| 誰搬進正式路徑 | 只有 Claude 總召，審查後才搬；Manus 的 PR 不含正式路徑的檔 |
+| 搬入哪些屬高風險 | skills/、.github/、tests/、VERSION、sync/ 屬本體或高風險變更：走原稽核（局部修改、C11、獨立稽核、CI 綠、確認 main 未動），並需 MIKO 明確批准才合併 |
+| 越界處理 | PR 含 knowledge-cards/ 以外的檔，Claude 總召不審內容，先請 Manus 移除或由 MIKO 決定還原；事後不以「內容沒問題」補認 |
+
+給 Manus 的規則文字（可直接貼進 Manus 的自訂指令或任務卡）：
+
+```text
+提案範圍（正本 1.2.69，ADR-092）：你可以對任何對象提案（Skill、tests、workflow、規則、文件），但一律先放 knowledge-cards/proposals/<類型>/（類型：skills、tests、workflow、rules、docs），用文字或整個檔改完後的完整替換稿，標明要取代哪個路徑。走分支加 PR，PR 只含 knowledge-cards/ 內的檔。不要改 knowledge-cards/ 以外的任何路徑，包含 .github/、skills/、tests/、VERSION、sync/；不審查、不放行、不合併、不登錄 ADR、不改版本號。Claude 總召審查後才搬進正式路徑，搬入 skills/、.github/、tests/、VERSION、sync/ 還要 MIKO 明確批准。proposals/ 內的 SKILL.md 格式檔只是提案，不是已啟用的 Skill。
+```
+
 ## 分工原文（MIKO 2026-11-11 17:55 確認「直接生效」；總召專案 project chat 原文逐字照錄，不改寫）
 
 ```text
