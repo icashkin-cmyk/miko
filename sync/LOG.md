@@ -102,3 +102,6 @@
 | 2026-11-10 08:08 | Claude | Drive 窗內至少 50 筆修改（分頁未取完；治理交付、代入卡類、安裝檔與壓縮檔等，中繼資料已記，位置未核對、內容 NOT_READ） | 未讀；列入待 MIKO 決定 | MIKO | 進行中 |
 | 2026-11-10 20:11 | Claude | 本輪變化：origin/main 窗內無新提交；claude/project-thread-* 分支窗內無提交；Drive 窗內查詢回空（與 08:08 輪次不一致，未核對）；Notion 關鍵字 MIKO 0 筆（日期篩選未套用）；帳號 miko-core 代入卡；其他 repo NOT_READ；GPT 同步依 ADR-039 不列變化 | 已記錄（中繼資料）；Drive 異常待 MIKO 確認 | Claude、MIKO | 完成（記錄） |
 | 2026-11-10 20:11 | Claude | 推進（承 2026-11-10 08:08 列）：檢查 README「有變化」字樣是否已與 ADR-033 一致（正本 1.2.63，第 82 行） | 未通過：字樣仍在；保留：轉治理房 | Claude、MIKO、治理房 | 進行中 |
+| 2026-11-11 08:09 | Claude | 本輪變化：origin/main 窗內無新提交（僅上一輪狀態提交）；claude/project-thread-* 窗內無提交；Drive 窗內 2 筆治理報告類壓縮檔修改（位置未核對、內容 NOT_READ）；Notion 關鍵字 MIKO 0 筆（日期篩選未套用）；帳號 miko-core 為代入卡、啟用；其他 repo NOT_READ（無 list_repos 工具）；GPT 同步依 ADR-039 不列變化 | 已記錄（中繼資料）；條文與內容保留：轉治理房 | Claude、治理房 | 完成（記錄） |
+| 2026-11-11 08:09 | Claude | 推進（承 2026-11-10 20:11 列「Drive 查詢回空」）：以修改時間排序重查 Drive，回傳窗內 2 筆，前次空結果未重現；原因 UNKNOWN | 通過（查詢可用性）；原因保留 | Claude、MIKO | 完成（查詢）；原因進行中 |
+| 2026-11-11 08:09 | Claude | Drive 窗內 2 筆治理報告類壓縮檔修改：歸屬與是否為正本交付未核對，內容 NOT_READ | 未讀；列入待 MIKO 決定 | MIKO | 進行中 |
