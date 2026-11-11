@@ -31,7 +31,7 @@ TASK_ID、PROJECT_ID／領域、目標、授權及禁止項、來源檔／版本
 - 遮蔽 Token、帳密、API Key 與個資；不寫入私密推理。
 
 ## 收工（miko-core §1.1 觸發；2026-10-23 增補）
-1. 依上方交接欄位寫交接檔（UTF-8 Markdown，實際交付後才說已保存）；交給其他 AI 或另一個 Claude 對話做正式交接時改用 19 欄 FINAL_HANDOFF（原寫「外部 ChatGPT 或 Codex」，兩者 2026-11-02 起停用，ADR-039）（multi-agent-coordination-engine §7.8）。
+1. 依上方交接欄位寫交接檔（UTF-8 Markdown，實際交付後才說已保存）；交給其他 AI 或另一個 Claude 對話做正式交接時改用 19 欄 FINAL_HANDOFF（原寫「外部 ChatGPT 或 Codex」，兩者 2026-11-02 起停用，ADR-039）（skills/miko-core/references/governance-module.md §7.8，原 multi-agent-coordination-engine §7.8）。
 2. 列出待推送 GitHub、待同步 Notion 的項目；這些跨平台寫入只在當次授權後執行，寫入前後讀回。Drive「MIKO_ARCHIVE」依下節的常設授權；GitHub 正本 repo icashkin-cmyk/miko 依 ADR-016 常設授權（只更新 MIKO 正本，推送後讀回）；同 repo 的 sync/ 依 ADR-020（只寫 Claude 自己的同步檔）。
 3. 跨專案、會再遇到的坑（不是單一任務的狀態）列為「踩坑候選」一到三行，由 MIKO 決定是否存入記憶或 Notion；不另建帳本。
 4. 以 miko-core §5 第 8 項的任務四態收尾。額度重置後的下一則對話，從交接檔的「下一個可執行步驟」續做；不能假設平台會在額度重置時自動續做，沒有實際排程或系統續跑紀錄不得宣稱已在背景執行，續做前先讀最新狀態，不把舊 BLOCKED 當已解除，不為續做新增定時排程（細則見 miko-core §1.1，ADR-055）。
