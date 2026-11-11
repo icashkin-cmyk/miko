@@ -1,7 +1,9 @@
 ---
 name: "grilling"
-description: "逐輪拷問計畫或決策直到雙方理解一致。使用者說 grill、grill me、「拷問我」「對照文件拷問」「壓力測試這個方案」「逐題問到清楚」時使用；一般問答不使用。"
+description: "逐輪拷問計畫或決策直到雙方理解一致。使用者說 grill、grill me、/grill-me、grill-me、「拷問我」「對照文件拷問」「壓力測試這個方案」「逐題問到清楚」時使用；一般問答不使用。"
 ---
+
+# grilling v1.0｜逐輪拷問到理解一致｜2026-11-10
 
 > 名詞（1.2.53，ADR-076）：本檔短名詞第一次出現在這一行，寫成「短名（正式名稱）【類型】」；每個名詞的定義、觸發條件、執行動作、輸出格式、完成判準、失敗處理、不適用情況、相關名詞見 MIKO 核心詞彙與行為定義表（skills/miko-core/references/term-definitions.md，https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/miko-core/references/term-definitions.md）。治理（正式名稱：規則版本、變更、授權、審查與正式放行管理）【流程】；正本（正式名稱：GitHub 上的正式規則來源與目前採用版本）【限制】。
 
@@ -32,7 +34,7 @@ Finding _facts_ is your job, never the user's. When a frontier question needs a 
 The session is done when the frontier is empty: every branch of the design tree visited, nothing left silently assumed. Do not act on it until the user confirms you have reached a shared understanding.
 
 ## MIKO 調整（2026-10-30，H-06；與上文衝突時以這節為準）
-- 只在 MIKO 明確啟動時用（說 grill、拷問、壓力測試、逐題問到清楚），一般問答與小問題不用。
+- 只在 MIKO 明確啟動時用（說 grill、grill me、/grill-me、grill-me、拷問、壓力測試、逐題問到清楚；1.2.64 補斜線寫法），一般問答與小問題不用。
 - 每題的推薦答案要附代價與一個替代做法。MIKO 回「是」只代表接受那一題的推薦答案，不代表授權任何外部操作或整包同意。
 - 已經決定的事不重問；低風險細節直接採合理假設並註明，不為追問而追問。
 - 查事實自己用工具查；只有大量、可平行的查找才開子代理（miko-core §4 多代理規則），不為每個小問題派子代理。

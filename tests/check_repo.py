@@ -102,7 +102,7 @@ bad, nover = [], []
 for p in sorted((R / 'skills').glob('*/SKILL.md')):
     t = p.read_text(encoding='utf-8')
     fm = re.match(r'^---\n(.*?)\n---\n', t, re.S)
-    h1 = re.search(r'^# (.*)$', t[fm.end():] if fm else t, re.M)   # 1.2.41（P-I3）：frontmatter 後第一個 # 標題要含 v數字；caveman、grilling、dghp-work-handoff 補完前只提示不擋
+    h1 = re.search(r'^# (.*)$', t[fm.end():] if fm else t, re.M)   # 1.2.41（P-I3）：frontmatter 後第一個 # 標題要含 v數字；caveman、grilling、dghp-work-handoff 補完前只提示不擋（1.2.64 grilling、dghp-work-handoff 已補 v1.0，剩 caveman）
     if not (h1 and re.search(r'v\d', h1.group(1))): nover.append(p.parent.name)
     name = re.search(r'^name:\s*"?([^"\n]+)"?\s*$', fm.group(1), re.M) if fm else None
     desc = re.search(r'^description:[ \t]*\S', fm.group(1), re.M) if fm else None   # 1.2.43 稽核：同一行要有內容，不跨行吃到下一個欄位（刻意比 YAML 嚴：description 第一行必須有字）
@@ -131,8 +131,8 @@ pyc = [str(f.relative_to(R)) for f in files if f.suffix == '.pyc' or '__pycache_
 hits += pyc
 ok('C3 公開檔（含 .csv、二進位、快取檔）無 email、本機路徑與私人關鍵字', not hits, f'命中：{hits[:5]}；私人關鍵字 {len(words)} 個')
 
-miss = [t for t in [f'T{i}' for i in range(1, 61)] + ['T15B', 'T15C', 'T15D', 'T15E', 'T29B'] if f'| {t} |' not in readme]
-ok('C4 回歸測試 T1～T60、T15B～T15E 與 T29B 都在正本 §8', not miss, f'缺：{miss}')
+miss = [t for t in [f'T{i}' for i in range(1, 64)] + ['T15B', 'T15C', 'T15D', 'T15E', 'T29B'] if f'| {t} |' not in readme]
+ok('C4 回歸測試 T1～T63、T15B～T15E 與 T29B 都在正本 §8', not miss, f'缺：{miss}')
 
 log = (R / 'sync' / 'LOG.md').read_text(encoding='utf-8') if (R / 'sync' / 'LOG.md').exists() else ''
 ok('C5 sync 檔存在且 LOG 有表頭', (R / 'sync' / 'CLAUDE_STATUS.md').exists() and '| 時間（台北） | 提出方 | 內容 | 決定 | 負責方 | 狀態 |' in log)
