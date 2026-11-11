@@ -8,6 +8,7 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
@@ -36,11 +37,44 @@ jobs:
         if: always()
         working-directory: skills/dghp-travel/scripts
         run: python3 -I -B -m unittest discover -s tests
-      - name: visual-content-intelligence 與 read_ledger 程式測試（1.2.46 ADR-069；先裝 ffmpeg，結束碼 5＝媒體題 NOT_RUN 也判紅）
+      - name: ffmpeg apt package index 更新（診斷與修復）
         if: always()
+        timeout-minutes: 3
+        env:
+          DEBIAN_FRONTEND: noninteractive
         run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
-          python3 -I -B -W ignore skills/visual-content-intelligence/scripts/test_vci.py
+          set -euxo pipefail
+          timeout --signal=TERM --kill-after=15s 150s \
+            sudo apt-get -o Acquire::Retries=3 -o Dpkg::Use-Pty=0 update
+      - name: ffmpeg 安裝（非互動）
+        if: always()
+        timeout-minutes: 5
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          set -euxo pipefail
+          timeout --signal=TERM --kill-after=15s 270s \
+            sudo apt-get -o Acquire::Retries=3 -o Dpkg::Use-Pty=0 \
+            install -y --no-install-recommends ffmpeg
+      - name: ffmpeg／ffprobe smoke test
+        if: always()
+        timeout-minutes: 1
+        run: |
+          set -euxo pipefail
+          command -v ffmpeg
+          command -v ffprobe
+          ffmpeg -version
+          ffprobe -version
+          timeout --signal=TERM --kill-after=10s 45s \
+            ffmpeg -hide_banner -loglevel error -nostdin \
+            -f lavfi -i color=c=black:s=16x16:d=1 -f null -
+      - name: visual-content-intelligence 與 read_ledger 程式測試（1.2.46 ADR-069；結束碼 5＝媒體題 NOT_RUN 也判紅）
+        if: always()
+        timeout-minutes: 8
+        run: |
+          set -euxo pipefail
+          timeout --signal=TERM --kill-after=30s 420s \
+            python3 -I -B -W ignore skills/visual-content-intelligence/scripts/test_vci.py
       - name: photo-inspection-log 程式冒煙測試
         if: always()
         run: python3 -I -B tests/test_photo_scripts.py
