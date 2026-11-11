@@ -23,6 +23,16 @@
 - Manus 要有 GitHub 寫入權，需要 MIKO 親手授權；授權前 Manus 只產出全文，由 MIKO 轉給 Claude 總召代放；代放時 Claude 總召同樣開分支＋PR，PR 內文照本節必填。新卡加進 tests/glossary_scope.txt（C16 名詞檢查範圍）由 Claude 總召在合併時一併處理。金鑰或 Token 不寫進任何檔案、PR 或對話。
 - 試行：MIKO 說停止或改回，就恢復成 Claude 總召唯一寫入；已合併的卡片保留。
 
+## 分工原文（MIKO 2026-11-11 17:55 確認「直接生效」；總召專案 project chat 原文逐字照錄，不改寫）
+
+```text
+【分工】Claude 治理總召負責正本（GitHub icashkin-cmyk/miko）、Skill、tests、版本號、審查與放行；實際讀取、推送、合併由 Claude 的 GitHub 專責工作串執行。Manus 總召負責 knowledge-cards/（含 proposals/）內的知識卡 K01～K50 候選稿、格式與字數檢查、困難卡與改善提案，以及它自己平台上才做得到的工作。
+【可達成的條件】Manus 把要開的路徑與完整內容交給 MIKO 轉貼；專責串在 knowledge-cards/ 與候選分支免逐項問，直接開 draft PR；check_repo 全過、CI 為綠、確認 main 未被別人改動後，由 MIKO 或 Claude 合併；合併後讀回 SHA-256，並回報路徑、commit、PR 連結。Manus 若取得 GitHub 寫入連線（待 MIKO 在 GitHub 設定），也只能開分支與 PR。
+【邊界】Manus 不直推 main，不改正本、Skill 正文、tests、sync、版本號，不審查、不放行，也不是治理總召。與進行中的正本改版衝突、要刪除或搬動既有檔、同路徑已有不同內容，都算重工，先回報，不硬開。回測暫停、台指期停止、下單交易與 Broker 硬禁止、金鑰不收不寫，一律不變。Claude 沒讀到的內容標 NOT_READ，未實跑的標 NOT_RUN，不宣稱已完成獨立稽核。
+```
+
+- 本節和上一節「誰可以寫」意思相同，是上一節的原文版本；兩節若有出入，以較嚴的一邊為準，並回報 Claude 總召。
+
 ## 卡片狀態
 
 每張卡的檔頭寫一行「狀態」，只能是下列之一：
