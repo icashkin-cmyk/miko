@@ -36,11 +36,20 @@ jobs:
         if: always()
         working-directory: skills/dghp-travel/scripts
         run: python3 -I -B -m unittest discover -s tests
-      - name: visual-content-intelligence 與 read_ledger 程式測試（1.2.46 ADR-069；先裝 ffmpeg，結束碼 5＝媒體題 NOT_RUN 也判紅）
+      - name: visual-content-intelligence 與 read_ledger 程式測試（1.2.46 ADR-069；ffmpeg 裝成功才跑，失敗或逾時標 NOT_RUN 不判紅，MIKO 2026-11-11 放寬；ffmpeg 已裝時 test_vci 失敗照樣紅，結束碼 5 照樣紅）
         if: always()
+        timeout-minutes: 8
         run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
-          python3 -I -B -W ignore skills/visual-content-intelligence/scripts/test_vci.py
+          APT="-o Acquire::http::Timeout=10 -o Acquire::Retries=2"
+          if timeout 150 sudo apt-get $APT update -qq && timeout 200 sudo apt-get $APT install -y -qq ffmpeg && command -v ffmpeg >/dev/null; then
+            python3 -I -B -W ignore skills/visual-content-intelligence/scripts/test_vci.py
+          else
+            echo "::warning title=NOT_RUN::apt 安裝 ffmpeg 失敗或逾時，visual-content-intelligence 測試 NOT_RUN（不是 PASS）"
+            {
+              echo "## ⚠️ NOT_RUN：visual-content-intelligence／read_ledger 測試"
+              echo "apt 安裝 ffmpeg 失敗或逾時（Ubuntu 套件庫不可達），此步沒有執行測試，**不是 PASS**。其餘步驟照常。恢復後請重跑 CI。"
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
       - name: photo-inspection-log 程式冒煙測試
         if: always()
         run: python3 -I -B tests/test_photo_scripts.py
