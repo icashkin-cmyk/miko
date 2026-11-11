@@ -1,6 +1,6 @@
 # 治理模組與全域交付規則（自四視角引擎 v3.3 §6～§7 原文搬入，未改寫）
 
-來源：skills/multi-agent-coordination-engine/SKILL.md v3.3（2026-11-09）第 244～328 行，逐字搬入；2026-11-12 MIKO 決定退休四視角引擎（原檔移到 skills/_retired/），本檔保留其中仍被 miko-core、dghp-work-handoff、tw-backtest-workflow、shared-rules 引用的唯一資訊。本檔內「本 Skill」「§N」等自指，指原四視角引擎 v3.3。
+來源：skills/multi-agent-coordination-engine/SKILL.md v3.3（2026-11-09）第 244～329 行，逐字搬入；2026-11-12 MIKO 決定退休四視角引擎（原檔移到 skills/_retired/），本檔保留其中仍被 miko-core、dghp-work-handoff、tw-backtest-workflow、shared-rules 引用的唯一資訊。本檔內「本 Skill」「§N」等自指，指原四視角引擎 v3.3。
 
 ## 6. 狀態、證據與交付（全域）
 - 完成度分軸記錄，每一軸都要有對應證據：已生成、已保存、已 Review、已驗證、已送達、已接手、已安裝、已載入、已啟用、全面覆蓋。

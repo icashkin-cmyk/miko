@@ -3,7 +3,7 @@ name: "dghp-work-handoff"
 description: "使用者要求交接、恢復進度、說「收工」「換手」，或多階段任務需要保存工作狀態、Type B／治理工作收尾需要存檔到 Drive MIKO_ARCHIVE 時使用；短問答不建立額外檔案，但只說「收工」時就算本對話沒有工作，也要回覆交接欄位、存檔處與任務四態。"
 ---
 
-# 可恢復工作交接 v1.1（dghp-work-handoff）｜2026-11-11
+# 可恢復工作交接 v1.2（dghp-work-handoff）｜2026-11-12
 
 > 名詞（1.2.53，ADR-076）：本檔短名詞第一次出現在這一行，寫成「短名（正式名稱）【類型】」；每個名詞的定義、觸發條件、執行動作、輸出格式、完成判準、失敗處理、不適用情況、相關名詞見 MIKO 核心詞彙與行為定義表（skills/miko-core/references/term-definitions.md，https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/miko-core/references/term-definitions.md）。正本（正式名稱：GitHub 上的正式規則來源與目前採用版本）【限制】；任務四態（正式名稱：交付結果四種狀態判定：完成／完成但有疑慮／需要資料／卡住）【輸出】；治理（正式名稱：規則版本、變更、授權、審查與正式放行管理）【流程】。
 
