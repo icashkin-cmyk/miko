@@ -47,21 +47,41 @@ jobs:
         if: always()
         timeout-minutes: 8
         run: |
+          # 恢復條件：Ubuntu 套件庫恢復、或快取／預裝取得 ffmpeg 後，確認此步印「ffmpeg 來源」不是 none 且 test_vci 有實際跑；長期 NOT_RUN 要處理（1.2.70 稽核建議）
           APT="-o Acquire::http::Timeout=10 -o Acquire::Retries=2"
           mkdir -p ~/ffdebs
-          SRC=none
-          if command -v ffmpeg >/dev/null && command -v ffprobe >/dev/null; then SRC=preinstalled
-          elif ls ~/ffdebs/*.deb >/dev/null 2>&1 && sudo dpkg -i ~/ffdebs/*.deb >/dev/null 2>&1 && command -v ffmpeg >/dev/null && command -v ffprobe >/dev/null; then SRC=cache
-          elif timeout 150 sudo apt-get $APT update -qq && timeout 200 sudo apt-get $APT install -y -qq --download-only ffmpeg && cp /var/cache/apt/archives/*.deb ~/ffdebs/ && timeout 100 sudo apt-get $APT install -y -qq ffmpeg && command -v ffmpeg >/dev/null && command -v ffprobe >/dev/null; then SRC=apt; fi
-          echo "ffmpeg 來源：$SRC"
+          SRC=none; WHY=""
+          have_ff() { command -v ffmpeg >/dev/null && command -v ffprobe >/dev/null; }
+          if have_ff; then SRC=preinstalled
+          else
+            if ls ~/ffdebs/*.deb >/dev/null 2>&1; then
+              if sudo dpkg -i ~/ffdebs/*.deb >/dev/null 2>&1 && have_ff; then SRC=cache; else WHY="快取 dpkg 安裝失敗；"; fi
+            else WHY="無快取；"; fi
+            if [ "$SRC" = none ]; then
+              timeout 150 sudo apt-get $APT update -qq && rc=0 || rc=$?; [ $rc -ne 0 ] && WHY="${WHY}apt update 失敗 rc=$rc；"
+              if [ $rc -eq 0 ]; then
+                timeout 200 sudo apt-get $APT install -y -qq --download-only ffmpeg && rc=0 || rc=$?
+                if [ $rc -ne 0 ]; then WHY="${WHY}apt 下載 ffmpeg 失敗 rc=$rc；"
+                else
+                  cp /var/cache/apt/archives/*.deb ~/ffdebs/ 2>/dev/null || true
+                  timeout 100 sudo apt-get $APT install -y -qq ffmpeg && rc=0 || rc=$?
+                  if [ $rc -ne 0 ]; then WHY="${WHY}apt 安裝 ffmpeg 失敗 rc=$rc；"
+                  elif ! have_ff; then WHY="${WHY}安裝後 PATH 找不到 ffmpeg 或 ffprobe；"
+                  else SRC=apt; fi
+                fi
+              fi
+            fi
+          fi
+          echo "ffmpeg 來源：$SRC $WHY"
           echo "FF_SRC=$SRC" >> "$GITHUB_ENV"
           if [ "$SRC" != none ]; then
             python3 -I -B -W ignore skills/visual-content-intelligence/scripts/test_vci.py
           else
-            echo "::warning title=NOT_RUN::ffmpeg 無預裝、無快取、apt 失敗或逾時，visual-content-intelligence 測試 NOT_RUN（不是 PASS）"
+            echo "::warning title=NOT_RUN::ffmpeg 無法取得（$WHY），visual-content-intelligence 測試 NOT_RUN（不是 PASS）"
             {
               echo "## ⚠️ NOT_RUN：visual-content-intelligence／read_ledger 測試"
-              echo "ffmpeg 無預裝、無快取、apt 安裝也失敗或逾時，此步沒有執行測試，**不是 PASS**。其餘步驟照常。恢復後請重跑 CI。"
+              echo "原因：$WHY"
+              echo "此步沒有執行測試，**不是 PASS**。其餘步驟照常。恢復後請重跑 CI，確認「ffmpeg 來源」不是 none。"
             } >> "$GITHUB_STEP_SUMMARY"
           fi
       - name: ffmpeg 套件快取儲存（只在 apt 路徑成功、且無既有快取時存）
