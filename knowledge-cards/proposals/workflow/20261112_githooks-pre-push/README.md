@@ -18,6 +18,7 @@ bash knowledge-cards/proposals/workflow/20261112_githooks-pre-push/install_hooks
 
 ## 檢查規則
 - 純刪除分支的推送：沒有內容要檢查，直接放行（不要求清單）。
+- tag 推送：解成 commit 再比對，只有指向目前 HEAD 的 tag 能過；`git push --tags` 只要有不指向 HEAD 的舊 tag 就會擋（fail-safe，請逐個 tag 推）。
 - 要推送的 ref 必須等於目前 HEAD（一次只推一個分支），工作樹必須乾淨（沒有未提交或未追蹤檔案）；否則擋。原因：check_repo 掃的是工作樹，不是被推送的 ref。
 - 找不到 `tests/check_repo.py` 擋。
 - `MIKO_PRIVATE_WORDS` 為空擋。
@@ -43,6 +44,8 @@ bash knowledge-cards/proposals/workflow/20261112_githooks-pre-push/install_hooks
 | 同時推 main 與另一分支（HEAD 只對應其一） | 擋下 |
 | 推送的 ref 不是 HEAD | 擋下 |
 | 刪除分支（含沒帶清單） | 放行 |
+| 指向 HEAD 的 annotated／輕量 tag | 通過；指向舊 commit 的 tag 擋下 |
+| stdin 最後一行沒換行 | 照常檢查 |
 | 清單空、缺合計、結束碼 1、NOT_RUN 行 | 擋下（改版後重測） |
 | install_hooks.sh：非 git repo | 失敗退出，不寫檔 |
 | install_hooks.sh：空 repo、重裝備份 | 安裝成功、備份舊檔 |
