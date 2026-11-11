@@ -1,0 +1,1 @@
+# 底本：遠端已有的 commit（git 由 stdin 給「本地ref 本地sha 遠端ref 遠端sha」），讓 C11 比的是遠端版而不是 HEAD

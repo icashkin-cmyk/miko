@@ -1,0 +1,1 @@
+while read -r _lr _ls _rr rs; do

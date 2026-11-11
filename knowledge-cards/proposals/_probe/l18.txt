@@ -1,0 +1,1 @@
+[ -n "$BASE" ] || BASE=$(git rev-parse -q --verify HEAD~1 || true)

@@ -1,0 +1,1 @@
+  if [ -n "${rs:-}" ] && [ "$rs" != "$ZERO" ] && git cat-file -e "$rs^{commit}" 2>/dev/null; then BASE=$rs; fi

@@ -1,0 +1,1 @@
+printf '[pre-push] 通過\n'

@@ -1,0 +1,1 @@
+printf '%s\n' "$OUT" | grep -qE '^合計：[0-9]+/[0-9]+ PASS' || fail '輸出缺「合計」行，無法確認檢查跑完' '直接執行 check_repo 看是否中途當掉' 'python3 -I -B tests/check_repo.py'

@@ -1,0 +1,1 @@
+[ -n "${MIKO_PRIVATE_WORDS:-}" ] || fail 'MIKO_PRIVATE_WORDS 沒帶，C3／C12 不會掃私密字' '照專案指示把私密字清單帶進環境變數（不寫進任何檔案）' 'MIKO_PRIVATE_WORDS="<照專案指示>" git push'
