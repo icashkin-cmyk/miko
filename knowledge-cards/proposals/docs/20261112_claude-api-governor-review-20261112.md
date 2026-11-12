@@ -20,11 +20,11 @@
 - request_payload_sha256：`bf27cbe518dc5101885c344129013fe4ecab47c685aa5847dcdd24e7725f6a6a`
 - response_text_sha256：`6a2623466076f7134d4824ab8231f66dfcc916c6bc8520a383d71069c8bba037`
 - 複核材料 SHA-256：
-  - `knowledge-cards/proposals/docs/20261112_manus-claude-collaboration-handoff-sop.md`：`920a605b3687d5bb654f782e27f63f005857c4400ee7c07e9c76406bbe39b453`
-  - `knowledge-cards/proposals/docs/20261112_manus-executive-governor-role-contract.md`：`5c69058f02b7c1ee6bfc8384fe76eaa02c906b05a71080ea56a71a6c82722df2`
-  - `knowledge-cards/proposals/docs/20261112_governor-work-rules-v2.1-candidate.md`：`4e838e47954556a20ca457b9140bf918f90281bd4a71c6bfc02b9f1250ca8d27`
+- `knowledge-cards/proposals/docs/20261112_manus-claude-collaboration-handoff-sop.md`：`920a605b3687d5bb654f782e27f63f005857c4400ee7c07e9c76406bbe39b453`
+- `knowledge-cards/proposals/docs/20261112_manus-executive-governor-role-contract.md`：`5c69058f02b7c1ee6bfc8384fe76eaa02c906b05a71080ea56a71a6c82722df2`
+- `knowledge-cards/proposals/docs/20261112_governor-work-rules-v2.1-candidate.md`：`4e838e47954556a20ca457b9140bf918f90281bd4a71c6bfc02b9f1250ca8d27`
+- 以上為第一輪複核時的材料版本，現行版本的 SHA-256 見第二輪紀錄。
 - 保存位置：本文件；原始 request payload 與 API response 僅保存於本次工作區暫存證據，正式交付以本文件的完整複核文字與上述 SHA 為準。
-- storage_readback：已讀回本文件；SHA-256：`5701bbd306307a9420b4f850de3ddad41b52a0a90ec7e41dccd3fc1dffe59e6d`。
 
 ## Claude API request payload（不含金鑰）
 
