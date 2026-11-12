@@ -3,7 +3,8 @@
 # tw-backtest-workflow 提案層 Skill 替換稿
 
 > **狀態標記：PROPOSED／NOT_ADOPTED／HISTORICAL_NOT_RUNTIME**  
-> **附件基線：VERSION 1.2.58／ADR-081／HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6**
+> **歷史附件基線：VERSION 1.2.58／ADR-081／HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6**
+> 目前正本基線：`miko-core v1.72`／`VERSION 1.2.71`／`ADR-094`／`main 5663974816c14044cc33fbf3023dc3a8d5d996a2`。
 >
 > 本文件是提案層草稿，不是 `skills/tw-backtest-workflow/SKILL.md` 正本的修改，不代表已採用、已測試、已稽核、已部署、已載入 Runtime、已恢復正式路由或已產出任何真實投資結論。未取得的證據標為 `UNKNOWN` 或 `NOT_RUN`；附件中的歷史實跑敘述均為 `HISTORICAL_NOT_RUNTIME`，不得作為本輪 Runtime 或正式採用證據。
 
@@ -93,9 +94,9 @@ route.mode: PAUSED_BY_USER
 route.adopted: false
 route.read_only: true
 route.external_write: false
-baseline.version: 1.2.58
-baseline.adr: ADR-081
-baseline.head: 6db897bbf87ffab9ade1ffd8018ece83036041b6
+baseline.version: 1.2.71
+baseline.adr: ADR-094
+baseline.head: 5663974816c14044cc33fbf3023dc3a8d5d996a2
 ```
 
 `operation_id` 必須綁定輸入 manifest、命令、工具版本、來源 pin、輸出路徑、批准範圍與讀回結果。相同 `operation_id` 重跑時只讀取既有 operation 狀態，不得盲目重送任何副作用；不存在可證明的冪等性時直接 `BLOCKED`。

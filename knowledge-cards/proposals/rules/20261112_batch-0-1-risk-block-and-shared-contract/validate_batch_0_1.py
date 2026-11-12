@@ -47,11 +47,11 @@ def check_risk(value: dict) -> None:
         fail("批次 0 adoption_status 必須是 NOT_ADOPTED")
     baseline = value.get("baseline", {})
     if baseline != {
-        "version": "1.2.58",
-        "adr": "ADR-081",
-        "head": "6db897bbf87ffab9ade1ffd8018ece83036041b6",
+        "version": "1.2.71",
+        "adr": "ADR-094",
+        "head": "5663974816c14044cc33fbf3023dc3a8d5d996a2",
     }:
-        fail(f"批次 0 baseline 不符合附件基準：{baseline}")
+        fail(f"批次 0 baseline 不符合目前正本基線：{baseline}")
     policy = value.get("default_policy", {})
     required_policy = {
         "mode": "fail_closed",
@@ -134,7 +134,7 @@ def main() -> int:
     check_schema(schema)
     print("PASS batch-0-risk-blocks.json")
     print("PASS batch-1-operation-contract.schema.json")
-    print("PASS fail-closed invariants and proposal baseline")
+    print("PASS fail-closed invariants and current-source baseline")
     print("NOT_RUN formal route integration / CI / independent audit")
     return 0
 

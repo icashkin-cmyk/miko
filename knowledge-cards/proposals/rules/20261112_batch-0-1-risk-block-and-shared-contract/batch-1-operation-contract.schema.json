@@ -90,13 +90,13 @@
       ],
       "properties": {
         "version": {
-          "const": "1.2.58"
+          "const": "1.2.71"
         },
         "adr": {
-          "const": "ADR-081"
+          "const": "ADR-094"
         },
         "head": {
-          "const": "6db897bbf87ffab9ade1ffd8018ece83036041b6"
+          "const": "5663974816c14044cc33fbf3023dc3a8d5d996a2"
         }
       }
     },

@@ -7,7 +7,8 @@
 - 提案類型：rules
 - 提案狀態：`PROPOSED`
 - 採用狀態：`NOT_ADOPTED`
-- 附件基準：`VERSION 1.2.58`／`ADR-081`／`HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`
+- 歷史附件基線：`VERSION 1.2.58`／`ADR-081`／`HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`
+目前正本基線：`miko-core v1.72`／`VERSION 1.2.71`／`ADR-094`／`main 5663974816c14044cc33fbf3023dc3a8d5d996a2`。
 - 目標：為 10 個修復設計提供批次 0 風險封鎖與批次 1 共用狀態／合約 schema。
 - 寫入邊界：本提案只放在 `knowledge-cards/proposals/`；不修改 `skills/`、`tests/`、`VERSION`、`sync/`、正式路由或外部平台。
 
@@ -160,7 +161,7 @@ evidence_refs
 - [ ] JSON Schema 可解析。
 - [ ] 每個 step 有唯一 ID、P／C／J、依賴、輸入、輸出、禁止、驗收與失敗出口。
 - [ ] route 強制 `adopted=false`、`read_only=true`、`external_write=false`。
-- [ ] baseline 固定為附件基準。
+- [ ] baseline 固定為目前正本基線；歷史附件基線另列。
 - [ ] 任何受阻狀態不會聚合成 `完成`。
 - [ ] 外部操作具有 operation ID 與批准欄位。
 - [ ] artifact 未讀回時不可標 `committed=true`。

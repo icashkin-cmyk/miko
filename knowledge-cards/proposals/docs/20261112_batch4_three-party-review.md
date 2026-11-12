@@ -4,7 +4,7 @@
 
 ## 1. 基線與範圍
 
-- 目前正本：`miko-core v1.71`／`VERSION 1.2.70`。
+- 目前正本：`miko-core v1.72`／`VERSION 1.2.71`／`ADR-094`／`main 5663974816c14044cc33fbf3023dc3a8d5d996a2`。
 - 歷史設計基線：`VERSION 1.2.58`／`ADR-081`／`HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`；只作 `HISTORICAL_NOT_RUNTIME` 證據。
 - 本輪候選：01～06、08、10，共 8 份。
 - 責任轉交：07 `photo-inspection-log`、09 `tw-backtest-workflow`，位於 `handoff/20261112_batch4-out-of-scope/`，不再列入本輪候選。

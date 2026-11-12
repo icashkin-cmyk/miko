@@ -3,7 +3,8 @@
 # tw-alert-check 提案層替換稿
 
 **狀態標記：** `PROPOSED` · `NOT_ADOPTED` · `HISTORICAL_NOT_RUNTIME`  
-**附件基線：** `VERSION 1.2.58` / `ADR-081` / `HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`  
+**歷史附件基線：** `VERSION 1.2.58` / `ADR-081` / `HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`
+目前正本基線：`miko-core v1.72`／`VERSION 1.2.71`／`ADR-094`／`main 5663974816c14044cc33fbf3023dc3a8d5d996a2`。
 **本文件性質：** 只供提案、唯讀審查與 fake／fixture 規劃；不代表已採用、已測試、已稽核、已部署、已載入 Runtime 或正式路由已恢復。
 
 > **重要限制：** 本稿不得覆寫 `skills/tw-alert-check/SKILL.md`。附件與現行 Skill 中的歷史版本文字只作 `HISTORICAL_NOT_RUNTIME` 證據，不得當作目前 Runtime 規則。所有未知資料、未讀來源、未執行測試與未完成讀回均維持 `UNKNOWN`、`NOT_READ`、`NOT_RUN` 或 `BLOCKED`，不得升格。
@@ -127,9 +128,9 @@ route:
   external_write: false
   request_mode: source_status_draft
 baseline:
-  version: 1.2.58
-  adr: ADR-081
-  head: 6db897bbf87ffab9ade1ffd8018ece83036041b6
+  version: 1.2.71
+  adr: ADR-094
+  head: 5663974816c14044cc33fbf3023dc3a8d5d996a2
 steps:
   - step_id: TWAC-P0
     kind: P

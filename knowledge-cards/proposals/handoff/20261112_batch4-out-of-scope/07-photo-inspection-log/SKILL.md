@@ -3,7 +3,8 @@
 # photo-inspection-log 提案層替換稿
 
 **狀態標記：** `PROPOSED` · `NOT_ADOPTED` · `HISTORICAL_NOT_RUNTIME`  
-**附件基線：** `VERSION 1.2.58` / `ADR-081` / `HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`  
+**歷史附件基線：** `VERSION 1.2.58` / `ADR-081` / `HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`
+目前正本基線：`miko-core v1.72`／`VERSION 1.2.71`／`ADR-094`／`main 5663974816c14044cc33fbf3023dc3a8d5d996a2`。
 **適用對象：** `photo-inspection-log`  
 **提案目錄：** `knowledge-cards/proposals/skills/20261112_batch4/07-photo-inspection-log/`  
 **本文件不是 skills/ 正本，不修改 Runtime 路由，不代表已採用、已測試、已稽核或已生效。所有未有直接證據的事項標為 `UNKNOWN` 或 `NOT_RUN`。
@@ -115,9 +116,9 @@
     "request_mode": "fixture_only"
   },
   "baseline": {
-    "version": "1.2.58",
-    "adr": "ADR-081",
-    "head": "6db897bbf87ffab9ade1ffd8018ece83036041b6"
+    "version": "1.2.71",
+    "adr": "ADR-094",
+    "head": "5663974816c14044cc33fbf3023dc3a8d5d996a2"
   },
   "steps": [{
     "step_id": "PCL-AUDIT-001",

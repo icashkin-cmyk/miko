@@ -3,7 +3,8 @@
 # dghp-travel 修復提案層 SKILL.md
 
 > **狀態標籤：`PROPOSED` · `NOT_ADOPTED` · `HISTORICAL_NOT_RUNTIME`**  
-> **附件基線：`VERSION 1.2.58`／`ADR-081`／`HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`**  
+> **歷史附件基線：`VERSION 1.2.58`／`ADR-081`／`HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`**
+> 目前正本基線：`miko-core v1.72`／`VERSION 1.2.71`／`ADR-094`／`main 5663974816c14044cc33fbf3023dc3a8d5d996a2`。
 > 本文件是批次 4 的提案層替換稿，只能用於唯讀審查、離線候選檢查、合成 fixture 檢查與來源狀態草稿。它不是 `skills/dghp-travel/SKILL.md` 正本，不代表已採用、已測試、已稽核、已部署、已載入 Runtime 或已恢復正式路由。上述事項目前均為 `NOT_RUN`／`UNKNOWN`，除非另有直接證據。
 
 ## 1. 範圍、非目標與證據規則

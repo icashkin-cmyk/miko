@@ -23,7 +23,7 @@ PR #44 原批次 1 Schema 把既有 miko-core 契約、候選工程欄位與路�
 | `PAUSED_BY_USER` | miko-core 停止領域規則；ADR-074／回測正本 | 放入共用狀態圖 | **路由／停止軸**，不是證據狀態 | MIKO 的停止決定優先；不得由候選 Schema 解除 |
 | `READ_ONLY_DEGRADED` | 各領域 Skill 的候選／正式路由語意 | 與 evidence 狀態共用一張狀態機 | **路由模式軸**，不是任務結果 | 治理／路由責任方裁決 |
 | `adopted`／`committed` | 治理採用與產物生命週期 | 作為候選布林欄位 | **採用／產物軸**；`false` 可作候選預設，不能被 validator 解讀為正式否決或批准 | 治理裁決與 safe-implementation 分工 |
-| `baseline` | 正本版本、ADR、immutable commit 來源規則 | 以附件 `1.2.58`／`ADR-081`／舊 HEAD 作唯一 Schema baseline | **歷史來源欄位**；必須另列目前正本 `1.2.70`，不得混稱 | 來源核對與治理版本責任 |
+| `baseline` | 正本版本、ADR、immutable commit 來源規則 | 以附件 `1.2.58`／`ADR-081`／舊 HEAD 作唯一 Schema baseline | **歷史來源欄位**；必須另列目前正本 `1.2.71`，不得混稱 | 來源核對與治理版本責任 |
 | `steps[].kind=P/C/J` | miko-core 四視角與各領域候選流程 | 直接作共用步驟欄位 | **候選流程標籤**；不代表已接入 Runtime 或取代既有四視角 | 各 Skill 定義領域步驟，miko-core 負責總體閘門 |
 
 ## 3. 狀態拆軸
@@ -109,7 +109,7 @@ NOT_REQUESTED／UNKNOWN／APPROVED／REJECTED／EXPIRED
 
 ## 7. 來源與限制
 
-- 目前正本：`miko-core v1.71`／`VERSION 1.2.70`。
+- 目前正本：`miko-core v1.72`／`VERSION 1.2.71`／`ADR-094`／`main 5663974816c14044cc33fbf3023dc3a8d5d996a2`。
 - 既有交接欄位：`multi-agent-coordination-engine` FINAL_HANDOFF 19 欄。
 - PR #44 原候選 Schema 與 validator：只作比較對象，不能取代正本。
 - 本表尚未代表 MIKO 的正式治理裁決。

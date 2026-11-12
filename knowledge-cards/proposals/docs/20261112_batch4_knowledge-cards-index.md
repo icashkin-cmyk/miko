@@ -30,7 +30,8 @@
 
 ### Stage 0：治理與狀態基線（所有 Skill 的前置）
 
-- 鎖定附件基線 `VERSION 1.2.58`／`ADR-081`／`HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`，並以 immutable ref、raw 讀回及 SHA 證明來源。
+- 鎖定歷史附件基線 `VERSION 1.2.58`／`ADR-081`／`HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`，並以 immutable ref、raw 讀回及 SHA 證明來源。
+目前正本基線：`miko-core v1.72`／`VERSION 1.2.71`／`ADR-094`／`main 5663974816c14044cc33fbf3023dc3a8d5d996a2`。
 - 先由 MIKO 治理裁決本批次候選共用契約是否可進入實作；未裁決前只保留提案層。
 - 定義並機械化共用 enum、任務四態、七欄困難卡、`step_id`／P-C-J、`operation_id`、來源 pinning、相依停止、非零退出、原子寫入、`COMMITTED` 與讀回 hash。
 - 確認 `miko-core`、`safe-implementation`、`independent-audit` 的正本、接線責任與不重疊邊界；目前均有不同程度 `UNKNOWN`／`NOT_READ`／`NOT_RUN`。
@@ -97,7 +98,7 @@
 ### 3.3 grilling
 
 - **提案路徑：** `knowledge-cards/proposals/skills/20261112_batch4/03-grilling/SKILL.md`
-- **狀態：** `PROPOSED/NOT_ADOPTED/HISTORICAL_NOT_RUNTIME`。
+- **狀態：** `PROPOSED/NOT_ADOPTED/HISTORICAL_NOT_RUNTIME`；目前 `main` 已退休正式 `grilling`，本檔只保留候選／歷史研究材料，不恢復 Runtime。
 - **批次門檻：** 批次 0 只允許 `manual_question_round`、`proposal_output`、`readonly_source_review`；封鎖 formal delivery、auto consensus、delegated write、external write。批次 1 共用狀態、四態、七欄卡、`operation_id` 與 `GRL-READONLY-001` 僅為候選；須完成 fake／fixture、固定測題、來源 pin、原子寫入／讀回、independent-audit、固定 commit/raw/SHA 與治理裁決。
 - **依賴順序：** Stage 0 → Stage 1 多代理／問題輪次契約 → Stage 5。
 - **未解決項：** 缺可執行 step ID、P/C/J、輸入輸出、驗收與失敗出口；候選 `contracts.py`、`artifact_io.py`、`gates.py`、`source_pin.py` 的存在與接線未驗證；缺正常／失敗／部分成功／未知／授權不足／相近反例；未證明 operation manifest、單一 writer、atomic commit、讀回 SHA 與遠端／Runtime 證據鏈。
@@ -124,7 +125,7 @@
 ### 3.6 multi-agent-coordination-engine
 
 - **提案路徑：** `knowledge-cards/proposals/skills/20261112_batch4/06-multi-agent-coordination-engine/SKILL.md`
-- **狀態：** `PROPOSED_NOT_ADOPTED`。
+- **狀態：** `PROPOSED/NOT_ADOPTED/HISTORICAL_NOT_RUNTIME`；目前 `main` 已退休正式 `multi-agent-coordination-engine`，本檔只保留候選／歷史研究材料，不恢復 Runtime。
 - **批次門檻：** 批次 0 封鎖 delegation、parallel writer、shared writer、secret handling、external write 與正式交付；不可逆／外部寫入 fail closed。批次 1 每個 operation 必須有 schema_version、task／operation ID、唯一 step ID、P/C/J、證據狀態、四態與七欄卡；正式採用前須完成 F-01～F-12、相近不觸發反例、safe-implementation、independent-audit、repo／lint／專測／冷啟動／回歸與治理裁決。
 - **依賴順序：** Stage 0 → Stage 1，且先於依賴多代理的 `grilling`；Stage 5。
 - **未解決項：** 觸發條件與 miko-core 四視角責任重疊；缺至少兩個獨立、互不寫入、fresh context 的唯讀子問題硬條件；最大並行數、授權邊界、writer 互斥、不得委派事項、冪等鍵、來源 pin、原子寫入／讀回及部分成功聚合未證實；固定測題、專測、independent-audit、miko-core／safe-implementation 接線均未完成。

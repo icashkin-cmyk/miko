@@ -4,7 +4,8 @@
 
 **提案狀態：`PROPOSED`｜採用狀態：`NOT_ADOPTED`｜執行路由：`READ_ONLY_DEGRADED`｜`HISTORICAL_NOT_RUNTIME`**
 
-**附件基線：VERSION 1.2.58｜ADR-081｜HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6**
+**歷史附件基線：VERSION 1.2.58｜ADR-081｜HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6**
+目前正本基線：`miko-core v1.72`／`VERSION 1.2.71`／`ADR-094`／`main 5663974816c14044cc33fbf3023dc3a8d5d996a2`。
 
 > 本文件是批次 4 的候選提案，不是 `skills/` 正本，不代表 miko-core 已修改、已載入、已採用或 Runtime 生效。本文未宣稱已測試、已稽核、已部署、已交付或已恢復正式路由。下列測試與檢查若未取得實際工具證據，一律標示 `NOT_RUN`、`UNKNOWN` 或 `NOT_READ`。
 
@@ -56,9 +57,9 @@ route:
   external_write: false
   request_mode: content_only | draft_only | fixture_only | manual_review | unknown
 baseline:
-  version: 1.2.58
-  adr: ADR-081
-  head: 6db897bbf87ffab9ade1ffd8018ece83036041b6
+  version: 1.2.71
+  adr: ADR-094
+  head: 5663974816c14044cc33fbf3023dc3a8d5d996a2
 task_state: 完成但有疑慮 | 需要資料 | 卡住 | 完成
 evidence_summary:
   NOT_READ: 0

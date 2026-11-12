@@ -3,7 +3,8 @@
 # gmail-cleanup 提案層 Skill 替換稿
 
 **狀態：`PROPOSED`／`NOT_ADOPTED`／`HISTORICAL_NOT_RUNTIME`**  
-**附件基線：`VERSION 1.2.58`／`ADR-081`／`HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`**  
+**歷史附件基線：`VERSION 1.2.58`／`ADR-081`／`HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`**
+目前正本基線：`miko-core v1.72`／`VERSION 1.2.71`／`ADR-094`／`main 5663974816c14044cc33fbf3023dc3a8d5d996a2`。
 **本文件不是正本，不代表已採用、已測試、已稽核、已部署、已載入 Runtime、已恢復路由或已對 Gmail 產生任何效果。所有未知事項標示為 `UNKNOWN`；尚未執行事項標示為 `NOT_RUN`。**
 
 ## 0. 文件定位、範圍與非目標

@@ -4,7 +4,8 @@
 
 > **PROPOSED｜NOT_ADOPTED｜HISTORICAL_NOT_RUNTIME**
 >
-> 附件基線：`VERSION 1.2.58`／`ADR-081`／`HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`。
+> 歷史附件基線：`VERSION 1.2.58`／`ADR-081`／`HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`。
+> 目前正本基線：`miko-core v1.72`／`VERSION 1.2.71`／`ADR-094`／`main 5663974816c14044cc33fbf3023dc3a8d5d996a2`。
 >
 > 本文件是批次 4 的提案層替換稿，不是 `skills/make-skill/SKILL.md` 正本。未有治理採用、獨立稽核、固定 commit 讀回與明確放行前，不得宣稱已採用、已測試、已稽核、已推送、已載入或 Runtime 生效。本文未執行 lint、固定測題、CI、冷啟動或 independent audit，均標 `NOT_RUN`；未知資料標 `UNKNOWN`。
 

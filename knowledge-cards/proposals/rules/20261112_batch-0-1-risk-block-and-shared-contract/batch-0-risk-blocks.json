@@ -3,9 +3,9 @@
   "proposal_status": "PROPOSED",
   "adoption_status": "NOT_ADOPTED",
   "baseline": {
-    "version": "1.2.58",
-    "adr": "ADR-081",
-    "head": "6db897bbf87ffab9ade1ffd8018ece83036041b6"
+    "version": "1.2.71",
+    "adr": "ADR-094",
+    "head": "5663974816c14044cc33fbf3023dc3a8d5d996a2"
   },
   "default_policy": {
     "mode": "fail_closed",
