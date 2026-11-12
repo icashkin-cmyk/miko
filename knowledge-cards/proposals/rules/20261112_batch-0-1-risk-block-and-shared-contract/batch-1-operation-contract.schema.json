@@ -1,0 +1,433 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:miko:batch-1:operation-contract:1",
+  "title": "MIKO Batch 1 Shared Operation Contract",
+  "description": "候選共用契約；僅供提案與唯讀測試，尚未成為 miko-core 正式規則。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "proposal_status",
+    "task_id",
+    "operation_id",
+    "skill",
+    "route",
+    "baseline",
+    "steps",
+    "task_state",
+    "evidence_summary",
+    "artifacts",
+    "idempotency_key",
+    "retry_policy"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "proposal_status": {
+      "const": "PROPOSED"
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$"
+    },
+    "operation_id": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,159}$"
+    },
+    "skill": {
+      "type": "string",
+      "minLength": 1
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "adopted",
+        "read_only",
+        "external_write"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "READ_ONLY_DEGRADED",
+            "PAUSED_BY_USER",
+            "BLOCKED",
+            "CANDIDATE_ONLY"
+          ]
+        },
+        "adopted": {
+          "const": false
+        },
+        "read_only": {
+          "const": true
+        },
+        "external_write": {
+          "const": false
+        },
+        "request_mode": {
+          "enum": [
+            "content_only",
+            "draft_only",
+            "fixture_only",
+            "fixed_regression",
+            "manual_review",
+            "unknown"
+          ]
+        }
+      }
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "adr",
+        "head"
+      ],
+      "properties": {
+        "version": {
+          "const": "1.2.71"
+        },
+        "adr": {
+          "const": "ADR-095"
+        },
+        "head": {
+          "const": "3d53f026d348e80b072fc9c21801a05dec0309aa"
+        }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/step"
+      }
+    },
+    "task_state": {
+      "enum": [
+        "完成",
+        "完成但有疑慮",
+        "需要資料",
+        "卡住"
+      ]
+    },
+    "evidence_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "NOT_READ",
+        "NOT_RUN",
+        "UNKNOWN",
+        "CONFLICT",
+        "BLOCKED",
+        "PARTIAL",
+        "PASS"
+      ],
+      "properties": {
+        "NOT_READ": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "NOT_RUN": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "UNKNOWN": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "CONFLICT": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "BLOCKED": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "PARTIAL": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "PASS": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "difficulty_cards": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/difficulty_card"
+      }
+    },
+    "approvals": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/approval"
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/artifact"
+      }
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,191}$",
+      "description": "候選冪等鍵；同鍵重跑只允許唯讀查詢既有 manifest，不得重新觸發副作用。"
+    },
+    "retry_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_attempts",
+        "on_unknown",
+        "same_operation_readback_only"
+      ],
+      "properties": {
+        "max_attempts": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "on_unknown": {
+          "enum": [
+            "STOP",
+            "READBACK_ONLY"
+          ]
+        },
+        "same_operation_readback_only": {
+          "const": true
+        }
+      },
+      "description": "候選重試政策；不得 blind retry，UNKNOWN 只能停止或唯讀讀回。"
+    }
+  },
+  "$defs": {
+    "step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "step_id",
+        "kind",
+        "trigger",
+        "depends_on",
+        "input_refs",
+        "output_refs",
+        "status",
+        "forbidden",
+        "acceptance",
+        "failure_exit"
+      ],
+      "properties": {
+        "step_id": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9-]{2,31}$"
+        },
+        "kind": {
+          "enum": [
+            "P",
+            "C",
+            "J"
+          ]
+        },
+        "trigger": {
+          "type": "string",
+          "minLength": 1
+        },
+        "depends_on": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "input_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "output_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "status": {
+          "enum": [
+            "NOT_READ",
+            "NOT_RUN",
+            "UNKNOWN",
+            "CONFLICT",
+            "BLOCKED",
+            "PARTIAL",
+            "PASS"
+          ]
+        },
+        "operation": {
+          "type": "string"
+        },
+        "forbidden": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "acceptance": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "failure_exit": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "difficulty_card": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "phenomenon",
+        "evidence",
+        "category",
+        "affected_ac",
+        "release_condition",
+        "owner",
+        "first_seen"
+      ],
+      "properties": {
+        "phenomenon": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category": {
+          "enum": [
+            "缺資料",
+            "缺決定授權付費",
+            "技術失敗",
+            "外部依賴"
+          ]
+        },
+        "affected_ac": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "release_condition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "first_seen": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "approval_id",
+        "scope",
+        "status"
+      ],
+      "properties": {
+        "approval_id": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "NOT_REQUESTED",
+            "REQUESTED",
+            "APPROVED",
+            "REJECTED",
+            "EXPIRED"
+          ]
+        },
+        "evidence_ref": {
+          "type": "string"
+        },
+        "rollback": {
+          "type": "string"
+        }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_id",
+        "path",
+        "status"
+      ],
+      "properties": {
+        "artifact_id": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "NOT_READ",
+            "NOT_RUN",
+            "UNKNOWN",
+            "CONFLICT",
+            "BLOCKED",
+            "PARTIAL",
+            "PASS"
+          ]
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "readback_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "committed": {
+          "const": false
+        }
+      }
+    }
+  }
+}
