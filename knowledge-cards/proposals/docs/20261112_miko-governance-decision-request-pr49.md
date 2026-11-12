@@ -69,7 +69,7 @@
 ### 4.2 Skill 結構驗證
 
 ```text
-python3 /home/ubuntu/skills/skill-creator/scripts/quick_validate.py \
+python3 <skill-creator 本機安裝路徑>/scripts/quick_validate.py \
   --path knowledge-cards/proposals/skills/governance-review-decision-flow
 
 結果：Skill is valid!
