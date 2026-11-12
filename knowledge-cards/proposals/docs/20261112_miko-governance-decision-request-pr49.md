@@ -17,7 +17,7 @@
 - PR：[#49](https://github.com/icashkin-cmyk/miko/pull/49)
 - repository：`icashkin-cmyk/miko`
 - branch：`manus/governor-role-sop-20261112`
-- 最新固定 head：`6143c9c1e74a1b6353a4a9089d81426b93bbefbb`
+- 最新固定 head：以 PR 頁面顯示的 head 為準（Claude 2026-11-13 修正時為 `46e56a9`；之後有新 commit 時以頁面為準，不再寫死）
 - PR 狀態：`OPEN`、`isDraft=false`、尚未合併
 - 採用軸：`PROPOSED`
 - 實際撰寫者：Manus 執行總召
@@ -43,7 +43,7 @@
 
 ### 4.1 C1～C16
 
-已於最新提交 `6143c9c1e74a1b6353a4a9089d81426b93bbefbb` 後，以 `python3 tests/check_repo.py` 重新執行：
+已於提交 `6143c9c1e74a1b6353a4a9089d81426b93bbefbb`（當時的 head，此處為歷史紀錄，不改；Claude 於 `46e56a9` 重跑為 16/16 PASS）後，以 `python3 tests/check_repo.py` 重新執行：
 
 - C1：PASS
 - C2：PASS
