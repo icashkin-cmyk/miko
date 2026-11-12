@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "proposal_status": "PROPOSED",
+  "adoption_status": "NOT_ADOPTED",
+  "baseline": {
+    "version": "1.2.71",
+    "adr": "ADR-094",
+    "head": "fb8fe9da70b84dd878321ced76045e6957f818a0"
+  },
+  "default_policy": {
+    "mode": "fail_closed",
+    "default_route": "READ_ONLY_DEGRADED",
+    "adopted": false,
+    "read_only": true,
+    "external_write": false,
+    "allow_force_override": false,
+    "allow_implicit_approval": false,
+    "allow_blind_retry": false,
+    "unknown_is_success": false,
+    "not_run_is_pass": false,
+    "partial_is_complete": false
+  },
+  "global_hard_blocks": [
+    "broker",
+    "live",
+    "order",
+    "trade",
+    "payment",
+    "booking",
+    "send",
+    "reply",
+    "delete",
+    "permanent_delete",
+    "external_write",
+    "public_publish",
+    "schedule",
+    "credential_change",
+    "route_enable",
+    "adoption_state_change"
+  ],
+  "approval_required": [
+    "external_write",
+    "git_push",
+    "drive_delta",
+    "gmail_mutation",
+    "formal_delivery",
+    "route_restore",
+    "adopt_skill",
+    "change_source_allowlist",
+    "remove_paused_gate"
+  ],
+  "skills": {
+    "dghp-travel": {
+      "route_mode": "READ_ONLY_DEGRADED",
+      "allow": ["offline_candidate_check", "synthetic_fixture_check", "source_status_draft"],
+      "block": ["READY_TO_GO", "real_trip_release", "booking", "payment", "navigation", "external_write"],
+      "release_gate": "real指定日證據、交通／住宿／營業／返程閉環、工具讀回與獨立稽核全部完成後，另由治理裁決"
+    },
+    "gmail-cleanup": {
+      "route_mode": "READ_ONLY_DEGRADED",
+      "allow": ["readonly_inventory", "important_mail_check", "mock_connector_test"],
+      "block": ["move", "delete", "permanent_delete", "label_mutation", "unsubscribe", "send", "reply", "schedule"],
+      "release_gate": "本輪精確批准、逐封 manifest、逐封讀回、可恢復快照、測試與治理放行"
+    },
+    "grilling": {
+      "route_mode": "READ_ONLY_DEGRADED",
+      "allow": ["manual_question_round", "proposal_output", "readonly_source_review"],
+      "block": ["formal_delivery", "auto_consensus", "delegated_write", "external_write"],
+      "release_gate": "與 miko-core 四視角責任分離、共識驗收、獨立稽核與治理放行"
+    },
+    "label-foreign-text": {
+      "route_mode": "READ_ONLY_DEGRADED",
+      "allow": ["input_readability_check", "source_check_draft", "draft_only"],
+      "block": ["finalize", "formal_label_release", "external_delivery", "external_write"],
+      "release_gate": "法域／版本／影像可讀性／官方來源配對／定稿逐字比對與高風險 independent audit"
+    },
+    "make-skill": {
+      "route_mode": "READ_ONLY_DEGRADED",
+      "allow": ["local_lint_design", "readonly_review", "proposal_output"],
+      "block": ["git_push", "drive_delta", "account_card_write", "runtime_enable", "public_publish"],
+      "release_gate": "精確批准、固定 commit、稽核包、CI、raw 讀回、SHA、冷啟動與治理裁決"
+    },
+    "multi-agent-coordination-engine": {
+      "route_mode": "READ_ONLY_DEGRADED",
+      "allow": ["readonly_design_review", "independent_readonly_subtask_design"],
+      "block": ["delegation", "parallel_writer", "shared_writer", "secret_handling", "external_write"],
+      "release_gate": "子任務獨立性、授權、writer 互斥、來源 pinning、結果聚合與治理放行"
+    },
+    "photo-inspection-log": {
+      "route_mode": "READ_ONLY_DEGRADED",
+      "allow": ["preflight_diagnostics", "manifest_hash_audit", "workfile_read", "fixture_test"],
+      "block": ["formal_xlsx_export", "company_delivery", "external_write", "overwrite_existing_delivery"],
+      "release_gate": "preflight hard fail、entries schema、照片 SHA、原子寫入、xlsx 讀回與治理放行"
+    },
+    "tw-alert-check": {
+      "route_mode": "READ_ONLY_DEGRADED",
+      "allow": ["source_status_draft", "readonly_source_check", "unknown_status_report"],
+      "block": ["official_safety_conclusion", "closure_conclusion", "traffic_safety_release", "external_write"],
+      "release_gate": "逐來源／逐日期證據、權威矩陣、部分成功／CONFLICT、測試、independent audit 與治理放行"
+    },
+    "tw-backtest-workflow": {
+      "route_mode": "PAUSED_BY_USER",
+      "allow": ["fixed_regression_C6", "fixed_regression_C9", "readonly_contract_test"],
+      "block": ["general_backtest", "data_fetch", "strategy_research", "parameter_tuning", "performance_conclusion", "live", "broker", "order"],
+      "release_gate": "只有 MIKO 明確撤銷回測停止，並完成契約修補、independent audit 與治理放行才可解除；C6／C9 只判引擎回歸，不作策略解讀"
+    },
+    "visual-content-intelligence": {
+      "route_mode": "READ_ONLY_DEGRADED",
+      "allow": ["content_only", "provided_media_read", "page_text_only"],
+      "block": ["content_and_miko", "formal_proposal", "engineering_import", "download", "upload", "external_write", "public_publish"],
+      "release_gate": "來源／產物 manifest、operation lock、原子提交、逐檔讀回、內容範圍與治理放行"
+    }
+  },
+  "invariants": [
+    "route_mode 不得在未採用時為 ADOPTED 或 EFFECTIVE",
+    "任何 global_hard_blocks 不得以 force 或 implicit approval 解鎖",
+    "NOT_READ、NOT_RUN、UNKNOWN、CONFLICT、BLOCKED、PARTIAL 不得自動聚合為 COMPLETE",
+    "PAUSED_BY_USER 優先於領域 Skill 的一般繼續指令",
+    "本設定只描述候選封鎖，不代表正式路由已修改"
+  ]
+}
