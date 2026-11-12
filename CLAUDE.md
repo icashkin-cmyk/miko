@@ -23,7 +23,7 @@
 - Skill 改版用局部修改，不整份重寫；舊條文保留、改寫或寫進「## 刪除清單」附理由（ADR-036；tests/check_repo.py C11 要求子句保留 ≥ 90%）。
 - 每個 Skill 只有一個 writer；其他專案改 Skill 或規則先整理成提案交總召（治理專案指示「單一 writer」表）。
 - 公開 repo 不放工程名稱、單位名稱、人名、個人資料，xlsx／csv 內容也算（治理專案指示；check_repo C12）。
-- 一律繁體中文；API、函式、變數、Key、介面名稱與狀態識別碼保留原文（README §7；skills/multi-agent-coordination-engine；帳號偏好〔檔案與語言〕）。
+- 一律繁體中文；API、函式、變數、Key、介面名稱與狀態識別碼保留原文（README §7；skills/miko-core/references/governance-module.md；帳號偏好〔檔案與語言〕）。
 
 ## 正本改版要動的地方
 README 標題版本、VERSION 四行（第 4 行是 README 的 SHA-256）、CHANGELOG.md 新增一行（只新增）、adapters/README.md 版本、skills/miko-core/SKILL.md 的「對應正本」；並在 Drive MIKO_ARCHIVE 存一份 DELTA（治理專案指示「正本改版」；check_repo C1、C10 檢查版本一致與 SHA-256）。

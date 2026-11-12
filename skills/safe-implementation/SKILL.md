@@ -3,9 +3,9 @@ name: safe-implementation
 description: 寫程式、修 bug、加功能或修改程式後驗證時使用：先確認範圍與驗收條件，建會失敗的最小重現，在授權範圍內最小修補，跑相稱的測試並分開回報。唯讀評估只分析不寫入；回測程式先用 tw-backtest-workflow 再疊用本 Skill；說「TDD」「先寫測試」「重構」「架構體檢」時也用。推送依 miko-core §7。
 ---
 
-# safe-implementation v0.3｜範圍內實作與驗證｜2026-11-09
+# safe-implementation v0.4｜範圍內實作與驗證｜2026-11-12
 
-來源：GPT 時期 dghp-safe-implementation（2026-11-04 交付包，經逐條比對與獨立稽核後改寫，ADR-041）；v0.2 的測試位置、垂直切片、重構分開與架構體檢參考 mattpocock/skills 的 tdd 與 improve-codebase-architecture（MIT，Copyright (c) 2026 Matt Pocock，commit 4ae2317），條文為中文改寫，部分句子接近原文翻譯，著作權聲明同 skills/grilling/LICENSE-upstream.md（ADR-042）；v0.3 的基準測試與結束碼兩句來自 MIKO 2026-11-08 貼的 Boris Cherny「Mastering Claude Code in 30 minutes」解析與「資深工程師範本包」審查（總召 2026-11-09 00:56（台北）依 MIKO 2026-11-08 20:06 授權裁定採用，ADR-065）。先載入 miko-core；本 Skill 只負責「程式修改與驗證」一件事。與 miko-core §7 硬邊界、§4「工程與交付常見錯誤」「證據與狀態（ADR-040）」重疊處，以 miko-core 為準。
+來源：GPT 時期 dghp-safe-implementation（2026-11-04 交付包，經逐條比對與獨立稽核後改寫，ADR-041）；v0.2 的測試位置、垂直切片、重構分開與架構體檢參考 mattpocock/skills 的 tdd 與 improve-codebase-architecture（MIT，Copyright (c) 2026 Matt Pocock，commit 4ae2317），條文為中文改寫，部分句子接近原文翻譯，著作權聲明同 skills/_retired/grilling/LICENSE-upstream.md（ADR-042）；v0.3 的基準測試與結束碼兩句來自 MIKO 2026-11-08 貼的 Boris Cherny「Mastering Claude Code in 30 minutes」解析與「資深工程師範本包」審查（總召 2026-11-09 00:56（台北）依 MIKO 2026-11-08 20:06 授權裁定採用，ADR-065）。先載入 miko-core；本 Skill 只負責「程式修改與驗證」一件事。與 miko-core §7 硬邊界、§4「工程與交付常見錯誤」「證據與狀態（ADR-040）」重疊處，以 miko-core 為準。
 資料：使用者指定的 repo 或工作資料夾、既有測試與專案規則（CLAUDE.md 或 repo 內說明）。連接器：GitHub（只在授權範圍）。排程：無。交回：變更檔、實際命令與結果、未測事項、剩餘風險與恢復方式。
 
 ## 問問題
@@ -29,7 +29,7 @@ description: 寫程式、修 bug、加功能或修改程式後驗證時使用：
 ## 後設
 - 常見錯誤：測試只跑篩選後的子集卻宣稱全過；為了變綠而改斷言；把「跑了」寫成「通過」；修 A 順手改了 B；沒讀使用者未提交的修改就覆蓋；文件裡的指令沒在乾淨資料夾實跑過（miko-core §4 ADR-040）。
 - 自問：這個修補能被最小重現證明嗎？有沒有更小的改法？哪個邊界最可能壞？
-- 架構體檢（ADR-042；MIKO 說「架構體檢」「程式庫體檢」，或說「重構」但沒指名要改哪段程式時；唯讀，先不改程式。說「重構」並指名具體程式碼與要的改法時，照「解決」第 1～8 步做，重構與修 bug 分開；分不清時先做唯讀體檢）：MIKO 指定範圍就照範圍；沒指定就從近期 git log 找常改的熱點。找三種摩擦：理解一個概念要在很多小檔之間跳、模組介面幾乎和實作一樣複雜（淺模組）、為了測試抽出的純函式但錯誤藏在呼叫處。可疑模組做刪除測試：刪掉後複雜度是集中到一處，還是只搬了家；會集中才是候選。每個候選列檔案、問題、做法、好處（含測試會怎麼變好）、建議強度（強／值得探索／推測），和既有 ADR 衝突的要標明理由；報告放專案檔或工作資料夾（MIKO 手機打得開），不放系統暫存。MIKO 選了候選後，列出介面草案請 MIKO 確認（MIKO 說「拷問」時才改用 grilling 逐題定），確認後照「解決」第 1～8 步實作。
+- 架構體檢（ADR-042；MIKO 說「架構體檢」「程式庫體檢」，或說「重構」但沒指名要改哪段程式時；唯讀，先不改程式。說「重構」並指名具體程式碼與要的改法時，照「解決」第 1～8 步做，重構與修 bug 分開；分不清時先做唯讀體檢）：MIKO 指定範圍就照範圍；沒指定就從近期 git log 找常改的熱點。找三種摩擦：理解一個概念要在很多小檔之間跳、模組介面幾乎和實作一樣複雜（淺模組）、為了測試抽出的純函式但錯誤藏在呼叫處。可疑模組做刪除測試：刪掉後複雜度是集中到一處，還是只搬了家；會集中才是候選。每個候選列檔案、問題、做法、好處（含測試會怎麼變好）、建議強度（強／值得探索／推測），和既有 ADR 衝突的要標明理由；報告放專案檔或工作資料夾（MIKO 手機打得開），不放系統暫存。MIKO 選了候選後，列出介面草案請 MIKO 確認（MIKO 說「拷問」時改逐題確認；grilling 已退休，ADR-094），確認後照「解決」第 1～8 步實作。
 
 ## 檢查
 - 驗收：回報實際變更的檔案與行為、已執行的命令與結束碼或測試結果、未測事項與原因、剩餘風險與恢復方式；靜態、單元、整合、真實服務驗證分列；跑了不等於通過。結束碼 0 不能單獨算通過：還要核對輸出內容（有沒有 FAIL、筆數、欄位、檔案是否產出）；反過來，檢查類程式印出 FAIL 卻回傳 0，要列為缺陷回報，不得當成通過（ADR-065；2026-11-08 實測 photo-inspection-log 的 preflight.py 即屬此例）。未經授權不發布、不推送、不部署、不操作真實帳戶。
@@ -48,3 +48,4 @@ description: 寫程式、修 bug、加功能或修改程式後驗證時使用：
 - 「適用 AGENTS」改為「專案規則（CLAUDE.md 或 repo 內說明）」：AGENTS.md 是 Codex 時期的落點，Codex 已停用（ADR-039）。
 - 「可獨立研究、測試或審查時才委派」改為依 miko-core §4：原句允許為測試開子代理，與 §4 多代理限制衝突。
 - 「不要順手改 Canonical」改寫為「正本或權威資料」：Canonical 是 DGHP 用語，意思保留。
+- v0.4（正本 1.2.71，ADR-094）：(1) 只改指向：第 8 行授權檔路徑 skills/grilling/LICENSE-upstream.md → skills/_retired/grilling/LICENSE-upstream.md；(2) 規則改變：第 32 行「MIKO 說拷問時才改用 grilling 逐題定」→「改逐題確認（grilling 已退休）」，grilling 的一輪題數、推薦答案等做法不再適用（同 miko-core v1.72 刪除清單 (3)）。理由：grilling 於 2026-11-12 退休，原檔移到 skills/_retired/。
