@@ -74,7 +74,7 @@ route:
   read_only: true
   external_write: false
 baseline:
-  version: 1.2.71
+  version: 1.2.72
   adr: ADR-095
   head: 3d53f026d348e80b072fc9c21801a05dec0309aa
 steps:
@@ -247,3 +247,16 @@ artifact_readback_sha256: NOT_RUN
 - 本地候選產物遵循「暫存 → flush → fsync → 原子替換 → 逐項讀回 SHA-256」生命週期；任一讀回未知即 `UNKNOWN`／`BLOCKED`。
 - `NOT_READ`、`NOT_RUN`、`UNKNOWN`、`CONFLICT`、`BLOCKED`、`PARTIAL` 不得升格為 `PASS`、`COMPLETE` 或 `READY_TO_GO`。
 - 本節所有工程接線、fixture、CI、independent-audit、Runtime 與外部服務結果仍為 `NOT_RUN`／`UNKNOWN`。
+
+## 批次 4 v1.73 交叉審查修訂補充
+
+- **操作身份映射：** `operation_id` 是唯一操作身份；`idempotency_key` 目前只是批次 1 候選擴充，尚未採用。若治理未另行批准，不得把它當第二個身份；若未來採用，必須與同一 `operation_id` 一對一映射，同鍵重跑只讀取既有 manifest 與讀回證據。
+- **重試語意：** 批次 1 的 `retry_policy` 目前是 `NOT_ADOPTED` 候選規格；`STOP` 不重觸發，`READBACK_ONLY` 只讀同一 operation。任何自然語言的「最多一次替代來源」均不得繞過此限制。
+- **稽核前門檻：** fake／fixture、safe-implementation 原子寫入與讀回 SHA、independent-audit、冷啟動與固定測題目前仍為 `NOT_RUN`／`UNKNOWN`；本節不把設計文字當成執行證據。
+
+## 退休正本讀回證據（候選層）
+
+- 退休正本路徑：`skills/_retired/grilling/SKILL.md`。
+- immutable ref：`3d53f026d348e80b072fc9c21801a05dec0309aa`。
+- 正本檔 SHA-256：`835ed0d28304c0cd455c7d237d84d4e6d5a586b37b62e5d0f6a189b69fd05b24`（由 main 固定 ref 取得候選比對值；此 SHA 讀回驗證狀態：`NOT_RUN`，不得視為 independent-audit 或採用證據）。
+- 本文件仍是歷史候選，不得恢復該路由；Runtime／independent-audit 狀態仍為 `NOT_RUN`。

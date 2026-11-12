@@ -6,6 +6,8 @@
 
 ## 1. 目的
 
+> **共用身份硬警示：** `operation_id` 是唯一操作身份；`idempotency_key` 在治理批准前只是候選擴充，不得作為第二個獨立身份。若未來採用，必須與同一 `operation_id` 一對一映射，同鍵重跑只能 `READBACK_ONLY`。
+
 PR #44 原批次 1 Schema 把既有 miko-core 契約、候選工程欄位與路由／證據狀態混在一起。這份對照表先界定「已存在」「候選新增」「不應重複」與「仍需治理裁決」；在本表未經總召接受前，`batch-1-operation-contract.schema.json` 只能當候選草稿。
 
 ## 2. 既有契約與候選欄位對照

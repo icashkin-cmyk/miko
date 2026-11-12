@@ -6,6 +6,7 @@
 **批次 4 歷史設計基線（早期輸入）：`VERSION 1.2.58`／`ADR-081`／`HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`**
 目前正本基線：`miko-core v1.73`／`VERSION 1.2.72`／`ADR-095`／`main 3d53f026d348e80b072fc9c21801a05dec0309aa`。
 > **來源責任：** 本文件由 Manus 建立於批次 4 候選提案層；保留歷史設計基線僅供追溯，不代表外部附件來源或目前正本。
+> **固定安全欄位：** `mutation_allowlist: []`、`approval_snapshot: NOT_RUN`；在治理另行批准前，任何 move／delete／label mutation／unsubscribe／send／reply／schedule 均永久 `BLOCKED`。
 **本文件不是正本，不代表已採用、已測試、已稽核、已部署、已載入 Runtime、已恢復路由或已對 Gmail 產生任何效果。所有未知事項標示為 `UNKNOWN`；尚未執行事項標示為 `NOT_RUN`。**
 
 ## 0. 文件定位、範圍與非目標
@@ -229,3 +230,15 @@ independent-audit 負責以固定 commit／來源 pin 重新讀取原始文件�
 - 本地候選產物遵循「暫存 → flush → fsync → 原子替換 → 逐項讀回 SHA-256」生命週期；任一讀回未知即 `UNKNOWN`／`BLOCKED`。
 - `NOT_READ`、`NOT_RUN`、`UNKNOWN`、`CONFLICT`、`BLOCKED`、`PARTIAL` 不得升格為 `PASS`、`COMPLETE` 或 `READY_TO_GO`。
 - 本節所有工程接線、fixture、CI、independent-audit、Runtime 與外部服務結果仍為 `NOT_RUN`／`UNKNOWN`。
+
+## 批次 4 v1.73 交叉審查修訂補充
+
+- **操作身份映射：** `operation_id` 是唯一操作身份；`idempotency_key` 目前只是批次 1 候選擴充，尚未採用。若治理未另行批准，不得把它當第二個身份；若未來採用，必須與同一 `operation_id` 一對一映射，同鍵重跑只讀取既有 manifest 與讀回證據。
+- **重試語意：** 批次 1 的 `retry_policy` 目前是 `NOT_ADOPTED` 候選規格；`STOP` 不重觸發，`READBACK_ONLY` 只讀同一 operation。任何自然語言的「最多一次替代來源」均不得繞過此限制。
+- **稽核前門檻：** fake／fixture、safe-implementation 原子寫入與讀回 SHA、independent-audit、冷啟動與固定測題目前仍為 `NOT_RUN`／`UNKNOWN`；本節不把設計文字當成執行證據。
+
+## Gmail mutation 強制封鎖補充
+
+- `mutation_allowlist`：`[]`（候選層固定空白，未經治理不得開啟）。
+- `approval_snapshot`：`NOT_RUN`；未有精確使用者批准、message/thread 範圍、操作清單、回復方式、讀回證據前，move、delete、label mutation、unsubscribe、send、reply、schedule 均 `BLOCKED`。
+- 本候選不得以 Gmail API 成功、歷史摘要或自然語言「繼續」解除上述封鎖。
