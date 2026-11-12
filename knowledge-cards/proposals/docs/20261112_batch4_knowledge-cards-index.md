@@ -2,16 +2,16 @@
 
 > **文件性質：未驗收的批次索引與執行清單。**
 >
-> 本文件只彙整 `/home/ubuntu/work-miko-audit/knowledge-cards/proposals/` 下的提案結果，不修改任何 `skills/` 正本、Runtime、外部服務、帳號卡、Drive、Git、CI 或正式交付物。
+> 本文件只彙整 `knowledge-cards/proposals/` 下的提案結果，不修改任何 `skills/` 正本、Runtime、外部服務、帳號卡、Drive、Git、CI 或正式交付物。
 >
-> 十份文件目前均為 `PROPOSED`／`NOT_ADOPTED`／`HISTORICAL_NOT_RUNTIME` 之類的未採用狀態。以下內容不得解讀為已採用、已測試、已稽核、已部署、已載入或已恢復正式路由。任何工程接線、固定測題、冷啟動、independent-audit、治理批准與 Runtime 行為，除提案結果明示已做的檔案層唯讀檢查外，均維持 `NOT_RUN`、`NOT_READ` 或 `UNKNOWN`。
+> 八份文件目前屬本輪候選，均為 `PROPOSED`／`NOT_ADOPTED`／`HISTORICAL_NOT_RUNTIME` 之類的未採用狀態；07 `photo-inspection-log` 與 09 `tw-backtest-workflow` 已移至 `handoff/20261112_batch4-out-of-scope/`，只作責任轉交材料。以下內容不得解讀為已採用、已測試、已稽核、已部署、已載入或已恢復正式路由。任何工程接線、固定測題、冷啟動、independent-audit、治理批准與 Runtime 行為，除提案結果明示已做的檔案層唯讀檢查外，均維持 `NOT_RUN`、`NOT_READ` 或 `UNKNOWN`。
 
 ## 1. 批次總體裁決與硬性門檻
 
 ### 1.1 全批次共同門檻
 
 1. **批次 0：READ_ONLY_DEGRADED／PAUSED_BY_USER 優先。** 各 Skill 的批次 0 路由封鎖以其提案中的具體白名單為準；不可逆操作、外部寫入、正式交付、公開發布、交易或安全結論一律 `fail closed`。
-2. **批次 1 只是一組候選共用規格。** 包含共用證據狀態、任務四態、七欄困難卡、唯一 `step_id`、P/C/J、唯一 `operation_id`、四段流程、部分成功聚合與相依停止規則；尚未證明已接入 `miko-core` 或任何正式 Runtime。
+2. **批次 1 只是一組退回修訂的候選共用規格。** 先以 `20261112_batch4-contract-comparison.md` 對照 miko-core 既有契約並拆分證據／任務／路由／授權／採用軸；尚未證明已接入 `miko-core` 或任何正式 Runtime。
 3. **不得把未知或部分成功升格為完成。** `NOT_READ`、`NOT_RUN`、`UNKNOWN`、`CONFLICT`、`BLOCKED`、`PARTIAL` 均不可自動聚合為 `PASS`、`COMPLETE` 或 `READY_TO_GO`。
 4. **外部或不可逆行為必須有明確批准。** 需要精確範圍、批准原話、目標、操作清單、回復方式、冪等／重入策略、固定來源與工具 pin、原子提交、`COMMITTED` 證據、寫入後讀回與 hash；任一項未知即停止。
 5. **固定保留回測封鎖。** `tw-backtest-workflow` 維持 `PAUSED_BY_USER`；只保留 C6/C9 固定唯讀回歸例外，不得作策略研究、交易、績效或投資解讀。
@@ -19,7 +19,7 @@
 
 ### 1.2 目前不可宣稱事項
 
-- 不得宣稱十份提案已修改正本、已採用或已生效。
+- 不得宣稱八份候選或兩份轉交文件已修改正本、已採用或已生效。
 - 不得宣稱任何提案已接上正式 Runtime、路由已恢復、外部服務已驗證或外部寫入已完成。
 - 不得以附件中的歷史 PASS、既有測試或候選腳本存在性取代本輪可重現的驗收證據。
 - 不得以本索引取代各 Skill 的專用測題、責任邊界、來源證據或治理裁決。
@@ -43,14 +43,14 @@
 - 建立 fake／fixture 與固定測題，確認未知、衝突、部分成功、使用者停止、授權不足及相依停止不會聚合成完成。
 - 特別確認 `grilling` 不會把自身檢查誤當 independent audit，且多代理協調不會越過治理與 writer 邊界。
 
-### Stage 2：來源、媒體與安全查核類
+### Stage 2：來源與安全查核類
 
-候選先處理：`label-foreign-text`、`visual-content-intelligence`、`photo-inspection-log`、`tw-alert-check`。
+候選先處理：`label-foreign-text`、`visual-content-intelligence`、`tw-alert-check`。`photo-inspection-log` 已移出本輪，見轉交目錄。
 
 - 建立來源內容／原始檔／工具版本／命令／exit code／查閱時間／SHA 的完整證據鏈。
 - 先完成輸入可讀性、法域／產品／標籤版本、URL-only、個資與照片替換／壞圖等阻擋測題。
 - 固定逐來源、逐日期、逐地點、逐時區及衝突處理；部分來源成功不得形成完整安全結論。
-- 對 `photo-inspection-log` 另外驗證 manifest、圖片與列對應、xlsx/PDF round-trip、checkpoint、原子寫入及讀回。
+- `photo-inspection-log` 的 manifest、圖片與列對應、xlsx/PDF round-trip、checkpoint、原子寫入及讀回，改由其專案 writer 另行負責。
 
 ### Stage 3：受限領域操作流程
 
@@ -61,20 +61,20 @@
 - `gmail-cleanup` 維持所有 move／delete／label mutation／unsubscribe／send／reply／schedule 等封鎖；需補足 thread、附件、分頁、label 快照、逐封讀回與搬錯恢復 fixture。
 - 住宿、交通、餐飲、返程、郵件部分成功與範圍漂移均須有相依停止與已核實／未核實證據傳播。
 
-### Stage 4：回測封鎖與固定回歸
+### Stage 4：回測停止聲明（不納入本輪）
 
-- `tw-backtest-workflow` 僅驗證 `PAUSED_BY_USER` 優先、C6/C9 唯讀固定回歸、旗標 XOR、manifest／hash、PIT／look-ahead、schema、成本／基準、事件與固定錯誤出口。
+- `tw-backtest-workflow` 維持 `PAUSED_BY_USER`；本輪只記錄轉交，不驗證引擎旗標、PIT／look-ahead、schema、成本／基準或新腳本。
 - 禁止抓新資料、一般回測、策略比較、交易路由或投資式解讀。
 - 任何歷史實跑或附件 PASS 均須在目前 checkout 以固定 commit/raw／SHA 重新讀回後，才可作為待審證據；目前仍 `NOT_RUN`。
 
 ### Stage 5：獨立稽核、冷啟動與治理採用
 
-- 對十份提案逐一執行專用測試與固定測題，保存命令、exit code、產物、讀回 hash 及失敗路徑。
+- 對八份候選提案逐一執行專用測試與固定測題，保存命令、exit code、產物、讀回 hash 及失敗路徑；07／09 由各自 writer 另行處理。
 - 由 independent-audit 在 fresh context 重讀提案、正本／接線與證據，不得由 Skill 自身的 J 段或四視角 PASS 取代。
 - 完成冷啟動／新對話回歸，確認狀態不會遺失、不會誤恢復路由，且 `PAUSED_BY_USER` 與批次 0 封鎖優先。
 - MIKO 治理須另行裁決是否採用、採用哪些部分、是否保留 `READ_ONLY_DEGRADED`／`PAUSED_BY_USER`；裁決前維持本索引所有未採用聲明。
 
-## 3. 十份提案知識卡索引
+## 3. 八份本輪候選與兩份責任轉交索引
 
 ### 3.1 dghp-travel
 
@@ -130,14 +130,14 @@
 - **未解決項：** 觸發條件與 miko-core 四視角責任重疊；缺至少兩個獨立、互不寫入、fresh context 的唯讀子問題硬條件；最大並行數、授權邊界、writer 互斥、不得委派事項、冪等鍵、來源 pin、原子寫入／讀回及部分成功聚合未證實；固定測題、專測、independent-audit、miko-core／safe-implementation 接線均未完成。
 - **下一站：** 先定義並驗證唯讀協調器的觸發／停止／並行／writer 契約，再讓 `grilling` 或其他 Skill 依賴它。
 
-### 3.7 photo-inspection-log
+### 3.7 photo-inspection-log（已移出本輪，責任轉交）
 
-- **提案路徑：** `knowledge-cards/proposals/skills/20261112_batch4/07-photo-inspection-log/SKILL.md`
+- **轉交路徑：** `knowledge-cards/proposals/handoff/20261112_batch4-out-of-scope/07-photo-inspection-log/SKILL.md`
 - **狀態：** `PROPOSED_NOT_ADOPTED_HISTORICAL_NOT_RUNTIME`。
 - **批次門檻：** 批次 0 只允許 preflight diagnostics、manifest hash audit、workfile read、fixture test；封鎖 formal xlsx export、company delivery、external write、overwrite existing delivery。批次 1 固定 `PCL-AUDIT-001` 與候選 operation contract；缺批准、來源 pin、原子提交、COMMITTED、讀回或 SHA 即停止；須完成 AC-T1～AC-T12、independent audit、固定 commit/raw、冷啟動與治理裁決。
 - **依賴順序：** Stage 0 → Stage 2 媒體／manifest／來源鏈 → Stage 5；其 xlsx/PDF 驗收不得先於來源與原子 IO 契約。
 - **未解決項：** 共用 contracts、safe IO、source pin、entries validator 接線未證實；照片替換、壞圖、checkpoint hash、七欄卡、PDF／版面抽查、restore／詞庫／set 的互斥與讀回未測；真實照片、preflight、entries、xlsx/PDF round-trip、Excel、專測及 independent audit 均 `NOT_RUN`／`UNKNOWN`。
-- **下一站：** 先建立只讀 manifest／壞圖／來源行對應 fixture，再驗證工作檔原子性與 round-trip；正式 xlsx 交付保持封鎖。
+- **本輪處置：** 不列入候選工程驗證；由照片／文件專案 writer 另行接手，正式 xlsx 交付保持封鎖。
 
 ### 3.8 tw-alert-check
 
@@ -148,14 +148,14 @@
 - **未解決項：** 缺逐來源／逐日期狀態、相依停止、權威邊界與衝突處理；缺多日／地點／時區／凌晨明天雙日證據；JSON／Markdown 索引、fake adapter、fixture、專測、operation ID、單一 writer、原子寫入、COMMITTED、讀回 SHA、safe-implementation／miko-core／independent-audit 接線均未證明。
 - **下一站：** 先建立逐來源、逐日期、逐時區證據矩陣與衝突 fixture；在治理裁決前只保留唯讀草稿，禁止正式安全結論。
 
-### 3.9 tw-backtest-workflow
+### 3.9 tw-backtest-workflow（已移出本輪，維持停止）
 
-- **提案路徑：** `knowledge-cards/proposals/skills/20261112_batch4/09-tw-backtest-workflow/SKILL.md`
+- **轉交路徑：** `knowledge-cards/proposals/handoff/20261112_batch4-out-of-scope/09-tw-backtest-workflow/SKILL.md`
 - **狀態：** `PROPOSED_NOT_ADOPTED`。
 - **批次門檻：** 路由固定 `PAUSED_BY_USER`；只允許 C6、C9、readonly contract test。任何不可逆、外部寫入、讀回未知、關鍵 UNKNOWN／NOT_RUN／CONFLICT／BLOCKED／PARTIAL 均 fail closed。需驗證暫停優先、旗標 XOR、manifest／hash、PIT／look-ahead、schema、成本／基準、事件與 28 欄適用性。
 - **依賴順序：** Stage 0 → Stage 4 固定唯讀回歸 → Stage 5；不得依賴一般資料抓取或策略研究。
 - **未解決項：** `backtest_contract.py`、`preflight_fixed_regression.py` 與專測接線未驗證；缺 operation ID、冪等、防盲目重試、原子寫入、讀回 SHA、COMMITTED、四態／證據狀態／七欄卡實際契約；歷史 PASS 未重跑；C6、C9、lint、CI、冷啟動及真實回測均 `NOT_RUN`；miko-core／safe-implementation／independent-audit 接線未讀取。
-- **下一站：** 先驗證 `PAUSED_BY_USER` 在入口最前端阻擋，再只跑固定 C6/C9 唯讀回歸；不得恢復一般回測或交易解讀。
+- **本輪處置：** 只保留 `PAUSED_BY_USER` 聲明；C6／C9 與其餘回測工程由 DGHP 臺股專案 writer 另行處理，不在本 PR 接線或執行。
 
 ### 3.10 visual-content-intelligence
 
@@ -176,4 +176,4 @@
 - 原子寫入暫存／fsync／替換／`COMMITTED`／讀回 SHA 證據；讀回未知必須保留 `UNKNOWN` 或 `BLOCKED`，不得猜測成功。
 - independent-audit 的 fresh-context 結果、冷啟動／新對話回歸、治理裁決與採用範圍。
 
-在上述證據包完成並獲正式裁決以前，本索引與十份 Skill 提案均維持**僅提案區、未採用、未稽核、未接正式 Runtime**。
+在上述證據包完成並獲正式裁決以前，本索引與八份候選 Skill、兩份轉交文件均維持**僅提案區、未採用、未稽核、未接正式 Runtime**。

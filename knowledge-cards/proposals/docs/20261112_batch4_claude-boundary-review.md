@@ -2,6 +2,7 @@
 
 # Claude 邊界審查原文摘錄
 
+> **歷史限制：** 本檔是 W2 修訂前的摘要材料整理，不是 Claude 原始輸出；總召已判定未驗證，且不涵蓋目前 8 份候選、契約對照表與負向 validator 修訂。
 > 來源：Claude Sonnet 4.6，2026-11-12，摘要材料審查。
 > 範圍：只審查 `knowledge-cards/proposals/skills/20261112_batch4/` 的十份提案摘要；未展示內容不得推定。
 > 狀態：審查證據，不是治理放行，不是 independent audit，不是正式採用。
