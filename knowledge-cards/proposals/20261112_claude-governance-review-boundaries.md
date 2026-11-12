@@ -44,6 +44,19 @@ Manus 可以做執行測試與自我檢查，但其結果只能標示為執行�
 | Runtime | 是否真的接線啟用？ |
 | 外部效果 | 是否造成寫入、分享、覆寫或其他外部影響？ |
 
+以下是本卡提出的**候選值域與轉換條件**，不是已核准的現行正本值域：
+
+| 軸 | 合法值 | 初始值與轉換條件 |
+|---|---|---|
+| 來源 | `READ`、`NOT_READ`、`STALE`、`CONFLICT` | 初始為 `NOT_READ`。完成固定來源、版本、commit 與必要檔案讀取後轉 `READ`；發現來源落後轉 `STALE`；來源或雜湊互不一致轉 `CONFLICT`。`CONFLICT` 只能在以固定正本或可核驗證據消除差異後重新讀取，才可回到 `READ`。 |
+| 執行 | `NOT_RUN`、`PASS`、`FAIL`、`BLOCKED` | 初始為 `NOT_RUN`。實際執行並符合驗收條件轉 `PASS`；實際執行但不符合轉 `FAIL`；缺授權、工具、資料或外部依賴而不能安全執行轉 `BLOCKED`。`FAIL` 修正後必須重新執行；`BLOCKED` 解除條件成立後回到 `NOT_RUN`，不得直接跳成 `PASS`。 |
+| 審查 | `NOT_RUN`、`PASS`、`REVISE`、`BLOCKED`、`UNKNOWN` | 初始為 `NOT_RUN`。完成有足夠材料的治理複核且無必修缺口轉 `PASS`；有明確修訂要求轉 `REVISE`；審查因授權、來源或流程阻塞轉 `BLOCKED`；材料不足或無法判定轉 `UNKNOWN`。`REVISE` 修訂後必須重新複核；`UNKNOWN` 補足證據後也必須重新複核。 |
+| 採用 | `PROPOSED`、`NOT_ADOPTED`、`ADOPTED` | 候選文件初始為 `PROPOSED`。只有 MIKO 明確決定採用，且正式採用條件、版本、生效日與存放位置均已記錄，才可轉 `ADOPTED`；MIKO 明確拒絕或撤回才可轉 `NOT_ADOPTED`。Claude 的 `PASS`、API 回覆或 PR 合併不得自行觸發 `ADOPTED`。 |
+| Runtime | `DISABLED`、`ENABLED`、`UNKNOWN` | 未有接線證據時不得宣稱啟用；明確確認未接線可記 `DISABLED`，讀不到或無法確認時記 `UNKNOWN`。只有取得實際接線與啟用證據，並經 MIKO 授權，才可轉 `ENABLED`；停止、撤銷或停用後回 `DISABLED`。 |
+| 外部效果 | `NONE`、`READ_ONLY`、`WRITTEN`、`UNKNOWN` | 只讀且未造成外部變更可記 `READ_ONLY`；明確證明沒有外部效果可記 `NONE`；已發生外部寫入、分享、覆寫或其他效果記 `WRITTEN`；無法判定記 `UNKNOWN`。不可因預期結果把 `NONE` 或 `READ_ONLY` 改寫成 `WRITTEN`，也不可隱藏已發生的效果。 |
+
+狀態軸彼此獨立；任何一軸的 `PASS`、`READ` 或 `ADOPTED` 都不能自動推導其他軸的值。每次轉換須記錄觸發證據、時間、實際執行者與必要的授權者；若條件不成立，維持原狀或轉入較保守的 `UNKNOWN`／`BLOCKED`／`CONFLICT`，不得以重命名繞過。
+
 不得把 `NOT_RUN` 當審查結論、把 `UNKNOWN` 當 `PASS`、把 `BLOCKED` 當 `NOT_ADOPTED`，或把 `PROPOSED`、`REVIEWED`、`ADOPTED`、`RUNTIME_ENABLED` 合併成單一「完成」。使用者回饋、模型建議與 API 回應不是 ADR 正文；未讀取 ADR 原文時不得自行補造其具體條款。
 
 ## 衝突處理
