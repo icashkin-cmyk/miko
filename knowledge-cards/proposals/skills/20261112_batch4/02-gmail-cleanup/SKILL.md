@@ -2,9 +2,10 @@
 
 # gmail-cleanup 提案層 Skill 替換稿
 
-**狀態：`PROPOSED`／`NOT_ADOPTED`／`HISTORICAL_NOT_RUNTIME`**  
-**歷史附件基線：`VERSION 1.2.58`／`ADR-081`／`HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`**
-目前正本基線：`miko-core v1.72`／`VERSION 1.2.71`／`ADR-094`／`main 5663974816c14044cc33fbf3023dc3a8d5d996a2`。
+**狀態：`PROPOSED`／`NOT_ADOPTED`／`HISTORICAL_NOT_RUNTIME`**
+**批次 4 歷史設計基線（早期輸入）：`VERSION 1.2.58`／`ADR-081`／`HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`**
+目前正本基線：`miko-core v1.73`／`VERSION 1.2.72`／`ADR-095`／`main 3d53f026d348e80b072fc9c21801a05dec0309aa`。
+> **來源責任：** 本文件由 Manus 建立於批次 4 候選提案層；保留歷史設計基線僅供追溯，不代表外部附件來源或目前正本。
 **本文件不是正本，不代表已採用、已測試、已稽核、已部署、已載入 Runtime、已恢復路由或已對 Gmail 產生任何效果。所有未知事項標示為 `UNKNOWN`；尚未執行事項標示為 `NOT_RUN`。**
 
 ## 0. 文件定位、範圍與非目標
@@ -99,8 +100,8 @@ policy:
 - **kind／C（Check／Collect）**：只讀取得郵件、thread 全成員、headers、body／HTML、附件狀態、labels、原始位置與分頁游標；逐封套用三個曆月、內容純行銷、過期、保留類別及不確定保留規則。建立逐封 manifest 與困難卡。
 - **kind／J（Judge／Journal）**：產出候選清單、保留清單、重要信清單、狀態聚合、exit code 與證據索引；以暫存檔寫入後 flush／fsync，再原子替換並逐項讀回 hash。任何未讀、讀回未知、範圍漂移或部分成功都維持原狀態，不宣稱清理完成。
 
-**輸入 refs**：使用者原話、時區／截止日、精確查詢範圍、唯讀 connector／fixture、批次 0 設定、批次 1 schema。  
-**輸出 refs**：`operation_manifest.json`、逐封 evidence manifest、候選／保留清單、重要信報告、狀態摘要、七欄困難卡、讀回 SHA-256。  
+**輸入 refs**：使用者原話、時區／截止日、精確查詢範圍、唯讀 connector／fixture、批次 0 設定、批次 1 schema。
+**輸出 refs**：`operation_manifest.json`、逐封 evidence manifest、候選／保留清單、重要信報告、狀態摘要、七欄困難卡、讀回 SHA-256。
 **本步驟狀態**：`NOT_RUN`（本提案未執行真實 Gmail 或測試）。
 
 **禁止**：外部寫入、盲目重試、整串連帶處理、把摘要或搜尋結果當成逐封內文證據、以 API `success` 代替讀回、以 fake 成功代替真實成功、把 `PARTIAL` 當完整成功。
@@ -152,38 +153,38 @@ rollback: NOT_APPLICABLE_WHILE_BLOCKED
 
 ### T-GC-01：唯讀與月份邊界
 
-**輸入**：今天 `2026-05-31`，台北時間；fixture 含 `2026-02-28`、`2026-02-27` 與 `2026-05-31` 寄件的純行銷信。  
-**Expected**：截止日為 `2026-02-28`；截止日當天保留；只產生候選清單，不移動、不改標籤、不改已讀；狀態可為 `PASS`（僅代表 fake 唯讀規則通過）。  
+**輸入**：今天 `2026-05-31`，台北時間；fixture 含 `2026-02-28`、`2026-02-27` 與 `2026-05-31` 寄件的純行銷信。
+**Expected**：截止日為 `2026-02-28`；截止日當天保留；只產生候選清單，不移動、不改標籤、不改已讀；狀態可為 `PASS`（僅代表 fake 唯讀規則通過）。
 **Forbidden**：用 90 天替代三個曆月、把截止日當天列為候選、呼叫 mutation API、宣稱已清理。
 
 ### T-GC-02：保留類別與附件未讀
 
-**輸入**：fixture 含交易、帳單、點數、有效票券、工作往來及附件未讀郵件。  
-**Expected**：全部列保留；相關證據為 `PASS` 或附件未讀為 `NOT_READ`；整批不得成為可清理完成。  
+**輸入**：fixture 含交易、帳單、點數、有效票券、工作往來及附件未讀郵件。
+**Expected**：全部列保留；相關證據為 `PASS` 或附件未讀為 `NOT_READ`；整批不得成為可清理完成。
 **Forbidden**：只因寄件者像廣告就移動、以 subject 代替正文、忽略附件、將 `NOT_READ` 當 PASS。
 
 ### T-GC-03：thread／分頁與部分成功
 
-**輸入**：一個 thread 含一封符合與一封不符合郵件；第二頁讀取逾時。  
-**Expected**：整串不可列為可處理候選；已核實部分保留並標 `PARTIAL` 或 `UNKNOWN`；只停相依步驟。  
+**輸入**：一個 thread 含一封符合與一封不符合郵件；第二頁讀取逾時。
+**Expected**：整串不可列為可處理候選；已核實部分保留並標 `PARTIAL` 或 `UNKNOWN`；只停相依步驟。
 **Forbidden**：只因第一封符合就處理整串、將部分結果聚合為完整成功、盲目重送外部操作。
 
 ### T-GC-04：授權、timeout、限流與讀回未知
 
-**輸入**：mock connector 回傳 permission denied、timeout、429／5xx、成功但 readback timeout。  
-**Expected**：依序輸出明確狀態 `BLOCKED`／`UNKNOWN`；exit code 非零或對應失敗出口；不執行 mutation，不盲目重試。  
+**輸入**：mock connector 回傳 permission denied、timeout、429／5xx、成功但 readback timeout。
+**Expected**：依序輸出明確狀態 `BLOCKED`／`UNKNOWN`；exit code 非零或對應失敗出口；不執行 mutation，不盲目重試。
 **Forbidden**：API success 即當完整成功、對未知 POST 自動重試、以本地 manifest 代替遠端讀回。
 
 ### T-GC-05：範圍漂移與批准不足
 
-**輸入**：使用者只批准精確 message IDs，但 fixture／查詢回傳額外郵件。  
-**Expected**：額外郵件標 `BLOCKED` 或 `CONFLICT`，不處理；批准狀態仍 `NOT_REQUESTED`（本提案）。  
+**輸入**：使用者只批准精確 message IDs，但 fixture／查詢回傳額外郵件。
+**Expected**：額外郵件標 `BLOCKED` 或 `CONFLICT`，不處理；批准狀態仍 `NOT_REQUESTED`（本提案）。
 **Forbidden**：擴大範圍、以泛稱意圖作隱含批准、觸發 move／delete／label mutation。
 
 ### T-GC-06：原子寫入與讀回
 
-**輸入**：模擬磁碟中斷、權限錯誤、寫入後 hash 不一致。  
-**Expected**：不產生可宣稱提交的半成品；狀態 `UNKNOWN`／`BLOCKED`；保留暫存與錯誤證據供審查，不覆寫既有可信產物。  
+**輸入**：模擬磁碟中斷、權限錯誤、寫入後 hash 不一致。
+**Expected**：不產生可宣稱提交的半成品；狀態 `UNKNOWN`／`BLOCKED`；保留暫存與錯誤證據供審查，不覆寫既有可信產物。
 **Forbidden**：只看檔案存在、忽略 hash、把 `COMMITTED` 猜成 true。
 
 ## 8. 與其他責任方的邊界

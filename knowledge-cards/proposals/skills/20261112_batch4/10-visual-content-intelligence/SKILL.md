@@ -4,8 +4,9 @@
 
 > `PROPOSED` · `NOT_ADOPTED` · `HISTORICAL_NOT_RUNTIME`
 >
-> 歷史附件基線：`VERSION 1.2.58`／`ADR-081`／`HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`
-> 目前正本基線：`miko-core v1.72`／`VERSION 1.2.71`／`ADR-094`／`main 5663974816c14044cc33fbf3023dc3a8d5d996a2`。
+> 批次 4 歷史設計基線（早期輸入）：`VERSION 1.2.58`／`ADR-081`／`HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`
+> 目前正本基線：`miko-core v1.73`／`VERSION 1.2.72`／`ADR-095`／`main 3d53f026d348e80b072fc9c21801a05dec0309aa`。
+> **來源責任：** 本文件由 Manus 建立於批次 4 候選提案層；保留歷史設計基線僅供追溯，不代表外部附件來源或目前正本。
 >
 > 本文件是批次 4 的候選提案層文件，不是 `skills/` 正本、不是 miko-core 正式規則，也不是 Runtime 設定。尚未宣稱已採用、已測試、已稽核、已部署、已推送、已載入或已生效。未有直接證據的項目標記 `UNKNOWN` 或 `NOT_RUN`。
 
@@ -160,7 +161,7 @@
 
 在所有下列條件完成前，狀態保持 `PROPOSED`／`NOT_ADOPTED`，路由保持 `READ_ONLY_DEGRADED`：
 
-1. 以附件基線重新讀取正本、批次 0 設定與批次 1 Schema，完成逐條差異與來源 SHA 記錄。
+1. 以批次 4 歷史設計基線（早期輸入）重新讀取正本、批次 0 設定與批次 1 Schema，完成逐條差異與來源 SHA 記錄。
 2. 實作並由 fake／fixture 驗證 operation manifest、唯一 operation_id、source pinning、單一 writer、原子寫入、逐檔讀回及失敗聚合；本文件中的候選程式或腳本目前均為 `UNKNOWN`／`NOT_RUN`。
 3. 原有測題與新增 `T-V14/T-V15` 均由冷啟動實跑，逐題保存 expected／forbidden、exit code、輸出 SHA；未實跑不得記 PASS。
 4. 完成 `vci_check`、專用測試、受影響回歸、冷啟動與相近不觸發反例；結果須可重現且非零／NOT_RUN／讀回未知均阻擋採用。

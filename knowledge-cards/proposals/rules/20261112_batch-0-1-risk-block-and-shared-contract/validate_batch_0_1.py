@@ -48,8 +48,8 @@ def check_risk(value: dict) -> None:
     baseline = value.get("baseline", {})
     if baseline != {
         "version": "1.2.71",
-        "adr": "ADR-094",
-        "head": "5663974816c14044cc33fbf3023dc3a8d5d996a2",
+        "adr": "ADR-095",
+        "head": "3d53f026d348e80b072fc9c21801a05dec0309aa",
     }:
         fail(f"批次 0 baseline 不符合目前正本基線：{baseline}")
     policy = value.get("default_policy", {})

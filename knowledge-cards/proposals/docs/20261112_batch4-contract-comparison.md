@@ -109,7 +109,7 @@ NOT_REQUESTED／UNKNOWN／APPROVED／REJECTED／EXPIRED
 
 ## 7. 來源與限制
 
-- 目前正本：`miko-core v1.72`／`VERSION 1.2.71`／`ADR-094`／`main 5663974816c14044cc33fbf3023dc3a8d5d996a2`。
+- 目前正本：`miko-core v1.73`／`VERSION 1.2.72`／`ADR-095`／`main 3d53f026d348e80b072fc9c21801a05dec0309aa`。
 - 既有交接欄位：`multi-agent-coordination-engine` FINAL_HANDOFF 19 欄。
 - PR #44 原候選 Schema 與 validator：只作比較對象，不能取代正本。
 - 本表尚未代表 MIKO 的正式治理裁決。

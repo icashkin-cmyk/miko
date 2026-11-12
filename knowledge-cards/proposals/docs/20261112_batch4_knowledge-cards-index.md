@@ -30,8 +30,8 @@
 
 ### Stage 0：治理與狀態基線（所有 Skill 的前置）
 
-- 鎖定歷史附件基線 `VERSION 1.2.58`／`ADR-081`／`HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`，並以 immutable ref、raw 讀回及 SHA 證明來源。
-目前正本基線：`miko-core v1.72`／`VERSION 1.2.71`／`ADR-094`／`main 5663974816c14044cc33fbf3023dc3a8d5d996a2`。
+- 鎖定批次 4 歷史設計基線（早期輸入） `VERSION 1.2.58`／`ADR-081`／`HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`，並以 immutable ref、raw 讀回及 SHA 證明來源。
+目前正本基線：`miko-core v1.73`／`VERSION 1.2.72`／`ADR-095`／`main 3d53f026d348e80b072fc9c21801a05dec0309aa`。
 - 先由 MIKO 治理裁決本批次候選共用契約是否可進入實作；未裁決前只保留提案層。
 - 定義並機械化共用 enum、任務四態、七欄困難卡、`step_id`／P-C-J、`operation_id`、來源 pinning、相依停止、非零退出、原子寫入、`COMMITTED` 與讀回 hash。
 - 確認 `miko-core`、`safe-implementation`、`independent-audit` 的正本、接線責任與不重疊邊界；目前均有不同程度 `UNKNOWN`／`NOT_READ`／`NOT_RUN`。

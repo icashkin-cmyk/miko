@@ -93,10 +93,10 @@
           "const": "1.2.71"
         },
         "adr": {
-          "const": "ADR-094"
+          "const": "ADR-095"
         },
         "head": {
-          "const": "5663974816c14044cc33fbf3023dc3a8d5d996a2"
+          "const": "3d53f026d348e80b072fc9c21801a05dec0309aa"
         }
       }
     },

@@ -5,7 +5,8 @@ name: "multi-agent-coordination-engine"
 proposal_status: "PROPOSED"
 adoption_status: "NOT_ADOPTED"
 runtime_status: "HISTORICAL_NOT_RUNTIME"
-baseline: "VERSION 1.2.71 / ADR-094 / HEAD 5663974816c14044cc33fbf3023dc3a8d5d996a2"
+baseline: "VERSION 1.2.72 / ADR-095 / HEAD 3d53f026d348e80b072fc9c21801a05dec0309aa"
+> **來源責任：** 本文件由 Manus 建立於批次 4 候選提案層；保留歷史設計基線僅供追溯，不代表外部附件來源或目前正本。
 ---
 
 # multi-agent-coordination-engine 提案層替換稿
@@ -25,8 +26,8 @@ baseline: "VERSION 1.2.71 / ADR-094 / HEAD 5663974816c14044cc33fbf3023dc3a8d5d99
 
 ### 0.2 基線與來源身分
 
-- 歷史附件基線：`VERSION 1.2.58`、`ADR-081`、`HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`。
-目前正本基線：`miko-core v1.72`／`VERSION 1.2.71`／`ADR-094`／`main 5663974816c14044cc33fbf3023dc3a8d5d996a2`。
+- 批次 4 歷史設計基線（早期輸入）：`VERSION 1.2.58`、`ADR-081`、`HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6`。
+目前正本基線：`miko-core v1.73`／`VERSION 1.2.72`／`ADR-095`／`main 3d53f026d348e80b072fc9c21801a05dec0309aa`。
 - 來源檔：附件報告、目前 Skill、批次 0 風險封鎖設定、批次 1 operation contract Schema。
 - 來源 pinning：正式採用前必須記錄每一來源的 immutable ref 或等價不可變識別、版本、讀取時間、內容 SHA-256、用途與是否完整讀取；floating branch、檔名、日期或檔案大小單獨不足以證明同一來源。
 - 本提案對 miko-core、safe-implementation、independent-audit 的內容只做責任邊界引用；它們的目前正本與實際接線狀態為 `NOT_READ`／`UNKNOWN`，不得推定已相容。
@@ -92,8 +93,8 @@ route:
   external_write: false
 baseline:
   version: "1.2.71"
-  adr: "ADR-094"
-  head: "5663974816c14044cc33fbf3023dc3a8d5d996a2"
+  adr: "ADR-095"
+  head: "3d53f026d348e80b072fc9c21801a05dec0309aa"
 steps: []
 task_state: "需要資料"
 evidence_summary:

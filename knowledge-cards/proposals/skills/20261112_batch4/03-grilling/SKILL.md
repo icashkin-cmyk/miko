@@ -2,9 +2,10 @@
 
 # grilling 提案層替換稿
 
-> **狀態標籤：`PROPOSED`／`NOT_ADOPTED`／`HISTORICAL_NOT_RUNTIME`**  
-> 歷史附件基線：`VERSION 1.2.58`／`ADR-081`／`6db897bbf87ffab9ade1ffd8018ece83036041b6`。
-> 目前正本基線：`miko-core v1.72`／`VERSION 1.2.71`／`ADR-094`／`main 5663974816c14044cc33fbf3023dc3a8d5d996a2`。
+> **狀態標籤：`PROPOSED`／`NOT_ADOPTED`／`HISTORICAL_NOT_RUNTIME`**
+> 批次 4 歷史設計基線（早期輸入）：`VERSION 1.2.58`／`ADR-081`／`6db897bbf87ffab9ade1ffd8018ece83036041b6`。
+> 目前正本基線：`miko-core v1.73`／`VERSION 1.2.72`／`ADR-095`／`main 3d53f026d348e80b072fc9c21801a05dec0309aa`。
+> **來源責任：** 本文件由 Manus 建立於批次 4 候選提案層；保留歷史設計基線僅供追溯，不代表外部附件來源或目前正本。
 > 本文件是批次 4 的提案層草稿，不是 `skills/` 正本，不表示已採用、已測試、已稽核、已部署、已載入 Runtime、已恢復正式路由或已對外交付。未實際執行的項目標為 `NOT_RUN`；無可靠證據的項目標為 `UNKNOWN`。
 
 ## 1. 範圍、目標與非目標
@@ -74,8 +75,8 @@ route:
   external_write: false
 baseline:
   version: 1.2.71
-  adr: ADR-094
-  head: 5663974816c14044cc33fbf3023dc3a8d5d996a2
+  adr: ADR-095
+  head: 3d53f026d348e80b072fc9c21801a05dec0309aa
 steps:
   - step_id: GRL-READONLY-001
     kind: P
@@ -107,7 +108,7 @@ steps:
 
 ### 3.3 來源 pinning 與證據
 
-來源檢查只能使用 immutable ref、明確來源識別、版本／日期、用途及內容 SHA-256。歷史附件基線固定為 `1.2.58`／`ADR-081`／`6db897bbf87ffab9ade1ffd8018ece83036041b6`；現行 Skill 所述 upstream commit `95249b0b49782349740fd9b8c6ce32b4e59e497a` 僅是其自述來源資訊，不得取代本次歷史附件基線，也尚未由本提案重新讀回驗證。若來源漂移、版本缺失、SHA 不符、重新讀取失敗、空輸出或兩來源衝突，標 `CONFLICT`／`NOT_READ`／`UNKNOWN`，不得自行選邊。
+來源檢查只能使用 immutable ref、明確來源識別、版本／日期、用途及內容 SHA-256。批次 4 歷史設計基線（早期輸入）固定為 `1.2.58`／`ADR-081`／`6db897bbf87ffab9ade1ffd8018ece83036041b6`；現行 Skill 所述 upstream commit `95249b0b49782349740fd9b8c6ce32b4e59e497a` 僅是其自述來源資訊，不得取代本次批次 4 歷史設計基線（早期輸入），也尚未由本提案重新讀回驗證。若來源漂移、版本缺失、SHA 不符、重新讀取失敗、空輸出或兩來源衝突，標 `CONFLICT`／`NOT_READ`／`UNKNOWN`，不得自行選邊。
 
 ### 3.4 原子寫入與讀回
 

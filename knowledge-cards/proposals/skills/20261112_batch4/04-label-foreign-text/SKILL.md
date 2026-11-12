@@ -4,8 +4,9 @@
 
 **提案狀態：`PROPOSED`｜採用狀態：`NOT_ADOPTED`｜執行路由：`READ_ONLY_DEGRADED`｜`HISTORICAL_NOT_RUNTIME`**
 
-**歷史附件基線：VERSION 1.2.58｜ADR-081｜HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6**
-目前正本基線：`miko-core v1.72`／`VERSION 1.2.71`／`ADR-094`／`main 5663974816c14044cc33fbf3023dc3a8d5d996a2`。
+**批次 4 歷史設計基線（早期輸入）：VERSION 1.2.58｜ADR-081｜HEAD 6db897bbf87ffab9ade1ffd8018ece83036041b6**
+目前正本基線：`miko-core v1.73`／`VERSION 1.2.72`／`ADR-095`／`main 3d53f026d348e80b072fc9c21801a05dec0309aa`。
+> **來源責任：** 本文件由 Manus 建立於批次 4 候選提案層；保留歷史設計基線僅供追溯，不代表外部附件來源或目前正本。
 
 > 本文件是批次 4 的候選提案，不是 `skills/` 正本，不代表 miko-core 已修改、已載入、已採用或 Runtime 生效。本文未宣稱已測試、已稽核、已部署、已交付或已恢復正式路由。下列測試與檢查若未取得實際工具證據，一律標示 `NOT_RUN`、`UNKNOWN` 或 `NOT_READ`。
 
@@ -58,8 +59,8 @@ route:
   request_mode: content_only | draft_only | fixture_only | manual_review | unknown
 baseline:
   version: 1.2.71
-  adr: ADR-094
-  head: 5663974816c14044cc33fbf3023dc3a8d5d996a2
+  adr: ADR-095
+  head: 3d53f026d348e80b072fc9c21801a05dec0309aa
 task_state: 完成但有疑慮 | 需要資料 | 卡住 | 完成
 evidence_summary:
   NOT_READ: 0
@@ -106,54 +107,54 @@ evidence_summary:
 
 ### 2.1 問問題（P）
 
-**step_id：`P-ASK-INPUT`**  
-**trigger：** 收到包材、標籤或說明書之他國文字審查請求，且尚未完成輸入閘門。  
-**depends_on：** `[]`。  
-**input_refs：** 使用者提供的原始標籤稿／照片、版本或日期、目標國家／法域、產品類別、是否僅要草案。  
-**output_refs：** `input_manifest`、`operation_manifest`、`question_log`、`input_readability_status`。  
-**status：** 初始 `NOT_RUN`；本提案未執行實跑，現為 `NOT_RUN`。  
-**operation：** 建立 `task_id`、`operation_id`，固定附件基線，檢查檔案格式、解析度、旋轉、裁切、遮擋、對比、可讀性、版本與法域；逐項確認產品類別及是否含公司名、產品名、批號或個資。  
-**forbidden：** 不得從文字猜國家；不得把低解析度或裁切影像當完整輸入；不得寫入公開檔；不得進入正式定稿；不得補造缺失的產品類別、版本或法域。  
-**acceptance：** 必須明確記錄目標法域、產品類別、待審版本、原始輸入 SHA-256、可讀性判定與缺口；缺任何關鍵資料則 `需要資料`，輸出 `BLOCKED` 或 `UNKNOWN`，不進下一步。  
+**step_id：`P-ASK-INPUT`**
+**trigger：** 收到包材、標籤或說明書之他國文字審查請求，且尚未完成輸入閘門。
+**depends_on：** `[]`。
+**input_refs：** 使用者提供的原始標籤稿／照片、版本或日期、目標國家／法域、產品類別、是否僅要草案。
+**output_refs：** `input_manifest`、`operation_manifest`、`question_log`、`input_readability_status`。
+**status：** 初始 `NOT_RUN`；本提案未執行實跑，現為 `NOT_RUN`。
+**operation：** 建立 `task_id`、`operation_id`，固定批次 4 歷史設計基線（早期輸入），檢查檔案格式、解析度、旋轉、裁切、遮擋、對比、可讀性、版本與法域；逐項確認產品類別及是否含公司名、產品名、批號或個資。
+**forbidden：** 不得從文字猜國家；不得把低解析度或裁切影像當完整輸入；不得寫入公開檔；不得進入正式定稿；不得補造缺失的產品類別、版本或法域。
+**acceptance：** 必須明確記錄目標法域、產品類別、待審版本、原始輸入 SHA-256、可讀性判定與缺口；缺任何關鍵資料則 `需要資料`，輸出 `BLOCKED` 或 `UNKNOWN`，不進下一步。
 **failure_exit：** 輸入缺失→`需要資料`；影像不可讀／旋轉／裁切無法判定→`BLOCKED` 並建立困難卡；個資或秘密風險→遮罩後才可繼續，否則 fail closed；外部寫入要求→`BLOCKED`。
 
 ### 2.2 解決（C）
 
-**step_id：`C-VERIFY-STRINGS`**  
-**trigger：** `P-ASK-INPUT` 已取得最低必要輸入且影像／稿件可逐字讀取。  
-**depends_on：** `P-ASK-INPUT`。  
-**input_refs：** `input_manifest`、逐字抄錄字串（保留聲調與符號）、目標法域、產品類別、來源 pin 設定。  
-**output_refs：** `string_evidence_table`、`source_manifest`、`pairing_table`、`layout_options`、`preflight_status`。  
-**status：** 初始 `NOT_RUN`；本提案未執行實跑，現為 `NOT_RUN`。  
-**operation：** 依序完成：(1) 每字串查字義與官方用語；(2) 分類為法定標示用語或一般翻譯；(3) 對每個法定用語確認對應資料及相鄰／配對關係；(4) 分類版面衝突的法規、配對、可讀性、固定物理位置原因；(5) 提供至少兩個可逆草案方案；(6) 逐字比對拼寫與聲調符號。高風險產品（藥品、醫療器材、食品、化學品）只可產生待稽核草案。  
-**forbidden：** 不得僅靠字形或記憶；不得把二手來源當原法條；不得因版面壓力拆散法定用語與對應資料；不得把單一成功字串升格為整案成功；不得執行印刷、上傳、發布、遠端寫入或不可逆修改。  
-**acceptance：** 每個字串都有狀態、字義、官方用語、來源／日期／SHA 或 `NOT_READ`／「未證實」；每項分類有依據；配對關係逐項記錄；版面至少兩案且列做法、代價、主要風險、可逆性、驗收方式與是否仍配對；無法逐字比對時標外部依賴。  
+**step_id：`C-VERIFY-STRINGS`**
+**trigger：** `P-ASK-INPUT` 已取得最低必要輸入且影像／稿件可逐字讀取。
+**depends_on：** `P-ASK-INPUT`。
+**input_refs：** `input_manifest`、逐字抄錄字串（保留聲調與符號）、目標法域、產品類別、來源 pin 設定。
+**output_refs：** `string_evidence_table`、`source_manifest`、`pairing_table`、`layout_options`、`preflight_status`。
+**status：** 初始 `NOT_RUN`；本提案未執行實跑，現為 `NOT_RUN`。
+**operation：** 依序完成：(1) 每字串查字義與官方用語；(2) 分類為法定標示用語或一般翻譯；(3) 對每個法定用語確認對應資料及相鄰／配對關係；(4) 分類版面衝突的法規、配對、可讀性、固定物理位置原因；(5) 提供至少兩個可逆草案方案；(6) 逐字比對拼寫與聲調符號。高風險產品（藥品、醫療器材、食品、化學品）只可產生待稽核草案。
+**forbidden：** 不得僅靠字形或記憶；不得把二手來源當原法條；不得因版面壓力拆散法定用語與對應資料；不得把單一成功字串升格為整案成功；不得執行印刷、上傳、發布、遠端寫入或不可逆修改。
+**acceptance：** 每個字串都有狀態、字義、官方用語、來源／日期／SHA 或 `NOT_READ`／「未證實」；每項分類有依據；配對關係逐項記錄；版面至少兩案且列做法、代價、主要風險、可逆性、驗收方式與是否仍配對；無法逐字比對時標外部依賴。
 **failure_exit：** 官方來源讀不到→替代來源僅一次，仍失敗標 `NOT_READ` 並停止相依字串步驟；來源衝突→`CONFLICT`，保留雙方證據；字義／分類／配對未知→`UNKNOWN` 或保守按法定用語處理並列待核對；任一工具非零 exit、逾時、空輸出或 hash 不符→不得 PASS；部分完成→`PARTIAL`。
 
 ### 2.3 後設（J）
 
-**step_id：`J-META-BOUNDARY`**  
-**trigger：** `C-VERIFY-STRINGS` 有輸出，需區分領域判斷、共用治理規則與未驗證內容。  
-**depends_on：** `C-VERIFY-STRINGS`。  
-**input_refs：** `string_evidence_table`、`source_manifest`、`pairing_table`、`layout_options`、`batch-0-risk-blocks`、批次 1 contract。  
-**output_refs：** `meta_notes`、`difficulty_cards`、`responsibility_matrix`、`release_blockers`。  
-**status：** 初始 `NOT_RUN`；本提案未執行實跑，現為 `NOT_RUN`。  
-**operation：** 標示哪些是附件已確認、附件證據待正本重驗、合理推論、`UNKNOWN`、`NOT_READ`、`NOT_RUN`；建立七欄困難卡；檢查路由封鎖、個資／敏感資訊遮罩、來源 pinning、原子寫入／讀回契約與任務四態聚合。  
-**forbidden：** 不得把四視角自查、CI 綠燈、模型回覆或本 Skill 自評當成 independent audit；不得把候選 contract 寫成 miko-core 正式規則；不得移除 `PAUSED_BY_USER` 或以本 Skill 解鎖 tw-backtest-workflow 的 C6/C9 以外路由。  
-**acceptance：** 七欄困難卡完整；所有未驗證內容標記清楚；責任邊界無重疊；任何關鍵未知、衝突、未跑或部分成功均保留阻塞；正式定稿與外部寫入仍封鎖。  
+**step_id：`J-META-BOUNDARY`**
+**trigger：** `C-VERIFY-STRINGS` 有輸出，需區分領域判斷、共用治理規則與未驗證內容。
+**depends_on：** `C-VERIFY-STRINGS`。
+**input_refs：** `string_evidence_table`、`source_manifest`、`pairing_table`、`layout_options`、`batch-0-risk-blocks`、批次 1 contract。
+**output_refs：** `meta_notes`、`difficulty_cards`、`responsibility_matrix`、`release_blockers`。
+**status：** 初始 `NOT_RUN`；本提案未執行實跑，現為 `NOT_RUN`。
+**operation：** 標示哪些是附件已確認、附件證據待正本重驗、合理推論、`UNKNOWN`、`NOT_READ`、`NOT_RUN`；建立七欄困難卡；檢查路由封鎖、個資／敏感資訊遮罩、來源 pinning、原子寫入／讀回契約與任務四態聚合。
+**forbidden：** 不得把四視角自查、CI 綠燈、模型回覆或本 Skill 自評當成 independent audit；不得把候選 contract 寫成 miko-core 正式規則；不得移除 `PAUSED_BY_USER` 或以本 Skill 解鎖 tw-backtest-workflow 的 C6/C9 以外路由。
+**acceptance：** 七欄困難卡完整；所有未驗證內容標記清楚；責任邊界無重疊；任何關鍵未知、衝突、未跑或部分成功均保留阻塞；正式定稿與外部寫入仍封鎖。
 **failure_exit：** 缺欄位→`BLOCKED`；責任衝突→`CONFLICT` 並交由 miko-core／治理裁決；無法辨識來源狀態→`UNKNOWN`；未建立 operation_id 或讀回證據→不得進檢查段。
 
 ### 2.4 檢查（J）
 
-**step_id：`J-CHECK-AC`**  
-**trigger：** `J-META-BOUNDARY` 已建立狀態、責任與阻塞清單。  
-**depends_on：** `J-META-BOUNDARY`。  
-**input_refs：** 全部 operation artifacts、固定測題輸入、expected／forbidden、證據索引與讀回 SHA。  
-**output_refs：** `acceptance_report`、`task_state`、`evidence_summary`、`next_action`。  
-**status：** 初始 `NOT_RUN`；本提案未執行實跑，現為 `NOT_RUN`。  
-**operation：** 逐條檢查 AC、固定測題、禁用路由、狀態聚合、來源與讀回證據；輸出僅供提案層的草案報告。  
-**forbidden：** 不得輸出「已定稿」「已驗收」「已稽核」「已採用」「Runtime 生效」；不得以檔案存在、hash 相同或離線 fake 結果宣稱外部成功；不得清除困難卡或把 `NOT_RUN` 轉成 PASS。  
-**acceptance：** 每項 AC 有 expected、actual 或 `NOT_RUN`，並列 evidence ref；所有 forbidden 行為均被封鎖；若為高風險產品或任何關鍵項非 PASS，任務最多為「完成但有疑慮」「需要資料」或「卡住」。  
+**step_id：`J-CHECK-AC`**
+**trigger：** `J-META-BOUNDARY` 已建立狀態、責任與阻塞清單。
+**depends_on：** `J-META-BOUNDARY`。
+**input_refs：** 全部 operation artifacts、固定測題輸入、expected／forbidden、證據索引與讀回 SHA。
+**output_refs：** `acceptance_report`、`task_state`、`evidence_summary`、`next_action`。
+**status：** 初始 `NOT_RUN`；本提案未執行實跑，現為 `NOT_RUN`。
+**operation：** 逐條檢查 AC、固定測題、禁用路由、狀態聚合、來源與讀回證據；輸出僅供提案層的草案報告。
+**forbidden：** 不得輸出「已定稿」「已驗收」「已稽核」「已採用」「Runtime 生效」；不得以檔案存在、hash 相同或離線 fake 結果宣稱外部成功；不得清除困難卡或把 `NOT_RUN` 轉成 PASS。
+**acceptance：** 每項 AC 有 expected、actual 或 `NOT_RUN`，並列 evidence ref；所有 forbidden 行為均被封鎖；若為高風險產品或任何關鍵項非 PASS，任務最多為「完成但有疑慮」「需要資料」或「卡住」。
 **failure_exit：** 任一關鍵 AC 失敗／未跑→`BLOCKED` 或 `NOT_RUN`；部分字串成功→`PARTIAL`；寫入後無法讀回→`UNKNOWN`；高風險 independent audit 缺席→不得定稿；輸出要求對外發布→`BLOCKED`。
 
 ## 3. 七欄困難卡
