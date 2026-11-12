@@ -65,6 +65,14 @@ Claude 必須分開回答：
 
 每項只可為 `YES`、`NO` 或 `UNKNOWN`，並列必修、阻塞、已確認與未確認事項。`UPLOAD_FOR_REVIEW=YES` 不等於 `ADOPT=YES`。
 
+### 3.3.1 Claude API 複核門檻
+
+以下任一情況，Manus 必須呼叫 Claude API，並把結果交給 Claude 治理總召複核：首次送治理審閱；角色、授權、狀態軸、裁決用語、停止狀態或 ADR 改義；材料 SHA-256 變更；或 Manus／Claude 發生衝突。純錯字、標點、格式且不改變規則、責任、狀態、數字、日期或引用的小錯，可延至下一次 API 複核，但須留 diff。
+
+每次必須保存：`request_id`、完整 request payload、完整 response、實際 `model`、Asia/Taipei 請求／回應時間、每份材料 SHA-256、固定來源 commit／VERSION／ADR、`api_status`、`stop_reason`、token、request／response SHA-256 與讀回位置。API 失敗、逾時、截斷或空回應標 `UNKNOWN`，開困難卡；不得以 ACK、HTTP 200、請求送出或其他模型建議代替審查。
+
+Claude API 複核不是獨立稽核，也不授權採用、Runtime、合併或解除停止；完整結果須交 Claude 治理總召複核，正式放行仍由 MIKO 決定。
+
 ### 3.4 修訂、驗收與交接
 
 Manus 依 Claude 的明確修訂項更新候選，不能自行改寫 Claude 的裁決。完成後：
