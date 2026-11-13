@@ -1,0 +1,47 @@
+PR #49 現況證據 r5（Claude 實讀／實跑；候選審查材料，不是治理通過）
+實際執行者：Claude（本討論串）；時間：2026-11-13 約 19:20（Asia/Taipei）
+修訂前基線 head：1a42a56a025ea1a78521fdd7bf6a5338d4d83b9e（GitHub 讀回：OPEN；draft=true；merged=false；CI check success，run 43400901567）
+main：52df5e9b27632e6ca6a8ce8efc1378bd500c2b31；VERSION 1.2.72；ADR-095；miko-core v1.73（對應正本 1.2.72）
+下列檔案 SHA-256 是『本機修訂樹、尚未推送』的值；推送後須以新 head 重新讀回比對。舊 head 3e02ef7 與 4637f79 僅為歷史（STALE）。
+
+== 每檔 SHA-256（本機修訂樹）
+4741837ef42d2c85dd4229136d09fb3933bde16694b3c55c415b454a57c28b18  knowledge-cards/proposals/docs/20261112_governor-work-rules-v2.1-candidate.md
+44eb0373cf30591e2a246c56f06491357fa9c9a199a36f7228cc929eb6e03ff0  knowledge-cards/proposals/docs/20261112_manus-claude-collaboration-handoff-sop.md
+e9baca411f280b06c962fbedb0623183717292a7b37275a3347819c3002c44bd  knowledge-cards/proposals/docs/20261112_manus-executive-governor-role-contract.md
+a8524bd7e846143500e70c6cdabcc9c6f2de9954cfd12abe851469be9113d898  knowledge-cards/proposals/docs/20261112_miko-governance-decision-request-pr49.md
+b19125433578c500b74eeb5e42ab4b11be5e13959d4e1d4d1e839cebe95771d2  knowledge-cards/proposals/docs/20261113_governor-work-rules-v2.1-field-edition.md
+b01225902b034eafcc0251345a617ae2e1db9d8543a6b912f3fef7e010def970  knowledge-cards/proposals/docs/20261113_pr49-current-evidence.txt
+90bd7cc89d89b11717678e92ea8a4763afed139a8de999fae0df1e2ec5dcad07  knowledge-cards/proposals/skills/governance-review-decision-flow/SKILL.md
+
+== check_repo（帶專案私密字清單，未略過 C6／C9；C3 掃描 12 個私密字、命中 0）
+PASS C1 版本一致 ｜VERSION=1.2.72 miko-core 對應正本=1.2.72
+PASS C2 Skill 開頭格式（name 與資料夾同名、小寫連字號 ≤ 64 字、description ≤ 1024 字） ｜不合格：[]；提示（不擋）標題沒有版號：[]
+PASS C3 公開檔（含 .csv、二進位、快取檔）無 email、本機路徑與私人關鍵字 ｜命中：[]；私人關鍵字 12 個
+PASS C4 回歸測試 T1～T66、T15B～T15E 與 T29B 都在正本 §8 ｜缺：[]
+PASS C5 sync 檔存在且 LOG 有表頭 
+PASS C6 bt_min.py 實跑結果與預期一致（含除息日樣本：給事件檔就停止） ｜報酬率=7.12% MDD=-3.38% 事件擋下=True
+PASS C7 美妝專案包完整、版本對應、範本表格與膚況欄位未填 ｜專案包 v1.4／對應 dghp-beauty v0.6／Skill v0.6；範本已填列 0；缺驗收題 []
+PASS C8 repo 沒有個人清單檔，.gitignore 已排除 ｜命中：[]
+PASS C9 回測帳本（獨立常數＋固定值）、偷看未來與全樣本統計、公司事件、雜湊、順延取消、ETF 稅率 ｜已平倉 7 筆、淨利 1479、PF 1.42、最大連敗 2；帳本 True、固定值 True、偷看未來被擋 [True, True,
+PASS C10 VERSION 第 4 行等於 README 的 SHA-256 ｜README=26e0badba21d
+PASS C11 Skill 改版不得大量精簡（子句保留 ≥ 90%，否則行首「## 刪除清單」本次要有新增條目） ｜無改動
+PASS C12 xlsx／csv 內容無私密字 ｜掃描字數 12；命中：[]
+PASS C13 不得提交本機設定、環境變數、憑證檔與金鑰樣式 ｜共 0 筆；命中（只列檔名與類型）：[]
+PASS C14 已過升級站的 Skill，skill_lint 不得退回 FAIL ｜清單 2 個：['make-skill', 'visual-content-intelligence']；FAIL：[]
+PASS C15 出處編號提示（只提示不擋）：正文引用的 ADR 在 CHANGELOG 或 README 有出處 ｜引用 72 個；例外 7 個（出處未核實，見 tests/c15_exceptions.txt）；找不到出處：無
+PASS C16 詞彙定義表十一節齊全，範圍內各檔短名第一次出現就寫正式名稱 ｜範圍 8 檔；名詞 22 個；檢查檔 8 個；不合格 0 項；PASS
+合計：16/16 PASS
+
+== Skill validator
+Skill is valid!
+
+== flowlock_check
+PASS knowledge-cards/proposals/docs/20261112_miko-governance-decision-request-pr49.md ｜宣告 通過 2／降級 0／UNKNOWN 0；可數 通過 2／降級 0／UNKNOWN 0
+
+== git diff --check
+PASS
+
+== 欄位版字數（python len）
+2426 字元（上限 3400）
+
+== 未做：獨立稽核 NOT_RUN；Claude API 自查 NOT_RUN（金鑰由 MIKO 填）；完整記憶／冷啟動測試 NOT_RUN；交接讀者測試原始作答 UNKNOWN

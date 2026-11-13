@@ -39,8 +39,8 @@
 - 治理邊界知識卡：`knowledge-cards/proposals/20261112_claude-governance-review-boundaries.md`
 - 候選 Skill：`knowledge-cards/proposals/skills/governance-review-decision-flow/SKILL.md`
 - 裁決通知草稿：本文件。
-- 固定來源：GitHub PR #49 遠端 head `3e02ef77b6f469e23e0b4ac7683470c6fc043fe8`；VERSION `1.2.72`；miko-core `v1.73`；讀取時間 2026-11-14 00:47（Asia/Taipei）。本輪修訂尚在本地工作樹，未宣稱已存在於該遠端 head。
-- 本輪每檔 SHA-256、PR `OPEN`／`isDraft=true`／`mergedAt=null` 讀回、C1～C16 原始輸出與 Skill validator 輸出：見 `knowledge-cards/proposals/docs/20261113_pr49-current-evidence.txt`。
+- 固定來源：GitHub PR #49 遠端 head `1a42a56a025ea1a78521fdd7bf6a5338d4d83b9e`（修訂前基線）；VERSION `1.2.72`；miko-core `v1.73`；Claude 實讀時間 2026-11-13 18:45（Asia/Taipei）。本輪修訂尚在本地工作樹，未宣稱已存在於該遠端 head。
+- 本輪每檔 SHA-256、PR `OPEN`／`isDraft=true`／`mergedAt=null` 讀回、C1～C16 原始輸出與 Skill validator 輸出：見 `knowledge-cards/proposals/docs/20261113_pr49-current-evidence-r5.txt`（舊檔 `20261113_pr49-current-evidence.txt` 已標 HISTORICAL／STALE，不作本輪現況）。
 
 ## 4. 前置驗收結果
 
@@ -52,7 +52,8 @@
 - 總結果：前一輪 `16/16 PASS`，程序退出碼 `0`。
 - C15 為提示性檢查，不阻擋；前一輪有 7 個出處例外。
 - C3／C12 的前一輪輸出注明 `MIKO_PRIVATE_WORDS` 未帶或為空，只完成格式檢查，未執行私人關鍵字清單掃描。
-- 本輪補強 Manus 範圍、證據標籤、困難卡四類與狀態軸後，於 2026-11-14 01:07（Asia/Taipei）重新執行 `python3 tests/check_repo.py`：C1～C16 全數 `PASS`，合計 `16/16 PASS`，程序退出碼 `0`；完整輸出保存於本輪審查包。C3／C12 因 `MIKO_PRIVATE_WORDS` 未提供或為空，仍只完成格式檢查，私人關鍵字掃描為 `NOT_RUN`。
+- 本輪補強 Manus 範圍、證據標籤、困難卡四類與狀態軸後，於 2026-11-14 01:07（Asia/Taipei）重新執行 `python3 tests/check_repo.py`：C1～C16 全數 `PASS`，合計 `16/16 PASS`，程序退出碼 `0`；完整輸出保存於本輪審查包。C3／C12 因 `MIKO_PRIVATE_WORDS` 未提供或為空，仍只完成格式檢查，私人關鍵字掃描為 `NOT_RUN`。（Manus 自述；其時間戳 2026-11-14 01:07 晚於實際日期，原因 `UNKNOWN`，不採信為證據時間。）
+- Claude 實跑（2026-11-13 約 19:00 Asia/Taipei，帶專案私密字清單、未略過 C6／C9）：對 head `1a42a56` 與對本機修訂樹各跑一次，皆 C1～C16 `16/16 PASS`；C3 私人關鍵字 12 個、命中 0，C12 命中 0，即私人關鍵字掃描已執行。原始輸出見 `20261113_pr49-current-evidence-r5.txt`。這只是機械檢查，不等於治理通過。
 
 ### 4.2 Skill 結構驗證
 
@@ -62,8 +63,9 @@
 
 - 使用者冷啟動稽核已指出本草稿前一版本不合格；本輪新雜湊由重新驗證結果提供，不沿用舊雜湊。
 - 本輪草稿修改後的 `git diff --check`：`PASS`。
-- 本輪候選文件已完成本地驗收但尚未推送；固定基線是遠端 PR head `3e02ef77b6f469e23e0b4ac7683470c6fc043fe8`，本輪本地修訂與基線差異分開保存，不能宣稱遠端已包含本輪修訂。
-- 獨立稽核：本輪修訂後待重新執行。
+- 本輪候選文件已完成本地驗收但尚未推送；固定基線是遠端 PR head `1a42a56a025ea1a78521fdd7bf6a5338d4d83b9e`，本輪本地修訂與基線差異分開保存，不能宣稱遠端已包含本輪修訂。
+- 獨立稽核：`NOT_RUN`；獨立稽核者 `UNKNOWN`，待 MIKO 指定。
+- 交接讀者測試：Manus 自述 `PASS`，讀者身分與逐題原始作答不在 PR 內（`UNKNOWN`）；完整記憶／冷啟動測試：`NOT_RUN`。兩者分開命名，前者不得升格為後者。
 
 ## 5. Claude API 自查閘門
 
@@ -117,9 +119,9 @@
 | writer | Manus 執行總召，限 `knowledge-cards/`；不得改其他正式路徑。 |
 | 治理複核者 | Claude 治理總召負責治理複核與材料門檻判定；不等於 MIKO 正式採用或獨立稽核者。 |
 | 機械檢查者 | `python3 tests/check_repo.py`、Skill validator 與 `git diff --check` 的工具輸出；工具成功不能當治理放行。 |
-| 獨立稽核者 | 本輪尚未指定；不得由本輪參與修改者擔任。 |
+| 獨立稽核者 | `UNKNOWN`，待 MIKO 指定；不得由本輪參與修改者擔任。獨立稽核本身為 `NOT_RUN`；不把工具驗收或 Claude 複核當成獨立稽核。 |
 | 整合者 | Manus 執行總召整合候選材料；正式採用與放行仍由 MIKO 決定。 |
-| 讀回者 | 指定的後續執行者，須讀回 PR／檔案完整內容並核對版本、範圍、AC、未知、禁止事項、責任欄與交付位置。 |
+| 讀回者 | `UNKNOWN`，待 MIKO 指定；指定後須讀回 PR／檔案完整內容並核對版本、範圍、AC、未知、禁止事項、責任欄與交付位置。 |
 | 失敗處理者 | Manus 執行總召先保存錯誤、影響與下一步；涉及治理衝突、正式採用或不可逆決定時交 Claude／MIKO。 |
 | 目標位置 | PR #49 分支的 `knowledge-cards/`；本通知草稿位於 `knowledge-cards/proposals/docs/`。 |
 | 宣告時間 | 以每次實際執行時記錄的 Asia/Taipei 時間為準；本通知不硬編未重新驗證的時間。 |
@@ -190,7 +192,7 @@
 
 - 責任欄：主要執行者 Manus 執行總召；writer Manus 執行總召；治理複核者 Claude；機械檢查者為本輪工具輸出；獨立稽核者 `UNKNOWN`（待 MIKO 指定）；整合者 Manus 執行總召；讀回者 `UNKNOWN`（待 MIKO 指定）；失敗處理者 Manus 執行總召，治理裁決交 Claude／MIKO；目標位置為 PR #49 分支的 `knowledge-cards/`。
 - Claude 治理複核：本輪尚未執行；正式治理審查軸為 `NOT_RUN`；API 自查閘門執行前為 `NOT_RUN`。執行後結果另存審查紀錄，不預先寫入本通知。
-- 獨立稽核：本輪待重審。
+- 獨立稽核：`NOT_RUN`；獨立稽核者與讀回者皆 `UNKNOWN`，待 MIKO 指定。
 - MIKO 正式裁決：待決。
 - 任務四態：**完成但有疑慮**，理由是本輪候選修訂、C1～C16 與 Skill 驗證已完成，但 API 自查、獨立稽核、治理重審與本輪修改推送尚未完成。
 
@@ -209,7 +211,7 @@
 
 本通知屬可保存候選輸出；重要主張依 miko-core 行內標籤格式標示，工具結果以證據索引保存。`NOT_READ`、`NOT_RUN`、`BLOCKED`、`CONFLICT` 仍是狀態用語，不是新增證據標籤。
 
-- 固定版本與版本號：`【來源：GitHub PR #49 固定 head 3e02ef77；VERSION 1.2.72；miko-core v1.73】`。
+- 固定版本與版本號：`【來源：GitHub PR #49 修訂前基線 head 1a42a56；VERSION 1.2.72；miko-core v1.73】`。
 - C1～C16、Skill validator、`git diff --check`：`【工具：tests/check_repo.py／quick_validate.py／git diff --check】`；C3／C12 私人字掃描狀態為 `NOT_RUN`。
 - 使用者提供的 W1～W7 附件與協作 SOP §3.3.1：狀態 `NOT_READ`，不作正本依據。
 - 本輪 API 自查：執行前為 `NOT_RUN`；執行結果應另存 request／response 與 SHA-256，不預先填入本通知；不是獨立稽核或正式放行。
