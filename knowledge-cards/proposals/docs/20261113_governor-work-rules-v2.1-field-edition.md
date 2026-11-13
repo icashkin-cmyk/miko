@@ -14,7 +14,7 @@
 2. Manus 只寫 `knowledge-cards/`（含 `proposals/`），只開分支與 PR，不直推 main，不審查、不放行、不合併、不登錄 ADR、不改版本號（ADR-088、ADR-092）。
 3. 搬入 `skills/`、`.github/`、`tests/`、`VERSION`、`sync/` 須走原稽核，並由 MIKO 逐件、當次明確批准；常設免問推送授權不算。
 4. 外部寫入、覆寫、刪除、分享、權限、費用先問 MIKO；Drive MIKO_ARCHIVE 只新增。
-5. 同一路徑同一階段只有一個 writer。寫入後讀回並比對 SHA-256。推送、開 PR、合併是三件不同的授權。
+5. 同一路徑同一階段只有一個 writer。寫入後讀回並比對 SHA-256。推送、開 PR、合併是三件不同的授權（出處：W1～W7 候選參考 W4，非正本，未採用）。
 
 ## 三、證據與狀態標示
 1. 重要主張附現行七種標籤：來源、工具、使用者、常識、推論、未查證、UNKNOWN；不自創標籤。
@@ -28,8 +28,8 @@
 - Manus：在 `knowledge-cards/` 內建候選、保存證據、測試、交接；交給 Claude 的包含固定來源、SHA-256、已跑與未跑項目。
 - Claude 治理總召：核對正本、版本、授權與邊界；分開回答 `UPLOAD_FOR_REVIEW`、`ADOPT`、`RUNTIME`（YES／NO／UNKNOWN）；不代替 MIKO 放行。
 - 獨立稽核：由未參與修改者做；自我複核與 API 複核都不算；稽核後再改字要重審。
-- API 自查閘門：每次送審前，Manus 先呼叫 Claude API 並保存結果；失敗、逾時、截斷、空回覆、只有 ACK 都標 `BLOCKED`；金鑰未設定標 `NOT_RUN`（仍可開 PR 當候選，Claude 不答可送審，除非 MIKO 當次豁免）。金鑰與費用由 MIKO 填；`PASS` 只表示呼叫與保存完成。
-- 小錯（路徑、標籤、漏句、名詞、格式、機械 C3 FAIL、檔頭）：由 Claude 判定，才可在 Manus 分支的 `knowledge-cards/` 內直接修；條件是 C1～C16 全過、列清單、不改意思、事後報告。來源、數值、日期、結論有疑就不是小錯，標 `UNKNOWN` 或 `NOT_RUN`。改意思、新權限、硬邊界、碰其他路徑、外部寫入、刪除：停下問 MIKO。
+- API 自查閘門：每次送審前，Manus 先呼叫 Claude API 並保存結果；失敗、逾時、截斷、空回覆、只有 ACK 都標 `BLOCKED` 並停止送審、開困難卡；金鑰未設定標 `NOT_RUN`（仍可開 PR 當候選，Claude 不答可送審，除非 MIKO 當次豁免）。金鑰與費用由 MIKO 填；`PASS` 只表示呼叫與保存完成。
+- 小錯（路徑、標籤、漏句、名詞、格式、機械 C3 FAIL、檔頭）：由 Claude 判定，才可在 Manus 分支的 `knowledge-cards/` 內直接修；條件是 C1～C16 全過（C15 只提示不擋）、列清單、不改意思、事後報告；Manus 不得自判後跳過複核。來源、數值、日期、結論有疑就不是小錯，標 `UNKNOWN` 或 `NOT_RUN`。改意思、新權限、硬邊界、碰其他路徑、外部寫入、刪除：停下問 MIKO。
 - 兩邊意見不同：停止爭議寫入，並列雙方結論與證據，標 `CONFLICT`，交 MIKO 裁決。
 
 ## 五、流程與交接

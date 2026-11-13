@@ -1,24 +1,26 @@
 PR #49 現況證據 r5（Claude 實讀／實跑；候選審查材料，不是治理通過）
-實際執行者：Claude（本討論串）；時間：2026-11-13 約 19:20（Asia/Taipei）
-修訂前基線 head：1a42a56a025ea1a78521fdd7bf6a5338d4d83b9e（GitHub 讀回：OPEN；draft=true；merged=false；CI check success，run 43400901567）
-main：52df5e9b27632e6ca6a8ce8efc1378bd500c2b31；VERSION 1.2.72；ADR-095；miko-core v1.73（對應正本 1.2.72）
-下列檔案 SHA-256 是『本機修訂樹、尚未推送』的值；推送後須以新 head 重新讀回比對。舊 head 3e02ef7 與 4637f79 僅為歷史（STALE）。
+實際執行者：Claude（本討論串）；本檔產生時間：2026-11-13 23:52（Asia/Taipei）。前一版 r5（隨 c3269ab 推送）已被本版取代。
+推送前基線 head：1a42a56a025ea1a78521fdd7bf6a5338d4d83b9e；MIKO 說「推」後 Claude 已推送 c3269ab015b33f2a8508ad555b5533bfec133ac5（CI check success，run 43455470185）；本檔所列是稽核小修後的本機樹，推送後的新 head 以 GitHub 讀回為準。
+main：以 GitHub 讀回為準（本檔寫入時本機看到 c5bf50b8537ef4dc98bebf4066316b92c0995bb8）；VERSION 1.2.72；ADR-095；miko-core v1.73。
+舊 head 3e02ef7 與 4637f79 僅為歷史（STALE）。
+PR 狀態（Claude 於 c3269ab 推送後讀回）：OPEN；draft=true；merged=false；check_runs 1 個 success。
+git diff --check：PASS（寫入本檔前已去除行尾空白）。
 
-== 每檔 SHA-256（本機修訂樹）
-4741837ef42d2c85dd4229136d09fb3933bde16694b3c55c415b454a57c28b18  knowledge-cards/proposals/docs/20261112_governor-work-rules-v2.1-candidate.md
-44eb0373cf30591e2a246c56f06491357fa9c9a199a36f7228cc929eb6e03ff0  knowledge-cards/proposals/docs/20261112_manus-claude-collaboration-handoff-sop.md
-e9baca411f280b06c962fbedb0623183717292a7b37275a3347819c3002c44bd  knowledge-cards/proposals/docs/20261112_manus-executive-governor-role-contract.md
-a8524bd7e846143500e70c6cdabcc9c6f2de9954cfd12abe851469be9113d898  knowledge-cards/proposals/docs/20261112_miko-governance-decision-request-pr49.md
-b19125433578c500b74eeb5e42ab4b11be5e13959d4e1d4d1e839cebe95771d2  knowledge-cards/proposals/docs/20261113_governor-work-rules-v2.1-field-edition.md
+== 每檔 SHA-256（稽核小修後本機樹；本檔不列自己）
+493bdcb541aad2ddb9cee35f9752b30865aa9d4ca14ccfd92a49951a38bcd211  knowledge-cards/proposals/docs/20261112_governor-work-rules-v2.1-candidate.md
+35a72110274f2b8f60511de3ad95bf880ce730010b9140a71dd0632e6c18f9b3  knowledge-cards/proposals/docs/20261112_manus-claude-collaboration-handoff-sop.md
+3d0d24f1a7152159e9bd9073e0c141886496416369ff9855014902ff1f00f92a  knowledge-cards/proposals/docs/20261112_manus-executive-governor-role-contract.md
+b7301beeb7e7a6da2854da599dc7c0f4059af597217c19bc1ab651a07f981281  knowledge-cards/proposals/docs/20261112_miko-governance-decision-request-pr49.md
+37c1fd5b473fa08edb98386cf78b0889160eda94524bb74c15d398f299fb053a  knowledge-cards/proposals/docs/20261113_governor-work-rules-v2.1-field-edition.md
 b01225902b034eafcc0251345a617ae2e1db9d8543a6b912f3fef7e010def970  knowledge-cards/proposals/docs/20261113_pr49-current-evidence.txt
 90bd7cc89d89b11717678e92ea8a4763afed139a8de999fae0df1e2ec5dcad07  knowledge-cards/proposals/skills/governance-review-decision-flow/SKILL.md
 
-== check_repo（帶專案私密字清單，未略過 C6／C9；C3 掃描 12 個私密字、命中 0）
+== check_repo（Claude 帶專案私密字清單實跑，未略過 C6／C9；C3 掃 12 個私密字、命中 0。冷啟動稽核員無清單，C3／C12 只做格式檢查，無法重現此項，標 UNKNOWN）
 PASS C1 版本一致 ｜VERSION=1.2.72 miko-core 對應正本=1.2.72
 PASS C2 Skill 開頭格式（name 與資料夾同名、小寫連字號 ≤ 64 字、description ≤ 1024 字） ｜不合格：[]；提示（不擋）標題沒有版號：[]
 PASS C3 公開檔（含 .csv、二進位、快取檔）無 email、本機路徑與私人關鍵字 ｜命中：[]；私人關鍵字 12 個
 PASS C4 回歸測試 T1～T66、T15B～T15E 與 T29B 都在正本 §8 ｜缺：[]
-PASS C5 sync 檔存在且 LOG 有表頭 
+PASS C5 sync 檔存在且 LOG 有表頭
 PASS C6 bt_min.py 實跑結果與預期一致（含除息日樣本：給事件檔就停止） ｜報酬率=7.12% MDD=-3.38% 事件擋下=True
 PASS C7 美妝專案包完整、版本對應、範本表格與膚況欄位未填 ｜專案包 v1.4／對應 dghp-beauty v0.6／Skill v0.6；範本已填列 0；缺驗收題 []
 PASS C8 repo 沒有個人清單檔，.gitignore 已排除 ｜命中：[]
@@ -32,16 +34,13 @@ PASS C15 出處編號提示（只提示不擋）：正文引用的 ADR 在 CHANG
 PASS C16 詞彙定義表十一節齊全，範圍內各檔短名第一次出現就寫正式名稱 ｜範圍 8 檔；名詞 22 個；檢查檔 8 個；不合格 0 項；PASS
 合計：16/16 PASS
 
-== Skill validator
+== Skill validator（/mnt/skills 的 skill-creator quick_validate.py；是否與 Manus 所用同一支 UNKNOWN）
 Skill is valid!
 
 == flowlock_check
 PASS knowledge-cards/proposals/docs/20261112_miko-governance-decision-request-pr49.md ｜宣告 通過 2／降級 0／UNKNOWN 0；可數 通過 2／降級 0／UNKNOWN 0
 
-== git diff --check
-PASS
-
 == 欄位版字數（python len）
-2426 字元（上限 3400）
+2490 字元（上限 3400）
 
-== 未做：獨立稽核 NOT_RUN；Claude API 自查 NOT_RUN（金鑰由 MIKO 填）；完整記憶／冷啟動測試 NOT_RUN；交接讀者測試原始作答 UNKNOWN
+== 未做：獨立稽核已由冷啟動子代理執行一輪（有必改項，見稽核回報），稽核後小修未再審；Claude API 自查 NOT_RUN（金鑰未在本串）；完整記憶／冷啟動測試 NOT_RUN；交接讀者測試原始作答 UNKNOWN

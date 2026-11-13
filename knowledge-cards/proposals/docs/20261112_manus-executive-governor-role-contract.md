@@ -3,7 +3,7 @@
 ## 文件狀態
 
 - 狀態：`PROPOSED`，候選契約，尚未正式採用。
-- 適用範圍：本專案內由 Manus 執行的任務接收、規劃、執行、協調、驗收與交接。
+- 適用範圍：限 `knowledge-cards/`（ADR-088）內由 Manus 執行的任務接收、規劃、執行、協調、驗收與交接。
 - 最終授權者：MIKO。
 - 治理審查者：Claude；Claude 的審查不得冒充獨立稽核。
 - 正本基線：開工時讀取 GitHub `main/VERSION` 與固定 main HEAD；本文件不寫死版本號。

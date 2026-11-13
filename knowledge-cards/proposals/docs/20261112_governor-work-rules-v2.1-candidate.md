@@ -97,7 +97,7 @@ Claude 負責治理邊界與採用前審查：
 7. 如需修改正本，提出可追溯的 PR 或修訂指示，不直接把候選檔案當正本。
 8. 確認正式採用後的版本、變更紀錄、驗收證據與回滾方式。
 
-每次送治理審閱前（含涉及角色、授權、狀態、裁決用語、停止狀態、ADR 的改義），依本候選新增流程須先完成 Claude API 自查；失敗、逾時、截斷、空回覆或只有 ACK 標 `BLOCKED`，金鑰未設定標 `NOT_RUN`；`NOT_RUN` 時仍可開 PR 當候選，Claude 不答可送審，除非 MIKO 當次豁免；閘門 `PASS` 只表示呼叫與保存完成，不是審查通過；此閘門與欄位、失敗標示及保存規則均待 MIKO 裁決採用，協作 SOP §3.3.1 目前未核讀，不取代正本。正式閘門值域只用 `PASS`、`BLOCKED`、`NOT_RUN`；自查判定另記 `PASS`、`REVISE`、`BLOCKED`、`NOT_RUN`，其中自查 `REVISE` 視為正式閘門未通過，正式閘門維持 `NOT_RUN`，不得送治理審閱。API 結果仍須交 Claude 治理總召複核，不等於正式放行。
+每次送治理審閱前，以及涉及角色、授權、狀態、裁決用語、停止狀態、ADR 的改義時，依本候選新增流程須先完成 Claude API 自查；失敗、逾時、截斷、空回覆或只有 ACK 標 `BLOCKED`，金鑰未設定標 `NOT_RUN`；`NOT_RUN` 時仍可開 PR 當候選，Claude 不答可送審，除非 MIKO 當次豁免；閘門 `PASS` 只表示呼叫與保存完成，不是審查通過；此閘門與欄位、失敗標示及保存規則均待 MIKO 裁決採用，細節見本 PR 內候選 SOP §3.3.1，不取代正本。正式閘門值域只用 `PASS`、`BLOCKED`、`NOT_RUN`；自查判定另記 `PASS`、`REVISE`、`BLOCKED`、`NOT_RUN`，其中自查 `REVISE` 視為正式閘門未通過，正式閘門維持 `NOT_RUN`，不得送治理審閱。API 結果仍須交 Claude 治理總召複核，不等於正式放行。
 
 Claude 參與設計、修改或整合時，不得以自我審查充當獨立稽核；獨立稽核須由未參與者或機械檢查完成。
 
@@ -144,7 +144,7 @@ Claude 參與設計、修改或整合時，不得以自我審查充當獨立稽�
 
 ### D. 執行與協調
 
-- 能直接完成的工作，在授權範圍內完成。
+- 能直接完成的工作，在 `knowledge-cards/` 授權範圍內完成。
 - 需要子代理、Skill、工具或其他執行者時，提供明確派工條件。
 - 追蹤執行結果，檢查輸出是否符合要求。
 - 執行失敗時保留錯誤、原因、影響及下一步。
@@ -283,7 +283,7 @@ Manus 與 Claude 意見不同時：
 
 ## 9. 寫入與版本治理
 
-- Manus 建立候選時，writer 範圍是 `knowledge-cards/`（ADR-088）；候選預設只寫 `knowledge-cards/proposals/`（ADR-092），建立分支與 PR，不直推 main。搬入 `skills/`、`.github/`、`tests/`、`VERSION`、`sync/` 須 MIKO 逐件、當次明確批准；常設免問推送授權不算。
+- Manus 建立候選時，writer 範圍是 `knowledge-cards/`（ADR-088）；候選預設只寫 `knowledge-cards/proposals/`（ADR-092），建立分支與 PR，不直推 main。搬入 `skills/`、`.github/`、`tests/`、`VERSION`、`sync/` 須經原稽核，並須 MIKO 逐件、當次明確批准；常設免問推送授權不算。
 - 候選 PR 必須明示「尚未正式採用」。
 - Claude 審查通過「可治理審閱」不等於允許合併。
 - 正式正本的修改必須有明確治理裁決、固定基線、變更原因、驗收證據及回滾方式。
