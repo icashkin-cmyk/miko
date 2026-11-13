@@ -17,7 +17,7 @@
 - PR：[#49](https://github.com/icashkin-cmyk/miko/pull/49)
 - repository：`icashkin-cmyk/miko`
 - branch：`manus/governor-role-sop-20261112`
-- PR 狀態：目前讀回為 `OPEN`、`isDraft=false`、尚未合併。
+- PR 狀態：目前讀回為 `OPEN`、`isDraft=true`、尚未合併；本通知草稿仍屬候選審查材料。
 - 採用軸：`PROPOSED`
 - 實際撰寫者：Manus 執行總召。
 - 可處理範圍：`knowledge-cards/`，包含 `knowledge-cards/proposals/`；knowledge-cards 的唯一 writer 為 Manus 總召（來源：`knowledge-cards/README.md`「誰可以寫」與「分工原文」）。
@@ -51,7 +51,7 @@
 - 總結果：前一輪 `16/16 PASS`，程序退出碼 `0`。
 - C15 為提示性檢查，不阻擋；前一輪有 7 個出處例外。
 - C3／C12 的前一輪輸出注明 `MIKO_PRIVATE_WORDS` 未帶或為空，只完成格式檢查，未執行私人關鍵字清單掃描。
-- 本輪通知草稿與候選 Skill 修訂後的 C1～C16：`PASS`，合計 `16/16 PASS`；完整輸出已保存於本輪審查輸出檔。
+- 本輪新增 Manus 範圍、證據標籤與困難卡分類修訂後，已重新執行 C1～C16：`PASS`，合計 `16/16 PASS`，程序退出碼 `0`；C3／C12 仍因 `MIKO_PRIVATE_WORDS` 未提供或為空，只完成格式檢查。
 
 ### 4.2 Skill 結構驗證
 
@@ -61,7 +61,7 @@
 
 - 使用者冷啟動稽核已指出本草稿前一版本不合格；本輪新雜湊由重新驗證結果提供，不沿用舊雜湊。
 - 本輪草稿修改後的 `git diff --check`：`PASS`。
-- 本輪候選文件與 PR head 讀回：候選文件已讀回；PR head 尚待重新執行。
+- 本輪候選文件已完成本地驗收但尚未推送；遠端 PR head 仍以當次讀回結果為準，不能宣稱遠端已包含本輪修訂。
 - 獨立稽核：本輪修訂後待重新執行。
 
 ## 5. Claude API 自查閘門
@@ -76,12 +76,12 @@
 
 | 軸 | 本輪值 | 說明 |
 |---|---|---|
-| 來源 | `NOT_READ` | 本輪尚未重新固定讀取所有材料與 PR head；不得沿用舊 commit。 |
-| 執行 | `PASS` | 本輪已完成 C1～C16、Skill validator 與 `git diff --check`；PR head 遠端讀回尚待執行。 |
+| 來源 | `READ` | 本輪已讀取候選守則、裁決通知、候選 Skill、附件與 miko-core／VERSION；本輪修改尚未推送至遠端。 |
+| 執行 | `PASS` | 本輪已完成 C1～C16、Skill validator 與 `git diff --check`。 |
 | 審查 | `NOT_RUN` | 本輪修訂尚未完成 Claude 治理複核與獨立稽核。 |
 | 採用 | `PROPOSED` | 尚未由 MIKO 正式採用。 |
 | Runtime | `DISABLED` | 未接線、未啟用。 |
-| 外部效果 | `WRITTEN` | 前一版本曾推送至 PR 分支；本輪修改目前存在本地工作樹，是否重新推送待驗證，不能預先宣稱。 |
+| 外部效果 | `WRITTEN` | 前一版本曾推送至 PR 分支；本輪三個候選檔案修改尚在本地工作樹，尚未推送。 |
 
 ## 7. MIKO 保留決定權與常設清單
 
@@ -187,14 +187,15 @@
 - Claude 治理複核：本輪待送審。
 - 獨立稽核：本輪待重審。
 - MIKO 正式裁決：待決。
-- 任務四態：**完成但有疑慮**，理由是 W1～W7 與責任欄位已依附件補入，但最新 C1～C16、API 自查、獨立稽核與重審尚未完成。
+- 任務四態：**完成但有疑慮**，理由是本輪三處修訂與 C1～C16／Skill 驗證已完成，但 API 自查、獨立稽核、治理重審與本輪修改推送尚未完成。
 
 ## 15. 稽核修訂對照
 
 本輪依冷啟動稽核逐項處理：
 
 - 已補：派工、回報、待辦與交接欄位；卡住對象；停止／暫緩、新權限、刪除、付費、對外發送、他平台寫入與 writer 爭議清單。
+- 本輪修正：Manus 執行總召適用範圍限於 `knowledge-cards/`（含 `knowledge-cards/proposals/`）；證據標籤改回 miko-core 現行標籤；困難卡類別改回缺資料、缺決定／授權／付費、技術失敗、外部依賴四類。
 - 已修：移除可貼用正文中的固定版本、commit、舊雜湊與「已實讀確認」表述；改為本輪審查包填入。
 - 已補來源：Manus 停問與硬邊界、knowledge-cards writer／提案區、Drive 只新增、派工回報與交接規則。
 - 已依附件補入：W1～W7 對照、A0.4 責任閘門與 W1.2／W1.3／W6.2／W7.1～W7.2 責任欄位；附件本身仍是候選細化守則，不是正式正本。
-- 待辦：讀回最新 PR head；完成最新版本 Claude API 自查與獨立稽核；再送 MIKO 裁決。
+- 待辦：讀回最新 PR head；完成最新版本 Claude API 自查與獨立稽核；若獲授權再推送本輪候選修訂；再送 MIKO 裁決。
