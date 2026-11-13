@@ -69,7 +69,7 @@ Claude 必須分開回答：
 
 ### 3.3.1 Claude API 複核門檻
 
-每次送治理審閱前，Manus 必須先呼叫 Claude API 自查，並把結果交給 Claude 治理總召複核；首次送審、角色／授權／狀態軸／裁決用語／停止狀態／ADR 改義、材料 SHA-256 變更、Manus／Claude 衝突，都一定要呼叫。只有路徑、標籤、漏句、名詞、格式這類不改意思的小錯，可不重跑 API 複核就修，但須留 diff；來源、數值、日期、結論只要有一點存疑就不算小錯，要標 `UNKNOWN` 或 `NOT_RUN`，不得用「看起來合理」補寫或推定。是否屬小錯由 Claude 判定，Manus 不得自判後跳過複核。
+每次送治理審閱前，Manus 必須先呼叫 Claude API 自查，並把結果交給 Claude 治理總召複核；首次送審、角色／授權／狀態軸／裁決用語／停止狀態／ADR 改義、材料 SHA-256 變更、Manus／Claude 衝突，都一定要呼叫。只有路徑、標籤、漏句、名詞、格式這類不改意思的小錯，可不重跑 API 複核就修，但須留 diff；來源、數值、日期、結論只要有一點存疑就不算小錯，要標 `UNKNOWN` 或 `NOT_RUN`，不得用「看起來合理」補寫或推定。是否屬小錯由 Claude 判定，Manus 不得自判後跳過複核。修小錯的那一次不需重跑 API 自查；但之後每一次正式送審前，仍須有當次自查（MIKO 2026-11-13 23:55 台北授權由總召決定，M4）。
 
 每次必須保存：`request_id`、完整 request payload、完整 response、實際 `model`、Asia/Taipei 請求／回應時間、每份材料 SHA-256、固定來源 commit／VERSION／ADR、`api_status`、`stop_reason`、token、request／response SHA-256 與讀回位置。API 失敗、逾時、截斷、空回覆或只有 ACK 一律標 `BLOCKED` 並停止送審，開困難卡；金鑰未設定標 `NOT_RUN`；不得以 ACK、HTTP 200、請求送出或其他模型建議代替審查。閘門 `PASS` 只表示呼叫與保存完成，不是審查通過。
 

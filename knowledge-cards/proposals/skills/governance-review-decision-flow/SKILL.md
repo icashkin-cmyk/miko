@@ -54,7 +54,7 @@ description: "MIKO 候選治理文件的正式裁決、放行與狀態軸管理�
 - 任務目標、範圍、非範圍與授權。
 - 候選文件清單、用途、差異與 SHA-256。
 - 已執行與未執行的命令、測試、CI、讀回與限制。
-- Claude API request／response、模型、時間、HTTP 狀態、stop reason、request／response SHA-256 與保存位置（每次送審前都要先呼叫 API 自查，失敗標 `BLOCKED`，金鑰未設定標 `NOT_RUN`）；自查判定另記 `PASS／REVISE／BLOCKED／NOT_RUN`，不把 `REVISE` 填入正式閘門軸。
+- Claude API request／response、模型、時間、HTTP 狀態、stop reason、request／response SHA-256 與保存位置（每次送審前都要先呼叫 API 自查，失敗標 `BLOCKED`，金鑰未設定標 `NOT_RUN`）；自查判定另記 `PASS／REVISE／BLOCKED／NOT_RUN`；自查為 `REVISE` 時正式閘門軸填 `BLOCKED`，不填 `REVISE`（MIKO 2026-11-13 23:55 台北授權由總召決定，M1）。
 - UNKNOWN、NOT_READ、NOT_RUN、BLOCKED、CONFLICT 與困難卡。
 - 要請 Claude 提供意見的問題；不得把問題寫成指揮 Claude 的指令。
 
@@ -69,7 +69,7 @@ ADOPT：YES／NO／UNKNOWN
 RUNTIME：YES／NO／UNKNOWN
 ```
 
-這四組欄位不得混成單一通過值。`UPLOAD_FOR_REVIEW=YES` 不代表 `ADOPT=YES`，API 回覆成功也不代表任何正式採用。正式 API 閘門值域為 `PASS／BLOCKED／NOT_RUN`；自查若為 `REVISE`，正式閘門維持 `NOT_RUN` 並不得送治理複核。
+這四組欄位不得混成單一通過值。`UPLOAD_FOR_REVIEW=YES` 不代表 `ADOPT=YES`，API 回覆成功也不代表任何正式採用。正式 API 閘門值域為 `PASS／BLOCKED／NOT_RUN`；自查若為 `REVISE`，正式閘門標 `BLOCKED` 並不得送治理複核，修訂後須重跑自查；`REVISE` 不適用 `NOT_RUN` 的 MIKO 當次豁免路徑。
 
 ### 4. MIKO 正式裁決或放行
 
