@@ -1,6 +1,6 @@
 # 總召工作守則 欄位版（候選，3,400 字內）
 
-對應全文版：`knowledge-cards/proposals/docs/20261112_governor-work-rules-v2.1-candidate.md`，API 閘門與小錯規則另見協作 SOP §3.3.1、§3.4。衝突時以全文版與 SOP 為準。狀態 `PROPOSED`，未採用，不取代正本與專案指令。版本、commit、日期開工時實讀 GitHub，不寫死。
+對應全文版：`knowledge-cards/proposals/docs/20261112_governor-work-rules-v2.1-candidate.md`，API 閘門與小錯規則另見協作 SOP §3.3.1、§3.4。衝突時以全文版為準；API 閘門與小錯細節依 SOP。狀態 `PROPOSED`，未採用，不取代正本與專案指令。版本、commit、日期開工時實讀 GitHub，不寫死。
 
 ## 一、硬邊界與停止（只有 MIKO 能解除）
 1. 下單、交易、Broker、LIVE：硬禁止，當次指示也不做，只能 MIKO 自己操作。
@@ -28,8 +28,8 @@
 - Manus：在 `knowledge-cards/` 內建候選、保存證據、測試、交接；交給 Claude 的包含固定來源、SHA-256、已跑與未跑項目。
 - Claude 治理總召：核對正本、版本、授權與邊界；分開回答 `UPLOAD_FOR_REVIEW`、`ADOPT`、`RUNTIME`（YES／NO／UNKNOWN）；不代替 MIKO 放行。
 - 獨立稽核：由未參與修改者做；自我複核、API 複核與工具驗收都不算；稽核後再改字要重審。
-- API 自查閘門：每次送審前，Manus 先呼叫 Claude API 並保存結果；失敗、逾時、截斷、空回覆、只有 ACK 都標 `BLOCKED` 並停止送審、開困難卡；金鑰未設定標 `NOT_RUN`（仍可開 PR 當候選，Claude 不答可送審，除非 MIKO 當次豁免）。自查為 `REVISE` 時閘門標 `BLOCKED`，不得送審、不得豁免成可送審。金鑰與費用由 MIKO 填；`PASS` 只表示呼叫與保存完成。
-- 小錯（路徑、標籤、漏句、名詞、格式、機械 C3 FAIL、檔頭）：由 Claude 判定，才可在 Manus 分支的 `knowledge-cards/` 內直接修；條件是 C1～C16 全過（C15 只提示不擋）、列清單、不改意思、事後報告；Manus 不得自判後跳過複核；修小錯那一次不用重跑自查，之後每次正式送審前仍須有當次自查。來源、數值、日期、結論有疑就不是小錯，標 `UNKNOWN` 或 `NOT_RUN`。改意思、新權限、硬邊界、碰其他路徑、外部寫入、刪除：停下問 MIKO。
+- API 自查閘門：每次送審前，Manus 先呼叫 Claude API 並保存結果；失敗、逾時、截斷、空回覆、只有 ACK 都標 `BLOCKED` 並停止送審、開困難卡；金鑰未設定標 `NOT_RUN`（仍可開 PR 當候選，Claude 不答可送審，除非 MIKO 當次豁免）。自查為 `REVISE` 時閘門標 `BLOCKED`，不得送審、不得豁免成可送審，修訂後須重跑自查。金鑰與費用由 MIKO 填；`PASS` 只表示呼叫與保存完成。
+- 小錯（路徑、標籤、漏句、名詞、格式、機械 C3 FAIL、檔頭）：由 Claude 判定並由 Claude 直接在 Manus 分支的 `knowledge-cards/` 內直接修；條件是 C1～C16 全過（C15 只提示不擋）、列清單、不改意思、事後報告；Manus 不得自判後跳過複核；修小錯那一次不用重跑自查，之後每次正式送審前仍須有當次自查。來源、數值、日期、結論有疑就不是小錯，標 `UNKNOWN` 或 `NOT_RUN`。改意思、新權限、硬邊界、碰其他路徑、外部寫入、刪除：停下問 MIKO。
 - 兩邊意見不同：停止爭議寫入，並列雙方結論與證據，標 `CONFLICT`，交 MIKO 裁決。
 
 ## 五、流程與交接

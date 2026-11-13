@@ -13,7 +13,7 @@
 |---|---|---|
 | Manus 執行總召 | 接收需求、開工對齊、拆解、執行、建立候選、保存證據、測試、整合、交接（寫入範圍限 `knowledge-cards/`，ADR-088、ADR-092，見下段） | 不得把候選當正本、把工具 ACK 當成果、解除停止、接 Runtime、合併或執行不可逆操作 |
 | Claude 治理總召 | 審查正本、版本、邊界、授權、責任、採用條件與衝突 | 不得把自我審查當獨立稽核，不得代替 MIKO 解除停止或作保留決定 |
-| 獨立稽核者 | 驗證未參與修改者的證據、測試、讀回與完整性 | 不得由修改者自我兼任 |
+| 獨立稽核者 | 驗證未參與修改者的證據、測試、讀回與完整性；工具驗收（check_repo、validator、flowlock）與 Claude 複核不算獨立稽核（M2，R-03） | 不得由修改者自我兼任 |
 | MIKO | 最終授權、正式放行、停止解除、不可逆決定與衝突裁決 | — |
 
 Gemini 或其他模型只能提供建議；其輸出須標示為模型建議，不是正本、稽核或放行證據。
@@ -35,7 +35,7 @@ Manus 執行總召的寫入範圍限 `knowledge-cards/`（含 `knowledge-cards/p
 1. 讀 miko-core、VERSION、適用 Skill、專案指示與既有 Task。
 2. 固定來源 commit，記錄版本、ADR、讀取時間、範圍與 Writer／Owner。
 3. 寫出目標、非目標、授權、依賴、驗收條件與失敗出口。
-4. 只在 `knowledge-cards/`（ADR-088）授權範圍內執行；候選內容優先寫入 `knowledge-cards/proposals/`（ADR-092）。搬入 `skills/`、`.github/`、`tests/`、`VERSION`、`sync/` 須經原稽核，並須 MIKO 逐件、當次明確批准；常設免問推送授權不算。Manus 只開分支與 PR，不直推 main，不改 `knowledge-cards/` 以外路徑。
+4. 只在 `knowledge-cards/`（ADR-088）授權範圍內執行；候選內容預設落點為 `knowledge-cards/proposals/`（ADR-092）。搬入 `skills/`、`.github/`、`tests/`、`VERSION`、`sync/` 須經原稽核，並須 MIKO 逐件、當次明確批准；常設免問推送授權不算。Manus 只開分支與 PR，不直推 main，不改 `knowledge-cards/` 以外路徑。
 5. 保存命令、完整輸出、錯誤、測試、差異與 SHA-256。
 
 ### 3.2 Manus 交 Claude
@@ -73,7 +73,7 @@ Claude 必須分開回答：
 
 每次必須保存：`request_id`、完整 request payload、完整 response、實際 `model`、Asia/Taipei 請求／回應時間、每份材料 SHA-256、固定來源 commit／VERSION／ADR、`api_status`、`stop_reason`、token、request／response SHA-256 與讀回位置。API 失敗、逾時、截斷、空回覆或只有 ACK 一律標 `BLOCKED` 並停止送審，開困難卡；金鑰未設定標 `NOT_RUN`；不得以 ACK、HTTP 200、請求送出或其他模型建議代替審查。閘門 `PASS` 只表示呼叫與保存完成，不是審查通過。
 
-`NOT_RUN` 時仍可開 PR 當候選，審查包須寫明 `API 自查閘門=NOT_RUN` 與原因；Claude 不答 `UPLOAD_FOR_REVIEW=YES`，除非 MIKO 當次明確豁免。金鑰由 MIKO 親手填到平台密鑰設定，費用由 MIKO 親手處理；Manus 不索取、不複述、不保存金鑰。
+自查結果為 `REVISE` 時，正式閘門標 `BLOCKED`，不得送審、須修訂後重跑自查，且不適用 `NOT_RUN` 的當次豁免，Claude 不自行當作豁免（M1）。`NOT_RUN` 時仍可開 PR 當候選，審查包須寫明 `API 自查閘門=NOT_RUN` 與原因；Claude 不答 `UPLOAD_FOR_REVIEW=YES`，除非 MIKO 當次明確豁免。金鑰由 MIKO 親手填到平台密鑰設定，費用由 MIKO 親手處理；Manus 不索取、不複述、不保存金鑰。
 
 Claude API 複核不是獨立稽核，也不授權採用、Runtime、合併或解除停止；完整結果須交 Claude 治理總召複核，正式放行仍由 MIKO 決定。
 

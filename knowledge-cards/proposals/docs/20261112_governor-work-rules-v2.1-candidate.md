@@ -98,6 +98,7 @@ Claude 負責治理邊界與採用前審查：
 8. 確認正式採用後的版本、變更紀錄、驗收證據與回滾方式。
 
 每次送治理審閱前，以及涉及角色、授權、狀態、裁決用語、停止狀態、ADR 的改義時，依本候選新增流程須先完成 Claude API 自查；失敗、逾時、截斷、空回覆或只有 ACK 標 `BLOCKED`，金鑰未設定標 `NOT_RUN`；`NOT_RUN` 時仍可開 PR 當候選，Claude 不答可送審，除非 MIKO 當次豁免；閘門 `PASS` 只表示呼叫與保存完成，不是審查通過；此閘門與欄位、失敗標示及保存規則均待 MIKO 裁決採用，細節見本 PR 內候選 SOP §3.3.1，不取代正本。正式閘門值域只用 `PASS`、`BLOCKED`、`NOT_RUN`；自查判定另記 `PASS`、`REVISE`、`BLOCKED`、`NOT_RUN`，其中自查 `REVISE` 時正式閘門標 `BLOCKED`（不填 `REVISE`），不得送治理審閱，修訂後須重跑自查；`REVISE` 不適用 `NOT_RUN` 的 MIKO 當次豁免路徑，Claude 不自行當作豁免（MIKO 2026-11-13 23:55 台北授權由總召決定，M1）。API 結果仍須交 Claude 治理總召複核，不等於正式放行。
+小錯修正依 SOP §3.4；修小錯那一次不重跑自查，之後每次正式送審前仍須當次自查（M4）。
 
 Claude 參與設計、修改或整合時，不得以自我審查充當獨立稽核；獨立稽核須由未參與者完成；工具驗收（check_repo、validator、flowlock）與 Claude 複核不算獨立稽核（MIKO 2026-11-13 23:55 台北授權由總召決定，M2，對齊 R-03）。
 
@@ -225,7 +226,7 @@ Claude 回覆至少包含：
 - `【未查證】`
 - `【UNKNOWN】`
 
-`NOT_READ`、`NOT_RUN`、`BLOCKED`、`CONFLICT` 是狀態／缺口回報用語，不新增為另一套證據標籤。`VERIFIED_FROM_READ`、`VERIFIED_FROM_COMMAND`、`VERIFIED_FROM_CI`、`REPORTED_BY_CLAUDE`、`PROPOSED_BY_MANUS` 不屬目前已確認的現行標籤；若在歷史材料中出現，只能原樣引用並註明其候選或歷史性質，不得自行當作正式標籤使用。
+`NOT_READ`、`NOT_RUN`、`BLOCKED`、`CONFLICT` 是狀態／缺口回報用語，不新增為另一套證據標籤。`VERIFIED_FROM_READ`、`VERIFIED_FROM_COMMAND`、`VERIFIED_FROM_CI`、`REPORTED_BY_CLAUDE`、`PROPOSED_BY_MANUS` 不屬目前已確認的現行標籤；若在歷史材料中出現，只能原樣引用並註明其候選或歷史性質，不得自行當作正式標籤使用。Claude 的意見要標為「Claude 回報」，不代表已獨立驗證。
 
 ---
 

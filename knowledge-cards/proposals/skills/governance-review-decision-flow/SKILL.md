@@ -9,8 +9,8 @@ description: "MIKO 候選治理文件的正式裁決、放行與狀態軸管理�
 
 ## 角色邊界
 
-- **Manus 執行總召**：責任限於本專案 `knowledge-cards/`（包含 `knowledge-cards/proposals/`）；在該範圍內固定來源、整理材料、執行可授權檢查、保存證據、建立候選與交接；不得將本 Skill 解讀為全專案 writer 授權，不得指揮 Claude、代替治理裁決、放行、合併或自任獨立稽核。
-- **Claude 治理總召**：複核候選內容的來源、規則、責任、授權、狀態與衝突，提出 `PASS`、`REVISE`、`BLOCKED` 或 `UNKNOWN`；不代替 MIKO 正式採用或放行，也不把自我複核當獨立稽核。
+- **Manus 執行總召**：責任限於本專案 `knowledge-cards/`（包含 `knowledge-cards/proposals/`，ADR-088）；在該範圍內固定來源、整理材料、執行可授權檢查、保存證據、建立候選與交接；不得將本 Skill 解讀為全專案 writer 授權，不得指揮 Claude、代替治理裁決、放行、合併或自任獨立稽核。
+- **Claude 治理總召**：複核候選內容的來源、規則、責任、授權、狀態與衝突，提出 `PASS`、`REVISE`、`BLOCKED` 或 `UNKNOWN`；不代替 MIKO 正式採用或放行，也不把自我複核當獨立稽核；工具驗收（check_repo、validator、flowlock）與 Claude 複核同樣不算獨立稽核（M2，R-03）。
 - **獨立稽核者**：驗證未參與修改者的證據、測試、讀回與完整性。
 - **MIKO**：作正式採用、放行、合併、Runtime 啟用、停止解除、不可逆操作與未解決衝突的最終決定。
 
