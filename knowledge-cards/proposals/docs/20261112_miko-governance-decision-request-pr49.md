@@ -53,7 +53,7 @@
 - C15 為提示性檢查，不阻擋；前一輪有 7 個出處例外。
 - C3／C12 的前一輪輸出注明 `MIKO_PRIVATE_WORDS` 未帶或為空，只完成格式檢查，未執行私人關鍵字清單掃描。
 - 本輪補強 Manus 範圍、證據標籤、困難卡四類與狀態軸後，於 Manus 自報時間（見證據檔 r5）重新執行 `python3 tests/check_repo.py`：C1～C16 全數 `PASS`，合計 `16/16 PASS`，程序退出碼 `0`；完整輸出保存於本輪審查包。C3／C12 因 `MIKO_PRIVATE_WORDS` 未提供或為空，仍只完成格式檢查，私人關鍵字掃描為 `NOT_RUN`。（Manus 自述；其自報時間戳與 commit 先後不符，原因 `UNKNOWN`，不採信為證據時間，細節見證據檔 r5。）
-- Claude 實跑（帶專案私密字清單、未略過 C6／C9；執行時間 `UNKNOWN`，見證據檔 r5）：對修訂前基線 head 與對本機修訂樹各跑一次，皆 C1～C16 `16/16 PASS`；C3 私人關鍵字 12 個、命中 0，C12 命中 0，即私人關鍵字掃描已執行。原始輸出見 `20261113_pr49-current-evidence-r5.txt`。帶私密字清單的那次是在 較早推送版本的樹（commit 見證據檔 r5）上跑；現行樹的私密字掃描 `NOT_RUN`（本輪環境沒有清單），r5 檔末的 check_repo 輸出只有格式檢查。這只是機械檢查，不等於治理通過。
+- Claude 實跑（帶專案私密字清單、未略過 C6／C9；執行時間 `UNKNOWN`，見證據檔 r5）：對修訂前基線 head 與對本機修訂樹各跑一次（基線 head 那次的原始輸出不在 r5，另存專案檔 `check_repo_PR49_head1a42a56_輸出.txt`，SHA-256 8f027925b45130b7a2f167e9f70918bb724e1c2723f1272f12fc6cd9c6614621；r5 只收本機修訂樹那次），皆 C1～C16 `16/16 PASS`；C3 私人關鍵字 12 個、命中 0，C12 命中 0，即私人關鍵字掃描已執行。原始輸出見 `20261113_pr49-current-evidence-r5.txt`。帶私密字清單的那次是在 較早推送版本的樹（commit 見證據檔 r5）上跑；現行樹的私密字掃描 `NOT_RUN`（本輪環境沒有清單），r5 檔末的 check_repo 輸出只有格式檢查。這只是機械檢查，不等於治理通過。
 
 ### 4.2 Skill 結構驗證
 
@@ -79,12 +79,12 @@
 
 | 軸 | 本輪值 | 說明 |
 |---|---|---|
-| 來源 | `READ` | 已讀回遠端 PR head、VERSION、miko-core 與本地候選檔；遠端基線 head 見證據檔 r5；本輪修訂已推送，其後的稽核小修以 GitHub 讀回為準，未讀回前不得宣稱遠端已包含。 |
+| 來源 | `READ` | 已讀回遠端 PR head、VERSION、miko-core 與本地候選檔；遠端基線 head 見證據檔 r5；MIKO 23:42 授權的那一輪修訂已推送，其後各版以 GitHub 讀回為準，未讀回前不得宣稱遠端已包含。 |
 | 執行 | `PASS` | C1～C16、Skill validator 與 `git diff --check` 已通過；C3／C12 私人關鍵字掃描在 Manus 輪因 `MIKO_PRIVATE_WORDS` 空值為 `NOT_RUN`（Claude 的 r5 輪已帶清單實跑、命中 0，限 較早推送版本的樹（commit 見證據檔 r5），現行樹 `NOT_RUN`，見 §4.1），此為局部工具結果，不等於治理放行。 |
 | 審查 | `NOT_RUN` | 本輪修訂尚未完成 Claude 治理複核與獨立稽核。 |
 | 採用 | `PROPOSED` | 尚未由 MIKO 正式採用。 |
 | Runtime | `DISABLED` | 未接線、未啟用。 |
-| 外部效果 | `WRITTEN` | 本輪候選檔案修改已由 Claude 推送到 PR 分支（head 見證據檔 r5，經 MIKO 當次說「推」），外部效果為 `WRITTEN`（僅 `knowledge-cards/` 內、未合併）；稽核小修的推送另計。 |
+| 外部效果 | `WRITTEN` | MIKO 23:42 授權的那一輪候選檔案修改已由 Claude 推送到 PR 分支（head 見證據檔 r5，經 MIKO 當次說「推」，其後各版以 GitHub 讀回為準），外部效果為 `WRITTEN`（僅 `knowledge-cards/` 內、未合併）；稽核小修的推送另計。 |
 
 ## 7. MIKO 保留決定權與常設清單
 

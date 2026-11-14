@@ -21,7 +21,7 @@ Claude 治理複核邊界控制（Claude governance review boundary control）�
 
 ### 1. Claude 複核不等於正式放行或獨立稽核
 
-Claude 可以檢查候選內容的規則、責任、授權、版本、證據與邊界，並提出 `PASS`、`REVISE`、`BLOCKED` 或 `UNKNOWN` 等複核結論。Claude 不得代替 MIKO 正式放行、合併 PR、解除停止或硬禁止；若 Claude 參與設計、修改或整合，不得把自身複核當成獨立稽核。
+Claude 可以檢查候選內容的規則、責任、授權、版本、證據與邊界，並提出 `PASS`、`REVISE`、`BLOCKED` 或 `UNKNOWN` 等複核結論。Claude 不得代替 MIKO 正式放行、合併 PR、解除停止或硬禁止；若 Claude 參與設計、修改或整合，不得把自身複核當成獨立稽核。工具驗收（check_repo、validator、flowlock）與 Claude 複核不算獨立稽核（M2）。
 
 API 回覆成功、API ACK、HTTP 200、Claude 判定 `PASS` 或治理複核完成，都不能直接推導為 `ADOPTED`、`RUNTIME_ENABLED` 或正式採用。
 
