@@ -20,7 +20,7 @@
 - PR 狀態：2026-11-14 讀回為 `OPEN`、`isDraft=true`、尚未合併（讀回記錄見證據檔 r5，現況以 GitHub 為準）；本通知草稿仍屬候選審查材料。
 - 採用軸：`PROPOSED`
 - 實際撰寫者：Manus 執行總召；後續修訂由 Claude 執行。
-- 可處理範圍（ADR-088）：`knowledge-cards/`，包含 `knowledge-cards/proposals/`；knowledge-cards 的唯一 writer 為 Manus 總召（來源：`knowledge-cards/README.md`「誰可以寫」與「分工原文」）。
+- 可處理範圍（ADR-088）：`knowledge-cards/`，包含 `knowledge-cards/proposals/`；knowledge-cards 的唯一 writer 為 Manus 總召（來源：`knowledge-cards/README.md`「誰可以寫」與「分工原文」；正本 README §6 同義。該 README 不是正本）。
 - 非範圍：正式 miko-core、正式 Skills、`.github/`、`tests/`、`VERSION`、`sync/`、Runtime、PR 合併與任何交易／Broker／LIVE。
 - 未開專案的領域 Skill：本次沒有取得可核對的專案專屬 writer 定義，維持 `UNKNOWN`，不自行新增 writer 規則。
 
@@ -120,6 +120,7 @@
 | 治理複核者 | Claude 治理總召負責治理複核與材料門檻判定；不等於 MIKO 正式採用或獨立稽核者。 |
 | 機械檢查者 | `python3 tests/check_repo.py`、Skill validator 與 `git diff --check` 的工具輸出；工具成功不能當治理放行。 |
 | 獨立稽核者 | `UNKNOWN`，待 MIKO 指定；不得由本輪參與修改者擔任。獨立稽核本身為 `NOT_RUN`；不把工具驗收或 Claude 複核當成獨立稽核。 |
+| 後續修訂者 | Claude：本 PR 候選檔的後續修訂，依 MIKO 當次指示。MIKO 2026-11-14 的原話（台北時間）：23:23「是 49 全照推薦」、23:38「全照推薦 幫我驗收zip」；2026-11-15 06:56「一樣」、07:11「全照推薦」；更早的授權見 §4、§5（23:42 說「推」、23:55 授權）。不改變 `knowledge-cards/` 的 writer 規則（唯一 writer 仍為 Manus 總召，ADR-088），不直推 main、不合併。 |
 | 整合者 | Manus 執行總召整合候選材料；正式採用與放行仍由 MIKO 決定。 |
 | 讀回者 | `UNKNOWN`，待 MIKO 指定；指定後須讀回 PR／檔案完整內容並核對版本、範圍、AC、未知、禁止事項、責任欄與交付位置。 |
 | 失敗處理者 | Manus 執行總召先保存錯誤、影響與下一步；涉及治理衝突、正式採用或不可逆決定時交 Claude／MIKO。 |
@@ -190,7 +191,7 @@
 
 ## 14. 交接與任務四態
 
-- 責任欄：主要執行者 Manus 執行總召；writer Manus 執行總召；治理複核者 Claude；機械檢查者為本輪工具輸出；獨立稽核者 `UNKNOWN`（待 MIKO 指定）；整合者 Manus 執行總召；讀回者 `UNKNOWN`（待 MIKO 指定）；失敗處理者 Manus 執行總召，治理裁決交 Claude／MIKO；目標位置為 PR #49 分支的 `knowledge-cards/`。
+- 責任欄：主要執行者 Manus 執行總召；writer Manus 執行總召；後續修訂者 Claude（依 MIKO 當次指示，見 §9）；治理複核者 Claude；機械檢查者為本輪工具輸出；獨立稽核者 `UNKNOWN`（待 MIKO 指定）；整合者 Manus 執行總召；讀回者 `UNKNOWN`（待 MIKO 指定）；失敗處理者 Manus 執行總召，治理裁決交 Claude／MIKO；目標位置為 PR #49 分支的 `knowledge-cards/`。
 - Claude 治理複核：本輪尚未執行；正式治理審查軸為 `NOT_RUN`；API 自查閘門執行前為 `NOT_RUN`。執行後結果另存審查紀錄，不預先寫入本通知。
 - 獨立稽核：`NOT_RUN`；獨立稽核者與讀回者皆 `UNKNOWN`，待 MIKO 指定。
 - MIKO 正式裁決：待決。
