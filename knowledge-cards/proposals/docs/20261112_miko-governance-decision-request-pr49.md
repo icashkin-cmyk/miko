@@ -39,7 +39,7 @@
 - 治理邊界知識卡：`knowledge-cards/proposals/20261112_claude-governance-review-boundaries.md`
 - 候選 Skill：`knowledge-cards/proposals/skills/governance-review-decision-flow/SKILL.md`
 - 裁決通知草稿：本文件。
-- 固定來源：GitHub PR #49 遠端 head `1a42a56a025ea1a78521fdd7bf6a5338d4d83b9e`（修訂前基線）；VERSION `1.2.72`；miko-core `v1.73`；Claude 實讀時間見證據檔 r5。本輪修訂不在該基線 head 內。
+- 固定來源：GitHub PR #49 遠端 head `1a42a56a025ea1a78521fdd7bf6a5338d4d83b9e`（修訂前基線）；VERSION `1.2.72`；miko-core `v1.73`；Claude 實讀時間 `UNKNOWN`（原 18:45 無出處已刪，見證據檔 r5）。本輪修訂不在該基線 head 內。
 - 本輪每檔 SHA-256、PR `OPEN`／`isDraft=true`／`mergedAt=null` 讀回、C1～C16 原始輸出與 Skill validator 輸出：見 `knowledge-cards/proposals/docs/20261113_pr49-current-evidence-r5.txt`（舊檔 `20261113_pr49-current-evidence.txt` 已標 HISTORICAL／STALE，不作本輪現況）。
 
 ## 4. 前置驗收結果
@@ -53,7 +53,7 @@
 - C15 為提示性檢查，不阻擋；前一輪有 7 個出處例外。
 - C3／C12 的前一輪輸出注明 `MIKO_PRIVATE_WORDS` 未帶或為空，只完成格式檢查，未執行私人關鍵字清單掃描。
 - 本輪補強 Manus 範圍、證據標籤、困難卡四類與狀態軸後，於 2026-11-14 01:07（Asia/Taipei）重新執行 `python3 tests/check_repo.py`：C1～C16 全數 `PASS`，合計 `16/16 PASS`，程序退出碼 `0`；完整輸出保存於本輪審查包。C3／C12 因 `MIKO_PRIVATE_WORDS` 未提供或為空，仍只完成格式檢查，私人關鍵字掃描為 `NOT_RUN`。（Manus 自述；其時間戳 2026-11-14 01:07 晚於實際日期，原因 `UNKNOWN`，不採信為證據時間。）
-- Claude 實跑（時間見證據檔 r5，帶專案私密字清單、未略過 C6／C9）：對 head `1a42a56` 與對本機修訂樹各跑一次，皆 C1～C16 `16/16 PASS`；C3 私人關鍵字 12 個、命中 0，C12 命中 0，即私人關鍵字掃描已執行。原始輸出見 `20261113_pr49-current-evidence-r5.txt`。r5 的輸出對應 M1～M4 修訂樹，執行時間以 r5 為準。這只是機械檢查，不等於治理通過。
+- Claude 實跑（帶專案私密字清單、未略過 C6／C9；執行時間 `UNKNOWN`，見證據檔 r5）：對 head `1a42a56` 與對本機修訂樹各跑一次，皆 C1～C16 `16/16 PASS`；C3 私人關鍵字 12 個、命中 0，C12 命中 0，即私人關鍵字掃描已執行。原始輸出見 `20261113_pr49-current-evidence-r5.txt`。帶私密字清單的那次是在 c3269ab 時期的樹上跑；現行樹的私密字掃描 `NOT_RUN`（本輪環境沒有清單），r5 檔末的 check_repo 輸出只有格式檢查。這只是機械檢查，不等於治理通過。
 
 ### 4.2 Skill 結構驗證
 
@@ -73,14 +73,14 @@
 - 原因：本輪已修改守則與候選 Skill；先前 API 自查不能覆蓋本輪新內容。
 - 先前舊版 API 自查的完整回覆不能擴張解讀為本輪複核。
 - API 失敗、逾時、截斷、空回覆或只有 ACK 時，應標 `BLOCKED`，停止送治理審閱並開困難卡；不得填 `PASS`。
-- Claude API 自查不是獨立稽核，也不授權採用、Runtime、合併或解除停止；協作 SOP §3.3.1 是本 PR 內的候選文件，不是正本；`knowledge-cards/README.md` 已由 Claude 實讀全文（讀取時間與 SHA-256 見證據檔 r5），但它不是正本，只作候選來源。
+- Claude API 自查不是獨立稽核，也不授權採用、Runtime、合併或解除停止；協作 SOP §3.3.1 是本 PR 內的候選文件，不是正本；`knowledge-cards/README.md` 已由 Claude 實讀全文（讀取時間與 SHA-256 見證據檔 r5），但它是 main 上現行的 knowledge-cards 說明檔，不是正本。
 
 ## 6. 六個狀態軸（候選值）
 
 | 軸 | 本輪值 | 說明 |
 |---|---|---|
 | 來源 | `READ` | 已讀回遠端 PR head、VERSION、miko-core 與本地候選檔；遠端基線是 `1a42a56`；本輪修訂已推送，其後的稽核小修以 GitHub 讀回為準，未讀回前不得宣稱遠端已包含。 |
-| 執行 | `PASS` | C1～C16、Skill validator 與 `git diff --check` 已通過；C3／C12 私人關鍵字掃描在 Manus 輪因 `MIKO_PRIVATE_WORDS` 空值為 `NOT_RUN`（Claude 的 r5 輪已帶清單實跑、命中 0，見 §4.1），此為局部工具結果，不等於治理放行。 |
+| 執行 | `PASS` | C1～C16、Skill validator 與 `git diff --check` 已通過；C3／C12 私人關鍵字掃描在 Manus 輪因 `MIKO_PRIVATE_WORDS` 空值為 `NOT_RUN`（Claude 的 r5 輪已帶清單實跑、命中 0，限 c3269ab 時期的樹，現行樹 `NOT_RUN`，見 §4.1），此為局部工具結果，不等於治理放行。 |
 | 審查 | `NOT_RUN` | 本輪修訂尚未完成 Claude 治理複核與獨立稽核。 |
 | 採用 | `PROPOSED` | 尚未由 MIKO 正式採用。 |
 | Runtime | `DISABLED` | 未接線、未啟用。 |
@@ -103,7 +103,7 @@
 ## 8. Manus、Claude 與執行者邊界
 
 - Manus 可以在 `knowledge-cards/`（ADR-088）內建立候選、保存證據、執行已授權的唯讀查核與測試，並以分支＋PR 提案。
-- Manus 不直推 `main`，不審查、不放行、不宣稱已採用、不登錄 ADR、不改 `knowledge-cards/` 以外的正式路徑；候選 PR 不等於正式採用。`knowledge-cards/README.md` 已由 Claude 實讀全文（讀取時間與 SHA-256 見證據檔 r5），不是正本，只作候選來源；不作本輪正本依據。
+- Manus 不直推 `main`，不審查、不放行、不宣稱已採用、不登錄 ADR、不改 `knowledge-cards/` 以外的正式路徑；候選 PR 不等於正式採用。`knowledge-cards/README.md` 已由 Claude 實讀全文（讀取時間與 SHA-256 見證據檔 r5），是 main 上現行的 knowledge-cards 說明檔，不是正本；不作本輪正本依據。
 - Manus 的停問條件包括缺授權、外部寫入、刪除、覆寫、分享、權限、費用、Runtime、停止／暫緩或其他不可逆操作；命中時只停受影響相依步驟，維持可逆狀態（來源：候選守則 §2、協作 SOP §2）。
 - 小錯的定義與處理依本 PR 內候選協作 SOP §3.3.1、§3.4（路徑、標籤、漏句、名詞、格式等不改意思者，由 Claude 判定；舊稿「純錯字、標點或格式…不改變規則、責任、狀態、數字、日期或引用」已由其取代，MIKO 2026-11-13 23:55 台北授權由總召決定，M3）；本輪涉及狀態、裁決與責任文字，不屬可免複核小錯。協作 SOP 是本 PR 內候選文件，不作正本依據。
 - Claude 負責治理複核與採用前審查，不把自我複核當獨立稽核；獨立稽核由未參與修改者完成；工具驗收與 Claude 複核不算獨立稽核（MIKO 2026-11-13 23:55 台北授權由總召決定，M2）。
@@ -212,7 +212,7 @@
 本通知屬可保存候選輸出；重要主張依 miko-core 行內標籤格式標示，工具結果以證據索引保存。`NOT_READ`、`NOT_RUN`、`BLOCKED`、`CONFLICT` 仍是狀態用語，不是新增證據標籤。
 
 - 固定版本與版本號：`【來源：GitHub PR #49 修訂前基線 head 1a42a56；VERSION 1.2.72；miko-core v1.73】`。
-- C1～C16、Skill validator、`git diff --check`：`【工具：tests/check_repo.py／quick_validate.py／git diff --check】`；C3／C12 私人字掃描：Manus 輪 `NOT_RUN`，Claude r5 輪已實跑（命中 0）。
+- C1～C16、Skill validator、`git diff --check`：`【工具：tests/check_repo.py／quick_validate.py／git diff --check】`；C3／C12 私人字掃描：Manus 輪 `NOT_RUN`，Claude r5 輪已實跑（命中 0，限 c3269ab 時期的樹；現行樹 `NOT_RUN`）。
 - 使用者提供的 W1～W7 附件：Manus 輪狀態 `NOT_READ`（Claude 讀取狀態 `UNKNOWN`，仍只作候選參考）；協作 SOP §3.3.1 是本 PR 內候選文件，不作正本依據。
 - 本輪 API 自查：執行前為 `NOT_RUN`；執行結果應另存 request／response 與 SHA-256，不預先填入本通知；不是獨立稽核或正式放行。
 

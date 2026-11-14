@@ -1,17 +1,17 @@
 PR #49 現況證據 r5（Claude 實讀／實跑；候選審查材料，不是治理通過）
 實際執行者：Claude（本討論串）；本檔最後更新：2026-11-14（Asia/Taipei），第三輪（MIKO 5 項待決）處理版。
-推送前基線 head：1a42a56a025ea1a78521fdd7bf6a5338d4d83b9e；已推送 c3269ab（CI success，run 43455470185）與 d04ab1b（稽核小修，CI success，run 43457036396）；本檔所列是 M1～M4 修訂後的本機樹，推送後的新 head 以 GitHub 讀回為準。
+推送前基線 head：1a42a56a025ea1a78521fdd7bf6a5338d4d83b9e；已推送 c3269ab（CI success，run 43455470185）與 d04ab1b（稽核小修，CI success，run 43457036396）；本檔所列是第三輪（MIKO 5 項待決）修訂後的本機樹，推送後的新 head 以 GitHub 讀回為準。
 main：以 GitHub 讀回為準（本檔寫入時本機看到 c5bf50b8537ef4dc98bebf4066316b92c0995bb8）；VERSION 1.2.72；ADR-095；miko-core v1.73。
 舊 head 3e02ef7 與 4637f79 僅為歷史（STALE）。
-PR 狀態（d04ab1b 讀回）：OPEN；draft=true；merged=false；check_runs 1 個 success。
+PR 狀態（d04ab1b 當時的讀回，不是現況）：OPEN；draft=true；merged=false；check_runs 1 個 success。
 git diff --check：PASS（寫入本檔前已去除行尾空白）。
 
 == 每檔 SHA-256（本機樹；本檔不列自己）
 446fd413f9ade800272462f087a3aaeddca47614b9feafda50ebbbdc6ec5bb37  knowledge-cards/proposals/docs/20261112_governor-work-rules-v2.1-candidate.md
-8871c9d0f37e115503e16243d7c8dbba9e9d58e14e6fe8ba9734a739bf7316a9  knowledge-cards/proposals/docs/20261112_manus-claude-collaboration-handoff-sop.md
+663f2a4e4b1d3b95e1ad3055b72f2db59440daf348c03e9734ba54f99bb6b053  knowledge-cards/proposals/docs/20261112_manus-claude-collaboration-handoff-sop.md
 1e7f7d8ad952aee3b17ac77717cac0ca7833ca3e522a71818b8ac7bd48834dec  knowledge-cards/proposals/docs/20261112_manus-executive-governor-role-contract.md
-776d9206357336763fd45164ecd21ffd1a8ceefa2c94e9ead91934f538439c5c  knowledge-cards/proposals/docs/20261112_miko-governance-decision-request-pr49.md
-c605579660b1e557a05a66ecd8abba44980b4a6d0a7f614ec3e4e728b6a74ae9  knowledge-cards/proposals/docs/20261113_governor-work-rules-v2.1-field-edition.md
+ae72508a6cd3a021ef92f8530f10a7a3047d31cb97e221363f7ddad5d2bbb47a  knowledge-cards/proposals/docs/20261112_miko-governance-decision-request-pr49.md
+2042de2604f009b942bec7bbfabeba69c98f17d619f828abd4fc601cc3aea88f  knowledge-cards/proposals/docs/20261113_governor-work-rules-v2.1-field-edition.md
 b01225902b034eafcc0251345a617ae2e1db9d8543a6b912f3fef7e010def970  knowledge-cards/proposals/docs/20261113_pr49-current-evidence.txt
 addaa5195a7e6cc20ffcec81b8c0bbf441ff02819906a17214e34d92eab143a1  knowledge-cards/proposals/skills/governance-review-decision-flow/SKILL.md
 
@@ -41,9 +41,9 @@ Skill is valid!
 PASS knowledge-cards/proposals/docs/20261112_miko-governance-decision-request-pr49.md ｜宣告 通過 2／降級 0／UNKNOWN 0；可數 通過 2／降級 0／UNKNOWN 0
 
 == 欄位版字數（python len）
-2566 字元（上限 3400）
+2782 字元（python len，含空白；上限 3400）
 
-== 未做：第二輪獨立稽核（M1～M4 修訂後）待執行或見稽核報告；Claude API 自查 NOT_RUN（金鑰未在本串）；完整記憶／冷啟動測試 NOT_RUN；交接讀者測試原始作答 UNKNOWN
+== 未做：第三輪稽核後的小修未再審；Claude API 自查 NOT_RUN（金鑰未在本串）；完整記憶／冷啟動測試 NOT_RUN；交接讀者測試原始作答 UNKNOWN
 
 
 == 推送版本與 CI（GitHub Actions run，2026-11-14 實查；時間為 GitHub 記錄的 UTC，台北 = UTC+8）
@@ -55,7 +55,7 @@ a1207ff1a9de4ac9426ec31a4b49b2485c442db3  run 43458921148  success  建立 2026-
 以上 4 個 CI 編號已於 2026-11-14 由 GitHub Actions API 重新查證。
 
 == 實讀記錄
-knowledge-cards/README.md：2026-11-14 由 Claude 於 PR 分支 a1207ff 實讀全文（8,680 bytes）；SHA-256 a1aff094bfa9ae9d706f37f20101eb98cbced25226c9fec70958a4db196fe333。它不是正本，只作候選來源。
+knowledge-cards/README.md：2026-11-14 由 Claude 於 PR 分支 a1207ff 實讀全文（8,680 bytes）；SHA-256 a1aff094bfa9ae9d706f37f20101eb98cbced25226c9fec70958a4db196fe333。它是 main 上現行的 knowledge-cards 說明檔，不是正本。
 原通知曾寫「Claude 實讀 PR 時間 2026-11-13 18:45」：2026-11-14 重新查證，GitHub 與材料內查不到出處，已自通知刪除，不採信。
 Claude 本機實跑 check_repo 的時間（原寫約 19:00～19:10）：只有 Claude 自己當時的報告記錄，無獨立出處，標 UNKNOWN。
 
@@ -101,3 +101,4 @@ PASS C16 詞彙定義表十一節齊全，範圍內各檔短名第一次出現�
 提示：私人關鍵字 0 個（MIKO_PRIVATE_WORDS 沒帶或是空值），C3／C12 沒有掃私密字，只做格式檢查
 flowlock（通知檔）：通過 2／降級 0／UNKNOWN 0。
 稽核後改字，未再審。
+第三輪稽核後小修（11 項，皆為標示或來源更正，未補值）後 check_repo 16/16 PASS（仍未帶私密字清單）、flowlock 通過 2／降級 0／UNKNOWN 0；稽核後改字，未再審。
