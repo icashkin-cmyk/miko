@@ -1,0 +1,2 @@
+cd3b96d080c076af2f8c2c2ed7791ad16752101eb83ac05ec3c02f3d6feb4532  v0.8.6-verification-report.md
+55f7bbbfdd162531225169f1acd005f66aeee4dad9f5fd34d75b9d831c5d4037  miko-uga-candidate-v0.8.6.zip
