@@ -19,7 +19,7 @@
 - branch：`manus/governor-role-sop-20261112`
 - PR 狀態：2026-11-14 讀回為 `OPEN`、`isDraft=true`、尚未合併（讀回記錄見證據檔 r5，現況以 GitHub 為準）；本通知草稿仍屬候選審查材料。
 - 採用軸：`PROPOSED`
-- 實際撰寫者：Manus 執行總召。
+- 實際撰寫者：Manus 執行總召；後續修訂由 Claude 執行。
 - 可處理範圍（ADR-088）：`knowledge-cards/`，包含 `knowledge-cards/proposals/`；knowledge-cards 的唯一 writer 為 Manus 總召（來源：`knowledge-cards/README.md`「誰可以寫」與「分工原文」）。
 - 非範圍：正式 miko-core、正式 Skills、`.github/`、`tests/`、`VERSION`、`sync/`、Runtime、PR 合併與任何交易／Broker／LIVE。
 - 未開專案的領域 Skill：本次沒有取得可核對的專案專屬 writer 定義，維持 `UNKNOWN`，不自行新增 writer 規則。
@@ -205,7 +205,7 @@
 - 已修：移除可貼用正文中的固定版本、commit、舊雜湊與「已實讀確認」表述；改為本輪審查包填入。
 - 已補來源：Manus 停問與硬邊界、knowledge-cards writer／提案區、Drive 只新增、派工回報與交接規則。
 - 已依附件補入：W1～W7 對照、A0.4 責任閘門與 W1.2／W1.3／W6.2／W7.1～W7.2 責任欄位；附件本身仍是候選細化守則，不是正式正本。
-- 待辦：修正 API 自查 `REVISE` 所列缺口並重跑；若取得自查 `PASS`、治理複核允許且獲 MIKO 明確推送授權，後續推送後讀回遠端 head／SHA-256（已推送版本以 GitHub 讀回為準）；獨立稽核與 MIKO 裁決仍分開處理。
+- 待辦：下次自查若為 `REVISE`，須修正所列缺口並重跑；若取得自查 `PASS`、治理複核允許且獲 MIKO 明確推送授權，後續推送後讀回遠端 head／SHA-256（已推送版本以 GitHub 讀回為準）；獨立稽核與 MIKO 裁決仍分開處理。
 
 ## 16. 行內證據標籤與流程鎖
 
