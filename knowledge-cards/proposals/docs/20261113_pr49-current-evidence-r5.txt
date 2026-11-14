@@ -1,6 +1,6 @@
 PR #49 現況證據 r5（Claude 實讀／實跑；候選審查材料，不是治理通過）
-實際執行者：Claude（本討論串）；本檔最後更新：2026-11-15（Asia/Taipei；容器時鐘 2026-11-14 約 23:10 UTC），第九輪處理版。
-推送前基線 head：1a42a56a025ea1a78521fdd7bf6a5338d4d83b9e；已推送 c3269ab（CI success，run 43455470185）與 d04ab1b（稽核小修，CI success，run 43457036396）；本檔所列是第九輪修訂後的樹，推送後的新 head 以 GitHub 讀回為準。
+實際執行者：Claude（本討論串）；本檔逐輪更新，最後一次更新見檔末逐輪記錄（日期以台北時間 2026-11-15 前後為準）。
+推送前基線 head：1a42a56a025ea1a78521fdd7bf6a5338d4d83b9e；已推送 c3269ab（CI success，run 43455470185）與 d04ab1b（稽核小修，CI success，run 43457036396）；本檔所列是最新一輪修訂後的樹，推送後的新 head 以 GitHub 讀回為準。
 main：以 GitHub 讀回為準（本檔寫入時本機看到 c5bf50b8537ef4dc98bebf4066316b92c0995bb8）；VERSION 1.2.72；ADR-095；miko-core v1.73。
 舊 head 3e02ef7 與 4637f79 僅為歷史（STALE）。
 PR 狀態（d04ab1b 當時的讀回，不是現況）：OPEN；draft=true；merged=false；check_runs 1 個 success。
@@ -44,7 +44,7 @@ PASS knowledge-cards/proposals/docs/20261112_miko-governance-decision-request-pr
 == 欄位版字數（python len）
 2904 字元（python len，含空白；上限 3400）
 
-== 未做：第五輪稽核後的小修（即第六輪修訂）與第七輪修訂、第八輪修訂與其後的第九輪修訂皆未再審；Claude API 自查 NOT_RUN（金鑰未在本串）；完整記憶／冷啟動測試 NOT_RUN；交接讀者測試原始作答 UNKNOWN
+== 未做：最新一輪修訂後的樹（本檔所列）尚未經冷啟動稽核；已稽核的輪次見檔末逐輪記錄；Claude API 自查 NOT_RUN（金鑰未在本串）；完整記憶／冷啟動測試 NOT_RUN；交接讀者測試原始作答 UNKNOWN
 
 
 == 推送版本與 CI（GitHub Actions run，2026-11-14 實查；時間為 GitHub 記錄的 UTC，台北 = UTC+8）
@@ -122,3 +122,4 @@ flowlock（通知檔）：通過 2／降級 0／UNKNOWN 0。
 第七輪（第六輪稽核後小修：通知移除寫死檔名與 SHA、r5 日期更正與補基線輸出記錄、欄位版 M2 補三種工具名）後 check_repo 合計：16/16 PASS（仍未帶私密字清單，私密字掃描 NOT_RUN）；flowlock：宣告 通過 2／降級 0／UNKNOWN 0；可數 通過 2／降級 0／UNKNOWN 0；稽核後改字，未再審。
 第八輪（MIKO「全照推薦」：責任表加後續修訂者 Claude 並引用原話、writer 出處補正本 README §6、明示 knowledge-cards/README.md 不是正本）後 check_repo 合計：16/16 PASS（仍未帶私密字清單，私密字掃描 NOT_RUN）；flowlock：宣告 通過 2／降級 0／UNKNOWN 0；可數 通過 2／降級 0／UNKNOWN 0；稽核後改字，未再審。
 第九輪（第八輪稽核後小修：r5 輪次標示、通知消除「該 README」指代不清、授權日期補年月日）後 check_repo 合計：16/16 PASS（仍未帶私密字清單，私密字掃描 NOT_RUN）；flowlock：宣告 通過 2／降級 0／UNKNOWN 0；可數 通過 2／降級 0／UNKNOWN 0；稽核後改字，未再審。
+第十輪（第九輪稽核後小修：r5 檔頭與「未做」段改為不隨輪次過期的寫法）後 check_repo 合計：16/16 PASS（仍未帶私密字清單，私密字掃描 NOT_RUN）；flowlock：宣告 通過 2／降級 0／UNKNOWN 0；可數 通過 2／降級 0／UNKNOWN 0；稽核後改字，未再審。
