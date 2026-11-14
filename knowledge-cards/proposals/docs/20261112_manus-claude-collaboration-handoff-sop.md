@@ -67,15 +67,15 @@ Claude 必須分開回答：
 
 每項只可為 `YES`、`NO` 或 `UNKNOWN`，並列必修、阻塞、已確認與未確認事項。`UPLOAD_FOR_REVIEW=YES` 不等於 `ADOPT=YES`。
 
-### 3.3.1 Claude API 複核門檻
+### 3.3.1 Claude API 自查門檻
 
-每次送治理審閱前，Manus 必須先呼叫 Claude API 自查，並把結果交給 Claude 治理總召複核；首次送審、角色／授權／狀態軸／裁決用語／停止狀態／ADR 改義、材料 SHA-256 變更、Manus／Claude 衝突，都一定要呼叫。只有路徑、標籤、漏句、名詞、格式這類不改意思的小錯，可不重跑 API 複核就修，但須留 diff；來源、數值、日期、結論只要有一點存疑就不算小錯，要標 `UNKNOWN` 或 `NOT_RUN`，不得用「看起來合理」補寫或推定。是否屬小錯由 Claude 判定，Manus 不得自判後跳過複核。修小錯的那一次不需重跑 API 自查；但之後每一次正式送審前，仍須有當次自查（MIKO 2026-11-13 23:55 台北授權由總召決定，M4）。
+每次送治理審閱前，Manus 必須先呼叫 Claude API 自查，並把結果交給 Claude 治理總召複核；首次送審、角色／授權／狀態軸／裁決用語／停止狀態／ADR 改義、材料 SHA-256 變更、Manus／Claude 衝突，都一定要呼叫。只有路徑、標籤、漏句、名詞、格式這類不改意思的小錯，可不重跑 API 自查就修，但須留 diff；來源、數值、日期、結論只要有一點存疑就不算小錯，要標 `UNKNOWN` 或 `NOT_RUN`，不得用「看起來合理」補寫或推定。是否屬小錯由 Claude 判定，Manus 不得自判後跳過複核。修小錯的那一次不需重跑 API 自查；但之後每一次正式送審前，仍須有當次自查（MIKO 2026-11-13 23:55 台北授權由總召決定，M4）。
 
 每次必須保存：`request_id`、完整 request payload、完整 response、實際 `model`、Asia/Taipei 請求／回應時間、每份材料 SHA-256、固定來源 commit／VERSION／ADR、`api_status`、`stop_reason`、token、request／response SHA-256 與讀回位置。API 失敗、逾時、截斷、空回覆或只有 ACK 一律標 `BLOCKED` 並停止送審，開困難卡；金鑰未設定標 `NOT_RUN`；不得以 ACK、HTTP 200、請求送出或其他模型建議代替審查。閘門 `PASS` 只表示呼叫與保存完成，不是審查通過。
 
 自查結果為 `REVISE` 時，正式閘門標 `BLOCKED`，不得送審、須修訂後重跑自查，且不適用 `NOT_RUN` 的當次豁免，Claude 不自行當作豁免（M1）。`NOT_RUN` 時仍可開 PR 當候選，審查包須寫明 `API 自查閘門=NOT_RUN` 與原因；Claude 不答 `UPLOAD_FOR_REVIEW=YES`，除非 MIKO 當次明確豁免。金鑰由 MIKO 親手填到平台密鑰設定，費用由 MIKO 親手處理；Manus 不索取、不複述、不保存金鑰。
 
-Claude API 複核不是獨立稽核，也不授權採用、Runtime、合併或解除停止；完整結果須交 Claude 治理總召複核，正式放行仍由 MIKO 決定。
+Claude API 自查不是獨立稽核，也不授權採用、Runtime、合併或解除停止；完整結果須交 Claude 治理總召複核，正式放行仍由 MIKO 決定。
 
 ### 3.4 修訂、驗收與交接
 

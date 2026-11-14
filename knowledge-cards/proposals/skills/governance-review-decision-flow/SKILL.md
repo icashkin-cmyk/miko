@@ -101,7 +101,7 @@ RUNTIME：YES／NO／UNKNOWN
 - 未解決 UNKNOWN／NOT_READ／CONFLICT：
 
 ## MIKO 明確決定
-- 是否採用 Claude API 複核閘門：`YES／NO`
+- 是否採用 Claude API 自查閘門：`YES／NO`
 - 是否採用六軸狀態格式：`YES／NO`
 - 正式採用：YES／NO
 - 正式放行：YES／NO
@@ -138,7 +138,7 @@ RUNTIME：YES／NO／UNKNOWN
 
 ### 6. 衝突處理
 
-Manus 與 Claude 意見不同時，先停止爭議中的正式寫入、Runtime、合併與不可逆操作；保留雙方原結論與證據，按事實、規則、授權、責任與狀態軸拆解。API 複核只能作為證據之一，不構成裁決。無法消除時標 `CONFLICT`，交 MIKO 裁決。
+Manus 與 Claude 意見不同時，先停止爭議中的正式寫入、Runtime、合併與不可逆操作；保留雙方原結論與證據，按事實、規則、授權、責任與狀態軸拆解。API 自查只能作為證據之一，不構成裁決。無法消除時標 `CONFLICT`，交 MIKO 裁決。
 
 ## 驗收閘門
 

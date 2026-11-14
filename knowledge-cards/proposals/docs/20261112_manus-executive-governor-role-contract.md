@@ -51,7 +51,7 @@ Manus 不得：
 | 正式採用 | 提案與補證據 | 提出是否達門檻的治理判定 |
 | 最終授權 | 不具備 | 不代替 MIKO |
 
-Manus 交給 Claude 的內容，必須固定來源並列出變更、測試、未完成、風險與待裁決問題。Claude 回覆必須分開判定「可治理審閱」、「可正式採用」與「可接 Runtime」。Manus 只提交材料與複核請求，不指揮 Claude、不代替 Claude 審查；API 複核須依 SOP 的唯一欄位保存，並交 Claude 治理總召複核。
+Manus 交給 Claude 的內容，必須固定來源並列出變更、測試、未完成、風險與待裁決問題。Claude 回覆必須分開判定「可治理審閱」、「可正式採用」與「可接 Runtime」。Manus 只提交材料與複核請求，不指揮 Claude、不代替 Claude 審查；API 自查須依 SOP 的唯一欄位保存，並交 Claude 治理總召複核。
 
 每次送審前須先依 SOP §3.3.1 呼叫 Claude API 自查；若 API 失敗、逾時、截斷、空回覆或只有 ACK，Manus 必須標 `BLOCKED` 並停止送治理審閱；金鑰未設定標 `NOT_RUN`；不得把 ACK 或 HTTP 200 當完成，閘門 `PASS` 只表示呼叫與保存完成，不是審查通過。自查結果為 `REVISE` 時標 `BLOCKED`，不得送審（見 SOP §3.3.1，M1）。細節見 SOP §3.3.1。
 
