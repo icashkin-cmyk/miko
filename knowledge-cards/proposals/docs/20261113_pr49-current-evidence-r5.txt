@@ -1,6 +1,6 @@
 PR #49 現況證據 r5（Claude 實讀／實跑；候選審查材料，不是治理通過）
-實際執行者：Claude（本討論串）；本檔最後更新：2026-11-14（Asia/Taipei），第三輪（MIKO 5 項待決）處理版。
-推送前基線 head：1a42a56a025ea1a78521fdd7bf6a5338d4d83b9e；已推送 c3269ab（CI success，run 43455470185）與 d04ab1b（稽核小修，CI success，run 43457036396）；本檔所列是第三輪（MIKO 5 項待決）修訂後的本機樹，推送後的新 head 以 GitHub 讀回為準。
+實際執行者：Claude（本討論串）；本檔最後更新：2026-11-14（Asia/Taipei），第四輪稽核後小修版。
+推送前基線 head：1a42a56a025ea1a78521fdd7bf6a5338d4d83b9e；已推送 c3269ab（CI success，run 43455470185）與 d04ab1b（稽核小修，CI success，run 43457036396）；本檔所列是第四輪修訂後的樹，推送後的新 head 以 GitHub 讀回為準。
 main：以 GitHub 讀回為準（本檔寫入時本機看到 c5bf50b8537ef4dc98bebf4066316b92c0995bb8）；VERSION 1.2.72；ADR-095；miko-core v1.73。
 舊 head 3e02ef7 與 4637f79 僅為歷史（STALE）。
 PR 狀態（d04ab1b 當時的讀回，不是現況）：OPEN；draft=true；merged=false；check_runs 1 個 success。
@@ -10,12 +10,13 @@ git diff --check：PASS（寫入本檔前已去除行尾空白）。
 446fd413f9ade800272462f087a3aaeddca47614b9feafda50ebbbdc6ec5bb37  knowledge-cards/proposals/docs/20261112_governor-work-rules-v2.1-candidate.md
 663f2a4e4b1d3b95e1ad3055b72f2db59440daf348c03e9734ba54f99bb6b053  knowledge-cards/proposals/docs/20261112_manus-claude-collaboration-handoff-sop.md
 1e7f7d8ad952aee3b17ac77717cac0ca7833ca3e522a71818b8ac7bd48834dec  knowledge-cards/proposals/docs/20261112_manus-executive-governor-role-contract.md
-492cce2f0634f6515206fc04778c212dd25664a240776f8455e7a633ceeebb81  knowledge-cards/proposals/docs/20261112_miko-governance-decision-request-pr49.md
+d5d9018287cd6047469a3a1fef141f44c6d944465800efd1f78bba233933991a  knowledge-cards/proposals/docs/20261112_miko-governance-decision-request-pr49.md
 62d7472c7ac6f9f5bc92b74d117caa2839fe5ccefeaa7c47a9b046a15ef13e15  knowledge-cards/proposals/docs/20261113_governor-work-rules-v2.1-field-edition.md
 b01225902b034eafcc0251345a617ae2e1db9d8543a6b912f3fef7e010def970  knowledge-cards/proposals/docs/20261113_pr49-current-evidence.txt
 addaa5195a7e6cc20ffcec81b8c0bbf441ff02819906a17214e34d92eab143a1  knowledge-cards/proposals/skills/governance-review-decision-flow/SKILL.md
+364ded290fcc7c9c75e68c63982a082cb3944d2670961b91a684de45c03c4321  knowledge-cards/proposals/20261112_claude-governance-review-boundaries.md
 
-== check_repo（Claude 帶專案私密字清單實跑，未略過 C6／C9；C3 掃 12 個私密字、命中 0。冷啟動稽核員無清單，無法重現此項，標 UNKNOWN）
+== check_repo（Claude 帶專案私密字清單實跑，於較早推送版本 c3269ab 時期的樹上跑，未略過 C6／C9；C3 掃 12 個私密字、命中 0。冷啟動稽核員無清單，無法重現此項，標 UNKNOWN）
 PASS C1 版本一致 ｜VERSION=1.2.72 miko-core 對應正本=1.2.72
 PASS C2 Skill 開頭格式（name 與資料夾同名、小寫連字號 ≤ 64 字、description ≤ 1024 字） ｜不合格：[]；提示（不擋）標題沒有版號：[]
 PASS C3 公開檔（含 .csv、二進位、快取檔）無 email、本機路徑與私人關鍵字 ｜命中：[]；私人關鍵字 12 個
@@ -43,7 +44,7 @@ PASS knowledge-cards/proposals/docs/20261112_miko-governance-decision-request-pr
 == 欄位版字數（python len）
 2732 字元（python len，含空白；上限 3400）
 
-== 未做：第三輪稽核後的小修未再審；Claude API 自查 NOT_RUN（金鑰未在本串）；完整記憶／冷啟動測試 NOT_RUN；交接讀者測試原始作答 UNKNOWN
+== 未做：第四輪稽核後的小修未再審；Claude API 自查 NOT_RUN（金鑰未在本串）；完整記憶／冷啟動測試 NOT_RUN；交接讀者測試原始作答 UNKNOWN
 
 
 == 推送版本與 CI（GitHub Actions run，2026-11-14 實查；時間為 GitHub 記錄的 UTC，台北 = UTC+8）
@@ -52,7 +53,11 @@ d04ab1b560d920d78960787d5e4a2d533d7820f6  run 43457036396  success  建立 2026-
 241ff3b5fbd010cb6b09c32bdad102df20077a86  run 43457609860  success  建立 2026-11-13T15:56:20Z
 a1207ff1a9de4ac9426ec31a4b49b2485c442db3  run 43458921148  success  建立 2026-11-13T16:04:06Z
 舊 head 3e02ef77（run 43368001502 failure）與 4637f79 僅為歷史（STALE）。
-以上 4 個 CI 編號已於 2026-11-14 由 GitHub Actions API 重新查證。
+f10a808a392dde2c3a1ce3a535df5cab584ce1af  run 43610141338  success  建立 2026-11-14T15:25:54Z
+e45cf079ebba0c0d70bbe99dc9c7554382c7b8ce  run 43611336388  success  建立 2026-11-14T15:39:21Z
+5d18bcd415c03c948dff07ca74519ae43d7f6b7d  run 43611342352  success  建立 2026-11-14T15:39:25Z
+以上 7 個 CI 編號已於 2026-11-14 由 GitHub Actions API 重新查證（5d18bcd 對應 check_repo run_number 205）。
+PR #49 讀回（2026-11-14 約 15:41 UTC，head 5d18bcd）：state=open；draft=true；merged=false；mergeable_state=clean。這是讀回當下的狀態，現況以 GitHub 為準。
 
 == 固定來源與 Manus 自報時間（自通知移入）
 修訂前基線 head 1a42a56a025ea1a78521fdd7bf6a5338d4d83b9e；VERSION 1.2.72；miko-core v1.73（見上方第 3～4 行）。
@@ -107,3 +112,5 @@ flowlock（通知檔）：通過 2／降級 0／UNKNOWN 0。
 稽核後改字，未再審。
 第三輪稽核後小修（11 項，皆為標示或來源更正，未補值）後 check_repo 16/16 PASS（仍未帶私密字清單）、flowlock 通過 2／降級 0／UNKNOWN 0；稽核後改字，未再審。
 第四輪（MIKO 全照推薦：刪「同一階段」、寫死值移入本檔、通知補 Drive 限制、邊界卡改 API 自查）後 check_repo 合計：16/16 PASS（仍未帶私密字清單，C3／C12 只做格式檢查，私密字掃描 NOT_RUN）；稽核後改字，未再審。
+第四輪稽核後小修（7 項標示更正與補記錄）後 check_repo 結果見下行；仍未帶私密字清單；稽核後改字，未再審。
+合計：16/16 PASS
