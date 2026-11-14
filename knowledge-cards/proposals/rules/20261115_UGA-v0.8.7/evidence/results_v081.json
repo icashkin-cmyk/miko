@@ -1,0 +1,78 @@
+{
+  "candidate": "candidate-v0.8.1",
+  "overall": "PASS",
+  "results": [
+    {
+      "checker": "TSV-FMT",
+      "status": "PASS",
+      "items": [],
+      "summary": "檢查 11 份文件"
+    },
+    {
+      "checker": "TSV-STRUCT",
+      "status": "PASS",
+      "items": [],
+      "summary": "步驟 14/14、章節 16/16"
+    },
+    {
+      "checker": "TSV-CONTRACT",
+      "status": "PASS",
+      "items": [],
+      "summary": "十六章必要欄位逐一比對"
+    },
+    {
+      "checker": "TSV-SKILL",
+      "status": "PASS",
+      "items": [],
+      "summary": "九契約／四節／七欄"
+    },
+    {
+      "checker": "TSV-OVERLAP",
+      "status": "PASS",
+      "items": [],
+      "summary": "矩陣 11 列，契約責任 11 項"
+    },
+    {
+      "checker": "TSV-ROUTE",
+      "status": "PASS",
+      "items": [],
+      "summary": "路由 10 條"
+    },
+    {
+      "checker": "TSV-DAG",
+      "status": "PASS",
+      "items": [],
+      "summary": "節點 11、邊 16（build 8）"
+    },
+    {
+      "checker": "TSV-EXIT",
+      "status": "PASS",
+      "items": [],
+      "summary": "檢查 14 步失敗出口"
+    },
+    {
+      "checker": "TSV-REG",
+      "status": "PASS",
+      "items": [],
+      "summary": "版本／退役／命名規則"
+    },
+    {
+      "checker": "TSV-RUNTIME",
+      "status": "PASS",
+      "items": [],
+      "summary": "Runtime 聲明掃描"
+    },
+    {
+      "checker": "TSV-AUDIT",
+      "status": "PASS",
+      "items": [],
+      "summary": "獨立性等級與驗收包規格"
+    },
+    {
+      "checker": "TSV-LEDGER",
+      "status": "PASS",
+      "items": [],
+      "summary": "三帳、載入順序、去重、文本純度"
+    }
+  ]
+}

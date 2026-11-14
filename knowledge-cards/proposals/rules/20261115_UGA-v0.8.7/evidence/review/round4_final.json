@@ -1,0 +1,26 @@
+{
+  "summary": "F-07/N-02 已修正，裁決理由有固定位置；N-01 已修正，contract.yaml 第 1 章必要欄位與 uac-spec.md 完全一致。",
+  "verification": [
+    {
+      "id": "F-07/N-02",
+      "status": "FIXED",
+      "evidence": "modules-spec.md R-04：「命中兩條即判 CONFLICT，不得自行擇一，交 R-CONV 裁決；裁決理由固定寫入 evidence/<task_id>/routing.json 的 route_decision_reason 與 decided_by 兩欄，未填即視為未裁決（修正 F-07、N-02）」",
+      "note": "NONE"
+    },
+    {
+      "id": "N-01",
+      "status": "FIXED",
+      "evidence": "uac-spec.md 第 1 章必要欄位：「doc_id、name_en、name_zh、module、version、date、status、owner_role、supersedes、related_docs、目的、範圍（含）、非範圍（不含）、適用對象」；contract.yaml chapter 1 required：「[doc_id, name_en, name_zh, module, version, date, status, owner_role, supersedes, related_docs, 目的, 範圍（含）, 非範圍（不含）, 適用對象]」——兩者完全一致。",
+      "note": "NONE"
+    }
+  ],
+  "new_findings": [],
+  "verdict": "PASS",
+  "_meta": {
+    "model": "claude-opus-4-5-20251101",
+    "usage": {
+      "input": 6447,
+      "output": 446
+    }
+  }
+}

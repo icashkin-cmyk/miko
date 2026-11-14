@@ -1,0 +1,41 @@
+{
+  "summary": "整體架構完整，等級判定可執行且與禁止自我驗收原則一致。發現三處規格缺漏：A.1缺少 evidence/ 目錄說明、等級表備註文字矛盾、以及 A.4 欄位與 A12 操作要求略有不一致。",
+  "findings": [
+    {
+      "id": "A-01",
+      "severity": "P1",
+      "location": "附錄 A.1 正面清單",
+      "problem": "A12 證據保存方式提及 `evidence/<task_id>/audit-report.md`，但 A.1 正面清單未包含 evidence/ 目錄或其來源說明，導致驗收者無法判定 evidence/ 是否應存在於包內",
+      "required_fix": "於 A.1 明確說明 evidence/ 是否屬於驗收包範圍；若否，應註明 audit-report.md 產出於包外路徑"
+    },
+    {
+      "id": "A-02",
+      "severity": "P2",
+      "location": "§2.1 等級判定表 L1 備註",
+      "problem": "L1 備註寫「可作候選交付；不得作為 ADOPTED 的唯一依據」，但 L2 備註寫「可支撐 ADOPTED」。兩者皆需 R-CONV 裁決（依 AC-A12-06），L1 與 L2 在「是否可支撐 ADOPTED」的區分理由未明示",
+      "required_fix": "於等級表下方補充 L1 與 L2 在支撐 ADOPTED 資格上的判定邏輯，例如「L1 僅限文件一致性，不含行為驗證，故不可單獨支撐 ADOPTED」"
+    },
+    {
+      "id": "A-03",
+      "severity": "P2",
+      "location": "附錄 A.4 驗收報告固定欄位 vs A12 操作要求",
+      "problem": "A12 操作要求列出 `tool_versions`，A.4 也有；但 A12 另提及 `audit_round` 作為閉環條件，A.4 欄位表卻未列入 `audit_round`",
+      "required_fix": "於 A.4 新增 `audit_round` 欄位，或於 A12 註明 audit_round 由外部系統追蹤而非報告本身"
+    },
+    {
+      "id": "A-04",
+      "severity": "P2",
+      "location": "§2.1 L-04 規則",
+      "problem": "「多位驗收者分歧時，以最低等級者的判定為準」僅針對等級；若 verdict 分歧（一人 PASS、一人 FAIL）該如何處理未明訂",
+      "required_fix": "補充 verdict 分歧時的處理規則，例如「任一 FAIL 即 FAIL，交 R-CONV 裁決」"
+    }
+  ],
+  "verdict": "PASS_WITH_FIXES",
+  "_meta": {
+    "model": "claude-opus-4-5-20251101",
+    "usage": {
+      "input": 3224,
+      "output": 902
+    }
+  }
+}

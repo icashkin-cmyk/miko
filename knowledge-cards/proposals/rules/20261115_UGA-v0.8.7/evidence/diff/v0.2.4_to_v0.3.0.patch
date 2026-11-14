@@ -1,0 +1,358 @@
+diff -ruN candidate-v0.2.4/acceptance-matrix.md candidate-v0.3.0/acceptance-matrix.md
+--- candidate-v0.2.4/acceptance-matrix.md	2026-11-14 09:03:35.966132022 +0000
++++ candidate-v0.3.0/acceptance-matrix.md	2026-11-14 09:18:43.820072151 +0000
+@@ -3,7 +3,7 @@
+ name_en: Acceptance Matrix
+ name_zh: 驗收矩陣
+ module: testing-and-validation
+-version: 0.2.4
++version: 0.3.0
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+@@ -26,6 +26,7 @@
+ | A00 | AC-A00-01 請求子項有任務條目 | 行為觀察 | task-card | R-AUD | `NOT_RUN` |
+ | A00 | AC-A00-02 禁止項與授權已列 | 行為觀察 | task-card | R-AUD | `NOT_RUN` |
+ | A00 | AC-A00-03 核心狀態與計數器已標 | 文件檢視 | 本文件 front matter `runtime_verified` | R-SELF | `PASS` |
++| A00 | AC-A00-04 三份常駐文件有載入結果 | 行為觀察 | task-card 載入區塊 | R-AUD | `NOT_RUN` |
+ | A01 | AC-A01-01 來源登錄表欄位齊全 | 行為觀察 | sources.json | R-AUD | `NOT_RUN` |
+ | A01 | AC-A01-02 每個 NOT_READ 有原因 | 行為觀察 | sources.json | R-AUD | `NOT_RUN` |
+ | A01 | AC-A01-03 讀取時間已記錄 | 行為觀察 | sources.json | R-AUD | `NOT_RUN` |
+@@ -56,6 +57,7 @@
+ | A10 | AC-A10-01 每輪有 diff | 檔案檢視 | diff/ | R-SELF | `PASS` |
+ | A10 | AC-A10-02 變更有理由 | 檔案檢視 | 本文件修正紀錄 | R-SELF | `PASS` |
+ | A10 | AC-A10-03 歷史未覆寫 | 檔案檢視 | v0.1、v0.2 保留 | R-SELF | `PASS` |
++| A10 | AC-A10-04 變更帳就地更新並對應 diff | TSV-LEDGER | ledger-spec 第 5 章 | R-SELF | `PASS` |
+ | A11 | AC-A11-01 回歸 100% 有結果 | TSV-REGRESSION | 10/10 | R-SELF | `PASS` |
+ | A11 | AC-A11-02 retest_round ≤3 | TSV-EXIT | 本輪 2 輪 | R-SELF | `PASS` |
+ | A11 | AC-A11-03 無 FAIL 才進 A12 | 流程紀錄 | 本輪檢查結果 | R-SELF | `PASS` |
+@@ -68,8 +70,9 @@
+ | A13 | AC-A13-01 MANIFEST 驗證通過 | sha256sum -c | MANIFEST.sha256 | R-EVD | `PASS` |
+ | A13 | AC-A13-02 任務四態已寫 | 文件檢視 | 收工報告 | R-SELF | `PASS` |
+ | A13 | AC-A13-03 未驗證與困難卡已列 | 文件檢視 | 收工報告 | R-SELF | `PASS` |
++| A13 | AC-A13-04 三帳快照與雜湊入交付包 | 行為觀察 | 尚未實作封裝 | R-AUD | `NOT_RUN` |
+ 
+-統計：`PASS` 25 條、`NOT_RUN` 20 條、`UNKNOWN` 0 條、`BLOCKED` 0 條（共 45 條）。`NOT_RUN` 全部屬行為層，需在正式採用前由 L1 以上驗收者實跑。
++統計：`PASS` 26 條、`NOT_RUN` 22 條、`UNKNOWN` 0 條、`BLOCKED` 0 條（共 48 條）。`NOT_RUN` 全部屬行為層，需在正式採用前由 L1 以上驗收者實跑。
+ 
+ ## RSL／TSV AC
+ 
+@@ -79,7 +82,7 @@
+ | AC-RSL-02 每條有契約與驗收器 | TSV-ROUTE | `PASS` |
+ | AC-RSL-03 無循環路由 | TSV-DAG | `PASS` |
+ | AC-RSL-04 路由 ID 唯一 | TSV-ROUTE | `PASS` |
+-| AC-TSV-01 11 檢查器可執行 | 實跑 | `PASS`（tsv_check.py 11 個＋regression.py 1 個） |
++| AC-TSV-01 11 檢查器可執行 | 實跑 | `PASS`（tsv_check.py 12 個＋regression.py 1 個） |
+ | AC-TSV-02 結果可重現 | 重跑 | `PASS` |
+ | AC-TSV-03 失敗有出口 | TSV-EXIT | `PASS` |
+ | AC-TSV-04 結果機器可讀 | JSON | `PASS` |
+diff -ruN candidate-v0.2.4/contract.yaml candidate-v0.3.0/contract.yaml
+--- candidate-v0.2.4/contract.yaml	2026-11-14 09:03:35.935204630 +0000
++++ candidate-v0.3.0/contract.yaml	2026-11-14 09:18:43.819930896 +0000
+@@ -57,6 +57,7 @@
+   - {route_id: RSL-R07, artifact: test-spec, contract: UAC, checker: [TSV-CONTRACT, TSV-EXIT]}
+   - {route_id: RSL-R08, artifact: integration-upgrade, contract: UAC, checker: [TSV-CONTRACT, TSV-REG, TSV-REGRESSION]}
+   - {route_id: RSL-R09, artifact: adapter-doc, contract: UAC, checker: [TSV-CONTRACT, TSV-RUNTIME]}
++  - {route_id: RSL-R10, artifact: correction-ledger, contract: UAC, checker: [TSV-CONTRACT, TSV-LEDGER]}
+ 
+ responsibility:
+   rows:
+diff -ruN candidate-v0.2.4/index.md candidate-v0.3.0/index.md
+--- candidate-v0.2.4/index.md	2026-11-14 09:03:35.966030427 +0000
++++ candidate-v0.3.0/index.md	2026-11-14 09:18:43.818872519 +0000
+@@ -3,7 +3,7 @@
+ name_en: MIKO Universal Governance Architecture Index
+ name_zh: MIKO 通用治理架構總索引
+ module: governance
+-version: 0.2.4
++version: 0.3.0
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.2.4/ledger-spec.md candidate-v0.3.0/ledger-spec.md
+--- candidate-v0.2.4/ledger-spec.md	1970-01-01 00:00:00.000000000 +0000
++++ candidate-v0.3.0/ledger-spec.md	2026-11-14 09:18:43.819084584 +0000
+@@ -0,0 +1,77 @@
++---
++doc_id: clg-spec
++name_en: Correction Ledger
++name_zh: 修正帳本
++module: correction-ledger
++version: 0.3.0
++date: 2026-11-14
++status: PROPOSED
++supersedes: NONE
++related_docs: [ucp-spec, lcv-spec, gov-index]
++---
++
++# 修正帳本（Correction Ledger）：錯誤、否決與變更的常駐記憶
++
++## 1. 目的與範圍
++
++修正帳本是 MIKO 在每個任務開工前必須載入的第三份常駐文件，前兩份是治理規則與使用者否決紀錄。它的目的只有一個：讓上一次犯過的錯、上一次被否決的做法、上一次改過的地方，在這次開工時就被看見，而不是等到同樣的錯再犯一次才想起來。本規格定義三個帳的記錄格式、載入順序、寫入規則、去重與合併方式、熱插拔介面，以及與版本、證據、交付的關係。本規格不重新定義製作流程的步驟內容，流程本身仍由通用製作流程管轄，帳本只是在流程的起點被讀取、在流程的修改點被寫入、在流程的終點被封裝。
++
++## 2. 名詞與定義
++
++修正帳本指的是 `ledger/` 目錄下的三份可讀文件與一份索引：錯誤帳 `err.md`、否決帳 `rej.md`、變更帳 `chg.md`、索引 `index.yaml`。錯誤帳記錄曾經發生過的錯誤與除錯過程；否決帳記錄使用者明確拒絕的做法與理由；變更帳記錄每一份文件被修改的位置、版本與對應的錯誤或否決。就地更新指的是同一個事件再次發生時，修改原本那一筆而不是新增一筆，這是讓帳本不會越長越亂的關鍵。去重鍵指的是用來判斷「是不是同一件事」的固定欄位組合，錯誤帳以「現象加上發生位置」為鍵，否決帳以「被否決的方案加上適用範圍」為鍵，變更帳以「文件識別加上版本加上變更區段」為鍵。熱插拔介面指的是帳本的檔案結構與欄位定義；只要新的儲存方式能提供同樣的欄位，就可以替換，不需要改流程。文本純度指的是正文只放已驗收合格的繁中敘述，測試輸出、原始日誌、模型評語與待辦碎片一律留在證據目錄，不進正文。
++
++## 3. 問題與背景
++
++目前的錯誤與修改紀錄是分散的。變更紀錄寫在流程的錯誤維護步驟裡，困難卡寫在每次收工報告裡，審查發現寫在審查結果檔裡，未決事項寫在每份文件最後一章，diff 存在證據目錄。這些紀錄本身沒有問題，問題是它們沒有一個固定的入口，也沒有被規定在開工時讀取。結果是同一類錯誤在不同任務裡重複出現，例如路由表不可讀時沒有出口、欄位名稱在兩份文件裡不一致、驗收包同時要求含 diff 又不含作者說明。使用者否決的做法更沒有地方登記，只存在於對話裡，換一個對話就消失。這就是需要一個常駐帳本的原因。
++
++## 4. 目標狀態
++
++每個任務開工時，依序載入治理規則、錯誤帳、否決帳，三份都讀到才開始受理請求；任一份讀不到就標記未讀並說明原因，不得假裝沒有歷史。每一筆修正都能用去重鍵找到原本那一筆並就地更新，帳本長度只隨「不同事件」增加，不隨「重複發生」增加。使用者每一次明確否決都會留下一筆可查紀錄，包含理由、替代方案與解除條件。每一份被修改的文件，都能在變更帳裡找到對應的錯誤編號或否決編號，以及當時的驗收證據。帳本可以被替換成其他儲存方式，只要欄位介面不變。
++
++## 5. 流程或架構
++
++載入階段發生在任務受理之前，順序固定為治理、錯誤帳、否決帳，載入結果寫入任務卡的載入區塊，成功寫入版本與雜湊，失敗寫入未讀原因。執行階段遇到三種事件會觸發寫入：發現錯誤或除錯完成時寫錯誤帳，使用者明確否決某個做法時寫否決帳，任何文件被修改時寫變更帳。寫入前先算去重鍵，命中既有條目就就地更新並保留前一版內容，未命中才新增。任務收工時把三份帳的當前版本、雜湊與 diff 一起放進交付包，並在收工報告列出本次新增與更新的條目編號。整個過程沒有回頭修改歷史的步驟，只有標記取代。
++
++## 6. 元件與責任
++
++帳本檔案本身只負責儲存，不負責判斷；判斷由載入器、寫入器與審查者分擔。載入器負責在開工時讀取三份帳並回報狀態；寫入器負責計算去重鍵、決定新增或就地更新、保留前一版；快照器負責在每次寫入後產生帶時間與雜湊的快照；審查者在獨立驗收時確認帳本有被載入、有被寫入、且變更帳與 diff 對得上。流程的負責角色不變，帳本的寫入權屬於證據角色，讀取權屬於所有角色，刪除權不存在。
++
++## 7. 輸入與輸出
++
++輸入是三類事件：錯誤事件包含現象、證據、類別、影響的驗收條件、根因與修正方式；否決事件包含被否決的方案、否決理由、替代方案、適用範圍與解除條件；變更事件包含文件識別、版本、變更區段、對應的錯誤或否決編號。輸出是更新後的帳本條目、該條目的前一版內容、以及一筆指向證據目錄的引用。帳本條目不直接複製測試輸出，只記錄測試結果的判定與證據位置。
++
++## 8. 依賴與限制
++
++帳本依賴治理層提供角色與狀態字典，依賴生命週期模組提供版本與快照規則，依賴製作流程提供寫入時機。限制有三個：第一，帳本本身還沒有實際的載入器與寫入器程式，目前只有規格與檢查器，所以「已載入」這件事在沒有工具之前只能人工確認；第二，熱插拔介面尚未經過執行期實測，狀態一律標示為未知；第三，帳本不處理跨專案的錯誤合併，跨專案是否共用同一個帳本仍待裁決。
++
++## 9. 權限與邊界
++
++所有角色都可以讀取帳本。寫入僅限證據角色與治理總召；製作角色可以提出條目草案，但不能自行定稿。任何人都不能刪除條目，只能把狀態改為已被取代並填寫取代者編號。帳本不得記錄金鑰、密碼、權杖或任何憑證內容，遇到這類資料一律寫成佔位符。帳本不得作為下單、交易或任何硬禁止操作的授權來源。
++
++## 10. 失敗處理
++
++載入失敗時標記未讀並寫明原因，任務可以繼續但必須在收工報告列出未讀項目；不得因為帳本未讀就宣稱沒有歷史錯誤。寫入衝突時，也就是同一去重鍵有兩筆內容不一致，標記衝突並交由治理總召裁決，不得自行覆蓋。去重鍵缺漏時視為自我檢查失敗，該筆不得寫入。帳本損毀或雜湊不符時停止寫入，從最近一次快照回復。以上四種情況的重試上限皆為一次，超過即轉為阻塞並開困難卡。
++
++## 11. 恢復與回復
++
++每一次寫入都先產生快照再寫入正式檔，快照命名沿用生命週期模組的快照規則。回復時以快照覆蓋正式檔並重建索引，重建後重新計算雜湊並與交付包清單比對。寫入動作設計為冪等：同一個事件重送不會產生第二筆。資源清理只涉及暫存檔與索引快取，不刪除任何歷史快照。
++
++## 12. 驗收條件
++
++`AC-CLG-01` 三份帳在開工時皆被載入，載入結果與版本已寫入任務卡。`AC-CLG-02` 每一筆修正都有去重鍵，且重複事件只更新不新增。`AC-CLG-03` 每一次使用者否決都有理由、替代方案與解除條件。`AC-CLG-04` 變更帳的每一筆都能對應到 diff 與驗收證據。`AC-CLG-05` 帳本不含任何憑證內容。`AC-CLG-06` 帳本條目只寫判定與證據位置，不貼原始測試輸出。
++
++## 13. 測試案例
++
++`TC-CLG-01` 以同一錯誤重複發生兩次，預期只有一筆條目且前一版被保留。`TC-CLG-02` 以使用者否決事件寫入，預期可查到理由與替代方案。`TC-CLG-03` 以缺少去重鍵的事件寫入，預期被拒絕並回報自我檢查失敗。`TC-CLG-04` 以憑證字串測試，預期寫入佔位符而非原字串。`TC-CLG-05` 以損毀帳本啟動，預期從快照回復並重新計算雜湊。
++
++## 14. 回歸測試
++
++`RT-CLG-01` 載入順序回歸：治理、錯誤帳、否決帳缺一即標未讀。`RT-CLG-02` 去重合併回歸：同鍵事件不得產生第二筆。`RT-CLG-03` 交付封裝回歸：收工時三份帳與雜湊必須同時出現在交付包。以上三題任一未跑即視為未通過。
++
++## 15. 版本與維護
++
++帳本規格本身採語意化版本；新增欄位為次版本，欄位不相容為主版本，文字修正為修訂版。每次版本變更需保留快照並在變更帳登記。帳本正式檔退役前必須保存快照與取代關係，退役後只保留唯讀副本，不得刪除歷史。
++
++## 16. 未決事項
++
++`CLG-OPEN-01` 帳本是專案級還是全域共用，狀態為待裁決。`CLG-OPEN-02` 否決紀錄的適用範圍要寫到多細，例如是否區分「此專案永久否決」與「此次任務否決」，狀態為待裁決。`CLG-OPEN-03` 熱插拔介面的實作與實測，狀態為未知，需介面相容測試、替換後行為測試與回滾測試三項證據。`CLG-OPEN-04` 載入器與寫入器的工具實作，狀態為未執行。
+diff -ruN candidate-v0.2.4/matrix.md candidate-v0.3.0/matrix.md
+--- candidate-v0.2.4/matrix.md	2026-11-14 09:03:35.965806206 +0000
++++ candidate-v0.3.0/matrix.md	2026-11-14 09:18:43.818622745 +0000
+@@ -3,7 +3,7 @@
+ name_en: Layer Responsibility Matrix
+ name_zh: 分層責任矩陣
+ module: governance
+-version: 0.2.4
++version: 0.3.0
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+diff -ruN candidate-v0.2.4/modules-spec.md candidate-v0.3.0/modules-spec.md
+--- candidate-v0.2.4/modules-spec.md	2026-11-14 09:03:35.965581609 +0000
++++ candidate-v0.3.0/modules-spec.md	2026-11-14 09:18:43.819797407 +0000
+@@ -3,7 +3,7 @@
+ name_en: Cross-cutting Modules (Routing, Lifecycle, Testing)
+ name_zh: 橫向模組規格（路由、生命週期、測試）
+ module: routing-and-selection|lifecycle-and-versioning|testing-and-validation
+-version: 0.2.4
++version: 0.3.0
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+@@ -31,6 +31,7 @@
+ | RSL-R07 | 測試規格 | UAC | TSV-CONTRACT + TSV-EXIT | 每條 AC 有測題 |
+ | RSL-R08 | 文件整合與升級 | UAC | TSV-CONTRACT + TSV-REG + TSV-REGRESSION | 需 diff 與版本對照 |
+ | RSL-R09 | Adapter 介面文件 | UAC | TSV-CONTRACT + TSV-RUNTIME | Runtime 狀態須為 `UNKNOWN` 或附證據 |
++| RSL-R10 | 修正帳本文件 | UAC | TSV-CONTRACT + TSV-LEDGER | 三帳、載入順序、去重與熱插拔介面齊全 |
+ 
+ ### 3 判定規則
+ 
+@@ -78,7 +79,7 @@
+ 
+ ### 1 目的與範圍
+ 
+-定義檢查器與測試集：格式、結構、契約、責任重疊、路由完整性、依賴循環、失敗出口、回復與版本、Runtime 聲明、回歸。
++定義十三個檢查器與測試集：格式、結構、契約、責任重疊、路由完整性、依賴循環、失敗出口、回復與版本、Runtime 聲明、回歸。
+ 
+ ### 2 檢查器清單
+ 
+@@ -95,6 +96,7 @@
+ | TSV-REG | 回復與版本 | `SELF_FAIL` |
+ | TSV-RUNTIME | Runtime 聲明（不得無證據宣稱已支援） | `SELF_FAIL` |
+ | TSV-AUDIT | 驗收包與獨立性（附錄 A、§2.1） | `SELF_FAIL` |
++| TSV-LEDGER | 修正帳本（三帳、載入順序、去重、文本純度） | `SELF_FAIL` |
+ | TSV-REGRESSION | 回歸集 | `SELF_FAIL` |
+ 
+ ### 3 門檻
+@@ -103,4 +105,4 @@
+ 
+ ### 4 驗收條件
+ 
+-`AC-TSV-01` 十二個檢查器皆可執行；`AC-TSV-02` 結果可重現；`AC-TSV-03` 失敗有出口；`AC-TSV-04` 結果輸出機器可讀。
++`AC-TSV-01` 十三個檢查器皆可執行；`AC-TSV-02` 結果可重現；`AC-TSV-03` 失敗有出口；`AC-TSV-04` 結果輸出機器可讀。
+diff -ruN candidate-v0.2.4/readme-templates.md candidate-v0.3.0/readme-templates.md
+--- candidate-v0.2.4/readme-templates.md	2026-11-14 09:03:35.965942094 +0000
++++ candidate-v0.3.0/readme-templates.md	2026-11-14 09:18:43.818745200 +0000
+@@ -3,7 +3,7 @@
+ name_en: Module README Templates
+ name_zh: 各模組 README 模板
+ module: governance
+-version: 0.2.4
++version: 0.3.0
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.2.4/structure.md candidate-v0.3.0/structure.md
+--- candidate-v0.2.4/structure.md	2026-11-14 09:03:35.965704316 +0000
++++ candidate-v0.3.0/structure.md	2026-11-14 09:18:43.818545548 +0000
+@@ -3,7 +3,7 @@
+ name_en: MIKO Universal Governance Architecture - Structure, Naming and Templates
+ name_zh: MIKO 通用治理架構－結構、命名與模板
+ module: governance
+-version: 0.2.4
++version: 0.3.0
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+diff -ruN candidate-v0.2.4/uac-spec.md candidate-v0.3.0/uac-spec.md
+--- candidate-v0.2.4/uac-spec.md	2026-11-14 09:03:35.965312129 +0000
++++ candidate-v0.3.0/uac-spec.md	2026-11-14 09:18:43.819652482 +0000
+@@ -3,7 +3,7 @@
+ name_en: Universal Artifact Contract
+ name_zh: 通用產物契約
+ module: universal-artifact-contract
+-version: 0.2.4
++version: 0.3.0
+ date: 2026-11-14
+ status: PROPOSED
+ applies_to: [spec, architecture, process-design, governance-rule, router-doc, test-spec, integration-upgrade]
+@@ -15,7 +15,7 @@
+ 
+ ## 使用方式
+ 
+-本契約只規定「必須有哪些章節與欄位」，不規定製作順序（由 UCP 規定）。每個產物依 UCP A04 先定流程，再由流程決定哪些章節為必填；必填欄位不得刪減，選填欄位須標 `optional`。
++本契約只規定「必須有哪些章節與欄位」，不規定製作順序（由 UCP 規定）。正文一律使用已驗收合格的繁體中文敘述，測試輸出、原始日誌、模型評語與待辦碎片不得寫入正文，只能放在證據目錄並以文件識別與驗收條件編號引用，此為文本純度規則（對應修正帳本規格第 2 章）。每個產物依 UCP A04 先定流程，再由流程決定哪些章節為必填；必填欄位不得刪減，選填欄位須標 `optional`。
+ 
+ ## 1. 目的與範圍
+ 
+diff -ruN candidate-v0.2.4/ucp-spec.md candidate-v0.3.0/ucp-spec.md
+--- candidate-v0.2.4/ucp-spec.md	2026-11-14 09:03:35.966752378 +0000
++++ candidate-v0.3.0/ucp-spec.md	2026-11-14 09:18:43.819492848 +0000
+@@ -3,7 +3,7 @@
+ name_en: Universal Creation Process
+ name_zh: 通用製作流程
+ module: universal-creation-process
+-version: 0.2.4
++version: 0.3.0
+ date: 2026-11-14
+ status: PROPOSED
+ owner_role: R-CONV
+@@ -50,6 +50,10 @@
+ | 預算 | cycle budget | 每個產物版本血緣允許的重測與重驗次數上限 |
+ | 閉環 | closed loop | 自我驗收→補強→錯誤維護→保存 diff→重測→達標才交獨立驗收，且受預算約束 |
+ | 流程先行 | process-first | 先定流程，再由流程推導標題、章節、欄位、格式、IO、AC、失敗出口 |
++| 修正帳本 | correction ledger | `ledger/` 下的錯誤帳、否決帳、變更帳與索引；開工時與治理一起載入 |
++| 錯誤紀錄 | error entry | 錯誤帳的一筆，含現象、證據、根因、修正與回歸測題，以去重鍵判重 |
++| 否決紀錄 | rejection entry | 否決帳的一筆，含被否決方案、理由、替代方案與解除條件 |
++| 文本純度 | text purity | 正文只放已驗收合格的繁中敘述，測試輸出與原始日誌只放證據目錄 |
+ 
+ ### 2.1 獨立性等級判定表（修正 A12-REV-01）
+ 
+@@ -126,19 +130,19 @@
+ ### A00 請求受理與任務分類
+ 
+ - **目的**：把使用者請求轉成可執行的製作任務，先過停止／禁止／授權閘門。
+-- **輸入**：使用者請求原文、對話上下文、治理核心狀態（版本或 `CORE_NOT_READ`）。
++- **輸入**：使用者請求原文、對話上下文、治理核心狀態（版本或 `CORE_NOT_READ`）、修正帳本（錯誤帳與否決帳）。
+ - **輸出**：任務卡（`task_id`、請求摘要、任務分類、產物類型候選、禁止項清單、授權狀態、`retest_round=0`、`audit_round=0`）。
+-- **前置條件**：可讀取使用者請求；已判定治理核心狀態。
+-- **操作要求**：逐條拆解請求；標記不可逆操作與硬禁止（下單、LIVE、Broker、外部寫入）；核心未載入時標 `CORE_NOT_READ` 並限制為候選輸出；初始化兩個計數器。
++- **前置條件**：可讀取使用者請求；已判定治理核心狀態；治理、錯誤帳、否決帳三份常駐文件已依序載入或已標未讀。
++- **操作要求**：先依治理、錯誤帳、否決帳的順序載入常駐文件並記下版本與雜湊；再逐條拆解請求；標記不可逆操作與硬禁止（下單、LIVE、Broker、外部寫入）；核心未載入時標 `CORE_NOT_READ` 並限制為候選輸出；初始化兩個計數器。
+ - **禁止事項**：不得把沉默當授權；不得把候選升格為正式；不得略過硬禁止；不得在核心未載入時做外部寫入。
+-- **檢查點**：任務卡逐條覆蓋請求；禁止項與授權狀態已列；計數器已初始化。
+-- **Acceptance Criteria**：`AC-A00-01` 每個請求子項有對應任務條目；`AC-A00-02` 禁止項與授權狀態已明列；`AC-A00-03` 核心狀態與計數器已標示。
++- **檢查點**：三份常駐文件有載入結果；任務卡逐條覆蓋請求；禁止項與授權狀態已列；計數器已初始化。
++- **Acceptance Criteria**：`AC-A00-01` 每個請求子項有對應任務條目；`AC-A00-02` 禁止項與授權狀態已明列；`AC-A00-03` 核心狀態與計數器已標示；`AC-A00-04` 治理、錯誤帳、否決帳皆有載入結果或未讀原因。
+ - **Failure Handling**：請求模糊 → `UNKNOWN`＋安全預設；涉及硬禁止 → `STOPPED`。
+ - **Recovery**：請使用者補齊後重跑 A00；重跑不消耗預算。
+ - **Regression Test**：`RT-A00` 以正常、含硬禁止、核心未載入三種請求回放。
+ - **閉環條件**：任務卡完成且無未標示的禁止項。
+ - **負責角色**：R-CONV。
+-- **證據與保存方式**：`evidence/<task_id>/task-card.md`（含時間戳與 SHA-256）。
++- **證據與保存方式**：`evidence/<task_id>/task-card.md`（含時間戳、載入結果與 SHA-256）。
+ 
+ ### A01 來源取得與完整讀取
+ 
+@@ -297,12 +301,12 @@
+ 
+ - **目的**：每次修改保存前後 diff 與理由，讓錯誤可追溯。
+ - **輸入**：修改前後版本、補強清單。
+-- **輸出**：unified diff、變更紀錄（原因、位置、影響的 AC）。
++- **輸出**：unified diff、變更紀錄（原因、位置、影響的 AC）、修正帳本更新（錯誤帳、變更帳）。
+ - **前置條件**：有實際修改。
+-- **操作要求**：每筆變更對應至少一個 AC 或缺口 ID；不得覆寫歷史版本。
++- **操作要求**：每筆變更對應至少一個 AC 或缺口 ID；先算去重鍵，命中既有條目就地更新並保留前一版，未命中才新增；不得覆寫歷史版本。
+ - **禁止事項**：不得只留最終版；不得無理由改動無關段落；不得刪除失敗紀錄。
+ - **檢查點**：diff 可套用；變更紀錄與 diff 對應。
+-- **Acceptance Criteria**：`AC-A10-01` 每輪修改有 diff；`AC-A10-02` 每筆變更有理由；`AC-A10-03` 歷史版本未被覆寫。
++- **Acceptance Criteria**：`AC-A10-01` 每輪修改有 diff；`AC-A10-02` 每筆變更有理由；`AC-A10-03` 歷史版本未被覆寫；`AC-A10-04` 變更帳已就地更新且對應 diff 與證據。
+ - **Failure Handling**：diff 缺失 → `SELF_FAIL`。
+ - **Recovery**：由版本庫或備份重建 diff。
+ - **Regression Test**：`RT-A10` `patch --dry-run` 套用測試。
+@@ -346,12 +350,12 @@
+ 
+ - **目的**：交付合格產物並保存證據，完成收工交接。
+ - **輸入**：`AUDIT_PASS` 產物、全部證據。
+-- **輸出**：交付包、MANIFEST、收工報告（任務四態、困難卡、未驗證清單、聲明）。
++- **輸出**：交付包、MANIFEST、收工報告（任務四態、困難卡、未驗證清單、聲明）、修正帳本快照。
+ - **前置條件**：A12 `AUDIT_PASS`；未合格不得交付（任何 `FAIL`／`NOT_RUN`／空值皆阻擋）。
+ - **操作要求**：計算 SHA-256；列未驗證與 `UNKNOWN`；如實聲明未寫入 GitHub／未採用／未生效。
+ - **禁止事項**：不得把候選寫成已採用；不得省略困難卡；不得在無證據時宣稱 Runtime 生效。
+ - **檢查點**：MANIFEST 可驗證；收工報告欄位齊全。
+-- **Acceptance Criteria**：`AC-A13-01` MANIFEST 驗證通過；`AC-A13-02` 任務四態已寫；`AC-A13-03` 未驗證清單與困難卡已列。
++- **Acceptance Criteria**：`AC-A13-01` MANIFEST 驗證通過；`AC-A13-02` 任務四態已寫；`AC-A13-03` 未驗證清單與困難卡已列；`AC-A13-04` 三份帳的快照與雜湊已入交付包。
+ - **Failure Handling**：MANIFEST 不符 → `BLOCKED`。
+ - **Recovery**：重建 MANIFEST 後重驗。
+ - **Regression Test**：`RT-A13` `sha256sum -c` 通過。
+@@ -397,7 +401,7 @@
+ 
+ ## 10. 驗收條件彙總
+ 
+-見第 5 節，共 45 條（A00～A11、A13 每步 3 條，A12 共 6 條）。
++見第 5 節，共 48 條（A00、A10、A13 各 4 條，A12 共 6 條，其餘每步 3 條）。
+ 
+ ## 11. 回歸測試
+ 
+@@ -461,3 +465,4 @@
+ | UCP-OPEN-01 | 重試上限 3／2 是否為正式數值 | PENDING_DECISION |
+ | UCP-OPEN-02 | 正式採用是否要求 L3（人類）驗收 | PENDING_DECISION（候選交付最低 L1；`ADOPTED` 最低 L2；正本建議 L3） |
+ | UCP-OPEN-03 | 預算重置的正式授權格式 | PENDING_DECISION |
++| UCP-OPEN-04 | 修正帳本未讀時是否阻擋開工（目前為可繼續但須列未讀） | PENDING_DECISION |
+diff -ruN candidate-v0.2.4/usc-spec.md candidate-v0.3.0/usc-spec.md
+--- candidate-v0.2.4/usc-spec.md	2026-11-14 09:03:35.965452815 +0000
++++ candidate-v0.3.0/usc-spec.md	2026-11-14 09:18:43.818352054 +0000
+@@ -3,7 +3,7 @@
+ name_en: Universal Skill Contract
+ name_zh: 通用 Skill 契約
+ module: universal-skill-contract
+-version: 0.2.4
++version: 0.3.0
+ date: 2026-11-14
+ status: PROPOSED
+ applies_to: [skill]

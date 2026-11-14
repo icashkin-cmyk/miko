@@ -1,0 +1,81 @@
+{
+  "checks": [
+    {
+      "ac_id": "AC-A11-01",
+      "status": "PASS",
+      "evidence": "live regression on candidate-v0.8.7",
+      "note": "回歸集實跑 24 題"
+    },
+    {
+      "ac_id": "AC-A11-03",
+      "status": "PASS",
+      "evidence": "live checkers on candidate-v0.8.7",
+      "note": "十二檢查器實跑"
+    },
+    {
+      "ac_id": "AC-A10-01",
+      "status": "PASS",
+      "evidence": "diff/ 17 個 patch，最新 v0.8.6_to_v0.8.7.patch",
+      "note": "每輪修改有非空 diff"
+    },
+    {
+      "ac_id": "AC-A10-03",
+      "status": "PASS",
+      "evidence": "版本數 16",
+      "note": "歷史版本未被覆寫"
+    },
+    {
+      "ac_id": "AC-A10-04",
+      "status": "PASS",
+      "evidence": "ledger 去重探針",
+      "note": "同鍵寫兩次只得一筆"
+    },
+    {
+      "ac_id": "AC-A13-01",
+      "status": "PASS",
+      "evidence": "delivery/miko-universal-governance/MANIFEST.sha256",
+      "note": "sha256sum -c 實跑"
+    },
+    {
+      "ac_id": "AC-A12-04",
+      "status": "PASS",
+      "evidence": "delivery/audit-packet/MANIFEST.sha256",
+      "note": "驗收包 sha256sum -c 實跑"
+    },
+    {
+      "ac_id": "AC-A12-01",
+      "status": "NOT_RUN",
+      "evidence": "無獨立驗收者",
+      "note": "需 L2 不同模型或 L3 人類冷啟動"
+    },
+    {
+      "ac_id": "AC-A12-02",
+      "status": "NOT_RUN",
+      "evidence": "無 audit-report",
+      "note": "需驗收者逐條判定"
+    },
+    {
+      "ac_id": "AC-A12-03",
+      "status": "NOT_RUN",
+      "evidence": "無 audit-report",
+      "note": "標籤與等級需驗收者填寫"
+    },
+    {
+      "ac_id": "AC-A00-04",
+      "status": "PASS",
+      "evidence": "evidence/*/task-card.md",
+      "note": "任務卡綁定三帳載入結果與雜湊"
+    },
+    {
+      "ac_id": "AC-A13-04",
+      "status": "PASS",
+      "evidence": "delivery/audit-packet/ledger",
+      "note": "帳本快照與來源逐檔雜湊一致"
+    }
+  ],
+  "summary": {
+    "total": 12,
+    "pass": 9,
+    "not_run": 3
+  }
+}

@@ -1,0 +1,165 @@
+schema: miko-uac-chapters/1
+version: 0.8.7
+chapters:
+- chapter: 1
+  title: 目的與範圍
+  required:
+  - doc_id
+  - name_en
+  - name_zh
+  - module
+  - version
+  - date
+  - status
+  - owner_role
+  - supersedes
+  - related_docs
+  - 目的
+  - 範圍（含）
+  - 非範圍（不含）
+  - 適用對象
+- chapter: 2
+  title: 名詞與定義
+  required:
+  - term_id
+  - term_zh
+  - term_en
+  - definition
+  - source_id
+  - forbidden_synonyms
+- chapter: 3
+  title: 問題與背景
+  required:
+  - 現況
+  - 問題陳述
+  - evidence_text
+  - evidence_source_id
+  - 影響範圍
+  - 不處理的後果
+  - 既有嘗試
+- chapter: 4
+  title: 目標狀態
+  required:
+  - 目標
+  - 可量測指標
+  - 與現況差距
+  - 成功判準
+  - 非目標
+- chapter: 5
+  title: 流程或架構
+  required:
+  - 流程步驟
+  - 順序與分支
+  - 邊界
+  - UCP 步驟 ID
+  - 異常分支去向
+  - 流程圖
+- chapter: 6
+  title: 元件與責任
+  required:
+  - component_id
+  - responsibility
+  - not_responsible
+  - owner_role
+  - inputs
+  - outputs
+  - single_owner
+- chapter: 7
+  title: 輸入與輸出
+  required:
+  - io_id
+  - name
+  - type
+  - source
+  - required
+  - format
+  - validation
+  - example
+- chapter: 8
+  title: 依賴與限制
+  required:
+  - 依賴項
+  - 依賴型別
+  - 版本範圍
+  - 已知限制
+  - 假設
+  - 外部服務狀態
+- chapter: 9
+  title: 權限與邊界
+  required:
+  - 可寫範圍
+  - 禁止範圍
+  - 授權要求
+  - 資料分級
+  - 硬禁止清單
+  - 跨平台寫入規則
+- chapter: 10
+  title: 失敗處理
+  required:
+  - 失敗類別
+  - 偵測方式
+  - 狀態碼
+  - 出口
+  - 重試上限
+  - 重試範圍
+  - 負責方
+- chapter: 11
+  title: 恢復與回復
+  required:
+  - 回滾點
+  - 補償動作
+  - 冪等性
+  - 重入方式
+  - 資源清理
+  - 回復後重新驗證方式
+  - 回復證據位置
+- chapter: 12
+  title: 驗收條件
+  required:
+  - ac_id
+  - condition
+  - method
+  - evidence
+  - judge_role
+  - mandatory
+  - test_case_id
+- chapter: 13
+  title: 測試案例
+  required:
+  - case_id
+  - related_ac_id
+  - input
+  - expected
+  - forbidden
+  - actual_output
+  - result
+- chapter: 14
+  title: 回歸測試
+  required:
+  - 回歸集清單
+  - 觸發條件
+  - 必跑項
+  - 通過門檻
+  - baseline
+  - 結果保存位置
+- chapter: 15
+  title: 版本與維護
+  required:
+  - 版本
+  - 日期
+  - commit
+  - sha256
+  - 變更紀錄
+  - 維護者
+  - 快照位置
+  - 退役規則
+  - 退役條件
+- chapter: 16
+  title: 未決事項
+  required:
+  - open_id
+  - 描述
+  - 影響
+  - 負責方
+  - 解除條件
+  - 狀態

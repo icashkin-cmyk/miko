@@ -1,0 +1,335 @@
+diff -ruN candidate-v0.8.0/VERSION candidate-v0.8.1/VERSION
+--- candidate-v0.8.0/VERSION	2026-11-14 12:38:19.438963016 +0000
++++ candidate-v0.8.1/VERSION	2026-11-14 12:45:17.313956164 +0000
+@@ -1 +1 @@
+-0.8.0
++0.8.1
+diff -ruN candidate-v0.8.0/acceptance-matrix.md candidate-v0.8.1/acceptance-matrix.md
+--- candidate-v0.8.0/acceptance-matrix.md	2026-11-14 12:38:19.438482763 +0000
++++ candidate-v0.8.1/acceptance-matrix.md	2026-11-14 12:45:17.313418316 +0000
+@@ -3,7 +3,7 @@
+ name_en: Acceptance Matrix
+ name_zh: 驗收矩陣
+ module: testing-and-validation
+-version: 0.8.0
++version: 0.8.1
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.8.0/architecture/uga-architecture.md candidate-v0.8.1/architecture/uga-architecture.md
+--- candidate-v0.8.0/architecture/uga-architecture.md	2026-11-14 12:38:19.438726640 +0000
++++ candidate-v0.8.1/architecture/uga-architecture.md	2026-11-14 12:45:17.313745614 +0000
+@@ -1,7 +1,7 @@
+ # MIKO Universal Governance Architecture 架構書（候選）
+ 
+ - 文件狀態：PROPOSED（候選，未升格）
+-- 內部版本：0.8.0
++- 內部版本：0.8.1
+ - 對外封裝：UGA ZIP v1.0.2（見交付報告）
+ - 編號系統：ARC，與 UCP 的 A、UAC 的章節號、USC 的 S 各自獨立
+ 
+diff -ruN candidate-v0.8.0/core-closure/core-rewrite-spec.md candidate-v0.8.1/core-closure/core-rewrite-spec.md
+--- candidate-v0.8.0/core-closure/core-rewrite-spec.md	1970-01-01 00:00:00.000000000 +0000
++++ candidate-v0.8.1/core-closure/core-rewrite-spec.md	2026-11-14 12:46:00.659553070 +0000
+@@ -0,0 +1,113 @@
++---
++doc_id: core-closure
++name_en: Miko Core Closure Specification
++version: 0.8.1
++date: 2026-11-14
++status: PROPOSED
++---
++
++# miko-core 閉環規格：C1 至 C6
++
++- 依據：D16，miko-core 為流程唯一權威，UCP 併入核心
++- 對應：C1 至 C6 對應 UGA 製作流程 A08 至 A13
++- 狀態：PROPOSED，未寫入正本、未生效；草案修訂 0.2
++
++## 一、對應表
++
++| UGA | 本文件 | 名稱 | 核心負責 |
++|---|---|---|---|
++| A08 | C1 | 自我驗收 | 逐條自檢、自我層標籤、證據檔 |
++| A09 | C2 | 主動補強 | 可推導缺口補強、UNKNOWN 與 BLOCKED |
++| A10 | C3 | 錯誤維護 | 最小單元修復、diff、帳本去重更新 |
++| A11 | C4 | 有界重測 | 一輪定義、retest_round、上限三輪 |
++| A12 | C5 | 獨立驗收 | L0～L3、驗收包、逐條判定、上限兩輪 |
++| A13 | C6 | 交付收工 | MANIFEST、封裝雜湊、帳本快照、四態與聲明 |
++
++## 二、條文
++
++### C1 自我驗收
++
++觸發：產出檔案、修改規則、跨平台寫入、或回報完成之前。
++
++動作：依 AC 逐條自檢，每條寫判定與證據位置，AC 覆蓋率必須 100%；未執行的條目寫 `NOT_RUN` 並註明缺什麼；結果只能使用自我層標籤 `SELF_PASS`、`SELF_FAIL`、`NOT_RUN`；證據存 `evidence/<task_id>/self-acceptance-vN.json`，不放入驗收包。
++
++禁止：不得把 `SELF_PASS` 寫成 `ACCEPTED`；不得把未跑寫成 `PASS`；不得省略任何一條 AC。
++
++失敗出口：任一 `SELF_FAIL` 進 C2，不得直接交付。
++
++### C2 主動補強
++
++觸發：C1 有未通過項目，或使用者指出缺漏。
++
++動作：每個缺口先判斷能否由既有來源或規格推導；可推導者直接補並記下來源，不可推導者標 `UNKNOWN` 並寫原因；缺授權標 `BLOCKED`。同一項目補強上限兩次，此上限為本文件新增，UGA A09 原本沒有。
++
++禁止：不得憑空創造來源；不得為通過而放寬 AC；不得只寫待補。
++
++失敗出口：同項目兩次仍不過，進 C3 並記錯誤帳。
++
++### C3 錯誤維護
++
++觸發：錯誤出現、C2 補強無效、或使用者回報問題。
++
++動作：先定位最小受影響單元，可以是步驟、欄位、章節或帳本條目；只修該單元，重測只跑受影響的檢查與測題。只有三種情況才擴大：錯誤跨兩個以上步驟、錯誤改到契約或欄位定義、該單元沒有可單獨執行的檢查；擴大理由寫進變更紀錄。修完保存 diff，寫入錯誤帳與變更帳；帳本命中去重鍵時就地更新並保留前一版，不覆寫歷史；同類錯誤第二次才寫入錯誤帳。
++
++禁止：不得全面重跑後宣稱已修；不得刪除失敗紀錄；不得在沒有 diff 時說已修正。
++
++失敗出口：修不動或需改規則，標 `BLOCKED` 交 MIKO。
++
++### C4 有界重測
++
++觸發：C2 或 C3 之後。
++
++動作：一輪等於對受影響 AC 全集完整重測一次，並加一題新題；回歸集要全跑；每輪更新 `retest_round`；重測上限三輪。
++
++禁止：不得無限重試；不得用同一方法重跑同一題期待不同結果；不得隱藏重測次數。
++
++失敗出口：三輪未過標 `RETEST_EXHAUSTED`，交 MIKO，不得降級為大致完成。
++
++### C5 獨立驗收
++
++觸發：C4 通過，且產物要交付或要宣稱完成。
++
++動作：由非製作者執行，等級照 L0 至 L3 判定，並以可證明的最弱一環為準。L0 同 session 或曾接觸製作內容，只給自我層標籤；L1 同模型新 session 冷啟動、只讀驗收包；L2 不同模型冷啟動，雙方模型 ID 要對照；L3 人類驗收者，需驗收者識別、時間與簽核紀錄。驗收者中途接觸作者說明、自我驗收結論或實作思路，降為 L0 並換人重驗，該輪計入 `audit_round`。驗收包要含產物、`packet-meta`、`ac/ac-table`、`results`、`MANIFEST`，並依逐條判定欄位寫 PASS、FAIL、NOT_RUN 或 BLOCKED 與證據；`audit_round` 上限兩輪。
++
++禁止：不得由製作者自任驗收者；不得以整體通過代替逐條判定；不得在驗收後放寬 AC；不得把 L2 寫成正本採用的最終簽核。
++
++失敗出口：`AUDIT_FAIL` 回 C3 並 `audit_round+1`；兩輪 FAIL 或包內缺件、雜湊不符，標 `BLOCKED`，原報告作廢。
++
++### C6 交付收工
++
++觸發：C5 為 PASS。
++
++動作：交付前重建並驗證 `MANIFEST.sha256`，確認封裝雜湊一致；帳本快照入包；收工寫任務四態（完成、完成但有疑慮、需要資料、卡住）、困難卡七欄、未驗證清單、未寫入或未生效聲明；交接寫存檔處、下一步、待決。
++
++禁止：不得省略困難卡；不得把候選寫成已採用；不得在無證據時宣稱 Runtime 生效。
++
++失敗出口：任一項缺，回 C5 或 C3，不得交付。
++
++## 三、狀態與預算
++
++| 狀態 | 意義 | 解除 |
++|---|---|---|
++| `SELF_FAIL` | 自我驗收未過 | 補強後重驗 |
++| `AUDIT_FAIL` | 獨立驗收未過 | 修復後重驗 |
++| `RETEST_EXHAUSTED` | 重測三輪未過 | MIKO 裁決 |
++| `BLOCKED` | 需外部條件或授權 | 條件解除後重驗 |
++
++| 項目 | 上限 | 超限 |
++|---|---|---|
++| `retest_round` | 3 | `RETEST_EXHAUSTED` |
++| `audit_round` | 2 | `BLOCKED` |
++| 同項目補強 | 2 | 進 C3，記錯誤帳 |
++
++## 四、與 UGA 的介面
++
++UGA 判斷閘門開或關，核心判斷內容過或不過；兩邊都不重複定義對方的判定標準。UGA 條文保留至核心寫入並通過 AC-CORE 驗收後才可刪減。
++
++## 五、驗收條件
++
++`AC-CORE-01` C1 至 C6 六條齊全，各有觸發、動作、禁止與失敗出口；`AC-CORE-02` 預算表與狀態字典一致；`AC-CORE-03` 驗收者不得為製作者，L3 為人類簽核；`AC-CORE-04` 超限一律 BLOCKED 或 RETEST_EXHAUSTED，不得降級；`AC-CORE-05` 與 UGA 介面只有狀態與閘門；`AC-CORE-06` 既有硬邊界未被刪改；`AC-CORE-07` 驗收包含 packet-meta、ac-table、results、MANIFEST。
++
++## 六、測題
++
++`RT-CORE-01` 缺一條 AC 的產物，預期 `SELF_FAIL` 進 C2。`RT-CORE-02` 補兩次仍失敗，預期進 C3 並寫錯誤帳。`RT-CORE-03` 重測三輪失敗，預期 `RETEST_EXHAUSTED` 且不得第四次。`RT-CORE-04` 製作者自任驗收者，預期被拒。`RT-CORE-05` 缺困難卡或帳本快照的交付，預期 C6 攔下。`RT-CORE-06` 驗收者中途讀了作者說明，預期降 L0 並換人。
+diff -ruN candidate-v0.8.0/index.md candidate-v0.8.1/index.md
+--- candidate-v0.8.0/index.md	2026-11-14 12:38:19.438383865 +0000
++++ candidate-v0.8.1/index.md	2026-11-14 12:45:17.313317414 +0000
+@@ -3,7 +3,7 @@
+ name_en: MIKO Universal Governance Architecture Index
+ name_zh: MIKO 通用治理架構總索引
+ module: governance
+-version: 0.8.0
++version: 0.8.1
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.8.0/ledger-spec.md candidate-v0.8.1/ledger-spec.md
+--- candidate-v0.8.0/ledger-spec.md	2026-11-14 12:38:19.438583250 +0000
++++ candidate-v0.8.1/ledger-spec.md	2026-11-14 12:45:17.313520991 +0000
+@@ -3,7 +3,7 @@
+ name_en: Correction Ledger
+ name_zh: 修正帳本
+ module: correction-ledger
+-version: 0.8.0
++version: 0.8.1
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: NONE
+diff -ruN candidate-v0.8.0/matrix.md candidate-v0.8.1/matrix.md
+--- candidate-v0.8.0/matrix.md	2026-11-14 12:38:19.438146333 +0000
++++ candidate-v0.8.1/matrix.md	2026-11-14 12:45:17.313056342 +0000
+@@ -3,7 +3,7 @@
+ name_en: Layer Responsibility Matrix
+ name_zh: 分層責任矩陣
+ module: governance
+-version: 0.8.0
++version: 0.8.1
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+diff -ruN candidate-v0.8.0/modules-spec.md candidate-v0.8.1/modules-spec.md
+--- candidate-v0.8.0/modules-spec.md	2026-11-14 12:38:19.437929915 +0000
++++ candidate-v0.8.1/modules-spec.md	2026-11-14 12:45:17.312837785 +0000
+@@ -3,14 +3,14 @@
+ name_en: Cross-cutting Modules (Routing, Lifecycle, Testing)
+ name_zh: 橫向模組規格（路由、生命週期、測試）
+ module: routing-and-selection|lifecycle-and-versioning|testing-and-validation
+-version: 0.8.0
++version: 0.8.1
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+ amends: 0.2.0
+ ---
+ 
+-# 橫向模組規格 v0.8.0
++# 橫向模組規格 v0.8.1
+ 
+ ## RSL：路由與選擇（routing-and-selection）
+ 
+diff -ruN candidate-v0.8.0/naming-map.md candidate-v0.8.1/naming-map.md
+--- candidate-v0.8.0/naming-map.md	2026-11-14 12:38:35.155447882 +0000
++++ candidate-v0.8.1/naming-map.md	2026-11-14 12:45:17.313603299 +0000
+@@ -1,12 +1,12 @@
+ ---
+ doc_id: naming-map
+ name_en: Naming Map
+-version: 0.8.0
++version: 0.8.1
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+ 
+-# 命名對照表（v0.8.0）
++# 命名對照表（v0.8.1）
+ 
+ | 舊名 | 新名 | 識別碼 | 檔名 | 軸 |
+ |---|---|---|---|---|
+diff -ruN candidate-v0.8.0/readme-templates.md candidate-v0.8.1/readme-templates.md
+--- candidate-v0.8.0/readme-templates.md	2026-11-14 12:38:19.440548384 +0000
++++ candidate-v0.8.1/readme-templates.md	2026-11-14 12:45:17.313204092 +0000
+@@ -3,7 +3,7 @@
+ name_en: Module README Templates
+ name_zh: 各模組 README 模板
+ module: governance
+-version: 0.8.0
++version: 0.8.1
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.8.0/refactor/assessment.md candidate-v0.8.1/refactor/assessment.md
+--- candidate-v0.8.0/refactor/assessment.md	2026-11-14 12:38:19.438844998 +0000
++++ candidate-v0.8.1/refactor/assessment.md	2026-11-14 12:45:17.313849550 +0000
+@@ -1,4 +1,4 @@
+-# UGA 三層契約與架構責任重構評估（v0.6.2 → v0.8.0）
++# UGA 三層契約與架構責任重構評估（v0.6.2 → v0.8.1）
+ 
+ - 文件狀態：PROPOSED
+ - 範圍：局部重構，保留原版本，不推倒重寫，不升格 Canonical
+@@ -56,7 +56,7 @@
+ 
+ ## 六、回歸與回復
+ 
+-回歸：十二個檢查器 PASS，二十二題負向回歸 PASS，新增 R-22 驗附錄 A 單向規則會被攔截。回復方式：v0.6.2 原樣保留，回退只需切回 `candidate-v0.6.2`，diff 見 `diff/v0.6.2_to_v0.8.0.patch`。
++回歸：十二個檢查器 PASS，二十二題負向回歸 PASS，新增 R-22 驗附錄 A 單向規則會被攔截。回復方式：v0.6.2 原樣保留，回退只需切回 `candidate-v0.6.2`，diff 見 `diff/v0.6.2_to_v0.8.1.patch`。
+ 
+ ## 七、未確認事項（UNKNOWN）
+ 
+diff -ruN candidate-v0.8.0/structure.md candidate-v0.8.1/structure.md
+--- candidate-v0.8.0/structure.md	2026-11-14 12:38:19.440374648 +0000
++++ candidate-v0.8.1/structure.md	2026-11-14 12:45:17.312967683 +0000
+@@ -3,7 +3,7 @@
+ name_en: MIKO Universal Governance Architecture - Structure, Naming and Templates
+ name_zh: MIKO 通用治理架構－結構、命名與模板
+ module: governance
+-version: 0.8.0
++version: 0.8.1
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+@@ -11,7 +11,7 @@
+ runtime_verified: UNKNOWN
+ ---
+ 
+-# MIKO Universal Governance Architecture：結構、命名與模板 v0.8.0
++# MIKO Universal Governance Architecture：結構、命名與模板 v0.8.1
+ 
+ ## 1. 總目錄
+ 
+diff -ruN candidate-v0.8.0/uac-spec.md candidate-v0.8.1/uac-spec.md
+--- candidate-v0.8.0/uac-spec.md	2026-11-14 12:38:19.439998785 +0000
++++ candidate-v0.8.1/uac-spec.md	2026-11-14 12:45:17.312394393 +0000
+@@ -3,7 +3,7 @@
+ name_en: Document Contract (DOC)
+ name_zh: 通用產物契約
+ module: universal-artifact-contract
+-version: 0.8.0
++version: 0.8.1
+ date: 2026-11-14
+ status: PROPOSED
+ applies_to: [spec, architecture, process-design, governance-rule, router-doc, test-spec, integration-upgrade]
+@@ -122,7 +122,7 @@
+ | 15 版本與維護、16 未決事項 | A13 |
+ 
+ ## 附錄 C：名稱對照
+-本文件原稱 Universal Artifact Contract（UAC），自 0.8.0 起改稱文件契約（DOC），識別碼與檔名維持 uac-spec 以免斷鏈；條文編號不變。架構書類產物改用 ARC 契約。
++本文件原稱 Universal Artifact Contract（UAC），自 0.8.1 起改稱文件契約（DOC），識別碼與檔名維持 uac-spec 以免斷鏈；條文編號不變。架構書類產物改用 ARC 契約。
+ 
+ ## 附錄 B：欄位名稱權威
+ 
+diff -ruN candidate-v0.8.0/ucp-spec.md candidate-v0.8.1/ucp-spec.md
+--- candidate-v0.8.0/ucp-spec.md	2026-11-14 12:38:19.439691406 +0000
++++ candidate-v0.8.1/ucp-spec.md	2026-11-14 12:45:17.314371348 +0000
+@@ -3,7 +3,7 @@
+ name_en: Miko Creation Process (folded into miko-core)
+ name_zh: 通用製作流程
+ module: universal-creation-process
+-version: 0.8.0
++version: 0.8.1
+ date: 2026-11-14
+ status: PROPOSED
+ owner_role: R-CONV
+@@ -16,7 +16,7 @@
+ 
+ # 製作流程（Miko Creation Process, MCP）：miko-core 的製作章節
+ 
+-> 層級狀態：本層已併入 miko-core（D16，2026-11-14）。miko-core 是流程的唯一權威；本文件保留為製作流程的步驟與閘門附錄，A08 自我驗收、A10 錯誤維護、A11 有界重測、A12 獨立驗收、A13 交付收工的閉環細節由 miko-core 負責，本文件只保留閘門引用與證據位置。
++> 層級狀態：本層已併入 miko-core（D16，2026-11-14）。閉環條文見 `core-closure/core-rewrite-spec.md` 的 C1～C6，與本文件 A08～A13 一一對應。miko-core 是流程的唯一權威；本文件保留為製作流程的步驟與閘門附錄，A08 自我驗收、A10 錯誤維護、A11 有界重測、A12 獨立驗收、A13 交付收工的閉環細節由 miko-core 負責，本文件只保留閘門引用與證據位置。
+ 
+ 
+ ## 0. 文件控制
+diff -ruN candidate-v0.8.0/usc-spec.md candidate-v0.8.1/usc-spec.md
+--- candidate-v0.8.0/usc-spec.md	2026-11-14 12:38:19.440229264 +0000
++++ candidate-v0.8.1/usc-spec.md	2026-11-14 12:45:17.312644584 +0000
+@@ -3,7 +3,7 @@
+ name_en: Skill Contract (SKL)
+ name_zh: 通用 Skill 契約
+ module: universal-skill-contract
+-version: 0.8.0
++version: 0.8.1
+ date: 2026-11-14
+ status: PROPOSED
+ applies_to: [skill]
+@@ -61,7 +61,7 @@
+ USC 不定義十六章、不定義閉環順序、不定義路由演算法。Skill 若需要十六章結構，一律引用 UAC。Skill 的製作與驗收仍走 UCP A00～A13。引用時只取章節骨架與欄位名稱，不得把文件架構（元件、介面、資料流）寫入 Skill 本體；Skill 若需要描述自身結構，寫在後設節，不複製 UAC 第五章。
+ 
+ ## 6. 名稱對照
+-本文件原稱 Universal Skill Contract（USC），自 0.8.0 起改稱 Skill 契約（SKL），識別碼與檔名維持 usc-spec；條文編號不變。
++本文件原稱 Universal Skill Contract（USC），自 0.8.1 起改稱 Skill 契約（SKL），識別碼與檔名維持 usc-spec；條文編號不變。
+ 
+ ## 7. 未決事項
+ 

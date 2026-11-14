@@ -1,0 +1,9 @@
+nohup: ignoring input
+verdict=PASS_WITH_FIXES findings=7 -> review/round2.json
+F-01 P2 UAC_MISSING_FIELD uac-spec.md:§3: 「問題與背景」章節的「證據」欄位未要求填寫 source_id，可能造成證據無法追溯來源。
+F-02 P2 UAC_MISSING_FIELD uac-spec.md:§5: 「流程圖」欄位允許 `NONE`，但未規定何種情況可為 NONE，可能被濫用跳過流程圖。
+F-03 P2 BOUNDARY_GAP ucp-spec.md:§5 A12: A12 規定「驗收者以冷啟動方式只讀驗收包」，但未定義冷啟動的技術條件（如：新 session、清除 context、不讀特定檔案）。
+F-04 P1 BOUNDARY_GAP ucp-spec.md:§5 A02: A02 路由判定依賴 RSL 路由表，但 UCP 未規定 RSL 路由表不存在或 route_id 缺失時的處理方式。
+F-05 P2 UAC_MISSING_FIELD uac-spec.md:§1: §1 required 欄位 `related_docs` 未規定格式，可能只填文件名稱而非可驗證的 doc_id 或路徑。
+F-06 P2 OTHER usc-spec.md:§2: USC-C3（輸入契約）要求「缺資料處理」，但 §4 P/C/J 七欄步驟表的「失敗處理」欄未明確對應缺資料情境，可能造成兩處規定銜接不一致。
+F-07 P2 ARCH_CONFLICT modules-spec.md:RSL §3: RSL R-04 規定「命中兩條時以更具體者優先」，但未定義「具體」的判定標準，可能造成不同執行者判定不一致。

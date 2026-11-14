@@ -1,0 +1,8 @@
+schema: miko-ledger-index/1
+version: 1.0.0
+counts:
+  err: 3
+  rej: 1
+  chg: 3
+rendered_at: '2026-11-14 18:44:52+08:00'
+entries_sha256: 0559f31632cd69e572dd3f8573e5f26052dc95dc43b020f1c03fa80f2c4e0a6f

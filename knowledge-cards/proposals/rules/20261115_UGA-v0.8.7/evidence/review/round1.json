@@ -1,0 +1,135 @@
+{
+  "summary": "架構候選文件存在 UAC→UCP 循環依賴、UAC 十六章缺少必要欄位、獨立驗收執行可行性未明確、熱插拔與 Adapter 被寫成文件完整而非 Runtime 已支援等問題，需修正後方可交付。",
+  "findings": [
+    {
+      "id": "F-01",
+      "category": "ARCH_CONFLICT",
+      "severity": "P0",
+      "location": "deps.yaml:edges",
+      "problem": "deps.yaml 中存在 UAC→UCP 的 run-time 依賴（最後一條 edge），與 UCP→UAC 的 build-time 依賴形成循環，違反 DAG 要求。",
+      "evidence": "edges 最後一條：{from: UAC, to: UCP, kind: run-time}；加上 {from: UCP, to: UAC, kind: build-time} 形成雙向依賴。",
+      "required_fix": "刪除 {from: UAC, to: UCP, kind: run-time} 或重新定義兩者關係為單向；UAC 作為欄位契約不應 run-time 依賴 UCP。",
+      "ac_impact": "AC-TSV-DAG（循環偵測）、AC-A07-03（回復路徑可終止）"
+    },
+    {
+      "id": "F-02",
+      "category": "BOUNDARY_GAP",
+      "severity": "P1",
+      "location": "ucp-spec.md:A12",
+      "problem": "A12 獨立驗收要求「驗收者不得為 R-BLD／R-SELF」且為「冷啟動」，但未說明在單一 AI 對話中如何實現；若無外部人員或不同 context，實質上仍是自我驗收。",
+      "evidence": "A12 禁止事項：「不得由製作者或 R-SELF 兼任」；但整份文件未定義 R-AUD 如何產生或由誰擔任（UCP-OPEN-02 仍 PENDING_DECISION）。",
+      "required_fix": "明確定義獨立驗收的執行機制：(1) 外部人員、(2) 不同對話 context、(3) 驗收代理流程，並把 UCP-OPEN-02 升級為必須決議。",
+      "ac_impact": "AC-A12-01（驗收者獨立）"
+    },
+    {
+      "id": "F-03",
+      "category": "SELF_VS_INDEPENDENT",
+      "severity": "P1",
+      "location": "ucp-spec.md:角色表",
+      "problem": "R-SELF 允許與 R-BLD 同人（但需標示），而 R-AUD 必須獨立；然而在單一 AI 對話中，若無外部機制，所有角色實際上由同一 context 扮演，自我驗收與獨立驗收區分形同虛設。",
+      "evidence": "角色表：「R-SELF 可與 R-BLD 同人但需標示」、「R-AUD 不得為 R-BLD／R-SELF」。",
+      "required_fix": "補充「獨立驗收」的可操作定義：若無法取得外部驗收者，必須標示為「SELF_PASS_ONLY」，不得升格為 AUDIT_PASS。",
+      "ac_impact": "AC-A12-01、AC-A12-02"
+    },
+    {
+      "id": "F-04",
+      "category": "RUNTIME_CLAIM",
+      "severity": "P1",
+      "location": "structure.md:adapters/",
+      "problem": "adapters/ 資料夾列出 claude-code/、manus/、github/、generic/，暗示這些 adapter 已存在或已整合，但文件未聲明這些僅為預留位置或 UNKNOWN 狀態。",
+      "evidence": "structure.md 第 2 節資料夾結構：「adapters/ ├─ claude-code/ ├─ manus/ ├─ github/ └─ generic/」。",
+      "required_fix": "在 structure.md 或 adapters/README.md 明確標示：所有 adapter 目前為 PLACEHOLDER 或 UNKNOWN，尚無 Runtime 證據。",
+      "ac_impact": "AC-A13-03（未驗證清單已列）"
+    },
+    {
+      "id": "F-05",
+      "category": "RUNTIME_CLAIM",
+      "severity": "P1",
+      "location": "modules-spec.md:LCV:H-03",
+      "problem": "H-03 規定「文件不得寫成『已支援熱插拔』」，但 structure.md 列出 adapters 卻未在主文或 README 標示「未經 Runtime 實測」，違反 H-03 精神。",
+      "evidence": "modules-spec.md LCV H-03：「文件不得寫成『已支援熱插拔』」；structure.md 未標示 adapter 為 UNKNOWN。",
+      "required_fix": "structure.md 第 2 節 adapters 下加註：「所有 adapter 為預留資料夾，尚未經 Runtime 實測，狀態 UNKNOWN」。",
+      "ac_impact": "AC-LCV-H-03（若後續定義此 AC）"
+    },
+    {
+      "id": "F-06",
+      "category": "UAC_MISSING_FIELD",
+      "severity": "P1",
+      "location": "uac-spec.md:第 2 章",
+      "problem": "第 2 章「名詞與定義」必要欄位列出 term_id、term_zh、term_en、definition、source_id，但缺少「禁用同義詞」欄位（同章敘述中提及但未列於必要欄位）。",
+      "evidence": "第 2 章：「每個名詞至少包含：term_id、繁中名、英文識別名、定義、來源、禁用同義詞」vs.「必要欄位：term_id、term_zh、term_en、definition、source_id」，禁用同義詞未列。",
+      "required_fix": "將 `forbidden_synonyms` 加入必要欄位清單，或明確標示為選填。",
+      "ac_impact": "AC-A03-01（必填欄位 100% 列出）"
+    },
+    {
+      "id": "F-07",
+      "category": "UAC_MISSING_FIELD",
+      "severity": "P2",
+      "location": "uac-spec.md:第 13 章",
+      "problem": "第 13 章「測試案例」必要欄位列出 case_id、輸入、expected、forbidden、執行狀態，但缺少「實際輸出」與「對應 AC ID」欄位，難以追溯。",
+      "evidence": "第 13 章：「每個案例至少包含：case_id、輸入、expected、forbidden、執行狀態」，未列 actual_output、related_ac_id。",
+      "required_fix": "補充 `actual_output`（或標示為執行後填寫）與 `related_ac_id` 欄位。",
+      "ac_impact": "AC-A06-02（每條 AC 有測試案例）、追溯性"
+    },
+    {
+      "id": "F-08",
+      "category": "BOUNDARY_GAP",
+      "severity": "P2",
+      "location": "ucp-spec.md:A11",
+      "problem": "A11 重測上限 3 輪，但未定義「輪次」的計數邊界：是單一 AC 失敗重測計為一輪，還是整輪 AC 全跑計為一輪？不同解讀會導致上限差異。",
+      "evidence": "A11 操作要求：「重跑原失敗項與一題新項；重測輪次上限 3」，未明確計數方式。",
+      "required_fix": "補充定義：「一輪」指對所有受影響 AC 執行一次完整重測，不論有幾條失敗。",
+      "ac_impact": "AC-A11-02（輪次 ≤3）"
+    },
+    {
+      "id": "F-09",
+      "category": "BOUNDARY_GAP",
+      "severity": "P2",
+      "location": "ucp-spec.md:A12",
+      "problem": "A12 重驗上限 2 輪與 A11 重測上限 3 輪的計數是否獨立？若 A11 已用 3 輪後進 A12 失敗，是否回 A10 重新計數？文件未明確。",
+      "evidence": "A11：「重測輪次上限 3」；A12：「重新送驗，上限 2 輪」、「AUDIT_FAIL → 回 A10（計入輪次）」，但未說明兩者是否共用計數器。",
+      "required_fix": "明確：A11 與 A12 各自計數，或共用總上限（如總計 5 輪）。",
+      "ac_impact": "AC-A11-02、AC-A12-03"
+    },
+    {
+      "id": "F-10",
+      "category": "A_UAC_OVERLAP",
+      "severity": "P2",
+      "location": "ucp-spec.md:A06 vs uac-spec.md:第 12 章",
+      "problem": "UCP A06 定義 AC 表欄位（ID、方法、證據、判定者），UAC 第 12 章亦定義 AC 必要欄位（ac_id、condition、method、evidence、judge_role、mandatory）。兩處欄位名略有不同（judge_role vs 判定者、mandatory 僅 UAC 有），可能導致實作不一致。",
+      "evidence": "A06 輸出：「IO 表與 AC 表（每條 AC 有 ID、方法、證據、判定者）」；UAC 12：「ac_id、condition、method、evidence、judge_role、mandatory」。",
+      "required_fix": "統一欄位名稱；UCP 應引用 UAC 欄位定義，不自行列出；或在 UCP 聲明「欄位以 UAC 12 章為準」。",
+      "ac_impact": "AC-A06-01、AC-UAC-12-01"
+    }
+  ],
+  "uac_missing": [
+    {
+      "chapter": 2,
+      "missing_fields": [
+        "forbidden_synonyms（敘述有但必要欄位未列）"
+      ]
+    },
+    {
+      "chapter": 13,
+      "missing_fields": [
+        "actual_output",
+        "related_ac_id"
+      ]
+    }
+  ],
+  "must_fix_before_delivery": [
+    "F-01",
+    "F-02",
+    "F-03"
+  ],
+  "verdict": "PASS_WITH_FIXES",
+  "_meta": {
+    "model": "claude-opus-4-5-20251101",
+    "round": "round1",
+    "usage": {
+      "input": 17865,
+      "output": 3099
+    },
+    "stop_reason": "end_turn"
+  }
+}

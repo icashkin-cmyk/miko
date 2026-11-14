@@ -1,0 +1,322 @@
+diff -ruN candidate-v0.6.2/VERSION candidate-v0.7.0/VERSION
+--- candidate-v0.6.2/VERSION	2026-11-14 11:14:07.355159249 +0000
++++ candidate-v0.7.0/VERSION	2026-11-14 12:10:07.165871552 +0000
+@@ -1 +1 @@
+-0.6.2
++0.7.0
+diff -ruN candidate-v0.6.2/acceptance-matrix.md candidate-v0.7.0/acceptance-matrix.md
+--- candidate-v0.6.2/acceptance-matrix.md	2026-11-14 11:14:07.355979082 +0000
++++ candidate-v0.7.0/acceptance-matrix.md	2026-11-14 12:10:07.165662027 +0000
+@@ -3,7 +3,7 @@
+ name_en: Acceptance Matrix
+ name_zh: 驗收矩陣
+ module: testing-and-validation
+-version: 0.6.2
++version: 0.7.0
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.6.2/architecture/uga-architecture.md candidate-v0.7.0/architecture/uga-architecture.md
+--- candidate-v0.6.2/architecture/uga-architecture.md	1970-01-01 00:00:00.000000000 +0000
++++ candidate-v0.7.0/architecture/uga-architecture.md	2026-11-14 12:10:25.373669522 +0000
+@@ -0,0 +1,40 @@
++# MIKO Universal Governance Architecture 架構書（候選）
++
++- 文件狀態：PROPOSED（候選，未升格）
++- 內部版本：0.7.0
++- 對外封裝：UGA ZIP v1.0.2（見交付報告）
++- 編號系統：ARC，與 UCP 的 A、UAC 的章節號、USC 的 S 各自獨立
++
++## ARC-1 系統元件與責任配置
++
++| component_id | 責任 | 不負責 | owner_role |
++|---|---|---|---|
++| UCP | AI 如何執行：A00～A13 步驟、順序、閘門、交接動作、失敗出口、閉環 | 元件、介面、資料流、欄位定義 | R-CONV |
++| 架構書 | 系統如何組成：元件、責任、介面、連接、資料流、失效設計、驗收架構 | 執行順序、欄位格式 | R-DESIGN |
++| UAC | 一般文件契約：十六章、必要欄位、格式 | 製作步驟、系統結構 | R-DESIGN |
++| USC | Skill 契約：九契約、四節、七欄、P／C／J | 通用流程、系統架構 | R-DESIGN |
++| 帳本 | 全域三帳：錯誤、否決、變更；去重鍵合併 | 規則定義 | R-EVD |
++| 工具 | ledger、build_packet、check_version、skill_lint、behavior_checks | 規則裁決 | R-EVD |
++| Adapter | Runtime 接入（claude-code、manus、github、generic） | 任何已生效宣稱 | R-IMPL |
++
++## ARC-2 系統介面與連接關係
++
++UCP 對 UAC 的介面是契約引用：只取章節標題、編號、欄位名與 AC ID，不取內容定義。UCP 對 USC 的介面相同。架構書對 UCP 的介面是結構查詢：UCP 需要確認某步驟輸出屬於哪個元件時，讀 ARC-1 與 ARC-3，不自建元件表。帳本對全部元件的介面是 `entries.json` 與去重鍵；工具對交付的介面是 MANIFEST 與驗收包。
++
++## ARC-3 系統資料流與依賴關係
++
++資料流為：任務卡 → 契約鎖定 → 文件骨架 → 內容 → 證據 → 驗收包 → 定案。依賴關係是單向的：UCP 依賴 UAC 與 USC 的格式，UAC 不依賴 UCP 的步驟；架構書不被 UCP 依賴，只有查詢。附錄 A 的章節對步驟對應為單向，因此不存在 UCP → UAC → 附錄 A → UCP 的環。
++
++## ARC-4 系統失效模式與復原設計
++
++| 失效 | 設計回應 |
++|---|---|
++| 契約讀不到 | 標 NOT_READ，只用已讀版本並在文件標示 |
++| 契約版本衝突 | 停止相依步驟，回報 R-CONV 裁決 |
++| 驗收 FAIL | 回 A10 最小維護，只修受影響單元，再走 A11 有界重測 |
++| 驗收包不符 | BLOCKED，重建 MANIFEST 後重驗 |
++| Runtime 未實測 | 維持 UNKNOWN，禁止宣稱已支援 |
++
++## ARC-5 系統驗收架構
++
++驗收分三層：文件層用十二個檢查器與二十二題負向回歸；封裝層用 MANIFEST 驗證；行為層由 L1 以上獨立驗收者依 A12 逐條判定，目前行為層五項仍為 NOT_RUN。架構書本身只定義驗收架構，不執行驗收。
+diff -ruN candidate-v0.6.2/index.md candidate-v0.7.0/index.md
+--- candidate-v0.6.2/index.md	2026-11-14 11:14:07.354705715 +0000
++++ candidate-v0.7.0/index.md	2026-11-14 12:10:07.165576914 +0000
+@@ -3,7 +3,7 @@
+ name_en: MIKO Universal Governance Architecture Index
+ name_zh: MIKO 通用治理架構總索引
+ module: governance
+-version: 0.6.2
++version: 0.7.0
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.6.2/ledger-spec.md candidate-v0.7.0/ledger-spec.md
+--- candidate-v0.6.2/ledger-spec.md	2026-11-14 11:14:07.354959786 +0000
++++ candidate-v0.7.0/ledger-spec.md	2026-11-14 12:10:07.165757385 +0000
+@@ -3,7 +3,7 @@
+ name_en: Correction Ledger
+ name_zh: 修正帳本
+ module: correction-ledger
+-version: 0.6.2
++version: 0.7.0
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: NONE
+diff -ruN candidate-v0.6.2/matrix.md candidate-v0.7.0/matrix.md
+--- candidate-v0.6.2/matrix.md	2026-11-14 11:14:07.354414605 +0000
++++ candidate-v0.7.0/matrix.md	2026-11-14 12:10:07.165371289 +0000
+@@ -3,7 +3,7 @@
+ name_en: Layer Responsibility Matrix
+ name_zh: 分層責任矩陣
+ module: governance
+-version: 0.6.2
++version: 0.7.0
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+diff -ruN candidate-v0.6.2/modules-spec.md candidate-v0.7.0/modules-spec.md
+--- candidate-v0.6.2/modules-spec.md	2026-11-14 11:14:07.354056848 +0000
++++ candidate-v0.7.0/modules-spec.md	2026-11-14 12:10:07.165155055 +0000
+@@ -3,7 +3,7 @@
+ name_en: Cross-cutting Modules (Routing, Lifecycle, Testing)
+ name_zh: 橫向模組規格（路由、生命週期、測試）
+ module: routing-and-selection|lifecycle-and-versioning|testing-and-validation
+-version: 0.6.2
++version: 0.7.0
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+diff -ruN candidate-v0.6.2/readme-templates.md candidate-v0.7.0/readme-templates.md
+--- candidate-v0.6.2/readme-templates.md	2026-11-14 11:14:07.354586097 +0000
++++ candidate-v0.7.0/readme-templates.md	2026-11-14 12:10:07.165495032 +0000
+@@ -3,7 +3,7 @@
+ name_en: Module README Templates
+ name_zh: 各模組 README 模板
+ module: governance
+-version: 0.6.2
++version: 0.7.0
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.6.2/refactor/assessment.md candidate-v0.7.0/refactor/assessment.md
+--- candidate-v0.6.2/refactor/assessment.md	1970-01-01 00:00:00.000000000 +0000
++++ candidate-v0.7.0/refactor/assessment.md	2026-11-14 12:10:26.959659340 +0000
+@@ -0,0 +1,63 @@
++# UGA 三層契約與架構責任重構評估（v0.6.2 → v0.7.0）
++
++- 文件狀態：PROPOSED
++- 範圍：局部重構，保留原版本，不推倒重寫，不升格 Canonical
++
++## 一、差異分析
++
++| 位置 | 重構前 | 重構後 | 解決的問題 |
++|---|---|---|---|
++| UCP A03 | 逐章列出必填欄位，等於重抄 UAC | 只鎖定契約版本與雜湊，欄位以引用位置表示 | 欄位定義重複 |
++| UCP A04 | 流程與章節雙向對應，系統流程也納入 | 製作流程與系統流程分離，對應只對文件章節 | 循環依賴 |
++| UCP A05 | 章節編號與契約一致（隱含 UCP 命名章節） | 章節標題與編號以 UAC 或 USC 為唯一來源 | 命名權重疊 |
++| UCP A06 | AC 可判定、有測題 | 只做任務級實例化，流程 AC 只驗執行與證據，內容判定引用契約 AC ID | 判定標準重複 |
++| UAC 第 5、6、7 章 | 只有欄位清單 | 各加責任邊界，明示為系統流程、元件介面、資料流的唯一權威 | 結構權威不明 |
++| UAC 附錄 A | 章節與步驟互相對應 | 改為單向，章節指出產生步驟，不要求步驟被章節承接 | 循環依賴 |
++| USC 第 5 節 | 只說引用 UAC | 補明引用只取骨架與欄位名，不得把文件架構寫入 Skill 本體 | 邊界模糊 |
++| A12 | 獨立驗收、逐條判定 | 不變，保留 | 無 |
++
++## 二、責任矩陣
++
++| 維度 | 定義者 | 執行者 | 驗證者 | 唯一權威檔案 |
++|---|---|---|---|---|
++| 執行 | UCP | 製作 AI | A12 獨立驗收者 | ucp-spec.md |
++| 結構 | 架構書 | 架構書撰寫者 | R-DESIGN 與 R-AUD | architecture/uga-architecture.md |
++| 產物契約 | UAC | UCP A03 引用 | 文件檢查器 | uac-spec.md |
++| Skill 契約 | USC | skill_lint | R-DESIGN | usc-spec.md |
++| 紀錄 | 帳本規格 | ledger.py | R-EVD | ledger-spec.md |
++
++## 三、依賴關係圖
++
++```mermaid
++flowchart LR
++    UCP -->|引用欄位與章節| UAC
++    UCP -->|引用四節與七欄| USC
++    UCP -.->|查詢元件與資料流| ARC
++    UAC -->|附錄A 單向| UCP
++    USC -->|引用骨架| UAC
++    ARC -->|不依賴 UCP| NONE[(無)]
++```
++
++重構前是 UCP → UAC 第 5 章 → 附錄 A → UCP 的環；重構後附錄 A 只保留單向箭頭，環消失。
++
++## 四、最小修改方案
++
++只改七個位置：UCP 的 A03、A04、A05、A06，UAC 的第 5、6、7 章與附錄 A，USC 第 5 節；新增一份架構書候選。其餘條文、編號、授權、Owner、Writer 一律不動。
++
++## 五、受影響 AC
++
++| AC | 變化 |
++|---|---|
++| AC-A03-01 | 改為驗契約版本鎖定與未重抄 |
++| AC-A04-04 | 新增，驗對應表不含系統流程 |
++| AC-A06-04 | 新增，驗流程 AC 未複製契約判定 |
++| AC-A12-01～06 | 不變 |
++| 總數 | 53 → 55 條 |
++
++## 六、回歸與回復
++
++回歸：十二個檢查器 PASS，二十二題負向回歸 PASS，新增 R-22 驗附錄 A 單向規則會被攔截。回復方式：v0.6.2 原樣保留，回退只需切回 `candidate-v0.6.2`，diff 見 `diff/v0.6.2_to_v0.7.0.patch`。
++
++## 七、未確認事項（UNKNOWN）
++
++架構書是否取代 UAC 第 5 至 7 章、還是兩者並存而 UAC 只留格式；命名原則是否列為正式決策；miko-core 改寫後是否保留四段與對齊行。
+diff -ruN candidate-v0.6.2/structure.md candidate-v0.7.0/structure.md
+--- candidate-v0.6.2/structure.md	2026-11-14 11:14:07.354236155 +0000
++++ candidate-v0.7.0/structure.md	2026-11-14 12:10:07.165251484 +0000
+@@ -3,7 +3,7 @@
+ name_en: MIKO Universal Governance Architecture - Structure, Naming and Templates
+ name_zh: MIKO 通用治理架構－結構、命名與模板
+ module: governance
+-version: 0.6.2
++version: 0.7.0
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+diff -ruN candidate-v0.6.2/uac-spec.md candidate-v0.7.0/uac-spec.md
+--- candidate-v0.6.2/uac-spec.md	2026-11-14 11:14:07.353794790 +0000
++++ candidate-v0.7.0/uac-spec.md	2026-11-14 12:10:07.166558056 +0000
+@@ -3,7 +3,7 @@
+ name_en: Universal Artifact Contract
+ name_zh: 通用產物契約
+ module: universal-artifact-contract
+-version: 0.6.2
++version: 0.7.0
+ date: 2026-11-14
+ status: PROPOSED
+ applies_to: [spec, architecture, process-design, governance-rule, router-doc, test-spec, integration-upgrade]
+@@ -100,6 +100,7 @@
+ 必要欄位：`open_id`、描述、影響、負責方、解除條件、狀態。
+ 
+ ## 附錄 A：章節與 UCP 步驟對應
++對應方向為單向：每個章節指出由哪個製作步驟產生，一個章節可對多個步驟；不要求每個步驟都有章節承接，也不得反向要求 UCP 定義章節或元件。此單向規則用來斷開 UCP A04、本章第 5 章與本附錄之間的循環。
+ 
+ | 章節 | 對應 UCP 步驟 |
+ |---|---|
+diff -ruN candidate-v0.6.2/ucp-spec.md candidate-v0.7.0/ucp-spec.md
+--- candidate-v0.6.2/ucp-spec.md	2026-11-14 11:14:07.355667016 +0000
++++ candidate-v0.7.0/ucp-spec.md	2026-11-14 12:10:07.166381400 +0000
+@@ -3,7 +3,7 @@
+ name_en: Universal Creation Process
+ name_zh: 通用製作流程
+ module: universal-creation-process
+-version: 0.6.2
++version: 0.7.0
+ date: 2026-11-14
+ status: PROPOSED
+ owner_role: R-CONV
+@@ -180,14 +180,14 @@
+ 
+ ### A03 契約選擇與欄位鎖定
+ 
+-- **目的**：鎖定必須出現的章節與欄位，作為自我驗收依據。
++- **目的**：鎖定本次任務適用的契約版本，欄位清單以契約為唯一來源，UCP 不重抄。
+ - **輸入**：路由決策、UAC／USC 契約版本。
+-- **輸出**：欄位鎖定清單（必填欄位 ID、選填欄位、格式規則、契約版本）。
++- **輸出**：契約版本鎖定紀錄（契約 ID、版本、雜湊、適用章節範圍）；必填欄位以 UAC §7、§12 與 USC-C3／C4／C8 為唯一來源，本步只記引用位置。
+ - **前置條件**：A02 完成；契約版本已讀取。
+-- **操作要求**：逐章列出必填欄位；省略必填須寫理由並經 R-CONV 同意；鎖定後不得中途默默增刪。
++- **操作要求**：讀取契約並記錄版本與雜湊；列出本次適用的章節範圍，欄位名稱不重抄；省略必填須寫理由並經 R-CONV 同意；鎖定後不得中途默默增刪。
+ - **禁止事項**：不得刪減必填欄位；不得用「其他」「略」替代；不得在驗收後改鎖定清單。
+ - **檢查點**：鎖定清單與契約版本一致；每欄有 ID。
+-- **Acceptance Criteria**：`AC-A03-01` 必填欄位 100% 列出；`AC-A03-02` 每個省略有理由；`AC-A03-03` 契約版本已記錄。
++- **Acceptance Criteria**：`AC-A03-01` 契約版本與雜湊已鎖定，欄位清單以引用位置表示、未重抄；`AC-A03-02` 每個省略有理由；`AC-A03-03` 契約版本已記錄。
+ - **Failure Handling**：契約版本不明 → `NOT_READ`，改用已讀版本並標示。
+ - **Recovery**：重讀契約或降級為候選輸出。
+ - **回歸測題（例外）**：`RT-A03`；測題內容與結果見 `tests/` 與 `results_*.json`，正文只留編號，不列測試細節。
+@@ -201,10 +201,10 @@
+ - **輸入**：欄位鎖定清單、任務卡。
+ - **輸出**：流程草案（步驟序列、每步 IO、分支、結束條件）。
+ - **前置條件**：A03 完成。
+-- **操作要求**：先寫流程再寫章節；每個章節可追溯到一個流程步驟；推導順序固定為 D-01 流程 → D-02 章節 → D-03 欄位 → D-04 格式 → D-05 IO → D-06 AC → D-07 失敗出口。
++- **操作要求**：先寫製作流程再寫文件章節；每個章節可追溯到一個製作步驟；推導順序固定為 D-01 流程 → D-02 章節 → D-03 欄位 → D-04 格式 → D-05 IO → D-06 AC → D-07 失敗出口。製作流程與系統流程分開：系統流程與元件、介面、資料流屬架構書，UCP 不定義也不對應。
+ - **禁止事項**：不得先寫章節再回填流程；不得有無流程步驟支撐的章節；不得有無章節承接的流程步驟。
+ - **檢查點**：流程步驟與章節雙向對應表完整。
+-- **Acceptance Criteria**：`AC-A04-01` 每章節可追溯流程步驟；`AC-A04-02` 每流程步驟有章節承接；`AC-A04-03` D-01～D-07 順序有紀錄。
++- **Acceptance Criteria**：`AC-A04-01` 每章節可追溯流程步驟；`AC-A04-02` 每流程步驟有章節承接；`AC-A04-03` D-01～D-07 順序有紀錄；`AC-A04-04` 對應表只含文件章節，未出現系統流程、元件或介面。
+ - **Failure Handling**：對應不上 → `CONFLICT`，回 A04 重排。
+ - **Recovery**：合併或拆分步驟後重跑對應。
+ - **回歸測題（例外）**：`RT-A04`；測題內容與結果見 `tests/` 與 `results_*.json`，正文只留編號，不列測試細節。
+@@ -214,11 +214,11 @@
+ 
+ ### A05 結構實例化
+ 
+-- **目的**：把流程轉成實際文件結構（標題、章節、欄位、格式）。
++- **目的**：把製作流程轉成文件骨架，章節標題與編號取自契約，UCP 不自行命名。
+ - **輸入**：流程草案、欄位鎖定清單、契約模板。
+ - **輸出**：文件骨架（標題層級、章節、表格欄位、格式範例）。
+ - **前置條件**：A04 完成。
+-- **操作要求**：標題層級只用 `#`～`####`；章節編號與契約一致；表格欄位順序與契約一致；日期 `YYYY-MM-DD`、時間 `HH:MM:SS+08:00`。
++- **操作要求**：標題層級只用 `#`～`####`；章節標題與編號以 UAC 或 USC 為唯一來源，本步只決定適用範圍；表格欄位順序與契約一致；日期 `YYYY-MM-DD`、時間 `HH:MM:SS+08:00`。
+ - **禁止事項**：不得自創章節；不得改欄位順序；不得以圖片取代文字欄位。
+ - **檢查點**：結構檢查腳本通過。
+ - **Acceptance Criteria**：`AC-A05-01` 十六章或四節齊全；`AC-A05-02` 欄位名與契約逐字一致；`AC-A05-03` 格式範例存在。
+@@ -235,10 +235,10 @@
+ - **輸入**：文件骨架、流程草案。
+ - **輸出**：IO 表與 AC 表；欄位名稱一律沿用 UAC §7、§12 與 USC-C3／C4／C8 的定義，不另命名。
+ - **前置條件**：A05 完成。
+-- **操作要求**：AC 必須可被第三方用文件與工具判定；每條 AC 對應至少一個測試案例；AC 定稿後不得放寬。
++- **操作要求**：本步只做任務級 IO 與 AC 實例化，不重複定義契約判定標準；流程 AC 只驗執行完成與證據存在，內容判定引用 UAC 或 USC 的 AC ID；AC 必須可被第三方用文件與工具判定；每條 AC 對應至少一個測試案例；AC 定稿後不得放寬。
+ - **禁止事項**：不得用無判準詞（完整、正確、良好）；不得讓製作者同時是唯一判定者；不得在驗收後放寬 AC。
+ - **檢查點**：每條 AC 有 ID、方法、證據、判定者；每條 AC 有測試案例。
+-- **Acceptance Criteria**：`AC-A06-01` AC 覆蓋所有必填欄位；`AC-A06-02` 每條 AC 有測試案例；`AC-A06-03` 獨立驗收時判定者非製作者。
++- **Acceptance Criteria**：`AC-A06-01` AC 覆蓋所有必填欄位；`AC-A06-02` 每條 AC 有測試案例；`AC-A06-03` 獨立驗收時判定者非製作者；`AC-A06-04` 流程 AC 未複製契約判定標準，引用處有 AC ID。
+ - **Failure Handling**：AC 不可判定 → `SELF_FAIL`，改寫。
+ - **Recovery**：把主觀詞改為可觀察條件，並記錄為新版本 AC（不得就地覆蓋）。
+ - **回歸測題（例外）**：`RT-A06`；測題內容與結果見 `tests/` 與 `results_*.json`，正文只留編號，不列測試細節。
+@@ -401,7 +401,7 @@
+ 
+ ## 10. 驗收條件彙總
+ 
+-見第 5 節，共 53 條（A00 7 條、A13 5 條、A10 5 條，A12 共 6 條，其餘每步 3 條）。
++見第 5 節，共 55 條（A00 7 條、A13 5 條、A10 5 條、A04 4 條、A06 4 條，A12 共 6 條，其餘每步 3 條）。
+ 
+ ## 11. 回歸測試
+ 
+diff -ruN candidate-v0.6.2/usc-spec.md candidate-v0.7.0/usc-spec.md
+--- candidate-v0.6.2/usc-spec.md	2026-11-14 11:14:07.353931255 +0000
++++ candidate-v0.7.0/usc-spec.md	2026-11-14 12:10:07.166675044 +0000
+@@ -3,7 +3,7 @@
+ name_en: Universal Skill Contract
+ name_zh: 通用 Skill 契約
+ module: universal-skill-contract
+-version: 0.6.2
++version: 0.7.0
+ date: 2026-11-14
+ status: PROPOSED
+ applies_to: [skill]
+@@ -58,7 +58,7 @@
+ 
+ ## 5. 與 UAC／UCP 的邊界
+ 
+-USC 不定義十六章、不定義閉環順序、不定義路由演算法。Skill 若需要十六章結構，一律引用 UAC。Skill 的製作與驗收仍走 UCP A00～A13。
++USC 不定義十六章、不定義閉環順序、不定義路由演算法。Skill 若需要十六章結構，一律引用 UAC。Skill 的製作與驗收仍走 UCP A00～A13。引用時只取章節骨架與欄位名稱，不得把文件架構（元件、介面、資料流）寫入 Skill 本體；Skill 若需要描述自身結構，寫在後設節，不複製 UAC 第五章。
+ 
+ ## 6. 未決事項
+ 

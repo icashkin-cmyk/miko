@@ -1,0 +1,843 @@
+diff -ruN candidate-v0.2/acceptance-matrix.md candidate-v0.2.1/acceptance-matrix.md
+--- candidate-v0.2/acceptance-matrix.md	1970-01-01 00:00:00.000000000 +0000
++++ candidate-v0.2.1/acceptance-matrix.md	2026-11-14 07:58:45.238816436 +0000
+@@ -0,0 +1,91 @@
++---
++doc_id: uga-acceptance-matrix
++name_en: Acceptance Matrix
++name_zh: 驗收矩陣
++module: testing-and-validation
++version: 0.2.1
++date: 2026-11-14
++status: PROPOSED
++---
++
++# 驗收矩陣（v0.2.1）
++
++## 狀態定義
++
++| 狀態 | 意義 |
++|---|---|
++| `PASS` | 由本輪檢查器實際執行並通過（附檢查器 ID） |
++| `NOT_RUN` | 行為層條件，本輪未由獨立驗收者實際執行 |
++| `UNKNOWN` | 無可靠證據 |
++| `BLOCKED` | 缺授權或外部依賴 |
++
++## UCP 42 條 AC
++
++| 步驟 | AC | 方法 | 證據 | 判定者 | 狀態 |
++|---|---|---|---|---|---|
++| A00 | AC-A00-01 請求子項有任務條目 | 行為觀察 | task-card | R-AUD | `NOT_RUN` |
++| A00 | AC-A00-02 禁止項與授權已列 | 行為觀察 | task-card | R-AUD | `NOT_RUN` |
++| A00 | AC-A00-03 核心狀態與計數器已標 | 文件檢視 | 本文件 front matter `runtime_verified` | R-SELF | `PASS` |
++| A01 | AC-A01-01 來源登錄表欄位齊全 | 行為觀察 | sources.json | R-AUD | `NOT_RUN` |
++| A01 | AC-A01-02 每個 NOT_READ 有原因 | 行為觀察 | sources.json | R-AUD | `NOT_RUN` |
++| A01 | AC-A01-03 讀取時間已記錄 | 行為觀察 | sources.json | R-AUD | `NOT_RUN` |
++| A02 | AC-A02-01 唯一 route_id | TSV-ROUTE | contract.yaml routes | R-SELF | `PASS` |
++| A02 | AC-A02-02 契約選擇有理由 | 行為觀察 | routing.json | R-AUD | `NOT_RUN` |
++| A02 | AC-A02-03 無未路由產物 | TSV-ROUTE | routes 9 條涵蓋 8 類 | R-SELF | `PASS` |
++| A03 | AC-A03-01 必填欄位 100% 列出 | TSV-CONTRACT | contract.yaml | R-SELF | `PASS` |
++| A03 | AC-A03-02 省略有理由 | 行為觀察 | field-lock.json | R-AUD | `NOT_RUN` |
++| A03 | AC-A03-03 契約版本已記錄 | 文件檢視 | front matter | R-SELF | `PASS` |
++| A04 | AC-A04-01 章節可追溯流程 | 人工對照 | uac 附錄 A | R-AUD | `NOT_RUN` |
++| A04 | AC-A04-02 步驟有章節承接 | 人工對照 | ucp §4 與 uac 附錄 A | R-AUD | `NOT_RUN` |
++| A04 | AC-A04-03 D-01～D-07 有紀錄 | 文件檢視 | ucp A04 | R-SELF | `PASS` |
++| A05 | AC-A05-01 十六章／四節齊全 | TSV-STRUCT | 16/16、9 契約、4 節 | R-SELF | `PASS` |
++| A05 | AC-A05-02 欄位名逐字一致 | TSV-CONTRACT | 十六章欄位比對 | R-SELF | `PASS` |
++| A05 | AC-A05-03 格式範例存在 | 文件檢視 | uac 附錄、readme-templates | R-SELF | `PASS` |
++| A06 | AC-A06-01 AC 覆蓋必填欄位 | TSV-CONTRACT | contract.yaml | R-SELF | `PASS` |
++| A06 | AC-A06-02 每條 AC 有測試案例 | 人工對照 | 本矩陣＋regression | R-AUD | `NOT_RUN` |
++| A06 | AC-A06-03 判定者非製作者 | 人工對照 | 本矩陣 judge_role | R-AUD | `NOT_RUN` |
++| A07 | AC-A07-01 每步至少一失敗出口 | TSV-EXIT | 14/14 | R-SELF | `PASS` |
++| A07 | AC-A07-02 重試上限有限 | TSV-EXIT | budget 3／2 | R-SELF | `PASS` |
++| A07 | AC-A07-03 回復路徑可終止 | TSV-DAG＋人工 | 終止性說明 | R-SELF | `PASS` |
++| A08 | AC-A08-01 覆蓋 100% AC | 行為觀察 | self-acceptance.json | R-AUD | `NOT_RUN` |
++| A08 | AC-A08-02 無空結果 | 行為觀察 | self-acceptance.json | R-AUD | `NOT_RUN` |
++| A08 | AC-A08-03 只用自我層標籤 | 行為觀察 | self-acceptance.json | R-AUD | `NOT_RUN` |
++| A09 | AC-A09-01 缺口 100% 有決定 | 行為觀察 | reinforcement.json | R-AUD | `NOT_RUN` |
++| A09 | AC-A09-02 補強有來源依據 | 行為觀察 | reinforcement.json | R-AUD | `NOT_RUN` |
++| A09 | AC-A09-03 AC 未放寬 | 人工對照 | v0.1→v0.2.1 diff | R-AUD | `NOT_RUN` |
++| A10 | AC-A10-01 每輪有 diff | 檔案檢視 | diff/ | R-SELF | `PASS` |
++| A10 | AC-A10-02 變更有理由 | 檔案檢視 | 本文件修正紀錄 | R-SELF | `PASS` |
++| A10 | AC-A10-03 歷史未覆寫 | 檔案檢視 | v0.1、v0.2 保留 | R-SELF | `PASS` |
++| A11 | AC-A11-01 回歸 100% 有結果 | TSV-REGRESSION | 10/10 | R-SELF | `PASS` |
++| A11 | AC-A11-02 retest_round ≤3 | TSV-EXIT | 本輪 2 輪 | R-SELF | `PASS` |
++| A11 | AC-A11-03 無 FAIL 才進 A12 | 流程紀錄 | 本輪檢查結果 | R-SELF | `PASS` |
++| A12 | AC-A12-01 驗收者隔離 ≥L1 | 人工檢視 | Claude API 冷啟動（L2） | R-AUD | `NOT_RUN` |
++| A12 | AC-A12-02 逐條 AC 判定 | 人工檢視 | 本矩陣 | R-AUD | `NOT_RUN` |
++| A12 | AC-A12-03 標籤與等級一致 | 人工檢視 | round1/round2/round3 | R-AUD | `NOT_RUN` |
++| A13 | AC-A13-01 MANIFEST 驗證通過 | sha256sum -c | MANIFEST.sha256 | R-EVD | `PASS` |
++| A13 | AC-A13-02 任務四態已寫 | 文件檢視 | 收工報告 | R-SELF | `PASS` |
++| A13 | AC-A13-03 未驗證與困難卡已列 | 文件檢視 | 收工報告 | R-SELF | `PASS` |
++
++統計：`PASS` 22 條、`NOT_RUN` 20 條、`UNKNOWN` 0 條、`BLOCKED` 0 條。`NOT_RUN` 全部屬行為層，需在正式採用前由 L1 以上驗收者實跑。
++
++## RSL／TSV AC
++
++| AC | 方法 | 狀態 |
++|---|---|---|
++| AC-RSL-01 八類以上有路由 | TSV-ROUTE | `PASS` |
++| AC-RSL-02 每條有契約與驗收器 | TSV-ROUTE | `PASS` |
++| AC-RSL-03 無循環路由 | TSV-DAG | `PASS` |
++| AC-RSL-04 路由 ID 唯一 | TSV-ROUTE | `PASS` |
++| AC-TSV-01 11 檢查器可執行 | 實跑 | `PASS`（tsv_check.py 10 個＋regression.py 1 個） |
++| AC-TSV-02 結果可重現 | 重跑 | `PASS` |
++| AC-TSV-03 失敗有出口 | TSV-EXIT | `PASS` |
++| AC-TSV-04 結果機器可讀 | JSON | `PASS` |
++
++## LCV／Runtime
++
++| 項目 | 方法 | 狀態 |
++|---|---|---|
++| 版本、快照、退役規則存在 | TSV-REG | `PASS` |
++| 熱插拔三項證據規則存在 | TSV-RUNTIME | `PASS` |
++| 實際熱插拔可用 | 實測 | `UNKNOWN`（無 Runtime 證據） |
++| Claude Code／Manus／GitHub 實際支援 | 實測 | `UNKNOWN`（未實測） |
+diff -ruN candidate-v0.2/contract.yaml candidate-v0.2.1/contract.yaml
+--- candidate-v0.2/contract.yaml	2026-11-14 07:57:49.167214227 +0000
++++ candidate-v0.2.1/contract.yaml	2026-11-14 07:58:12.932039317 +0000
+@@ -1,5 +1,5 @@
+ schema: miko-contract-registry/1
+-version: 0.2.0
++version: 0.2.1
+ date: 2026-11-14
+ 
+ ucp:
+@@ -27,7 +27,7 @@
+   chapters:
+     - {chapter: 1, title: 目的與範圍, required: [doc_id, name_en, name_zh, module, version, date, status, owner_role, supersedes, related_docs]}
+     - {chapter: 2, title: 名詞與定義, required: [term_id, term_zh, term_en, definition, source_id, forbidden_synonyms]}
+-    - {chapter: 3, title: 問題與背景, required: [現況, 問題陳述, 證據, 影響範圍, 不處理的後果, 既有嘗試]}
++    - {chapter: 3, title: 問題與背景, required: [現況, 問題陳述, evidence_text, evidence_source_id, 影響範圍, 不處理的後果, 既有嘗試]}
+     - {chapter: 4, title: 目標狀態, required: [目標, 可量測指標, 與現況差距, 成功判準, 非目標]}
+     - {chapter: 5, title: 流程或架構, required: [流程步驟, 順序與分支, 邊界, UCP 步驟 ID, 異常分支去向, 流程圖]}
+     - {chapter: 6, title: 元件與責任, required: [component_id, responsibility, not_responsible, owner_role, inputs, outputs, single_owner]}
+diff -ruN candidate-v0.2/index.md candidate-v0.2.1/index.md
+--- candidate-v0.2/index.md	1970-01-01 00:00:00.000000000 +0000
++++ candidate-v0.2.1/index.md	2026-11-14 07:58:32.205976788 +0000
+@@ -0,0 +1,39 @@
++---
++doc_id: uga-index
++name_en: MIKO Universal Governance Architecture Index
++name_zh: MIKO 通用治理架構總索引
++module: governance
++version: 0.2.1
++date: 2026-11-14
++status: PROPOSED
++---
++
++# MIKO Universal Governance Architecture 總索引
++
++| 層 | 模組 | 文件 | 狀態 |
++|---|---|---|---|
++| L0 | 治理層 GOV | gov-index.md、gov-states.md | 既有（miko-core，版本 NOT_READ） |
++| L1 | 通用製作流程 UCP | ucp-spec.md | PROPOSED 0.2.1 |
++| L2 | 通用產物契約 UAC | uac-spec.md | PROPOSED 0.2.1 |
++| L2 | 通用 Skill 契約 USC | usc-spec.md | PROPOSED 0.2.1 |
++| L3 | 路由與選擇 RSL | modules-spec.md §RSL | PROPOSED 0.2.1 |
++| L3 | 生命週期與版本 LCV | modules-spec.md §LCV | PROPOSED 0.2.1 |
++| L3 | 測試與驗證 TSV | modules-spec.md §TSV | PROPOSED 0.2.1 |
++| L4 | Skills SKL | skills/README.md | 模板 |
++| L4 | Adapters ADP | adapters/README.md | PLACEHOLDER／UNKNOWN |
++| L5 | Tests TST | tests/ | 已實作（本輪背景測試） |
++| L5 | Archive ARC | archive/README.md | 模板 |
++| — | 結構與命名 | structure.md | PROPOSED 0.2.1 |
++| — | README 模板 | readme-templates.md | PROPOSED 0.2.1 |
++| — | 責任矩陣 | matrix.md | PROPOSED 0.2.1 |
++| — | 依賴圖 | deps.yaml | PROPOSED 0.2.1 |
++| — | 機讀契約 | contract.yaml | PROPOSED 0.2.1 |
++
++## 閱讀順序
++
++1. structure.md（結構、命名、版本與退役）
++2. ucp-spec.md（A 流程與閉環）
++3. uac-spec.md（規格類十六章）
++4. usc-spec.md（Skill 九契約、四節、七欄）
++5. modules-spec.md（路由、生命週期、測試）
++6. matrix.md（責任邊界）
+diff -ruN candidate-v0.2/matrix.md candidate-v0.2.1/matrix.md
+--- candidate-v0.2/matrix.md	2026-11-14 07:57:06.678592764 +0000
++++ candidate-v0.2.1/matrix.md	2026-11-14 07:58:12.930350281 +0000
+@@ -3,10 +3,11 @@
+ name_en: Layer Responsibility Matrix
+ name_zh: 分層責任矩陣
+ module: governance
+-version: 0.2.0
++version: 0.2.1
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
++amends: 0.2.0
+ ---
+ 
+ # Skill 與 Artifact 分層責任矩陣（v0.2）
+diff -ruN candidate-v0.2/modules-spec.md candidate-v0.2.1/modules-spec.md
+--- candidate-v0.2/modules-spec.md	2026-11-14 07:56:56.152606477 +0000
++++ candidate-v0.2.1/modules-spec.md	2026-11-14 07:58:12.931872718 +0000
+@@ -3,10 +3,11 @@
+ name_en: Cross-cutting Modules (Routing, Lifecycle, Testing)
+ name_zh: 橫向模組規格（路由、生命週期、測試）
+ module: routing-and-selection|lifecycle-and-versioning|testing-and-validation
+-version: 0.2.0
++version: 0.2.1
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
++amends: 0.2.0
+ ---
+ 
+ # 橫向模組規格 v0.2.0
+@@ -33,7 +34,7 @@
+ 
+ ### 3 判定規則
+ 
+-R-01 一個產物只命中一條 `route_id`；R-02 多產物逐個判定；R-03 無法判定標 `UNKNOWN` 交 R-CONV；R-04 命中兩條時以「更具體者」優先並記理由；R-05 同一任務內所有路由必須存在於本表。
++R-01 一個產物只命中一條 `route_id`；R-02 多產物逐個判定；R-03 無法判定標 `UNKNOWN` 交 R-CONV；R-04 命中兩條即判 `CONFLICT`，不得自行擇一，交 R-CONV 裁決並記錄裁決理由（修正 F-07）；R-05 同一任務內所有路由必須存在於本表。
+ 
+ ### 4 失敗處理
+ 
+diff -ruN candidate-v0.2/readme-templates.md candidate-v0.2.1/readme-templates.md
+--- candidate-v0.2/readme-templates.md	1970-01-01 00:00:00.000000000 +0000
++++ candidate-v0.2.1/readme-templates.md	2026-11-14 07:58:31.216987134 +0000
+@@ -0,0 +1,515 @@
++---
++doc_id: uga-readme-templates
++name_en: Module README Templates
++name_zh: 各模組 README 模板
++module: governance
++version: 0.2.1
++date: 2026-11-14
++status: PROPOSED
++---
++
++# 各模組 README 模板
++
++每個模組的 `README.md` 一律使用同一骨架，只替換標示欄位。狀態列固定含 `Runtime: UNKNOWN`（除非有 LCV H-04 三項證據）。
++
++## 共用骨架
++
++```markdown
++# <模組繁中名>（<Module English Name>）
++狀態：PROPOSED｜版本：<x.y.z>｜日期：<YYYY-MM-DD>｜Runtime：UNKNOWN
++
++## 目的
++<一段話說明此模組唯一負責什麼>
++
++## 範圍與非範圍
++- 範圍：<...>
++- 非範圍：<...>（由 <其他模組> 負責）
++
++## 檔案
++| 檔名 | 用途 | 版本 |
++|---|---|---|
++
++## 與其他模組的關係
++- 上游（本模組依賴）：<模組與版本>
++- 下游（依賴本模組）：<模組與版本>
++
++## 使用方式
++<呼叫順序、輸入、輸出>
++
++## 驗收方式
++<AC 清單、檢查器 ID、通過門檻>
++
++## 失敗與回復
++<失敗出口、重試上限、回復路徑>
++
++## 維護者與變更紀錄
++| 版本 | 日期 | commit | SHA-256 | 變更 |
++|---|---|---|---|---|
++
++## 未決事項
++| ID | 描述 | 狀態 |
++|---|---|---|
++```
++
++## 1. governance/README.md
++
++```markdown
++# 治理層（Governance Layer）
++狀態：PROPOSED｜版本：<x.y.z>｜日期：<YYYY-MM-DD>｜Runtime：UNKNOWN
++
++## 目的
++定義 A0 硬邊界、W1～W7 工作契約與 A3 狀態字典；本模組為唯一擁有者。
++
++## 範圍與非範圍
++- 範圍：停止／禁止閘門、任務分類、四態、交接契約。
++- 非範圍：製作順序（UCP）、欄位（UAC／USC）。
++
++## 檔案
++| 檔名 | 用途 | 版本 |
++|---|---|---|
++| gov-index.md | 治理索引 | <x.y.z> |
++| gov-states.md | A3 狀態字典 | <x.y.z> |
++| gov-handoff.md | W6／W7 交接契約 | <x.y.z> |
++| VERSION | 版本檔 | <x.y.z> |
++
++## 與其他模組的關係
++- 上游：miko-core 正本（版本 <v>）
++- 下游：UCP、所有產物
++
++## 使用方式
++每個任務開頭讀取；狀態判定一律引用 gov-states.md。
++
++## 驗收方式
++TSV-CONTRACT；狀態字典須與 UCP §7 完全一致。
++
++## 失敗與回復
++核心未載入 → `CORE_NOT_READ`；狀態衝突 → `CONFLICT` 交 R-CONV。
++
++## 維護者與變更紀錄
++| 版本 | 日期 | commit | SHA-256 | 變更 |
++|---|---|---|---|---|
++
++## 未決事項
++| ID | 描述 | 狀態 |
++|---|---|---|
++```
++
++## 2. universal-creation-process/README.md
++
++```markdown
++# 通用製作流程（Universal Creation Process, UCP）
++狀態：PROPOSED｜版本：<x.y.z>｜日期：<YYYY-MM-DD>｜Runtime：UNKNOWN
++
++## 目的
++所有產物共用的製作主幹 A00～A13 與閉環。
++
++## 範圍與非範圍
++- 範圍：順序、閉環、預算、失敗出口、獨立驗收門檻、證據。
++- 非範圍：章節與欄位（UAC／USC）。
++
++## 檔案
++| 檔名 | 用途 | 版本 |
++|---|---|---|
++| ucp-spec.md | 主規格 | <x.y.z> |
++| ucp-steps.yaml | 14 步 × 14 欄機讀定義 | <x.y.z> |
++| ucp-roles.md | 角色與兼任限制 | <x.y.z> |
++
++## 與其他模組的關係
++- 上游：GOV、RSL、TSV
++- 下游：所有產物
++
++## 使用方式
++從 A00 開始，依序執行；A11 上限 3 輪、A12 上限 2 輪。
++
++## 驗收方式
++TSV-STRUCT（14 步 × 14 欄）、TSV-EXIT（失敗出口）、TSV-REG（預算與終止）。
++
++## 失敗與回復
++見 ucp-spec §7；超限即 `BLOCKED` 並出困難卡。
++
++## 維護者與變更紀錄
++| 版本 | 日期 | commit | SHA-256 | 變更 |
++|---|---|---|---|---|
++
++## 未決事項
++| ID | 描述 | 狀態 |
++|---|---|---|
++```
++
++## 3. universal-artifact-contract/README.md
++
++```markdown
++# 通用產物契約（Universal Artifact Contract, UAC）
++狀態：PROPOSED｜版本：<x.y.z>｜日期：<YYYY-MM-DD>｜Runtime：UNKNOWN
++
++## 目的
++規定規格書、架構書、流程設計書、治理文件、路由器文件、測試規格、整合升級文件的十六章與必要欄位。
++
++## 範圍與非範圍
++- 範圍：章節、欄位、欄位格式。
++- 非範圍：製作順序（UCP）、Skill 格式（USC）。
++
++## 檔案
++| 檔名 | 用途 | 版本 |
++|---|---|---|
++| uac-spec.md | 十六章規格 | <x.y.z> |
++| uac-template.md | 空白模板 | <x.y.z> |
++| uac-chapters.yaml | 機讀章節欄位 | <x.y.z> |
++
++## 與其他模組的關係
++- 上游：無（僅引用 UCP 步驟 ID）
++- 下游：RSL、LCV、TSV、所有規格類產物
++
++## 使用方式
++UCP A03 鎖定欄位；A05 依本章程實例化。
++
++## 驗收方式
++TSV-CONTRACT（十六章必要欄位逐一比對）。
++
++## 失敗與回復
++缺章 → `SELF_FAIL`；欄位衝突 → 以本章為準（附錄 B）。
++
++## 維護者與變更紀錄
++| 版本 | 日期 | commit | SHA-256 | 變更 |
++|---|---|---|---|---|
++
++## 未決事項
++| ID | 描述 | 狀態 |
++|---|---|---|
++```
++
++## 4. universal-skill-contract/README.md
++
++```markdown
++# 通用 Skill 契約（Universal Skill Contract, USC）
++狀態：PROPOSED｜版本：<x.y.z>｜日期：<YYYY-MM-DD>｜Runtime：UNKNOWN
++
++## 目的
++規定 Skill 的九項必要契約、四節格式、P/C/J 七欄步驟表。
++
++## 範圍與非範圍
++- 範圍：Skill 文件結構與必要內容。
++- 非範圍：十六章（UAC）、製作順序（UCP）。
++
++## 檔案
++| 檔名 | 用途 | 版本 |
++|---|---|---|
++| usc-spec.md | 九契約／四節／七欄 | <x.y.z> |
++| usc-template.md | Skill 空白模板 | <x.y.z> |
++| usc-contracts.yaml | 機讀契約定義 | <x.y.z> |
++
++## 與其他模組的關係
++- 上游：無（引用 UCP 步驟 ID）
++- 下游：skills/、adapters/
++
++## 使用方式
++Skill 建置前先鎖定九契約，再依四節撰寫。
++
++## 驗收方式
++TSV-SKILL（九契約、四節、七欄、expected／forbidden）。
++
++## 失敗與回復
++缺契約 → `SELF_FAIL`；七欄缺一 → 不合格。
++
++## 維護者與變更紀錄
++| 版本 | 日期 | commit | SHA-256 | 變更 |
++|---|---|---|---|---|
++
++## 未決事項
++| ID | 描述 | 狀態 |
++|---|---|---|
++```
++
++## 5. routing-and-selection/README.md
++
++```markdown
++# 路由與選擇（Routing and Selection, RSL）
++狀態：PROPOSED｜版本：<x.y.z>｜日期：<YYYY-MM-DD>｜Runtime：UNKNOWN
++
++## 目的
++把產物類型映射到契約與驗收器。
++
++## 範圍與非範圍
++- 範圍：路由表、判定規則、衝突裁決。
++- 非範圍：流程內容、欄位內容。
++
++## 檔案
++| 檔名 | 用途 | 版本 |
++|---|---|---|
++| rsl-spec.md | 路由規格 | <x.y.z> |
++| rsl-routes.yaml | 機讀路由表 | <x.y.z> |
++
++## 與其他模組的關係
++- 上游：UAC、USC
++- 下游：UCP A02
++
++## 使用方式
++依 artifact_type 查表；命中兩條即 `CONFLICT`。
++
++## 驗收方式
++TSV-ROUTE（唯一性、完整性、驗收器存在）。
++
++## 失敗與回復
++路由表不可讀 → `NOT_READ`，停 A02。
++
++## 維護者與變更紀錄
++| 版本 | 日期 | commit | SHA-256 | 變更 |
++|---|---|---|---|---|
++
++## 未決事項
++| ID | 描述 | 狀態 |
++|---|---|---|
++```
++
++## 6. lifecycle-and-versioning/README.md
++
++```markdown
++# 生命週期與版本（Lifecycle and Versioning, LCV）
++狀態：PROPOSED｜版本：<x.y.z>｜日期：<YYYY-MM-DD>｜Runtime：UNKNOWN
++
++## 目的
++規定版本、快照、退役、熱插拔宣告。
++
++## 範圍與非範圍
++- 範圍：SemVer、狀態升格、退役、熱插拔證據。
++- 非範圍：欄位內容、流程步驟。
++
++## 檔案
++| 檔名 | 用途 | 版本 |
++|---|---|---|
++| lcv-spec.md | 版本與狀態規格 | <x.y.z> |
++| lcv-naming.md | 檔名與快照命名 | <x.y.z> |
++| lcv-retirement.md | 退役規則 | <x.y.z> |
++
++## 與其他模組的關係
++- 上游：UAC
++- 下游：ARC、所有產物
++
++## 使用方式
++每次版本變更依 V-01～V-06；退役依 RT-01～RT-05。
++
++## 驗收方式
++TSV-REG（狀態、退役、命名、MANIFEST）。
++
++## 失敗與回復
++缺快照 → 不得退役；無 H-04 證據 → 維持 `UNKNOWN`。
++
++## 維護者與變更紀錄
++| 版本 | 日期 | commit | SHA-256 | 變更 |
++|---|---|---|---|---|
++
++## 未決事項
++| ID | 描述 | 狀態 |
++|---|---|---|
++```
++
++## 7. testing-and-validation/README.md
++
++```markdown
++# 測試與驗證（Testing and Validation, TSV）
++狀態：PROPOSED｜版本：<x.y.z>｜日期：<YYYY-MM-DD>｜Runtime：UNKNOWN
++
++## 目的
++定義十一個檢查器與回歸測試，作為交付門檻。
++
++## 範圍與非範圍
++- 範圍：檢查器、門檻、結果格式。
++- 非範圍：製作流程、欄位定義。
++
++## 檔案
++| 檔名 | 用途 | 版本 |
++|---|---|---|
++| tsv-spec.md | 檢查器規格 | <x.y.z> |
++| tsv-matrix.md | 驗收矩陣 | <x.y.z> |
++
++## 與其他模組的關係
++- 上游：UAC、USC
++- 下游：tests/
++
++## 使用方式
++`tsv_check.py <candidate> <out.json>`；全部 PASS 才可交付。
++
++## 驗收方式
++TSV-REGRESSION（負向注入測試）。
++
++## 失敗與回復
++任一 `FAIL` → 回 A10；`NOT_RUN` 視為未通過。
++
++## 維護者與變更紀錄
++| 版本 | 日期 | commit | SHA-256 | 變更 |
++|---|---|---|---|---|
++
++## 未決事項
++| ID | 描述 | 狀態 |
++|---|---|---|
++```
++
++## 8. skills/README.md
++
++```markdown
++# Skills（SKL）
++狀態：PROPOSED｜版本：<x.y.z>｜日期：<YYYY-MM-DD>｜Runtime：UNKNOWN
++
++## 目的
++存放符合 USC 的 Skill。
++
++## 範圍與非範圍
++- 範圍：Skill 實作與測試。
++- 非範圍：契約定義（USC）、路由（RSL）。
++
++## 檔案
++| 檔名 | 用途 | 版本 |
++|---|---|---|
++| <skill>/SKILL.md | Skill 主檔（四節） | <x.y.z> |
++| <skill>/VERSION | 版本 | <x.y.z> |
++| <skill>/CHANGELOG.md | 變更紀錄 | — |
++
++## 與其他模組的關係
++- 上游：USC、UCP
++- 下游：adapters/
++
++## 使用方式
++依 USC 四節撰寫；P/C/J 步驟表為必備。
++
++## 驗收方式
++TSV-SKILL + 各 Skill 自帶測題。
++
++## 失敗與回復
++缺測題 → 不得採用；行為 FAIL → 回 A10。
++
++## 維護者與變更紀錄
++| 版本 | 日期 | commit | SHA-256 | 變更 |
++|---|---|---|---|---|
++
++## 未決事項
++| ID | 描述 | 狀態 |
++|---|---|---|
++```
++
++## 9. adapters/README.md
++
++```markdown
++# Adapters（ADP）
++狀態：PROPOSED｜版本：<x.y.z>｜日期：<YYYY-MM-DD>｜Runtime：UNKNOWN
++
++## 目的
++定義與各執行環境（Claude Code、Manus、GitHub、generic）的介面約定。
++
++## 範圍與非範圍
++- 範圍：介面定義、相容性檢查、回滾程序。
++- 非範圍：實際整合實作；目前全部為 PLACEHOLDER。
++
++## 檔案
++| 檔名 | 用途 | 版本 |
++|---|---|---|
++| claude-code/ | 介面定義（未實測） | PLACEHOLDER |
++| manus/ | 介面定義（未實測） | PLACEHOLDER |
++| github/ | 介面定義（未實測） | PLACEHOLDER |
++| generic/ | 通用介面 | PLACEHOLDER |
++
++## 與其他模組的關係
++- 上游：USC、LCV
++- 下游：無（尚未實作）
++
++## 使用方式
++不得宣稱已支援；升格需 LCV H-04 三項證據。
++
++## 驗收方式
++TSV-RUNTIME。
++
++## 失敗與回復
++無證據 → `UNKNOWN`；替換失敗 → 回滾至前一 adapter。
++
++## 維護者與變更紀錄
++| 版本 | 日期 | commit | SHA-256 | 變更 |
++|---|---|---|---|---|
++
++## 未決事項
++| ID | 描述 | 狀態 |
++|---|---|---|
++```
++
++## 10. tests/README.md
++
++```markdown
++# Tests（TST）
++狀態：PROPOSED｜版本：<x.y.z>｜日期：<YYYY-MM-DD>｜Runtime：UNKNOWN
++
++## 目的
++存放檢查器、fixtures 與回歸測試。
++
++## 範圍與非範圍
++- 範圍：單元、契約、整合、回歸測試。
++- 非範圍：規格內容。
++
++## 檔案
++| 檔名 | 用途 | 版本 |
++|---|---|---|
++| unit/ | 檢查器單元測試 | — |
++| contract/ | 契約符合性測試 | — |
++| regression/ | 負向注入回歸 | — |
++| fixtures/ | 測資 | — |
++
++## 與其他模組的關係
++- 上游：TSV
++- 下游：無
++
++## 使用方式
++`pytest tests/` 或直接執行腳本；結果寫入 results/。
++
++## 驗收方式
++全數 `PASS`；任一 `NOT_RUN` 視為未通過。
++
++## 失敗與回復
++失敗 → 回 A10 修正後重跑。
++
++## 維護者與變更紀錄
++| 版本 | 日期 | commit | SHA-256 | 變更 |
++|---|---|---|---|---|
++
++## 未決事項
++| ID | 描述 | 狀態 |
++|---|---|---|
++```
++
++## 11. archive/README.md
++
++```markdown
++# Archive（ARC）
++狀態：PROPOSED｜版本：<x.y.z>｜日期：<YYYY-MM-DD>｜Runtime：UNKNOWN
++
++## 目的
++保存不可變快照、退役文件與 ADR。
++
++## 範圍與非範圍
++- 範圍：snapshots/、retired/、decisions/。
++- 非範圍：現行正本。
++
++## 檔案
++| 檔名 | 用途 | 版本 |
++|---|---|---|
++| snapshots/ | 版本快照（N-05 命名） | — |
++| retired/ | 退役文件與 redirect 表 | — |
++| decisions/ | ADR | — |
++
++## 與其他模組的關係
++- 上游：LCV
++- 下游：無
++
++## 使用方式
++只新增，不修改、不刪除。
++
++## 驗收方式
++TSV-REG（快照命名、MANIFEST）。
++
++## 失敗與回復
++快照遺失 → `BLOCKED`，不得宣稱已保存。
++
++## 維護者與變更紀錄
++| 版本 | 日期 | commit | SHA-256 | 變更 |
++|---|---|---|---|---|
++
++## 未決事項
++| ID | 描述 | 狀態 |
++|---|---|---|
++```
+diff -ruN candidate-v0.2/structure.md candidate-v0.2.1/structure.md
+--- candidate-v0.2/structure.md	2026-11-14 07:57:05.661734554 +0000
++++ candidate-v0.2.1/structure.md	2026-11-14 07:58:12.930203305 +0000
+@@ -3,10 +3,11 @@
+ name_en: MIKO Universal Governance Architecture - Structure, Naming and Templates
+ name_zh: MIKO 通用治理架構－結構、命名與模板
+ module: governance
+-version: 0.2.0
++version: 0.2.1
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
++amends: 0.2.0
+ runtime_verified: UNKNOWN
+ ---
+ 
+diff -ruN candidate-v0.2/uac-spec.md candidate-v0.2.1/uac-spec.md
+--- candidate-v0.2/uac-spec.md	2026-11-14 07:56:42.860569414 +0000
++++ candidate-v0.2.1/uac-spec.md	2026-11-14 07:58:12.930893979 +0000
+@@ -3,11 +3,12 @@
+ name_en: Universal Artifact Contract
+ name_zh: 通用產物契約
+ module: universal-artifact-contract
+-version: 0.2.0
++version: 0.2.1
+ date: 2026-11-14
+ status: PROPOSED
+ applies_to: [spec, architecture, process-design, governance-rule, router-doc, test-spec, integration-upgrade]
+ supersedes: 0.1.0
++amends: 0.2.0
+ ---
+ 
+ # Universal Artifact Contract（UAC）：規格書／架構書通用十六章契約 v0.2.0
+@@ -20,6 +21,8 @@
+ 
+ 必要欄位：`doc_id`、`name_en`、`name_zh`、`module`、`version`、`date`、`status`、`owner_role`、`supersedes`、`related_docs`、目的、範圍（含）、非範圍（不含）、適用對象。
+ 
++`related_docs` 格式規則：`doc_id` 陣列；每個 `doc_id` 必須存在於本倉庫，或標為 `EXTERNAL:<uri>`；不得只寫檔名（修正 F-05）。
++
+ ## 2. 名詞與定義
+ 
+ 每個名詞一列，欄位：`term_id`、`term_zh`、`term_en`、`definition`、`source_id`、`forbidden_synonyms`（無則寫 `NONE`）。
+@@ -28,7 +31,9 @@
+ 
+ ## 3. 問題與背景
+ 
+-必要欄位：現況、問題陳述、證據（來源與位置）、影響範圍、不處理的後果、既有嘗試。
++必要欄位：現況、問題陳述、`evidence_text`（證據內容）、`evidence_source_id`（證據來源 `source_id`）、影響範圍、不處理的後果、既有嘗試。
++
++證據必須可追溯：`evidence_source_id` 須對應 A01 來源登錄表的 `source_id`，不得寫「依經驗」或空值（修正 F-01）。
+ 
+ ## 4. 目標狀態
+ 
+@@ -36,7 +41,9 @@
+ 
+ ## 5. 流程或架構
+ 
+-必要欄位：流程步驟或元件圖、順序與分支、邊界（起點與終點）、與 UCP 步驟 ID 的對應、異常分支去向、流程圖（`mermaid` 或 `text`，可為 `NONE`）。
++必要欄位：流程步驟或元件圖、順序與分支、邊界（起點與終點）、與 UCP 步驟 ID 的對應、異常分支去向、流程圖（`mermaid` 或 `text`）。
++
++流程圖省略條件：僅當流程步驟 ≤3 且無分支時可寫 `NONE`；其餘一律必須提供，並於檢查器 TSV-CONTRACT 判定（修正 F-02）。
+ 
+ ## 6. 元件與責任
+ 
+diff -ruN candidate-v0.2/ucp-spec.md candidate-v0.2.1/ucp-spec.md
+--- candidate-v0.2/ucp-spec.md	2026-11-14 07:56:32.956513537 +0000
++++ candidate-v0.2.1/ucp-spec.md	2026-11-14 07:58:12.931517729 +0000
+@@ -3,13 +3,14 @@
+ name_en: Universal Creation Process
+ name_zh: 通用製作流程
+ module: universal-creation-process
+-version: 0.2.0
++version: 0.2.1
+ date: 2026-11-14
+ status: PROPOSED
+ owner_role: R-CONV
+ adopted: false
+ runtime_verified: UNKNOWN
+ supersedes: 0.1.0
++amends: 0.2.0
+ change_ref: review/round1.json#F-01..F-10
+ ---
+ 
+@@ -43,6 +44,7 @@
+ | 自我驗收 | self-acceptance | 製作者或同 context 驗收者依 AC 檢查，結果只能是 `SELF_PASS`／`SELF_PASS_ONLY`／`SELF_FAIL` |
+ | 獨立驗收 | independent acceptance | 在與製作者隔離的條件下，只依「驗收包」判定，結果為 `AUDIT_PASS`／`AUDIT_FAIL`／`NOT_RUN` |
+ | 獨立性等級 | independence level | L0 同 context；L1 同模型冷啟動（新 session、只讀驗收包）；L2 不同模型冷啟動；L3 人類驗收者 |
++| 冷啟動 | cold start | 新 conversation session；不載入製作階段 context；只讀驗收包；不讀作者說明、自我驗收結論或實作思路（修正 F-03） |
+ | 驗收包 | audit packet | 只含候選產物、AC 表、契約版本、diff 與檢查器輸出；**不含**製作者辯解、自我驗收結論、實作思路 |
+ | 輪次 | round | 對「受影響 AC 全集」執行一次完整檢查或重測，不論其中有幾條失敗 |
+ | 預算 | cycle budget | 每個產物版本血緣允許的重測與重驗次數上限 |
+@@ -149,7 +151,7 @@
+ - **禁止事項**：不得用「最接近」模板硬套；不得同一產物掛兩份互斥契約。
+ - **檢查點**：`route_id` 存在於 RSL 路由表；契約與類型一致。
+ - **Acceptance Criteria**：`AC-A02-01` 每個產物有唯一 `route_id`；`AC-A02-02` 契約選擇有理由；`AC-A02-03` 無未路由產物。
+-- **Failure Handling**：無法判定 → `UNKNOWN`，列候選交 R-CONV。
++- **Failure Handling**：無法判定 → `UNKNOWN`，列候選交 R-CONV；RSL 路由表不可讀 → `NOT_READ`，停 A02 並出困難卡（修正 F-04）。
+ - **Recovery**：補問或套預設路由（規格類→UAC、Skill→USC）。
+ - **Regression Test**：`RT-A02` 八種產物類型各一例。
+ - **閉環條件**：無 `UNKNOWN` 路由。
+diff -ruN candidate-v0.2/usc-spec.md candidate-v0.2.1/usc-spec.md
+--- candidate-v0.2/usc-spec.md	2026-11-14 07:56:55.278576999 +0000
++++ candidate-v0.2.1/usc-spec.md	2026-11-14 07:58:12.931714675 +0000
+@@ -3,11 +3,12 @@
+ name_en: Universal Skill Contract
+ name_zh: 通用 Skill 契約
+ module: universal-skill-contract
+-version: 0.2.0
++version: 0.2.1
+ date: 2026-11-14
+ status: PROPOSED
+ applies_to: [skill]
+ supersedes: 0.1.0
++amends: 0.2.0
+ ---
+ 
+ # Universal Skill Contract（USC）：Skill 九契約、四節格式、P/C/J 七欄 v0.2.0
+@@ -51,7 +52,7 @@
+ | 驗收證據 | 產出什麼可檢證據 |
+ | 失敗處理 | 失敗時的狀態與出口 |
+ 
+-規則：`C` 步完成後必須跑指定檢查；`J` 步必須寫 expected／forbidden 或固定反例；同一 Skill 內 ID 不得重複；七欄缺一即不合格。
++規則：「失敗處理」欄必須涵蓋 USC-C3 定義的缺資料情境（缺資料 → `NOT_READ`／`BLOCKED`）；`C` 步完成後必須跑指定檢查；`J` 步必須寫 expected／forbidden 或固定反例；同一 Skill 內 ID 不得重複；七欄缺一即不合格。
+ 
+ ## 5. 與 UAC／UCP 的邊界
+ 

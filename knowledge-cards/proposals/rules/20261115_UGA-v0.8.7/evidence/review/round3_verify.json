@@ -1,0 +1,71 @@
+{
+  "summary": "七項問題中六項已正確修正，F-07 僅部分修正（移除「更具體者優先」但未補充裁決記錄欄位）。無重大回歸，但 contract.yaml 與 uac-spec.md 章節欄位有小不一致。",
+  "verification": [
+    {
+      "id": "F-01",
+      "status": "FIXED",
+      "evidence": "uac-spec.md §3：「必要欄位：現況、問題陳述、`evidence_text`（證據內容）、`evidence_source_id`（證據來源 `source_id`）」；contract.yaml chapter 3 required 含 evidence_text, evidence_source_id",
+      "note": "NONE"
+    },
+    {
+      "id": "F-02",
+      "status": "FIXED",
+      "evidence": "uac-spec.md §5：「流程圖省略條件：僅當流程步驟 ≤3 且無分支時可寫 `NONE`；其餘一律必須提供，並於檢查器 TSV-CONTRACT 判定（修正 F-02）。」",
+      "note": "NONE"
+    },
+    {
+      "id": "F-03",
+      "status": "FIXED",
+      "evidence": "ucp-spec.md §2 名詞與定義表：「冷啟動 | cold start | 新 conversation session；不載入製作階段 context；只讀驗收包；不讀作者說明、自我驗收結論或實作思路（修正 F-03）」",
+      "note": "NONE"
+    },
+    {
+      "id": "F-04",
+      "status": "FIXED",
+      "evidence": "ucp-spec.md A02 Failure Handling：「RSL 路由表不可讀 → `NOT_READ`，停 A02 並出困難卡（修正 F-04）」",
+      "note": "NONE"
+    },
+    {
+      "id": "F-05",
+      "status": "FIXED",
+      "evidence": "uac-spec.md §1：「`related_docs` 格式規則：`doc_id` 陣列；每個 `doc_id` 必須存在於本倉庫，或標為 `EXTERNAL:<uri>`；不得只寫檔名（修正 F-05）。」",
+      "note": "NONE"
+    },
+    {
+      "id": "F-06",
+      "status": "FIXED",
+      "evidence": "usc-spec.md §4 規則段落：「『失敗處理』欄必須涵蓋 USC-C3 定義的缺資料情境（缺資料 → `NOT_READ`／`BLOCKED`）」",
+      "note": "NONE"
+    },
+    {
+      "id": "F-07",
+      "status": "PARTIAL",
+      "evidence": "modules-spec.md RSL §3 R-04：「命中兩條即判 `CONFLICT`，不得自行擇一，交 R-CONV 裁決並記錄裁決理由（修正 F-07）」",
+      "note": "已移除「更具體者優先」改為 CONFLICT 裁決，但未定義裁決理由應記錄於何處（如 routing.json 欄位或 ADR），可能造成記錄位置不一致。"
+    }
+  ],
+  "new_findings": [
+    {
+      "id": "N-01",
+      "severity": "P2",
+      "location": "contract.yaml:uac.chapters[0]",
+      "problem": "contract.yaml 章節 1 required 欄位列 `related_docs`，但 uac-spec.md §1 同時列出 `目的`、`範圍（含）`、`非範圍（不含）`、`適用對象` 為必要欄位，這些欄位未出現在 contract.yaml required 陣列中，造成機讀契約與規格書不一致。",
+      "required_fix": "在 contract.yaml uac.chapters[0].required 補充 `目的`、`範圍（含）`、`非範圍（不含）`、`適用對象`，或於 uac-spec.md §1 明確標示這四欄為選填。"
+    },
+    {
+      "id": "N-02",
+      "severity": "P2",
+      "location": "modules-spec.md:RSL §3 R-04",
+      "problem": "R-04 要求「記錄裁決理由」但未指定記錄位置與格式，可能造成不同執行者記錄於不同檔案或欄位。",
+      "required_fix": "在 RSL §3 或 §4 補充：「裁決理由須記錄於 evidence/<task_id>/routing.json 的 conflict_resolution 欄位，或出 ADR」。"
+    }
+  ],
+  "verdict": "PASS_WITH_FIXES",
+  "_meta": {
+    "model": "claude-opus-4-5-20251101",
+    "usage": {
+      "input": 23251,
+      "output": 1398
+    }
+  }
+}

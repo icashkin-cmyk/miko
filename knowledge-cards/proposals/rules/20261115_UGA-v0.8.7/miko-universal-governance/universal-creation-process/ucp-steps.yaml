@@ -1,0 +1,36 @@
+schema: miko-ucp-steps/1
+version: 0.8.7
+steps:
+- A00
+- A01
+- A02
+- A03
+- A04
+- A05
+- A06
+- A07
+- A08
+- A09
+- A10
+- A11
+- A12
+- A13
+required_fields:
+- 目的
+- 輸入
+- 輸出
+- 前置條件
+- 操作要求
+- 禁止事項
+- 檢查點
+- Acceptance Criteria
+- Failure Handling
+- Recovery
+- 閉環條件
+- 負責角色
+- 證據與保存方式
+exception_fields:
+- 回歸測題（例外）
+budget:
+  retest_round_max: 3
+  audit_round_max: 2

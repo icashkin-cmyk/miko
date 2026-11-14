@@ -1,0 +1,305 @@
+diff -ruN candidate-v0.7.1/VERSION candidate-v0.8.0/VERSION
+--- candidate-v0.7.1/VERSION	2026-11-14 12:16:47.531893946 +0000
++++ candidate-v0.8.0/VERSION	2026-11-14 12:38:19.438963016 +0000
+@@ -1 +1 @@
+-0.7.1
++0.8.0
+diff -ruN candidate-v0.7.1/acceptance-matrix.md candidate-v0.8.0/acceptance-matrix.md
+--- candidate-v0.7.1/acceptance-matrix.md	2026-11-14 12:16:47.531689177 +0000
++++ candidate-v0.8.0/acceptance-matrix.md	2026-11-14 12:38:19.438482763 +0000
+@@ -3,7 +3,7 @@
+ name_en: Acceptance Matrix
+ name_zh: 驗收矩陣
+ module: testing-and-validation
+-version: 0.7.1
++version: 0.8.0
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.7.1/architecture/uga-architecture.md candidate-v0.8.0/architecture/uga-architecture.md
+--- candidate-v0.7.1/architecture/uga-architecture.md	2026-11-14 12:16:47.532495439 +0000
++++ candidate-v0.8.0/architecture/uga-architecture.md	2026-11-14 12:38:19.438726640 +0000
+@@ -1,7 +1,7 @@
+ # MIKO Universal Governance Architecture 架構書（候選）
+ 
+ - 文件狀態：PROPOSED（候選，未升格）
+-- 內部版本：0.7.1
++- 內部版本：0.8.0
+ - 對外封裝：UGA ZIP v1.0.2（見交付報告）
+ - 編號系統：ARC，與 UCP 的 A、UAC 的章節號、USC 的 S 各自獨立
+ 
+diff -ruN candidate-v0.7.1/index.md candidate-v0.8.0/index.md
+--- candidate-v0.7.1/index.md	2026-11-14 12:16:47.531592150 +0000
++++ candidate-v0.8.0/index.md	2026-11-14 12:38:19.438383865 +0000
+@@ -3,7 +3,7 @@
+ name_en: MIKO Universal Governance Architecture Index
+ name_zh: MIKO 通用治理架構總索引
+ module: governance
+-version: 0.7.1
++version: 0.8.0
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.7.1/ledger-spec.md candidate-v0.8.0/ledger-spec.md
+--- candidate-v0.7.1/ledger-spec.md	2026-11-14 12:16:47.531799007 +0000
++++ candidate-v0.8.0/ledger-spec.md	2026-11-14 12:38:19.438583250 +0000
+@@ -3,7 +3,7 @@
+ name_en: Correction Ledger
+ name_zh: 修正帳本
+ module: correction-ledger
+-version: 0.7.1
++version: 0.8.0
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: NONE
+diff -ruN candidate-v0.7.1/matrix.md candidate-v0.8.0/matrix.md
+--- candidate-v0.7.1/matrix.md	2026-11-14 12:16:47.531303225 +0000
++++ candidate-v0.8.0/matrix.md	2026-11-14 12:38:19.438146333 +0000
+@@ -3,7 +3,7 @@
+ name_en: Layer Responsibility Matrix
+ name_zh: 分層責任矩陣
+ module: governance
+-version: 0.7.1
++version: 0.8.0
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+diff -ruN candidate-v0.7.1/modules-spec.md candidate-v0.8.0/modules-spec.md
+--- candidate-v0.7.1/modules-spec.md	2026-11-14 12:16:47.531089868 +0000
++++ candidate-v0.8.0/modules-spec.md	2026-11-14 12:38:19.437929915 +0000
+@@ -3,14 +3,14 @@
+ name_en: Cross-cutting Modules (Routing, Lifecycle, Testing)
+ name_zh: 橫向模組規格（路由、生命週期、測試）
+ module: routing-and-selection|lifecycle-and-versioning|testing-and-validation
+-version: 0.7.1
++version: 0.8.0
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+ amends: 0.2.0
+ ---
+ 
+-# 橫向模組規格 v0.2.0
++# 橫向模組規格 v0.8.0
+ 
+ ## RSL：路由與選擇（routing-and-selection）
+ 
+diff -ruN candidate-v0.7.1/naming-map.md candidate-v0.8.0/naming-map.md
+--- candidate-v0.7.1/naming-map.md	1970-01-01 00:00:00.000000000 +0000
++++ candidate-v0.8.0/naming-map.md	2026-11-14 12:38:35.155447882 +0000
+@@ -0,0 +1,18 @@
++---
++doc_id: naming-map
++name_en: Naming Map
++version: 0.8.0
++date: 2026-11-14
++status: PROPOSED
++---
++
++# 命名對照表（v0.8.0）
++
++| 舊名 | 新名 | 識別碼 | 檔名 | 軸 |
++|---|---|---|---|---|
++| Universal Creation Process（UCP） | 製作流程（Miko Creation Process） | MCP | ucp-spec.md | 執行（併入 miko-core） |
++| Universal Artifact Contract（UAC） | 文件契約（Document Contract） | DOC | uac-spec.md | 產物格式 |
++| Universal Skill Contract（USC） | Skill 契約（Skill Contract） | SKL | usc-spec.md | Skill 格式 |
++| （新）架構書 | 架構契約（Architecture Contract） | ARC | architecture/uga-architecture.md | 結構 |
++
++改名只動顯示名稱與 name_en，檔名與條文編號維持，避免斷鏈；舊名在任何文件中出現時，一律以本表對照。
+diff -ruN candidate-v0.7.1/readme-templates.md candidate-v0.8.0/readme-templates.md
+--- candidate-v0.7.1/readme-templates.md	2026-11-14 12:16:47.531472127 +0000
++++ candidate-v0.8.0/readme-templates.md	2026-11-14 12:38:19.440548384 +0000
+@@ -3,7 +3,7 @@
+ name_en: Module README Templates
+ name_zh: 各模組 README 模板
+ module: governance
+-version: 0.7.1
++version: 0.8.0
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+@@ -97,7 +97,7 @@
+ ## 2. universal-creation-process/README.md
+ 
+ ```markdown
+-# 通用製作流程（Universal Creation Process, UCP）
++# 通用製作流程（Miko Creation Process, MCP）
+ 狀態：PROPOSED｜版本：<x.y.z>｜日期：<YYYY-MM-DD>｜Runtime：UNKNOWN
+ 
+ ## 目的
+@@ -139,7 +139,7 @@
+ ## 3. universal-artifact-contract/README.md
+ 
+ ```markdown
+-# 通用產物契約（Universal Artifact Contract, UAC）
++# 通用產物契約（Document Contract, DOC）
+ 狀態：PROPOSED｜版本：<x.y.z>｜日期：<YYYY-MM-DD>｜Runtime：UNKNOWN
+ 
+ ## 目的
+@@ -181,7 +181,7 @@
+ ## 4. universal-skill-contract/README.md
+ 
+ ```markdown
+-# 通用 Skill 契約（Universal Skill Contract, USC）
++# 通用 Skill 契約（Skill Contract, SKL）
+ 狀態：PROPOSED｜版本：<x.y.z>｜日期：<YYYY-MM-DD>｜Runtime：UNKNOWN
+ 
+ ## 目的
+diff -ruN candidate-v0.7.1/refactor/assessment.md candidate-v0.8.0/refactor/assessment.md
+--- candidate-v0.7.1/refactor/assessment.md	2026-11-14 12:16:47.532613286 +0000
++++ candidate-v0.8.0/refactor/assessment.md	2026-11-14 12:38:19.438844998 +0000
+@@ -1,4 +1,4 @@
+-# UGA 三層契約與架構責任重構評估（v0.6.2 → v0.7.0）
++# UGA 三層契約與架構責任重構評估（v0.6.2 → v0.8.0）
+ 
+ - 文件狀態：PROPOSED
+ - 範圍：局部重構，保留原版本，不推倒重寫，不升格 Canonical
+@@ -56,7 +56,7 @@
+ 
+ ## 六、回歸與回復
+ 
+-回歸：十二個檢查器 PASS，二十二題負向回歸 PASS，新增 R-22 驗附錄 A 單向規則會被攔截。回復方式：v0.6.2 原樣保留，回退只需切回 `candidate-v0.6.2`，diff 見 `diff/v0.6.2_to_v0.7.0.patch`。
++回歸：十二個檢查器 PASS，二十二題負向回歸 PASS，新增 R-22 驗附錄 A 單向規則會被攔截。回復方式：v0.6.2 原樣保留，回退只需切回 `candidate-v0.6.2`，diff 見 `diff/v0.6.2_to_v0.8.0.patch`。
+ 
+ ## 七、未確認事項（UNKNOWN）
+ 
+diff -ruN candidate-v0.7.1/structure.md candidate-v0.8.0/structure.md
+--- candidate-v0.7.1/structure.md	2026-11-14 12:16:47.531201518 +0000
++++ candidate-v0.8.0/structure.md	2026-11-14 12:38:19.440374648 +0000
+@@ -3,7 +3,7 @@
+ name_en: MIKO Universal Governance Architecture - Structure, Naming and Templates
+ name_zh: MIKO 通用治理架構－結構、命名與模板
+ module: governance
+-version: 0.7.1
++version: 0.8.0
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+@@ -11,7 +11,7 @@
+ runtime_verified: UNKNOWN
+ ---
+ 
+-# MIKO Universal Governance Architecture：結構、命名與模板 v0.2.0
++# MIKO Universal Governance Architecture：結構、命名與模板 v0.8.0
+ 
+ ## 1. 總目錄
+ 
+@@ -27,8 +27,8 @@
+ │   ├─ A.3 獨立驗收與獨立性等級
+ │   └─ A.4 證據、困難卡與任務四態
+ ├─ 契約層
+-│   ├─ Universal Artifact Contract（UAC）：十六章
+-│   └─ Universal Skill Contract（USC）：九契約、四節、七欄
++│   ├─ 文件契約（DOC，原 UAC）：十六章
++│   └─ Skill 契約（SKL，原 USC）：九契約、四節、七欄
+ ├─ 橫向服務層
+ │   ├─ 路由與選擇（RSL）
+ │   ├─ 生命週期與版本（LCV）
+diff -ruN candidate-v0.7.1/uac-spec.md candidate-v0.8.0/uac-spec.md
+--- candidate-v0.7.1/uac-spec.md	2026-11-14 12:16:47.532334918 +0000
++++ candidate-v0.8.0/uac-spec.md	2026-11-14 12:38:19.439998785 +0000
+@@ -1,9 +1,9 @@
+ ---
+ doc_id: uac-spec
+-name_en: Universal Artifact Contract
++name_en: Document Contract (DOC)
+ name_zh: 通用產物契約
+ module: universal-artifact-contract
+-version: 0.7.1
++version: 0.8.0
+ date: 2026-11-14
+ status: PROPOSED
+ applies_to: [spec, architecture, process-design, governance-rule, router-doc, test-spec, integration-upgrade]
+@@ -11,7 +11,7 @@
+ amends: 0.2.0
+ ---
+ 
+-# Universal Artifact Contract（UAC）：規格書／架構書通用十六章契約 v0.2.0
++# 文件契約（Document Contract, DOC，原 UAC）：規格書與治理文件十六章
+ 
+ ## 使用方式
+ 
+@@ -121,6 +121,9 @@
+ | 12 驗收條件、13 測試案例、14 回歸測試 | A06、A11 |
+ | 15 版本與維護、16 未決事項 | A13 |
+ 
++## 附錄 C：名稱對照
++本文件原稱 Universal Artifact Contract（UAC），自 0.8.0 起改稱文件契約（DOC），識別碼與檔名維持 uac-spec 以免斷鏈；條文編號不變。架構書類產物改用 ARC 契約。
++
+ ## 附錄 B：欄位名稱權威
+ 
+ 凡欄位名稱與 UCP 描述衝突，一律以本章為準（對應 UCP BR-05、F-10 修正）。
+diff -ruN candidate-v0.7.1/ucp-spec.md candidate-v0.8.0/ucp-spec.md
+--- candidate-v0.7.1/ucp-spec.md	2026-11-14 12:16:47.530702783 +0000
++++ candidate-v0.8.0/ucp-spec.md	2026-11-14 12:38:19.439691406 +0000
+@@ -1,9 +1,9 @@
+ ---
+ doc_id: ucp-spec
+-name_en: Universal Creation Process
++name_en: Miko Creation Process (folded into miko-core)
+ name_zh: 通用製作流程
+ module: universal-creation-process
+-version: 0.7.1
++version: 0.8.0
+ date: 2026-11-14
+ status: PROPOSED
+ owner_role: R-CONV
+@@ -14,7 +14,10 @@
+ change_ref: review/round1.json#F-01..F-10
+ ---
+ 
+-# A：通用製作流程（Universal Creation Process, UCP）v0.2.0
++# 製作流程（Miko Creation Process, MCP）：miko-core 的製作章節
++
++> 層級狀態：本層已併入 miko-core（D16，2026-11-14）。miko-core 是流程的唯一權威；本文件保留為製作流程的步驟與閘門附錄，A08 自我驗收、A10 錯誤維護、A11 有界重測、A12 獨立驗收、A13 交付收工的閉環細節由 miko-core 負責，本文件只保留閘門引用與證據位置。
++
+ 
+ ## 0. 文件控制
+ 
+@@ -78,8 +81,8 @@
+ | 層 | 識別 | 適用對象 | 負責 | 不負責 |
+ |---|---|---|---|---|
+ | L1 | A：通用製作流程（本文件） | 所有產物 | 製作順序、閉環、狀態機、預算、失敗出口種類、證據與保存、獨立驗收門檻 | 章節清單、欄位名稱、Skill 步驟格式 |
+-| L2a | Universal Artifact Contract（UAC） | 規格書、架構書、流程設計書、治理文件、路由器文件、測試規格、整合升級文件 | 十六章標題與每章必要欄位 | 製作流程、驗收順序、Skill 九契約 |
+-| L2b | Universal Skill Contract（USC） | Skill | 九項必要契約、四節格式、P/C/J 七欄步驟 | 十六章、閉環順序 |
++| L2a | 文件契約（DOC，原 UAC） | 規格書、架構書、流程設計書、治理文件、路由器文件、測試規格、整合升級文件 | 十六章標題與每章必要欄位 | 製作流程、驗收順序、Skill 九契約 |
++| L2b | Skill 契約（SKL，原 USC） | Skill | 九項必要契約、四節格式、P/C/J 七欄步驟 | 十六章、閉環順序 |
+ 
+ 邊界規則：
+ 
+diff -ruN candidate-v0.7.1/usc-spec.md candidate-v0.8.0/usc-spec.md
+--- candidate-v0.7.1/usc-spec.md	2026-11-14 12:16:47.530998150 +0000
++++ candidate-v0.8.0/usc-spec.md	2026-11-14 12:38:19.440229264 +0000
+@@ -1,9 +1,9 @@
+ ---
+ doc_id: usc-spec
+-name_en: Universal Skill Contract
++name_en: Skill Contract (SKL)
+ name_zh: 通用 Skill 契約
+ module: universal-skill-contract
+-version: 0.7.1
++version: 0.8.0
+ date: 2026-11-14
+ status: PROPOSED
+ applies_to: [skill]
+@@ -11,7 +11,7 @@
+ amends: 0.2.0
+ ---
+ 
+-# Universal Skill Contract（USC）：Skill 九契約、四節格式、P/C/J 七欄 v0.2.0
++# Skill 契約（Skill Contract, SKL，原 USC）：九契約、四節、P／C／J 七欄
+ 
+ ## 1. 目的與範圍
+ 
+@@ -60,7 +60,10 @@
+ 
+ USC 不定義十六章、不定義閉環順序、不定義路由演算法。Skill 若需要十六章結構，一律引用 UAC。Skill 的製作與驗收仍走 UCP A00～A13。引用時只取章節骨架與欄位名稱，不得把文件架構（元件、介面、資料流）寫入 Skill 本體；Skill 若需要描述自身結構，寫在後設節，不複製 UAC 第五章。
+ 
+-## 6. 未決事項
++## 6. 名稱對照
++本文件原稱 Universal Skill Contract（USC），自 0.8.0 起改稱 Skill 契約（SKL），識別碼與檔名維持 usc-spec；條文編號不變。
++
++## 7. 未決事項
+ 
+ | ID | 描述 | 狀態 |
+ |---|---|---|

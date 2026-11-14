@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "loaded_at": "2026-11-14 17:31:51+08:00",
+  "path": "ledger-root/ledger/entries.json",
+  "counts": {
+    "err": 1,
+    "rej": 1,
+    "chg": 1
+  },
+  "sha256": "4276f290a33d0871d6fbbe29d905d2c7b068767ed6e28288051b9f9e5e0c1cdb"
+}

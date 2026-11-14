@@ -1,0 +1,63 @@
+schema: miko-routes/1
+version: 0.8.7
+routes:
+- route_id: RSL-R01
+  artifact: skill
+  contract: USC
+  checker:
+  - TSV-SKILL
+  - TSV-CONTRACT
+- route_id: RSL-R02
+  artifact: skill-spec
+  contract: UAC
+  checker:
+  - TSV-CONTRACT
+- route_id: RSL-R03
+  artifact: architecture
+  contract: UAC
+  checker:
+  - TSV-CONTRACT
+  - TSV-DAG
+- route_id: RSL-R04
+  artifact: process-design
+  contract: UAC
+  checker:
+  - TSV-CONTRACT
+  - TSV-DAG
+- route_id: RSL-R05
+  artifact: governance-rule
+  contract: UAC
+  checker:
+  - TSV-CONTRACT
+  - TSV-OVERLAP
+- route_id: RSL-R06
+  artifact: router-doc
+  contract: UAC
+  checker:
+  - TSV-CONTRACT
+  - TSV-ROUTE
+- route_id: RSL-R07
+  artifact: test-spec
+  contract: UAC
+  checker:
+  - TSV-CONTRACT
+  - TSV-EXIT
+- route_id: RSL-R08
+  artifact: integration-upgrade
+  contract: UAC
+  checker:
+  - TSV-CONTRACT
+  - TSV-REG
+  - TSV-REGRESSION
+- route_id: RSL-R09
+  artifact: adapter-doc
+  contract: UAC
+  checker:
+  - TSV-CONTRACT
+  - TSV-RUNTIME
+- route_id: RSL-R10
+  artifact: correction-ledger
+  contract: UAC
+  checker:
+  - TSV-CONTRACT
+  - TSV-LEDGER
