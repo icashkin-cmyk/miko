@@ -1,0 +1,136 @@
+diff -ruN candidate-v0.2.1/acceptance-matrix.md candidate-v0.2.2/acceptance-matrix.md
+--- candidate-v0.2.1/acceptance-matrix.md	2026-11-14 07:58:45.238816436 +0000
++++ candidate-v0.2.2/acceptance-matrix.md	2026-11-14 08:13:51.913491864 +0000
+@@ -3,7 +3,7 @@
+ name_en: Acceptance Matrix
+ name_zh: 驗收矩陣
+ module: testing-and-validation
+-version: 0.2.1
++version: 0.2.2
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.2.1/contract.yaml candidate-v0.2.2/contract.yaml
+--- candidate-v0.2.1/contract.yaml	2026-11-14 07:58:12.932039317 +0000
++++ candidate-v0.2.2/contract.yaml	2026-11-14 08:13:51.913604747 +0000
+@@ -1,5 +1,5 @@
+ schema: miko-contract-registry/1
+-version: 0.2.1
++version: 0.2.2
+ date: 2026-11-14
+ 
+ ucp:
+@@ -25,7 +25,7 @@
+ 
+ uac:
+   chapters:
+-    - {chapter: 1, title: 目的與範圍, required: [doc_id, name_en, name_zh, module, version, date, status, owner_role, supersedes, related_docs]}
++    - {chapter: 1, title: 目的與範圍, required: [doc_id, name_en, name_zh, module, version, date, status, owner_role, supersedes, related_docs, 目的, 範圍（含）, 非範圍（不含）, 適用對象]}
+     - {chapter: 2, title: 名詞與定義, required: [term_id, term_zh, term_en, definition, source_id, forbidden_synonyms]}
+     - {chapter: 3, title: 問題與背景, required: [現況, 問題陳述, evidence_text, evidence_source_id, 影響範圍, 不處理的後果, 既有嘗試]}
+     - {chapter: 4, title: 目標狀態, required: [目標, 可量測指標, 與現況差距, 成功判準, 非目標]}
+diff -ruN candidate-v0.2.1/index.md candidate-v0.2.2/index.md
+--- candidate-v0.2.1/index.md	2026-11-14 07:58:32.205976788 +0000
++++ candidate-v0.2.2/index.md	2026-11-14 08:13:51.913268539 +0000
+@@ -3,7 +3,7 @@
+ name_en: MIKO Universal Governance Architecture Index
+ name_zh: MIKO 通用治理架構總索引
+ module: governance
+-version: 0.2.1
++version: 0.2.2
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.2.1/matrix.md candidate-v0.2.2/matrix.md
+--- candidate-v0.2.1/matrix.md	2026-11-14 07:58:12.930350281 +0000
++++ candidate-v0.2.2/matrix.md	2026-11-14 08:13:51.913195965 +0000
+@@ -3,7 +3,7 @@
+ name_en: Layer Responsibility Matrix
+ name_zh: 分層責任矩陣
+ module: governance
+-version: 0.2.1
++version: 0.2.2
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+diff -ruN candidate-v0.2.1/modules-spec.md candidate-v0.2.2/modules-spec.md
+--- candidate-v0.2.1/modules-spec.md	2026-11-14 07:58:12.931872718 +0000
++++ candidate-v0.2.2/modules-spec.md	2026-11-14 08:13:51.913742071 +0000
+@@ -3,7 +3,7 @@
+ name_en: Cross-cutting Modules (Routing, Lifecycle, Testing)
+ name_zh: 橫向模組規格（路由、生命週期、測試）
+ module: routing-and-selection|lifecycle-and-versioning|testing-and-validation
+-version: 0.2.1
++version: 0.2.2
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+@@ -34,7 +34,7 @@
+ 
+ ### 3 判定規則
+ 
+-R-01 一個產物只命中一條 `route_id`；R-02 多產物逐個判定；R-03 無法判定標 `UNKNOWN` 交 R-CONV；R-04 命中兩條即判 `CONFLICT`，不得自行擇一，交 R-CONV 裁決並記錄裁決理由（修正 F-07）；R-05 同一任務內所有路由必須存在於本表。
++R-01 一個產物只命中一條 `route_id`；R-02 多產物逐個判定；R-03 無法判定標 `UNKNOWN` 交 R-CONV；R-04 命中兩條即判 `CONFLICT`，不得自行擇一，交 R-CONV 裁決；裁決理由固定寫入 `evidence/<task_id>/routing.json` 的 `route_decision_reason` 與 `decided_by` 兩欄，未填即視為未裁決（修正 F-07、N-02）；R-05 同一任務內所有路由必須存在於本表。
+ 
+ ### 4 失敗處理
+ 
+diff -ruN candidate-v0.2.1/readme-templates.md candidate-v0.2.2/readme-templates.md
+--- candidate-v0.2.1/readme-templates.md	2026-11-14 07:58:31.216987134 +0000
++++ candidate-v0.2.2/readme-templates.md	2026-11-14 08:13:51.913390710 +0000
+@@ -3,7 +3,7 @@
+ name_en: Module README Templates
+ name_zh: 各模組 README 模板
+ module: governance
+-version: 0.2.1
++version: 0.2.2
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.2.1/structure.md candidate-v0.2.2/structure.md
+--- candidate-v0.2.1/structure.md	2026-11-14 07:58:12.930203305 +0000
++++ candidate-v0.2.2/structure.md	2026-11-14 08:13:51.913114376 +0000
+@@ -3,7 +3,7 @@
+ name_en: MIKO Universal Governance Architecture - Structure, Naming and Templates
+ name_zh: MIKO 通用治理架構－結構、命名與模板
+ module: governance
+-version: 0.2.1
++version: 0.2.2
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+diff -ruN candidate-v0.2.1/uac-spec.md candidate-v0.2.2/uac-spec.md
+--- candidate-v0.2.1/uac-spec.md	2026-11-14 07:58:12.930893979 +0000
++++ candidate-v0.2.2/uac-spec.md	2026-11-14 08:13:51.912817940 +0000
+@@ -3,7 +3,7 @@
+ name_en: Universal Artifact Contract
+ name_zh: 通用產物契約
+ module: universal-artifact-contract
+-version: 0.2.1
++version: 0.2.2
+ date: 2026-11-14
+ status: PROPOSED
+ applies_to: [spec, architecture, process-design, governance-rule, router-doc, test-spec, integration-upgrade]
+diff -ruN candidate-v0.2.1/ucp-spec.md candidate-v0.2.2/ucp-spec.md
+--- candidate-v0.2.1/ucp-spec.md	2026-11-14 07:58:12.931517729 +0000
++++ candidate-v0.2.2/ucp-spec.md	2026-11-14 08:13:51.912636115 +0000
+@@ -3,7 +3,7 @@
+ name_en: Universal Creation Process
+ name_zh: 通用製作流程
+ module: universal-creation-process
+-version: 0.2.1
++version: 0.2.2
+ date: 2026-11-14
+ status: PROPOSED
+ owner_role: R-CONV
+diff -ruN candidate-v0.2.1/usc-spec.md candidate-v0.2.2/usc-spec.md
+--- candidate-v0.2.1/usc-spec.md	2026-11-14 07:58:12.931714675 +0000
++++ candidate-v0.2.2/usc-spec.md	2026-11-14 08:13:51.912914933 +0000
+@@ -3,7 +3,7 @@
+ name_en: Universal Skill Contract
+ name_zh: 通用 Skill 契約
+ module: universal-skill-contract
+-version: 0.2.1
++version: 0.2.2
+ date: 2026-11-14
+ status: PROPOSED
+ applies_to: [skill]

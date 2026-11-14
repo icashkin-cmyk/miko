@@ -1,0 +1,13 @@
+schema: miko-audit-packet/1
+packet_version: pkt-20261115T064929+0800-v0.8.7
+task_id: uga-v0.8.7
+packed_by: R-EVD
+packed_at: '2026-11-15 06:49:29+08:00'
+artifact_version: 0.8.7
+contract_version: 0.8.7
+file_count: 33
+excluded:
+- 作者辯解
+- 自我驗收結論
+- 實作思路
+- 對話紀錄

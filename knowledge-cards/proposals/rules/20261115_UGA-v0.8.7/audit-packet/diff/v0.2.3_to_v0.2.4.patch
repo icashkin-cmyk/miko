@@ -1,0 +1,157 @@
+diff -ruN candidate-v0.2.3/acceptance-matrix.md candidate-v0.2.4/acceptance-matrix.md
+--- candidate-v0.2.3/acceptance-matrix.md	2026-11-14 09:02:21.118466244 +0000
++++ candidate-v0.2.4/acceptance-matrix.md	2026-11-14 09:03:35.966132022 +0000
+@@ -3,7 +3,7 @@
+ name_en: Acceptance Matrix
+ name_zh: 驗收矩陣
+ module: testing-and-validation
+-version: 0.2.3
++version: 0.2.4
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.2.3/index.md candidate-v0.2.4/index.md
+--- candidate-v0.2.3/index.md	2026-11-14 09:02:21.116449334 +0000
++++ candidate-v0.2.4/index.md	2026-11-14 09:03:35.966030427 +0000
+@@ -3,7 +3,7 @@
+ name_en: MIKO Universal Governance Architecture Index
+ name_zh: MIKO 通用治理架構總索引
+ module: governance
+-version: 0.2.3
++version: 0.2.4
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.2.3/matrix.md candidate-v0.2.4/matrix.md
+--- candidate-v0.2.3/matrix.md	2026-11-14 09:02:21.116176328 +0000
++++ candidate-v0.2.4/matrix.md	2026-11-14 09:03:35.965806206 +0000
+@@ -3,7 +3,7 @@
+ name_en: Layer Responsibility Matrix
+ name_zh: 分層責任矩陣
+ module: governance
+-version: 0.2.3
++version: 0.2.4
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+diff -ruN candidate-v0.2.3/modules-spec.md candidate-v0.2.4/modules-spec.md
+--- candidate-v0.2.3/modules-spec.md	2026-11-14 09:02:21.118271312 +0000
++++ candidate-v0.2.4/modules-spec.md	2026-11-14 09:03:35.965581609 +0000
+@@ -3,7 +3,7 @@
+ name_en: Cross-cutting Modules (Routing, Lifecycle, Testing)
+ name_zh: 橫向模組規格（路由、生命週期、測試）
+ module: routing-and-selection|lifecycle-and-versioning|testing-and-validation
+-version: 0.2.3
++version: 0.2.4
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+diff -ruN candidate-v0.2.3/readme-templates.md candidate-v0.2.4/readme-templates.md
+--- candidate-v0.2.3/readme-templates.md	2026-11-14 09:02:21.116335841 +0000
++++ candidate-v0.2.4/readme-templates.md	2026-11-14 09:03:35.965942094 +0000
+@@ -3,7 +3,7 @@
+ name_en: Module README Templates
+ name_zh: 各模組 README 模板
+ module: governance
+-version: 0.2.3
++version: 0.2.4
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.2.3/structure.md candidate-v0.2.4/structure.md
+--- candidate-v0.2.3/structure.md	2026-11-14 09:02:21.116031693 +0000
++++ candidate-v0.2.4/structure.md	2026-11-14 09:03:35.965704316 +0000
+@@ -3,7 +3,7 @@
+ name_en: MIKO Universal Governance Architecture - Structure, Naming and Templates
+ name_zh: MIKO 通用治理架構－結構、命名與模板
+ module: governance
+-version: 0.2.3
++version: 0.2.4
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+diff -ruN candidate-v0.2.3/uac-spec.md candidate-v0.2.4/uac-spec.md
+--- candidate-v0.2.3/uac-spec.md	2026-11-14 09:02:21.115415033 +0000
++++ candidate-v0.2.4/uac-spec.md	2026-11-14 09:03:35.965312129 +0000
+@@ -3,7 +3,7 @@
+ name_en: Universal Artifact Contract
+ name_zh: 通用產物契約
+ module: universal-artifact-contract
+-version: 0.2.3
++version: 0.2.4
+ date: 2026-11-14
+ status: PROPOSED
+ applies_to: [spec, architecture, process-design, governance-rule, router-doc, test-spec, integration-upgrade]
+diff -ruN candidate-v0.2.3/ucp-spec.md candidate-v0.2.4/ucp-spec.md
+--- candidate-v0.2.3/ucp-spec.md	2026-11-14 09:02:21.117991097 +0000
++++ candidate-v0.2.4/ucp-spec.md	2026-11-14 09:03:35.966752378 +0000
+@@ -3,7 +3,7 @@
+ name_en: Universal Creation Process
+ name_zh: 通用製作流程
+ module: universal-creation-process
+-version: 0.2.3
++version: 0.2.4
+ date: 2026-11-14
+ status: PROPOSED
+ owner_role: R-CONV
+@@ -56,16 +56,16 @@
+ | 等級 | 條件（可驗證） | 必要證據 | 可給出的最高結果 | 備註 |
+ |---|---|---|---|---|
+ | L0 | 同一 session，曾載入製作內容或自我驗收結論 | 無隔離證據 | 僅 `SELF_*`；不得作為 A12 正式驗收 | 只供自查；L0 送驗一律視為未驗 |
+-| L1 | 同模型、新 session 冷啟動、只讀驗收包 | session 識別、模型 ID、開包前 `sha256sum -c` 輸出、`contact_with_author=false` | `AUDIT_PASS`（限文件／契約一致性） | 可作候選交付；不得作為 `ADOPTED` 的唯一依據 |
+-| L2 | 不同模型冷啟動（模型 ID 與製作者不同） | 同 L1，加上雙方模型 ID 對照 | `AUDIT_PASS`，可支撐 `ADOPTED` | 仍需 R-CONV 裁決 |
+-| L3 | 人類驗收者 | 驗收者識別（姓名或代號）、時間、簽核紀錄 | `AUDIT_PASS`，可支撐 `ADOPTED`；`EFFECTIVE` 仍需 Runtime 證據 | 利益衝突者不得擔任 |
++| L1 | 同模型、新 session 冷啟動、只讀驗收包 | session 識別、模型 ID、開包前 `sha256sum -c` 輸出、`contact_with_author=false` | `AUDIT_PASS`（限文件／契約一致性） | `adoption_support=NO`：可候選交付，不得作 `ADOPTED` 依據 |
++| L2 | 不同模型冷啟動（模型 ID 與製作者不同） | 同 L1，加上雙方模型 ID 對照 | `AUDIT_PASS` | `adoption_support=YES`：可作 `ADOPTED` 依據，仍需 R-CONV 裁決 |
++| L3 | 人類驗收者 | 驗收者識別（姓名或代號）、時間、簽核紀錄 | `AUDIT_PASS` | `adoption_support=YES`：正本採用建議等級；`EFFECTIVE` 仍需 Runtime 證據 |
+ 
+ 判定規則：
+ 
+ - L-01 等級由「實際可證明」的最小值決定；任一條證據缺漏即降一級。
+ - L-02 驗收者若中途接觸作者說明、自我驗收結論或實作思路，降為 L0 並換人重驗，該輪計入 `audit_round`。
+ - L-03 同一人不得同時擔任 R-AUD 與 R-EVD，也不得與同一次 R-CONV 裁決同人。
+-- L-04 多位驗收者分歧時，以最低等級者的判定為準，交 R-CONV 裁決並記 `route_decision_reason` 同等格式的理由欄。
++- L-04 多位驗收者時，`independence_level` 取最低者；判定取最嚴格者（任一 `AUDIT_FAIL` 即整體 `AUDIT_FAIL`），不得以多數決；報告記 `reviewer_split=true` 並列各人判定，交 R-CONV 裁決。
+ | 困難卡 | difficulty card | 七欄卡：現象｜證據｜類別｜影響哪個 AC｜解除條件｜負責方｜首次發現時間 |
+ | 任務四態 | task quad-state | 完成／完成但有疑慮／需要資料／卡住 |
+ 
+@@ -330,7 +330,7 @@
+ ### A12 獨立驗收交接
+ - **目的**：在可證明的隔離條件下判定產物是否符合 AC，避免自我驗收冒充獨立驗收。
+ - **輸入**：驗收包（規格見附錄 A）、封裝雜湊清單 `audit-packet/MANIFEST.sha256`。
+-- **輸出**：獨立驗收報告 `audit-report.md`（含 §附錄 A.4 固定欄位）、`audit-verify.log`、`independence_level`、逐條 AC 判定。
++- **輸出**：獨立驗收報告 `audit-report.md`（含附錄 A.4 固定欄位）、`audit-verify.log`、`independence_level`、`adoption_support`、逐條 AC 判定；報告置於包外 `evidence/<task_id>/`。
+ - **前置條件**：A11 全 `PASS`；驗收包已封裝且 `sha256sum -c` 通過；驗收者未讀取自我驗收結論、作者說明或實作思路；驗收者非 R-BLD／R-SELF／R-EVD。
+ - **操作要求**：先驗封裝再開包（驗證失敗即 `BLOCKED`，不得繼續）；只讀包內檔案；逐條 AC 依報告 schema 填 `verdict`、`evidence_ref`、`reason`；寫明 `independence_level`、`contact_with_author`、`reviewer_id`、`reviewed_at`、`tool_versions`；等級依 §2.1 以最弱一環判定。
+ - **禁止事項**：不得由 R-BLD／R-SELF 兼任；不得先看自我驗收結論；不得修改包內任何檔案；L0 不得給 `AUDIT_PASS`；不得把 `AUDIT_PASS` 寫成 `ADOPTED` 或 `EFFECTIVE`（`ADOPTED` 需 R-CONV 裁決）。
+@@ -420,6 +420,10 @@
+ └── checks/                  # 檢查器原始輸出（JSON），不得含作者評語或自我驗收結論
+ ```
+ 
++### A.1.1 包外證據
++
++`audit-report.md`、`audit-verify.log` 與 `audit-packet/MANIFEST.sha256` 的留存副本置於 `evidence/<task_id>/`，不放入包內；驗收者只讀包內，報告寫在包外（修正 A-01）。
++
+ ### A.2 排除清單
+ 
+ 不得放入：作者辯解、自我驗收結論、實作思路、對話紀錄、待辦清單、未來計畫。diff 若含上述內容，必須先去除再封裝。
+@@ -441,6 +445,7 @@
+ | `contact_with_author` | `true`／`false`；`true` 時必須降 L0 |
+ | `manifest_check` | `PASS`／`FAIL` |
+ | `tool_versions` | 檢查器與模型版本 |
++| `audit_round` | 本次為第幾輪獨立驗收（1～2） |
+ | `results[]` | 每條 AC：`ac_id`、`verdict`、`evidence_ref`、`reason` |
+ | `overall` | `AUDIT_PASS`／`AUDIT_FAIL`／`BLOCKED` |
+ | `adoption_recommendation` | `NONE`／`RECOMMEND_ADOPT`（僅建議，`ADOPTED` 由 R-CONV 裁決） |
+diff -ruN candidate-v0.2.3/usc-spec.md candidate-v0.2.4/usc-spec.md
+--- candidate-v0.2.3/usc-spec.md	2026-11-14 09:02:21.115621359 +0000
++++ candidate-v0.2.4/usc-spec.md	2026-11-14 09:03:35.965452815 +0000
+@@ -3,7 +3,7 @@
+ name_en: Universal Skill Contract
+ name_zh: 通用 Skill 契約
+ module: universal-skill-contract
+-version: 0.2.3
++version: 0.2.4
+ date: 2026-11-14
+ status: PROPOSED
+ applies_to: [skill]

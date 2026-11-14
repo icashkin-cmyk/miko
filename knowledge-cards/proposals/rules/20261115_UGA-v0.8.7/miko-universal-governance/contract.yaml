@@ -1,0 +1,74 @@
+schema: miko-contract-registry/1
+version: 0.8.7
+date: 2026-11-14
+
+ucp:
+  steps: [A00, A01, A02, A03, A04, A05, A06, A07, A08, A09, A10, A11, A12, A13]
+  required_fields:
+    - 目的
+    - 輸入
+    - 輸出
+    - 前置條件
+    - 操作要求
+    - 禁止事項
+    - 檢查點
+    - Acceptance Criteria
+    - Failure Handling
+    - Recovery
+    - 閉環條件
+    - 負責角色
+    - 證據與保存方式
+  exception_fields: [回歸測題（例外）]
+  budget:
+    retest_round_max: 3
+    audit_round_max: 2
+
+uac:
+  chapters:
+    - {chapter: 1, title: 目的與範圍, required: [doc_id, name_en, name_zh, module, version, date, status, owner_role, supersedes, related_docs, 目的, 範圍（含）, 非範圍（不含）, 適用對象]}
+    - {chapter: 2, title: 名詞與定義, required: [term_id, term_zh, term_en, definition, source_id, forbidden_synonyms]}
+    - {chapter: 3, title: 問題與背景, required: [現況, 問題陳述, evidence_text, evidence_source_id, 影響範圍, 不處理的後果, 既有嘗試]}
+    - {chapter: 4, title: 目標狀態, required: [目標, 可量測指標, 與現況差距, 成功判準, 非目標]}
+    - {chapter: 5, title: 流程或架構, required: [流程步驟, 順序與分支, 邊界, UCP 步驟 ID, 異常分支去向, 流程圖]}
+    - {chapter: 6, title: 元件與責任, required: [component_id, responsibility, not_responsible, owner_role, inputs, outputs, single_owner]}
+    - {chapter: 7, title: 輸入與輸出, required: [io_id, name, type, source, required, format, validation, example]}
+    - {chapter: 8, title: 依賴與限制, required: [依賴項, 依賴型別, 版本範圍, 已知限制, 假設, 外部服務狀態]}
+    - {chapter: 9, title: 權限與邊界, required: [可寫範圍, 禁止範圍, 授權要求, 資料分級, 硬禁止清單, 跨平台寫入規則]}
+    - {chapter: 10, title: 失敗處理, required: [失敗類別, 偵測方式, 狀態碼, 出口, 重試上限, 重試範圍, 負責方]}
+    - {chapter: 11, title: 恢復與回復, required: [回滾點, 補償動作, 冪等性, 重入方式, 資源清理, 回復後重新驗證方式, 回復證據位置]}
+    - {chapter: 12, title: 驗收條件, required: [ac_id, condition, method, evidence, judge_role, mandatory, test_case_id]}
+    - {chapter: 13, title: 測試案例, required: [case_id, related_ac_id, input, expected, forbidden, actual_output, result]}
+    - {chapter: 14, title: 回歸測試, required: [回歸集清單, 觸發條件, 必跑項, 通過門檻, baseline, 結果保存位置]}
+    - {chapter: 15, title: 版本與維護, required: [版本, 日期, commit, sha256, 變更紀錄, 維護者, 快照位置, 退役規則, 退役條件]}
+    - {chapter: 16, title: 未決事項, required: [open_id, 描述, 影響, 負責方, 解除條件, 狀態]}
+
+usc:
+  contracts: [C1, C2, C3, C4, C5, C6, C7, C8, C9]
+  sections: [問問題, 解決, 後設, 檢查]
+  step_columns: [ID, 類型, 觸發條件, 操作要求, 禁止事項, 驗收證據, 失敗處理]
+
+routes:
+  - {route_id: RSL-R01, artifact: skill, contract: USC, checker: [TSV-SKILL, TSV-CONTRACT]}
+  - {route_id: RSL-R02, artifact: skill-spec, contract: UAC, checker: [TSV-CONTRACT]}
+  - {route_id: RSL-R03, artifact: architecture, contract: UAC, checker: [TSV-CONTRACT, TSV-DAG]}
+  - {route_id: RSL-R04, artifact: process-design, contract: UAC, checker: [TSV-CONTRACT, TSV-DAG]}
+  - {route_id: RSL-R05, artifact: governance-rule, contract: UAC, checker: [TSV-CONTRACT, TSV-OVERLAP]}
+  - {route_id: RSL-R06, artifact: router-doc, contract: UAC, checker: [TSV-CONTRACT, TSV-ROUTE]}
+  - {route_id: RSL-R07, artifact: test-spec, contract: UAC, checker: [TSV-CONTRACT, TSV-EXIT]}
+  - {route_id: RSL-R08, artifact: integration-upgrade, contract: UAC, checker: [TSV-CONTRACT, TSV-REG, TSV-REGRESSION]}
+  - {route_id: RSL-R09, artifact: adapter-doc, contract: UAC, checker: [TSV-CONTRACT, TSV-RUNTIME]}
+  - {route_id: RSL-R10, artifact: correction-ledger, contract: UAC, checker: [TSV-CONTRACT, TSV-LEDGER]}
+
+responsibility:
+  rows:
+    - {name: 停止／禁止閘門, owner: GOV}
+    - {name: 任務分類與四態, owner: GOV}
+    - {name: 製作順序與閉環, owner: UCP}
+    - {name: 自我驗收與獨立驗收門檻, owner: UCP}
+    - {name: 十六章章節與欄位, owner: UAC}
+    - {name: Skill 九契約／四節／七欄, owner: USC}
+    - {name: 路由判定, owner: RSL}
+    - {name: 版本、快照、退役, owner: LCV}
+    - {name: 熱插拔宣告, owner: LCV}
+    - {name: 檢查器與測試, owner: TSV}
+    - {name: 證據封裝與保存, owner: UCP}

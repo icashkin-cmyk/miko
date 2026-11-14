@@ -1,0 +1,89 @@
+{
+  "overall": "PASS",
+  "cases": [
+    {
+      "case": "R-01",
+      "expect_fail_checker": "TSV-STRUCT",
+      "file": "ucp-spec.md",
+      "result": "PASS",
+      "detail": "TSV-STRUCT status=FAIL",
+      "other_fails": [
+        "TSV-EXIT"
+      ]
+    },
+    {
+      "case": "R-02",
+      "expect_fail_checker": "TSV-STRUCT",
+      "file": "uac-spec.md",
+      "result": "PASS",
+      "detail": "TSV-STRUCT status=FAIL",
+      "other_fails": [
+        "TSV-CONTRACT"
+      ]
+    },
+    {
+      "case": "R-03",
+      "expect_fail_checker": "TSV-DAG",
+      "file": "deps.yaml",
+      "result": "PASS",
+      "detail": "TSV-DAG status=FAIL",
+      "other_fails": []
+    },
+    {
+      "case": "R-04",
+      "expect_fail_checker": "TSV-OVERLAP",
+      "file": "matrix.md",
+      "result": "PASS",
+      "detail": "TSV-OVERLAP status=FAIL",
+      "other_fails": []
+    },
+    {
+      "case": "R-05",
+      "expect_fail_checker": "TSV-ROUTE",
+      "file": "contract.yaml",
+      "result": "PASS",
+      "detail": "TSV-ROUTE status=FAIL",
+      "other_fails": []
+    },
+    {
+      "case": "R-06",
+      "expect_fail_checker": "TSV-RUNTIME",
+      "file": "structure.md",
+      "result": "PASS",
+      "detail": "TSV-RUNTIME status=FAIL",
+      "other_fails": []
+    },
+    {
+      "case": "R-07",
+      "expect_fail_checker": "TSV-EXIT",
+      "file": "ucp-spec.md",
+      "result": "PASS",
+      "detail": "TSV-EXIT status=FAIL",
+      "other_fails": []
+    },
+    {
+      "case": "R-08",
+      "expect_fail_checker": "TSV-SKILL",
+      "file": "usc-spec.md",
+      "result": "PASS",
+      "detail": "TSV-SKILL status=FAIL",
+      "other_fails": []
+    },
+    {
+      "case": "R-09",
+      "expect_fail_checker": "TSV-REG",
+      "file": "structure.md",
+      "result": "PASS",
+      "detail": "TSV-REG status=FAIL",
+      "other_fails": []
+    },
+    {
+      "case": "R-10",
+      "expect_fail_checker": "TSV-FMT",
+      "file": "ucp-spec.md",
+      "result": "PASS",
+      "detail": "TSV-FMT status=FAIL",
+      "other_fails": []
+    }
+  ]
+}

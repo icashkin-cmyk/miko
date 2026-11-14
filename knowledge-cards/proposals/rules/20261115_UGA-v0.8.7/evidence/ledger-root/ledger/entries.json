@@ -1,0 +1,96 @@
+{
+  "version": "1.0.0",
+  "entries": [
+    {
+      "id": "ERR-001",
+      "type": "err",
+      "dedupe_key": "17f815f20f4b3b5d",
+      "project_id": "MIKO-UGA",
+      "title": "交付包 VERSION 檔停在 0.2.1 與文件版本不一致",
+      "body": "交付骨架的 VERSION 檔由建置腳本寫死 0.2.1，文件 front matter 已到 0.3.1。根因是建置腳本沒有讀取候選版本。修正：建置時讀版本，並新增 TSV-VERSION 檢查器。",
+      "status": "FIXED",
+      "created_at": "2026-11-14 17:31:51+08:00",
+      "updated_at": "2026-11-14 17:31:51+08:00",
+      "rev": 1,
+      "history": []
+    },
+    {
+      "id": "REJ-001",
+      "type": "rej",
+      "dedupe_key": "52c4e1983c32dbee",
+      "project_id": "MIKO-UGA",
+      "title": "正文不可用短文片段描寫",
+      "body": "使用者明確否決以短句片段作正文，要求正文一律是驗收核實合格的繁中敘述，測試資訊只放證據目錄。",
+      "status": "PERMANENT",
+      "created_at": "2026-11-14 17:31:51+08:00",
+      "updated_at": "2026-11-14 17:31:51+08:00",
+      "rev": 1,
+      "history": []
+    },
+    {
+      "id": "CHG-001",
+      "type": "chg",
+      "dedupe_key": "0be3be8ffe1d9639",
+      "project_id": "MIKO-UGA",
+      "title": "A 流程改為十三欄，回歸列為例外",
+      "body": "依使用者指示，回歸測題不計入定義，正文只留測題編號；帳本改為全域單一帳本。",
+      "status": "DONE",
+      "created_at": "2026-11-14 17:31:51+08:00",
+      "updated_at": "2026-11-14 17:31:51+08:00",
+      "rev": 1,
+      "history": []
+    },
+    {
+      "id": "CHG-002",
+      "type": "chg",
+      "dedupe_key": "b73fdd7459293e59",
+      "project_id": "MIKO-UGA",
+      "title": "USC 四節改為正本四節",
+      "body": "裁決採納正本四節（問問題、解決、後設、檢查），候選 S1～S4 停用，內容併入對應節；版本 0.5.0。",
+      "status": "DONE",
+      "created_at": "2026-11-14 17:53:20+08:00",
+      "updated_at": "2026-11-14 17:53:20+08:00",
+      "rev": 1,
+      "history": []
+    },
+    {
+      "id": "ERR-002",
+      "type": "err",
+      "dedupe_key": "36b95dd293d28f3c",
+      "project_id": "MIKO-UGA",
+      "title": "0.2.2 至 0.2.4 內容變更誤用 PATCH",
+      "body": "欄位與節名變更屬不相容變更，0.x 期間應升 MINOR。自 0.5.0 起依 LCV 判定。",
+      "status": "FIXED",
+      "created_at": "2026-11-14 17:53:21+08:00",
+      "updated_at": "2026-11-14 17:53:21+08:00",
+      "rev": 1,
+      "history": []
+    },
+    {
+      "id": "CHG-003",
+      "type": "chg",
+      "dedupe_key": "9e5d1ad86c0e62e8",
+      "project_id": "MIKO-UGA",
+      "title": "A00 補上對齊行與品質閘門硬檢查點",
+      "body": "依使用者指示，A00 新增對齊行格式（正本版本、commit、讀取時間）與流程鎖三數相符，新增 AC-A00-06、AC-A00-07，總 AC 51 條。",
+      "status": "DONE",
+      "created_at": "2026-11-14 18:15:36+08:00",
+      "updated_at": "2026-11-14 18:15:36+08:00",
+      "rev": 1,
+      "history": []
+    },
+    {
+      "id": "ERR-003",
+      "type": "err",
+      "dedupe_key": "63c2dc3a52317652",
+      "project_id": "MIKO-UGA",
+      "title": "Type B 回覆後設只寫一項，套用輕量格式",
+      "body": "0.6.0 回覆的後設只寫最可能錯的一點與一項風險，缺事實推論未知分欄、最強反例、偽陽性偽陰性。根因是把 Type B 當輕量格式處理，輸出前自查沒有逐項對照後設四項。修正：A13 新增回覆格式自查與 AC-A13-05，檢查器與回歸 R-20 攔截。",
+      "status": "FIXED",
+      "created_at": "2026-11-14 18:44:52+08:00",
+      "updated_at": "2026-11-14 18:44:52+08:00",
+      "rev": 1,
+      "history": []
+    }
+  ]
+}

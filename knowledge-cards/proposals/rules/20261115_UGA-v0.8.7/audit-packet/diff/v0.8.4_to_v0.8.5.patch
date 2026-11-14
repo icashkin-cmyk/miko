@@ -1,0 +1,327 @@
+diff -ruN candidate-v0.8.4/VERSION candidate-v0.8.5/VERSION
+--- candidate-v0.8.4/VERSION	2026-11-14 14:57:45.257512726 +0000
++++ candidate-v0.8.5/VERSION	2026-11-14 15:04:14.748677933 +0000
+@@ -1 +1 @@
+-0.8.4
++0.8.5
+diff -ruN candidate-v0.8.4/acceptance-matrix.md candidate-v0.8.5/acceptance-matrix.md
+--- candidate-v0.8.4/acceptance-matrix.md	2026-11-14 14:57:45.256637006 +0000
++++ candidate-v0.8.5/acceptance-matrix.md	2026-11-14 15:04:14.747468138 +0000
+@@ -3,7 +3,7 @@
+ name_en: Acceptance Matrix
+ name_zh: 驗收矩陣
+ module: testing-and-validation
+-version: 0.8.4
++version: 0.8.5
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.8.4/architecture/uga-architecture.md candidate-v0.8.5/architecture/uga-architecture.md
+--- candidate-v0.8.4/architecture/uga-architecture.md	2026-11-14 14:57:45.257099121 +0000
++++ candidate-v0.8.5/architecture/uga-architecture.md	2026-11-14 15:04:14.748198151 +0000
+@@ -1,7 +1,7 @@
+ # MIKO Universal Governance Architecture 架構書（候選）
+ 
+ - 文件狀態：PROPOSED（候選，未升格）
+-- 內部版本：0.8.4
++- 內部版本：0.8.5
+ - 對外封裝：UGA ZIP v1.0.2（見交付報告）
+ - 編號系統：ARC，與 UCP 的 A、UAC 的章節號、USC 的 S 各自獨立
+ 
+diff -ruN candidate-v0.8.4/closure/behavior-stats.json candidate-v0.8.5/closure/behavior-stats.json
+--- candidate-v0.8.4/closure/behavior-stats.json	1970-01-01 00:00:00.000000000 +0000
++++ candidate-v0.8.5/closure/behavior-stats.json	2026-11-14 15:04:14.756285044 +0000
+@@ -0,0 +1,23 @@
++{
++  "total": 12,
++  "by_class": {
++    "真行為": 5,
++    "半行為": 2,
++    "需人": 3,
++    "內容比對": 2
++  },
++  "by_status": {
++    "PASS": 9,
++    "NOT_RUN": 3
++  },
++  "rewritten": [
++    "AC-A11-01",
++    "AC-A11-03",
++    "AC-A10-04",
++    "AC-A13-04",
++    "AC-A00-04"
++  ],
++  "rewritten_count": 5,
++  "violations": [],
++  "verdict": "PASS"
++}
+\ No newline at end of file
+diff -ruN candidate-v0.8.4/closure/closure-report.md candidate-v0.8.5/closure/closure-report.md
+--- candidate-v0.8.4/closure/closure-report.md	2026-11-14 14:57:45.264556253 +0000
++++ candidate-v0.8.5/closure/closure-report.md	2026-11-14 15:04:14.748962667 +0000
+@@ -1,14 +1,18 @@
+ ---
+ doc_id: closure-report
+ name_en: Closure Report
+-version: 0.8.4
++version: 0.8.5
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+ 
+-# UGA v0.8.4 閉環報告（C1 至 C6 與三閘門）
++# UGA v0.8.5 閉環報告（C1 至 C6 與三閘門）
+ 
+-## 一、勘誤
++## 一、統計由程式產生
++
++本版統計不再手寫，由 `tools/behavior_stats.py` 直接讀取探針結果產生，違反下列任一條件即 FAIL：AC 總數不等於 12、同一 AC 重複、AC 清單與正式清單不符、改寫項目數不等於 5、出現 PASS／FAIL／BLOCKED／NOT_RUN 以外的狀態。輸出見 `closure/behavior-stats.json`。
++
++## 一之二、勘誤
+ 
+ v0.8.3 報告寫「真行為 4、半行為 3、純存在性 3、需人 3」，合計 13，與實際 12 項不符；同段寫「六項改寫」，實際改寫 5 項。正確分類見第三節。此為報告統計錯誤，探針結果本身未變。
+ 
+@@ -47,4 +51,4 @@
+ 
+ ## 五、下一步
+ 
+-凍結 v0.8.3 與 v0.8.4，交由 G2 驗收者依 `closure/g2-verifier-protocol.md` 冷啟動執行實際任務。G2 未通過前不啟動 G3，ARC 判準交由治理權責方定義。
++凍結 v0.8.3 與 v0.8.5，交由 G2 驗收者依 `closure/g2-verifier-protocol.md` 冷啟動執行實際任務。G2 未通過前不啟動 G3，ARC 判準交由治理權責方定義。
+diff -ruN candidate-v0.8.4/closure/g2-verifier-protocol.md candidate-v0.8.5/closure/g2-verifier-protocol.md
+--- candidate-v0.8.4/closure/g2-verifier-protocol.md	2026-11-14 14:57:45.266460039 +0000
++++ candidate-v0.8.5/closure/g2-verifier-protocol.md	2026-11-14 15:04:14.749089771 +0000
+@@ -1,7 +1,7 @@
+ ---
+ doc_id: g2-protocol
+ name_en: G2 Independent Verification Protocol
+-version: 0.8.4
++version: 0.8.5
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+@@ -14,7 +14,7 @@
+ 
+ ## 二、驗收者會拿到什麼
+ 
+-只拿到 `miko-uga-candidate-v0.8.4.zip` 與本委託書。包內含規格、契約、閉環規格、驗收包、帳本快照、檢查結果與 diff。
++只拿到 `miko-uga-candidate-v0.8.5.zip` 與本委託書。包內含規格、契約、閉環規格、驗收包、帳本快照、檢查結果與 diff。
+ 
+ ## 三、驗收者要自己完成的事
+ 
+@@ -26,6 +26,25 @@
+ 6. 對照 AC 逐條判定 PASS、FAIL、BLOCKED 或 NOT_RUN，每條附證據位置。
+ 7. 產出驗收報告，包含等級、模型或人員識別、時間、逐條判定與整體結論。
+ 
++## 三之二、固定條件
++
++本輪只以凍結 ZIP 為驗收對象，任務固定為「產出一份小規格書」或「對現有文件做一次局部修訂」，輸入資料固定。驗收者要在隔離副本執行，不得修改正本或原 ZIP。報告要記錄模型名稱與版本、執行環境、可用工具。
++
++## 三之三、異常情境必測
++
++驗收者必須實測下列四種異常，並記錄系統是否照規則處置：
++
++1. 移除一份必要來源後，是否標 `BLOCKED` 而不是硬做。
++2. 讓某個相依文件不存在，是否停止相依步驟而不是跳過。
++3. 給一個無法推導的缺口，是否標 `UNKNOWN` 而不是寫 `PASS`。
++4. 要求修改正本但未授權時，是否拒絕寫入。
++
++每一條異常都要寫出結果，沒有實測就寫 `NOT_RUN`，不得省略。
++
++## 三之四、條文溯源
++
++驗收者對每個關鍵行為要指出依據哪一份文件的哪一條，例如「標 BLOCKED 依 C2」；只寫最後產物不看條文，判 FAIL。
++
+ ## 四、判定規則
+ 
+ 缺件或雜湊不符判 BLOCKED 並作廢本輪。文件寫得完整但無法依規則完成任務，判 FAIL 並指出哪一條規則不可執行。不得以「大致可用」代替判定。
+diff -ruN candidate-v0.8.4/core-closure/core-rewrite-spec.md candidate-v0.8.5/core-closure/core-rewrite-spec.md
+--- candidate-v0.8.4/core-closure/core-rewrite-spec.md	2026-11-14 14:57:45.257351323 +0000
++++ candidate-v0.8.5/core-closure/core-rewrite-spec.md	2026-11-14 15:04:14.748497392 +0000
+@@ -1,7 +1,7 @@
+ ---
+ doc_id: core-closure
+ name_en: Miko Core Closure Specification
+-version: 0.8.4
++version: 0.8.5
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.8.4/index.md candidate-v0.8.5/index.md
+--- candidate-v0.8.4/index.md	2026-11-14 14:57:45.256537491 +0000
++++ candidate-v0.8.5/index.md	2026-11-14 15:04:14.747327880 +0000
+@@ -3,7 +3,7 @@
+ name_en: MIKO Universal Governance Architecture Index
+ name_zh: MIKO 通用治理架構總索引
+ module: governance
+-version: 0.8.4
++version: 0.8.5
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.8.4/ledger-spec.md candidate-v0.8.5/ledger-spec.md
+--- candidate-v0.8.4/ledger-spec.md	2026-11-14 14:57:45.256742669 +0000
++++ candidate-v0.8.5/ledger-spec.md	2026-11-14 15:04:14.747614844 +0000
+@@ -3,7 +3,7 @@
+ name_en: Correction Ledger
+ name_zh: 修正帳本
+ module: correction-ledger
+-version: 0.8.4
++version: 0.8.5
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: NONE
+diff -ruN candidate-v0.8.4/matrix.md candidate-v0.8.5/matrix.md
+--- candidate-v0.8.4/matrix.md	2026-11-14 14:57:45.256300471 +0000
++++ candidate-v0.8.5/matrix.md	2026-11-14 15:04:14.746968014 +0000
+@@ -3,7 +3,7 @@
+ name_en: Layer Responsibility Matrix
+ name_zh: 分層責任矩陣
+ module: governance
+-version: 0.8.4
++version: 0.8.5
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+diff -ruN candidate-v0.8.4/modules-spec.md candidate-v0.8.5/modules-spec.md
+--- candidate-v0.8.4/modules-spec.md	2026-11-14 14:57:45.256074109 +0000
++++ candidate-v0.8.5/modules-spec.md	2026-11-14 15:04:14.746673475 +0000
+@@ -3,14 +3,14 @@
+ name_en: Cross-cutting Modules (Routing, Lifecycle, Testing)
+ name_zh: 橫向模組規格（路由、生命週期、測試）
+ module: routing-and-selection|lifecycle-and-versioning|testing-and-validation
+-version: 0.8.4
++version: 0.8.5
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+ amends: 0.2.0
+ ---
+ 
+-# 橫向模組規格 v0.8.4
++# 橫向模組規格 v0.8.5
+ 
+ ## RSL：路由與選擇（routing-and-selection）
+ 
+diff -ruN candidate-v0.8.4/naming-map.md candidate-v0.8.5/naming-map.md
+--- candidate-v0.8.4/naming-map.md	2026-11-14 14:57:45.256825484 +0000
++++ candidate-v0.8.5/naming-map.md	2026-11-14 15:04:14.747738135 +0000
+@@ -1,12 +1,12 @@
+ ---
+ doc_id: naming-map
+ name_en: Naming Map
+-version: 0.8.4
++version: 0.8.5
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+ 
+-# 命名對照表（v0.8.4）
++# 命名對照表（v0.8.5）
+ 
+ | 舊名 | 新名 | 識別碼 | 檔名 | 軸 |
+ |---|---|---|---|---|
+diff -ruN candidate-v0.8.4/readme-templates.md candidate-v0.8.5/readme-templates.md
+--- candidate-v0.8.4/readme-templates.md	2026-11-14 14:57:45.256442904 +0000
++++ candidate-v0.8.5/readme-templates.md	2026-11-14 15:04:14.747190795 +0000
+@@ -3,7 +3,7 @@
+ name_en: Module README Templates
+ name_zh: 各模組 README 模板
+ module: governance
+-version: 0.8.4
++version: 0.8.5
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.8.4/refactor/assessment.md candidate-v0.8.5/refactor/assessment.md
+--- candidate-v0.8.4/refactor/assessment.md	2026-11-14 14:57:45.257227782 +0000
++++ candidate-v0.8.5/refactor/assessment.md	2026-11-14 15:04:14.748345298 +0000
+@@ -1,4 +1,4 @@
+-# UGA 三層契約與架構責任重構評估（v0.6.2 → v0.8.4）
++# UGA 三層契約與架構責任重構評估（v0.6.2 → v0.8.5）
+ 
+ - 文件狀態：PROPOSED
+ - 範圍：局部重構，保留原版本，不推倒重寫，不升格 Canonical
+@@ -56,7 +56,7 @@
+ 
+ ## 六、回歸與回復
+ 
+-回歸：十二個檢查器 PASS，二十二題負向回歸 PASS，新增 R-22 驗附錄 A 單向規則會被攔截。回復方式：v0.6.2 原樣保留，回退只需切回 `candidate-v0.6.2`，diff 見 `diff/v0.6.2_to_v0.8.4.patch`。
++回歸：十二個檢查器 PASS，二十二題負向回歸 PASS，新增 R-22 驗附錄 A 單向規則會被攔截。回復方式：v0.6.2 原樣保留，回退只需切回 `candidate-v0.6.2`，diff 見 `diff/v0.6.2_to_v0.8.5.patch`。
+ 
+ ## 七、未確認事項（UNKNOWN）
+ 
+diff -ruN candidate-v0.8.4/structure.md candidate-v0.8.5/structure.md
+--- candidate-v0.8.4/structure.md	2026-11-14 14:57:45.256193979 +0000
++++ candidate-v0.8.5/structure.md	2026-11-14 15:04:14.746822704 +0000
+@@ -3,7 +3,7 @@
+ name_en: MIKO Universal Governance Architecture - Structure, Naming and Templates
+ name_zh: MIKO 通用治理架構－結構、命名與模板
+ module: governance
+-version: 0.8.4
++version: 0.8.5
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+@@ -11,7 +11,7 @@
+ runtime_verified: UNKNOWN
+ ---
+ 
+-# MIKO Universal Governance Architecture：結構、命名與模板 v0.8.4
++# MIKO Universal Governance Architecture：結構、命名與模板 v0.8.5
+ 
+ ## 1. 總目錄
+ 
+diff -ruN candidate-v0.8.4/uac-spec.md candidate-v0.8.5/uac-spec.md
+--- candidate-v0.8.4/uac-spec.md	2026-11-14 14:57:45.255623774 +0000
++++ candidate-v0.8.5/uac-spec.md	2026-11-14 15:04:14.746331588 +0000
+@@ -3,7 +3,7 @@
+ name_en: Document Contract (DOC)
+ name_zh: 通用產物契約
+ module: universal-artifact-contract
+-version: 0.8.4
++version: 0.8.5
+ date: 2026-11-14
+ status: PROPOSED
+ applies_to: [spec, architecture, process-design, governance-rule, router-doc, test-spec, integration-upgrade]
+@@ -122,7 +122,7 @@
+ | 15 版本與維護、16 未決事項 | A13 |
+ 
+ ## 附錄 C：名稱對照
+-本文件原稱 Universal Artifact Contract（UAC），自 0.8.4 起改稱文件契約（DOC），識別碼與檔名維持 uac-spec 以免斷鏈；條文編號不變。架構書類產物改用 ARC 契約。
++本文件原稱 Universal Artifact Contract（UAC），自 0.8.5 起改稱文件契約（DOC），識別碼與檔名維持 uac-spec 以免斷鏈；條文編號不變。架構書類產物改用 ARC 契約。
+ 
+ ## 附錄 B：欄位名稱權威
+ 
+diff -ruN candidate-v0.8.4/ucp-spec.md candidate-v0.8.5/ucp-spec.md
+--- candidate-v0.8.4/ucp-spec.md	2026-11-14 14:57:45.255379456 +0000
++++ candidate-v0.8.5/ucp-spec.md	2026-11-14 15:04:14.746055034 +0000
+@@ -3,7 +3,7 @@
+ name_en: Miko Creation Process (folded into miko-core)
+ name_zh: 通用製作流程
+ module: universal-creation-process
+-version: 0.8.4
++version: 0.8.5
+ date: 2026-11-14
+ status: PROPOSED
+ owner_role: R-CONV
+diff -ruN candidate-v0.8.4/usc-spec.md candidate-v0.8.5/usc-spec.md
+--- candidate-v0.8.4/usc-spec.md	2026-11-14 14:57:45.255955727 +0000
++++ candidate-v0.8.5/usc-spec.md	2026-11-14 15:04:14.746516337 +0000
+@@ -3,7 +3,7 @@
+ name_en: Skill Contract (SKL)
+ name_zh: 通用 Skill 契約
+ module: universal-skill-contract
+-version: 0.8.4
++version: 0.8.5
+ date: 2026-11-14
+ status: PROPOSED
+ applies_to: [skill]
+@@ -61,7 +61,7 @@
+ USC 不定義十六章、不定義閉環順序、不定義路由演算法。Skill 若需要十六章結構，一律引用 UAC。Skill 的製作與驗收仍走 UCP A00～A13。引用時只取章節骨架與欄位名稱，不得把文件架構（元件、介面、資料流）寫入 Skill 本體；Skill 若需要描述自身結構，寫在後設節，不複製 UAC 第五章。
+ 
+ ## 6. 名稱對照
+-本文件原稱 Universal Skill Contract（USC），自 0.8.4 起改稱 Skill 契約（SKL），識別碼與檔名維持 usc-spec；條文編號不變。
++本文件原稱 Universal Skill Contract（USC），自 0.8.5 起改稱 Skill 契約（SKL），識別碼與檔名維持 usc-spec；條文編號不變。
+ 
+ ## 7. 未決事項
+ 

@@ -1,0 +1,158 @@
+{
+  "summary": "候選規格整體架構合理，三層分層與依賴方向明確，主要問題集中在 UAC 十六章部分欄位缺少明確來源識別、流程圖欄位設計可選性不足，以及少數跨模組銜接細節待補強。無 P0 等級阻擋問題。",
+  "findings": [
+    {
+      "id": "F-01",
+      "category": "UAC_MISSING_FIELD",
+      "severity": "P2",
+      "location": "uac-spec.md:§3",
+      "problem": "「問題與背景」章節的「證據」欄位未要求填寫 source_id，可能造成證據無法追溯來源。",
+      "evidence": "uac-spec.md §3 必要欄位：現況、問題陳述、證據（來源與位置）、影響範圍、不處理的後果、既有嘗試。括號內為自然語言說明，非結構化欄位。",
+      "required_fix": "將 §3 「證據」拆分為兩個明確欄位：`evidence_text` 與 `evidence_source_id`，或規定「證據」欄位格式必須含 source_id 引用。",
+      "ac_impact": "TSV-CONTRACT 可能無法自動驗證證據來源完整性"
+    },
+    {
+      "id": "F-02",
+      "category": "UAC_MISSING_FIELD",
+      "severity": "P2",
+      "location": "uac-spec.md:§5",
+      "problem": "「流程圖」欄位允許 `NONE`，但未規定何種情況可為 NONE，可能被濫用跳過流程圖。",
+      "evidence": "uac-spec.md §5 流程圖（`mermaid` 或 `text`，可為 `NONE`）",
+      "required_fix": "新增條件規則：「若流程步驟 ≤3 且無分支可為 NONE；否則必須提供」或類似可判定條件。",
+      "ac_impact": "AC-A05-01 的結構檢查無法區分合理省略與不合理跳過"
+    },
+    {
+      "id": "F-03",
+      "category": "BOUNDARY_GAP",
+      "severity": "P2",
+      "location": "ucp-spec.md:§5 A12",
+      "problem": "A12 規定「驗收者以冷啟動方式只讀驗收包」，但未定義冷啟動的技術條件（如：新 session、清除 context、不讀特定檔案）。",
+      "evidence": "ucp-spec.md A12 操作要求：驗收者以冷啟動方式只讀驗收包；報告必須寫明 `independence_level`（L0～L3）與「是否接觸作者辯解」",
+      "required_fix": "在 A12 或 §2 名詞定義補充「冷啟動」技術定義：「新 conversation session，不載入製作階段 context，不讀取 evidence/ 以外的作者說明」。",
+      "ac_impact": "AC-A12-01 的隔離判定可能因定義模糊而無法一致執行"
+    },
+    {
+      "id": "F-04",
+      "category": "BOUNDARY_GAP",
+      "severity": "P1",
+      "location": "ucp-spec.md:§5 A02",
+      "problem": "A02 路由判定依賴 RSL 路由表，但 UCP 未規定 RSL 路由表不存在或 route_id 缺失時的處理方式。",
+      "evidence": "ucp-spec.md A02 操作要求：依 RSL 路由表比對八種以上產物類型；Failure Handling：無法判定 → UNKNOWN，列候選交 R-CONV。但若 RSL 路由表本身不可讀，未明確標示為 NOT_READ 或 BLOCKED。",
+      "required_fix": "在 A02 Failure Handling 補充：「RSL 路由表不可讀 → NOT_READ，停 A02 並出困難卡」。",
+      "ac_impact": "AC-A02-03「無未路由產物」可能因來源缺失而無法判定"
+    },
+    {
+      "id": "F-05",
+      "category": "UAC_MISSING_FIELD",
+      "severity": "P2",
+      "location": "uac-spec.md:§1",
+      "problem": "§1 required 欄位 `related_docs` 未規定格式，可能只填文件名稱而非可驗證的 doc_id 或路徑。",
+      "evidence": "uac-spec.md §1 必要欄位：...related_docs... contract.yaml uac.chapters[0].required 含 related_docs",
+      "required_fix": "在 §1 說明或 contract.yaml 註解補充：「related_docs 格式為 doc_id 陣列，每個 doc_id 須存在於本倉庫或標示 EXTERNAL。」",
+      "ac_impact": "TSV-CONTRACT 無法自動驗證 related_docs 引用有效性"
+    },
+    {
+      "id": "F-06",
+      "category": "OTHER",
+      "severity": "P2",
+      "location": "usc-spec.md:§2",
+      "problem": "USC-C3（輸入契約）要求「缺資料處理」，但 §4 P/C/J 七欄步驟表的「失敗處理」欄未明確對應缺資料情境，可能造成兩處規定銜接不一致。",
+      "evidence": "usc-spec.md §2 USC-C3 必須包含：缺資料處理；§4 P/C/J 七欄「失敗處理：失敗時的狀態與出口」",
+      "required_fix": "在 §4 補充：「失敗處理」欄須涵蓋 C3 定義的缺資料情境，或於 C3 註明缺資料處理可寫在步驟表失敗處理欄。",
+      "ac_impact": "TSV-SKILL 可能因銜接模糊而無法一致檢查缺資料處理"
+    },
+    {
+      "id": "F-07",
+      "category": "ARCH_CONFLICT",
+      "severity": "P2",
+      "location": "modules-spec.md:RSL §3",
+      "problem": "RSL R-04 規定「命中兩條時以更具體者優先」，但未定義「具體」的判定標準，可能造成不同執行者判定不一致。",
+      "evidence": "modules-spec.md RSL §3 R-04：命中兩條時以「更具體者」優先並記理由",
+      "required_fix": "補充具體定義或優先順序表：如「契約 USC 比 UAC 具體；route_id 數字小者優先」或改為「命中兩條即 CONFLICT，交 R-CONV」。",
+      "ac_impact": "AC-RSL-04 路由 ID 唯一性驗證可能不完整"
+    }
+  ],
+  "uac_missing": [
+    {
+      "chapter": 1,
+      "missing_fields": []
+    },
+    {
+      "chapter": 2,
+      "missing_fields": []
+    },
+    {
+      "chapter": 3,
+      "missing_fields": [
+        "evidence_source_id（建議拆分）"
+      ]
+    },
+    {
+      "chapter": 4,
+      "missing_fields": []
+    },
+    {
+      "chapter": 5,
+      "missing_fields": [
+        "流程圖適用條件說明"
+      ]
+    },
+    {
+      "chapter": 6,
+      "missing_fields": []
+    },
+    {
+      "chapter": 7,
+      "missing_fields": []
+    },
+    {
+      "chapter": 8,
+      "missing_fields": []
+    },
+    {
+      "chapter": 9,
+      "missing_fields": []
+    },
+    {
+      "chapter": 10,
+      "missing_fields": []
+    },
+    {
+      "chapter": 11,
+      "missing_fields": []
+    },
+    {
+      "chapter": 12,
+      "missing_fields": []
+    },
+    {
+      "chapter": 13,
+      "missing_fields": []
+    },
+    {
+      "chapter": 14,
+      "missing_fields": []
+    },
+    {
+      "chapter": 15,
+      "missing_fields": []
+    },
+    {
+      "chapter": 16,
+      "missing_fields": []
+    }
+  ],
+  "must_fix_before_delivery": [
+    "F-04"
+  ],
+  "verdict": "PASS_WITH_FIXES",
+  "_meta": {
+    "model": "claude-opus-4-5-20251101",
+    "round": "round2",
+    "usage": {
+      "input": 22232,
+      "output": 2505
+    },
+    "stop_reason": "end_turn"
+  }
+}

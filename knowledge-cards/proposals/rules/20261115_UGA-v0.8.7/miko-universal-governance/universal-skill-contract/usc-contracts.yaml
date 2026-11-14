@@ -1,0 +1,25 @@
+schema: miko-usc/1
+version: 0.8.7
+contracts:
+- C1
+- C2
+- C3
+- C4
+- C5
+- C6
+- C7
+- C8
+- C9
+sections:
+- 問問題
+- 解決
+- 後設
+- 檢查
+step_columns:
+- ID
+- 類型
+- 觸發條件
+- 操作要求
+- 禁止事項
+- 驗收證據
+- 失敗處理

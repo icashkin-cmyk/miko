@@ -1,0 +1,23 @@
+{
+  "total": 12,
+  "by_class": {
+    "真行為": 5,
+    "半行為": 2,
+    "需人": 3,
+    "內容比對": 2
+  },
+  "by_status": {
+    "PASS": 9,
+    "NOT_RUN": 3
+  },
+  "rewritten": [
+    "AC-A11-01",
+    "AC-A11-03",
+    "AC-A10-04",
+    "AC-A13-04",
+    "AC-A00-04"
+  ],
+  "rewritten_count": 5,
+  "violations": [],
+  "verdict": "PASS"
+}

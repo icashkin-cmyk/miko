@@ -1,0 +1,298 @@
+diff -ruN candidate-v0.2.2/acceptance-matrix.md candidate-v0.2.4/acceptance-matrix.md
+--- candidate-v0.2.2/acceptance-matrix.md	2026-11-14 08:13:51.913491864 +0000
++++ candidate-v0.2.4/acceptance-matrix.md	2026-11-14 09:03:35.966132022 +0000
+@@ -3,7 +3,7 @@
+ name_en: Acceptance Matrix
+ name_zh: 驗收矩陣
+ module: testing-and-validation
+-version: 0.2.2
++version: 0.2.4
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+@@ -60,13 +60,16 @@
+ | A11 | AC-A11-02 retest_round ≤3 | TSV-EXIT | 本輪 2 輪 | R-SELF | `PASS` |
+ | A11 | AC-A11-03 無 FAIL 才進 A12 | 流程紀錄 | 本輪檢查結果 | R-SELF | `PASS` |
+ | A12 | AC-A12-01 驗收者隔離 ≥L1 | 人工檢視 | Claude API 冷啟動（L2） | R-AUD | `NOT_RUN` |
++| A12 | AC-A12-04 封裝驗證與報告欄位齊全 | TSV-AUDIT | 附錄 A.4 欄位 | R-SELF | `PASS` |
++| A12 | AC-A12-05 接觸作者或竄改不得 PASS | TSV-AUDIT | A12 禁止事項與失敗處理 | R-SELF | `PASS` |
++| A12 | AC-A12-06 PASS 未經 R-CONV 不得標 ADOPTED | TSV-AUDIT | A12 禁止事項 | R-SELF | `PASS` |
+ | A12 | AC-A12-02 逐條 AC 判定 | 人工檢視 | 本矩陣 | R-AUD | `NOT_RUN` |
+ | A12 | AC-A12-03 標籤與等級一致 | 人工檢視 | round1/round2/round3 | R-AUD | `NOT_RUN` |
+ | A13 | AC-A13-01 MANIFEST 驗證通過 | sha256sum -c | MANIFEST.sha256 | R-EVD | `PASS` |
+ | A13 | AC-A13-02 任務四態已寫 | 文件檢視 | 收工報告 | R-SELF | `PASS` |
+ | A13 | AC-A13-03 未驗證與困難卡已列 | 文件檢視 | 收工報告 | R-SELF | `PASS` |
+ 
+-統計：`PASS` 22 條、`NOT_RUN` 20 條、`UNKNOWN` 0 條、`BLOCKED` 0 條。`NOT_RUN` 全部屬行為層，需在正式採用前由 L1 以上驗收者實跑。
++統計：`PASS` 25 條、`NOT_RUN` 20 條、`UNKNOWN` 0 條、`BLOCKED` 0 條（共 45 條）。`NOT_RUN` 全部屬行為層，需在正式採用前由 L1 以上驗收者實跑。
+ 
+ ## RSL／TSV AC
+ 
+@@ -76,7 +79,7 @@
+ | AC-RSL-02 每條有契約與驗收器 | TSV-ROUTE | `PASS` |
+ | AC-RSL-03 無循環路由 | TSV-DAG | `PASS` |
+ | AC-RSL-04 路由 ID 唯一 | TSV-ROUTE | `PASS` |
+-| AC-TSV-01 11 檢查器可執行 | 實跑 | `PASS`（tsv_check.py 10 個＋regression.py 1 個） |
++| AC-TSV-01 11 檢查器可執行 | 實跑 | `PASS`（tsv_check.py 11 個＋regression.py 1 個） |
+ | AC-TSV-02 結果可重現 | 重跑 | `PASS` |
+ | AC-TSV-03 失敗有出口 | TSV-EXIT | `PASS` |
+ | AC-TSV-04 結果機器可讀 | JSON | `PASS` |
+diff -ruN candidate-v0.2.2/index.md candidate-v0.2.4/index.md
+--- candidate-v0.2.2/index.md	2026-11-14 08:13:51.913268539 +0000
++++ candidate-v0.2.4/index.md	2026-11-14 09:03:35.966030427 +0000
+@@ -3,7 +3,7 @@
+ name_en: MIKO Universal Governance Architecture Index
+ name_zh: MIKO 通用治理架構總索引
+ module: governance
+-version: 0.2.2
++version: 0.2.4
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.2.2/matrix.md candidate-v0.2.4/matrix.md
+--- candidate-v0.2.2/matrix.md	2026-11-14 08:13:51.913195965 +0000
++++ candidate-v0.2.4/matrix.md	2026-11-14 09:03:35.965806206 +0000
+@@ -3,7 +3,7 @@
+ name_en: Layer Responsibility Matrix
+ name_zh: 分層責任矩陣
+ module: governance
+-version: 0.2.2
++version: 0.2.4
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+diff -ruN candidate-v0.2.2/modules-spec.md candidate-v0.2.4/modules-spec.md
+--- candidate-v0.2.2/modules-spec.md	2026-11-14 08:13:51.913742071 +0000
++++ candidate-v0.2.4/modules-spec.md	2026-11-14 09:03:35.965581609 +0000
+@@ -3,7 +3,7 @@
+ name_en: Cross-cutting Modules (Routing, Lifecycle, Testing)
+ name_zh: 橫向模組規格（路由、生命週期、測試）
+ module: routing-and-selection|lifecycle-and-versioning|testing-and-validation
+-version: 0.2.2
++version: 0.2.4
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+@@ -94,6 +94,7 @@
+ | TSV-EXIT | 失敗出口與重試上限 | `SELF_FAIL` |
+ | TSV-REG | 回復與版本 | `SELF_FAIL` |
+ | TSV-RUNTIME | Runtime 聲明（不得無證據宣稱已支援） | `SELF_FAIL` |
++| TSV-AUDIT | 驗收包與獨立性（附錄 A、§2.1） | `SELF_FAIL` |
+ | TSV-REGRESSION | 回歸集 | `SELF_FAIL` |
+ 
+ ### 3 門檻
+@@ -102,4 +103,4 @@
+ 
+ ### 4 驗收條件
+ 
+-`AC-TSV-01` 十一個檢查器皆可執行；`AC-TSV-02` 結果可重現；`AC-TSV-03` 失敗有出口；`AC-TSV-04` 結果輸出機器可讀。
++`AC-TSV-01` 十二個檢查器皆可執行；`AC-TSV-02` 結果可重現；`AC-TSV-03` 失敗有出口；`AC-TSV-04` 結果輸出機器可讀。
+diff -ruN candidate-v0.2.2/readme-templates.md candidate-v0.2.4/readme-templates.md
+--- candidate-v0.2.2/readme-templates.md	2026-11-14 08:13:51.913390710 +0000
++++ candidate-v0.2.4/readme-templates.md	2026-11-14 09:03:35.965942094 +0000
+@@ -3,7 +3,7 @@
+ name_en: Module README Templates
+ name_zh: 各模組 README 模板
+ module: governance
+-version: 0.2.2
++version: 0.2.4
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.2.2/structure.md candidate-v0.2.4/structure.md
+--- candidate-v0.2.2/structure.md	2026-11-14 08:13:51.913114376 +0000
++++ candidate-v0.2.4/structure.md	2026-11-14 09:03:35.965704316 +0000
+@@ -3,7 +3,7 @@
+ name_en: MIKO Universal Governance Architecture - Structure, Naming and Templates
+ name_zh: MIKO 通用治理架構－結構、命名與模板
+ module: governance
+-version: 0.2.2
++version: 0.2.4
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+diff -ruN candidate-v0.2.2/uac-spec.md candidate-v0.2.4/uac-spec.md
+--- candidate-v0.2.2/uac-spec.md	2026-11-14 08:13:51.912817940 +0000
++++ candidate-v0.2.4/uac-spec.md	2026-11-14 09:03:35.965312129 +0000
+@@ -3,7 +3,7 @@
+ name_en: Universal Artifact Contract
+ name_zh: 通用產物契約
+ module: universal-artifact-contract
+-version: 0.2.2
++version: 0.2.4
+ date: 2026-11-14
+ status: PROPOSED
+ applies_to: [spec, architecture, process-design, governance-rule, router-doc, test-spec, integration-upgrade]
+diff -ruN candidate-v0.2.2/ucp-spec.md candidate-v0.2.4/ucp-spec.md
+--- candidate-v0.2.2/ucp-spec.md	2026-11-14 08:13:51.912636115 +0000
++++ candidate-v0.2.4/ucp-spec.md	2026-11-14 09:03:35.966752378 +0000
+@@ -3,7 +3,7 @@
+ name_en: Universal Creation Process
+ name_zh: 通用製作流程
+ module: universal-creation-process
+-version: 0.2.2
++version: 0.2.4
+ date: 2026-11-14
+ status: PROPOSED
+ owner_role: R-CONV
+@@ -43,13 +43,29 @@
+ | 契約 | contract | 規定產物必須具備的章節、欄位與格式（UAC 或 USC） |
+ | 自我驗收 | self-acceptance | 製作者或同 context 驗收者依 AC 檢查，結果只能是 `SELF_PASS`／`SELF_PASS_ONLY`／`SELF_FAIL` |
+ | 獨立驗收 | independent acceptance | 在與製作者隔離的條件下，只依「驗收包」判定，結果為 `AUDIT_PASS`／`AUDIT_FAIL`／`NOT_RUN` |
+-| 獨立性等級 | independence level | L0 同 context；L1 同模型冷啟動（新 session、只讀驗收包）；L2 不同模型冷啟動；L3 人類驗收者 |
++| 獨立性等級 | independence level | 依 §2.1 判定表；等級以「可證明的最弱一環」為準，無法證明一律視為 L0 |
+ | 冷啟動 | cold start | 新 conversation session；不載入製作階段 context；只讀驗收包；不讀作者說明、自我驗收結論或實作思路（修正 F-03） |
+ | 驗收包 | audit packet | 只含候選產物、AC 表、契約版本、diff 與檢查器輸出；**不含**製作者辯解、自我驗收結論、實作思路 |
+ | 輪次 | round | 對「受影響 AC 全集」執行一次完整檢查或重測，不論其中有幾條失敗 |
+ | 預算 | cycle budget | 每個產物版本血緣允許的重測與重驗次數上限 |
+ | 閉環 | closed loop | 自我驗收→補強→錯誤維護→保存 diff→重測→達標才交獨立驗收，且受預算約束 |
+ | 流程先行 | process-first | 先定流程，再由流程推導標題、章節、欄位、格式、IO、AC、失敗出口 |
++
++### 2.1 獨立性等級判定表（修正 A12-REV-01）
++
++| 等級 | 條件（可驗證） | 必要證據 | 可給出的最高結果 | 備註 |
++|---|---|---|---|---|
++| L0 | 同一 session，曾載入製作內容或自我驗收結論 | 無隔離證據 | 僅 `SELF_*`；不得作為 A12 正式驗收 | 只供自查；L0 送驗一律視為未驗 |
++| L1 | 同模型、新 session 冷啟動、只讀驗收包 | session 識別、模型 ID、開包前 `sha256sum -c` 輸出、`contact_with_author=false` | `AUDIT_PASS`（限文件／契約一致性） | `adoption_support=NO`：可候選交付，不得作 `ADOPTED` 依據 |
++| L2 | 不同模型冷啟動（模型 ID 與製作者不同） | 同 L1，加上雙方模型 ID 對照 | `AUDIT_PASS` | `adoption_support=YES`：可作 `ADOPTED` 依據，仍需 R-CONV 裁決 |
++| L3 | 人類驗收者 | 驗收者識別（姓名或代號）、時間、簽核紀錄 | `AUDIT_PASS` | `adoption_support=YES`：正本採用建議等級；`EFFECTIVE` 仍需 Runtime 證據 |
++
++判定規則：
++
++- L-01 等級由「實際可證明」的最小值決定；任一條證據缺漏即降一級。
++- L-02 驗收者若中途接觸作者說明、自我驗收結論或實作思路，降為 L0 並換人重驗，該輪計入 `audit_round`。
++- L-03 同一人不得同時擔任 R-AUD 與 R-EVD，也不得與同一次 R-CONV 裁決同人。
++- L-04 多位驗收者時，`independence_level` 取最低者；判定取最嚴格者（任一 `AUDIT_FAIL` 即整體 `AUDIT_FAIL`），不得以多數決；報告記 `reviewer_split=true` 並列各人判定，交 R-CONV 裁決。
+ | 困難卡 | difficulty card | 七欄卡：現象｜證據｜類別｜影響哪個 AC｜解除條件｜負責方｜首次發現時間 |
+ | 任務四態 | task quad-state | 完成／完成但有疑慮／需要資料／卡住 |
+ 
+@@ -312,22 +328,20 @@
+ - **證據與保存方式**：`evidence/<task_id>/retest-round-<n>.json`。
+ 
+ ### A12 獨立驗收交接
+-
+-- **目的**：在隔離條件下判定產物是否符合 AC，避免自我驗收冒充獨立驗收。
+-- **輸入**：驗收包（候選產物、AC 表、契約版本、diff、檢查器輸出）。
+-- **輸出**：獨立驗收報告（`AUDIT_PASS`／`AUDIT_FAIL`／`NOT_RUN`、`independence_level`、逐條 AC 判定）。
+-- **前置條件**：A11 全 `PASS`；驗收包已封裝；驗收者未讀取自我驗收結論。
+-- **操作要求**：驗收者以冷啟動方式只讀驗收包；報告必須寫明 `independence_level`（L0～L3）與「是否接觸作者辯解」；L0 一律不得給 `AUDIT_PASS`。
+-- **禁止事項**：不得由 R-BLD 或 R-SELF 兼任；不得先看自我驗收結論；不得把 `AUDIT_PASS` 寫成 `EFFECTIVE`；L0 不得寫成獨立驗收。
+-- **檢查點**：驗收者身分與製作者隔離；逐條 AC 有判定；`independence_level` 已記錄。
+-- **Acceptance Criteria**：`AC-A12-01` 驗收者與製作者隔離且 `independence_level ≥ L1`；`AC-A12-02` 逐條 AC 判定；`AC-A12-03` 結果標籤與等級一致。
+-- **Failure Handling**：`AUDIT_FAIL` → 回 A10 並 `audit_round+1`；無合格驗收者 → `BLOCKED`（不得降格為自我驗收）。
+-- **Recovery**：修正後重新封裝驗收包再送驗；上限 2 輪。
+-- **Regression Test**：`RT-A12` 以故意缺欄位版本送驗，必須 `AUDIT_FAIL`；以 L0 送驗，必須不得回 `AUDIT_PASS`。
+-- **閉環條件**：`AUDIT_PASS` 且 `audit_round ≤ 2`。
+-- **負責角色**：R-AUD。
+-- **證據與保存方式**：`evidence/<task_id>/audit-report.md` 與 `audit-packet.sha256`。
+-
++- **目的**：在可證明的隔離條件下判定產物是否符合 AC，避免自我驗收冒充獨立驗收。
++- **輸入**：驗收包（規格見附錄 A）、封裝雜湊清單 `audit-packet/MANIFEST.sha256`。
++- **輸出**：獨立驗收報告 `audit-report.md`（含附錄 A.4 固定欄位）、`audit-verify.log`、`independence_level`、`adoption_support`、逐條 AC 判定；報告置於包外 `evidence/<task_id>/`。
++- **前置條件**：A11 全 `PASS`；驗收包已封裝且 `sha256sum -c` 通過；驗收者未讀取自我驗收結論、作者說明或實作思路；驗收者非 R-BLD／R-SELF／R-EVD。
++- **操作要求**：先驗封裝再開包（驗證失敗即 `BLOCKED`，不得繼續）；只讀包內檔案；逐條 AC 依報告 schema 填 `verdict`、`evidence_ref`、`reason`；寫明 `independence_level`、`contact_with_author`、`reviewer_id`、`reviewed_at`、`tool_versions`；等級依 §2.1 以最弱一環判定。
++- **禁止事項**：不得由 R-BLD／R-SELF 兼任；不得先看自我驗收結論；不得修改包內任何檔案；L0 不得給 `AUDIT_PASS`；不得把 `AUDIT_PASS` 寫成 `ADOPTED` 或 `EFFECTIVE`（`ADOPTED` 需 R-CONV 裁決）。
++- **檢查點**：封裝雜湊一致；報告欄位齊全；每條 AC 有判定與證據引用；等級與證據相符；`contact_with_author=false`。
++- **Acceptance Criteria**：`AC-A12-01` 驗收者隔離且 `independence_level ≥ L1`；`AC-A12-02` 逐條 AC 有判定與證據引用；`AC-A12-03` 標籤與等級一致；`AC-A12-04` 封裝驗證通過且報告欄位齊全；`AC-A12-05` 接觸作者或包內竄改一律不得 `AUDIT_PASS`；`AC-A12-06` `AUDIT_PASS` 未經 R-CONV 不得標 `ADOPTED`／`EFFECTIVE`。
++- **Failure Handling**：`AUDIT_FAIL` → 回 A10 並 `audit_round+1`；封裝雜湊不符或包內缺件 → `BLOCKED`，原報告作廢、重新封裝；驗收者接觸作者 → 降 L0、換人重驗並 `audit_round+1`；無合格驗收者 → `BLOCKED`（不得降格為自我驗收）。
++- **Recovery**：修正後由 R-EVD 重新封裝（新 `packet_version`、新雜湊）再送驗；上限 2 輪；重驗不得沿用舊報告。
++- **Regression Test**：`RT-A12` 五題：①故意缺欄位版本送驗 → 必須 `AUDIT_FAIL`；②L0 送驗 → 不得回 `AUDIT_PASS`；③封裝後改一個位元組 → 必須 `BLOCKED`；④L1 驗收者中途讀取自我驗收結論 → 必須降 L0 並重驗；⑤`AUDIT_PASS` 後直接標 `ADOPTED` → 必須被 TSV-AUDIT 判 `FAIL`。
++- **閉環條件**：`AUDIT_PASS` 且 `audit_round ≤ 2` 且等級 ≥ L1 且封裝驗證通過且報告欄位齊全。
++- **負責角色**：R-AUD（不得兼 R-EVD、不得與同次 R-CONV 同人）。
++- **證據與保存方式**：`evidence/<task_id>/audit-report.md`、`audit-verify.log`、`audit-packet/MANIFEST.sha256`；報告與封裝清單一併入交付包，不得事後修改。
+ ### A13 交付、保存與收工交接
+ 
+ - **目的**：交付合格產物並保存證據，完成收工交接。
+@@ -374,25 +388,76 @@
+ | R-CONV | 治理總召、路由與衝突裁決 | 可兼 R-SELF，不得兼 R-AUD（同一次） |
+ | R-BLD | 製作 | — |
+ | R-SELF | 自我驗收 | 可與 R-BLD 同人，但須標 `same_context=true` |
+-| R-AUD | 獨立驗收 | 不得為 R-BLD／R-SELF；須 `independence_level ≥ L1` |
++| R-AUD | 獨立驗收 | 不得為 R-BLD／R-SELF／R-EVD；不得與同次 R-CONV 同人；須 `independence_level ≥ L1` |
+ | R-EVD | 證據與封裝 | — |
+ 
+ ## 9. 證據與保存
+ 
+-證據存於 `evidence/<task_id>/`；驗收包另存 `audit-packet/`，只含候選產物、AC、契約、diff、檢查器輸出。驗收包封裝後計算 SHA-256，驗收者不得修改。
++證據存於 `evidence/<task_id>/`；驗收包另存 `audit-packet/`，內容與封裝依附錄 A。封裝後計算 SHA-256，驗收者開包前必須驗證且不得修改。
+ 
+ ## 10. 驗收條件彙總
+ 
+-見第 5 節，共 42 條（每步 3 條）。
++見第 5 節，共 45 條（A00～A11、A13 每步 3 條，A12 共 6 條）。
+ 
+ ## 11. 回歸測試
+ 
+ `RT-A00`～`RT-A13` 共 14 組，由 TSV 執行器執行；任一組 `NOT_RUN` 視為未通過。
+ 
++## 附錄 A：驗收包規格（修正 A12-REV-03）
++
++### A.1 正面清單
++
++驗收包目錄固定為 `audit-packet/`，只允許下列檔案；多一個檔即不合格。
++
++```
++audit-packet/
++├── MANIFEST.sha256          # 包內所有檔案的雜湊，第一行固定為本清單自身以外的全部檔案
++├── packet-meta.yaml         # packet_version、task_id、封裝者、封裝時間、契約版本、產物版本
++├── artifact/                # 候選產物正本（不含作者註解）
++├── ac/ac-table.md           # AC 表（來源：UAC §12 或 USC-C8，附版本）
++├── contract/                # 契約版本（uac-spec.md 或 usc-spec.md 的對應版本）
++├── diff/round-<n>.patch     # 只保留 unified diff 內容，去除 commit message、註解與作者說明
++└── checks/                  # 檢查器原始輸出（JSON），不得含作者評語或自我驗收結論
++```
++
++### A.1.1 包外證據
++
++`audit-report.md`、`audit-verify.log` 與 `audit-packet/MANIFEST.sha256` 的留存副本置於 `evidence/<task_id>/`，不放入包內；驗收者只讀包內，報告寫在包外（修正 A-01）。
++
++### A.2 排除清單
++
++不得放入：作者辯解、自我驗收結論、實作思路、對話紀錄、待辦清單、未來計畫。diff 若含上述內容，必須先去除再封裝。
++
++### A.3 封裝與驗證
++
++1. R-EVD 依 A.1 建包，`packet-meta.yaml` 記 `packet_version`（`pkt-<YYYYMMDD>T<HHMMSS+0800>-v<semver>`）。
++2. 對包內所有檔案計算 SHA-256 寫入 `MANIFEST.sha256`（格式同 `sha256sum`）。
++3. 驗收者開包前執行 `sha256sum -c audit-packet/MANIFEST.sha256`，輸出存 `audit-verify.log`；任一 `FAILED` 即 `BLOCKED`。
++4. 驗收者不得寫入包內；若需註記，一律寫在包外的 `audit-report.md`。
++
++### A.4 驗收報告固定欄位
++
++| 欄位 | 說明 |
++|---|---|
++| `task_id`、`packet_version` | 對應封裝 |
++| `reviewer_id`、`reviewer_model`、`reviewed_at` | 驗收者與時間 |
++| `independence_level` | L0～L3，依 §2.1 判定 |
++| `contact_with_author` | `true`／`false`；`true` 時必須降 L0 |
++| `manifest_check` | `PASS`／`FAIL` |
++| `tool_versions` | 檢查器與模型版本 |
++| `audit_round` | 本次為第幾輪獨立驗收（1～2） |
++| `results[]` | 每條 AC：`ac_id`、`verdict`、`evidence_ref`、`reason` |
++| `overall` | `AUDIT_PASS`／`AUDIT_FAIL`／`BLOCKED` |
++| `adoption_recommendation` | `NONE`／`RECOMMEND_ADOPT`（僅建議，`ADOPTED` 由 R-CONV 裁決） |
++
++### A.5 竄改與作廢
++
++封裝雜湊不符、包內缺件或出現排除清單內容時，該報告作廢，重新封裝並 `audit_round+1`；不得以口頭說明補正。
++
+ ## 12. 未決事項
+ 
+ | ID | 描述 | 狀態 |
+ |---|---|---|
+ | UCP-OPEN-01 | 重試上限 3／2 是否為正式數值 | PENDING_DECISION |
+-| UCP-OPEN-02 | 正式採用是否要求 L3（人類）驗收 | PENDING_DECISION（候選交付最低 L1；採用正本建議 L3） |
++| UCP-OPEN-02 | 正式採用是否要求 L3（人類）驗收 | PENDING_DECISION（候選交付最低 L1；`ADOPTED` 最低 L2；正本建議 L3） |
+ | UCP-OPEN-03 | 預算重置的正式授權格式 | PENDING_DECISION |
+diff -ruN candidate-v0.2.2/usc-spec.md candidate-v0.2.4/usc-spec.md
+--- candidate-v0.2.2/usc-spec.md	2026-11-14 08:13:51.912914933 +0000
++++ candidate-v0.2.4/usc-spec.md	2026-11-14 09:03:35.965452815 +0000
+@@ -3,7 +3,7 @@
+ name_en: Universal Skill Contract
+ name_zh: 通用 Skill 契約
+ module: universal-skill-contract
+-version: 0.2.2
++version: 0.2.4
+ date: 2026-11-14
+ status: PROPOSED
+ applies_to: [skill]

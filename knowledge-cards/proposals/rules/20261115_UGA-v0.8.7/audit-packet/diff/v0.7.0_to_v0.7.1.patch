@@ -1,0 +1,172 @@
+diff -ruN candidate-v0.7.0/VERSION candidate-v0.7.1/VERSION
+--- candidate-v0.7.0/VERSION	2026-11-14 12:10:07.165871552 +0000
++++ candidate-v0.7.1/VERSION	2026-11-14 12:16:47.531893946 +0000
+@@ -1 +1 @@
+-0.7.0
++0.7.1
+diff -ruN candidate-v0.7.0/acceptance-matrix.md candidate-v0.7.1/acceptance-matrix.md
+--- candidate-v0.7.0/acceptance-matrix.md	2026-11-14 12:10:07.165662027 +0000
++++ candidate-v0.7.1/acceptance-matrix.md	2026-11-14 12:16:47.531689177 +0000
+@@ -3,7 +3,7 @@
+ name_en: Acceptance Matrix
+ name_zh: 驗收矩陣
+ module: testing-and-validation
+-version: 0.7.0
++version: 0.7.1
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.7.0/architecture/uga-architecture.md candidate-v0.7.1/architecture/uga-architecture.md
+--- candidate-v0.7.0/architecture/uga-architecture.md	2026-11-14 12:10:25.373669522 +0000
++++ candidate-v0.7.1/architecture/uga-architecture.md	2026-11-14 12:16:47.532495439 +0000
+@@ -1,10 +1,13 @@
+ # MIKO Universal Governance Architecture 架構書（候選）
+ 
+ - 文件狀態：PROPOSED（候選，未升格）
+-- 內部版本：0.7.0
++- 內部版本：0.7.1
+ - 對外封裝：UGA ZIP v1.0.2（見交付報告）
+ - 編號系統：ARC，與 UCP 的 A、UAC 的章節號、USC 的 S 各自獨立
+ 
++## ARC-0 適用範圍
++本架構書適用於產物類型為架構書的文件。依 UAC 第 5 章的類型分流條款，架構書類產物以 ARC-1～ARC-5 取代 UAC 第 5、6、7 章；一般文件仍用 UAC 十六章。本文件不寫製作步驟，執行軸見 UCP。
++
+ ## ARC-1 系統元件與責任配置
+ 
+ | component_id | 責任 | 不負責 | owner_role |
+diff -ruN candidate-v0.7.0/index.md candidate-v0.7.1/index.md
+--- candidate-v0.7.0/index.md	2026-11-14 12:10:07.165576914 +0000
++++ candidate-v0.7.1/index.md	2026-11-14 12:16:47.531592150 +0000
+@@ -3,7 +3,7 @@
+ name_en: MIKO Universal Governance Architecture Index
+ name_zh: MIKO 通用治理架構總索引
+ module: governance
+-version: 0.7.0
++version: 0.7.1
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.7.0/ledger-spec.md candidate-v0.7.1/ledger-spec.md
+--- candidate-v0.7.0/ledger-spec.md	2026-11-14 12:10:07.165757385 +0000
++++ candidate-v0.7.1/ledger-spec.md	2026-11-14 12:16:47.531799007 +0000
+@@ -3,7 +3,7 @@
+ name_en: Correction Ledger
+ name_zh: 修正帳本
+ module: correction-ledger
+-version: 0.7.0
++version: 0.7.1
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: NONE
+diff -ruN candidate-v0.7.0/matrix.md candidate-v0.7.1/matrix.md
+--- candidate-v0.7.0/matrix.md	2026-11-14 12:10:07.165371289 +0000
++++ candidate-v0.7.1/matrix.md	2026-11-14 12:16:47.531303225 +0000
+@@ -3,7 +3,7 @@
+ name_en: Layer Responsibility Matrix
+ name_zh: 分層責任矩陣
+ module: governance
+-version: 0.7.0
++version: 0.7.1
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+diff -ruN candidate-v0.7.0/modules-spec.md candidate-v0.7.1/modules-spec.md
+--- candidate-v0.7.0/modules-spec.md	2026-11-14 12:10:07.165155055 +0000
++++ candidate-v0.7.1/modules-spec.md	2026-11-14 12:16:47.531089868 +0000
+@@ -3,7 +3,7 @@
+ name_en: Cross-cutting Modules (Routing, Lifecycle, Testing)
+ name_zh: 橫向模組規格（路由、生命週期、測試）
+ module: routing-and-selection|lifecycle-and-versioning|testing-and-validation
+-version: 0.7.0
++version: 0.7.1
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+diff -ruN candidate-v0.7.0/readme-templates.md candidate-v0.7.1/readme-templates.md
+--- candidate-v0.7.0/readme-templates.md	2026-11-14 12:10:07.165495032 +0000
++++ candidate-v0.7.1/readme-templates.md	2026-11-14 12:16:47.531472127 +0000
+@@ -3,7 +3,7 @@
+ name_en: Module README Templates
+ name_zh: 各模組 README 模板
+ module: governance
+-version: 0.7.0
++version: 0.7.1
+ date: 2026-11-14
+ status: PROPOSED
+ ---
+diff -ruN candidate-v0.7.0/structure.md candidate-v0.7.1/structure.md
+--- candidate-v0.7.0/structure.md	2026-11-14 12:10:07.165251484 +0000
++++ candidate-v0.7.1/structure.md	2026-11-14 12:16:47.531201518 +0000
+@@ -3,7 +3,7 @@
+ name_en: MIKO Universal Governance Architecture - Structure, Naming and Templates
+ name_zh: MIKO 通用治理架構－結構、命名與模板
+ module: governance
+-version: 0.7.0
++version: 0.7.1
+ date: 2026-11-14
+ status: PROPOSED
+ supersedes: 0.1.0
+diff -ruN candidate-v0.7.0/uac-spec.md candidate-v0.7.1/uac-spec.md
+--- candidate-v0.7.0/uac-spec.md	2026-11-14 12:10:07.166558056 +0000
++++ candidate-v0.7.1/uac-spec.md	2026-11-14 12:16:47.532334918 +0000
+@@ -3,7 +3,7 @@
+ name_en: Universal Artifact Contract
+ name_zh: 通用產物契約
+ module: universal-artifact-contract
+-version: 0.7.0
++version: 0.7.1
+ date: 2026-11-14
+ status: PROPOSED
+ applies_to: [spec, architecture, process-design, governance-rule, router-doc, test-spec, integration-upgrade]
+@@ -41,18 +41,27 @@
+ 
+ ## 5. 流程或架構
+ 
++類型分流：產物類型為架構書者，第 5、6、7 章由 ARC-1～ARC-5 取代適用；其餘產物類型維持本章。
++責任邊界：本章是系統流程、系統架構與分支去向的唯一權威；UCP 只做執行與對應，不在此另行定義。
++
+ 必要欄位：流程步驟或元件圖、順序與分支、邊界（起點與終點）、與 UCP 步驟 ID 的對應、異常分支去向、流程圖（`mermaid` 或 `text`）。
+ 
+ 流程圖省略條件：僅當流程步驟 ≤3 且無分支時可寫 `NONE`；其餘一律必須提供，並於檢查器 TSV-CONTRACT 判定（修正 F-02）。
+ 
+ ## 6. 元件與責任
+ 
++適用範圍：一般文件；架構書改用 ARC-1 系統元件與責任配置。
++責任邊界：本章是元件、責任、介面與連接關係的唯一權威；UCP 只驗證執行是否符合，不重寫元件表。
++
+ 每個元件一列，欄位：`component_id`、responsibility、not_responsible、owner_role、inputs、outputs、single_owner（`true`／`false`）。
+ 
+ 必要欄位：`component_id`、responsibility、not_responsible、owner_role、inputs、outputs、single_owner。
+ 
+ ## 7. 輸入與輸出
+ 
++適用範圍：一般文件；架構書改用 ARC-2 介面與連接、ARC-3 資料流與依賴。
++責任邊界：本章是資料流、欄位、格式與傳遞方向的唯一權威；UCP 的交接步只檢查完整性並留證據。
++
+ 每個 IO 一列，欄位：`io_id`、name、type、source、required、format、validation、example。
+ 
+ 必要欄位：`io_id`、name、type、source、required、format、validation、example。
+diff -ruN candidate-v0.7.0/ucp-spec.md candidate-v0.7.1/ucp-spec.md
+--- candidate-v0.7.0/ucp-spec.md	2026-11-14 12:10:07.166381400 +0000
++++ candidate-v0.7.1/ucp-spec.md	2026-11-14 12:16:47.530702783 +0000
+@@ -3,7 +3,7 @@
+ name_en: Universal Creation Process
+ name_zh: 通用製作流程
+ module: universal-creation-process
+-version: 0.7.0
++version: 0.7.1
+ date: 2026-11-14
+ status: PROPOSED
+ owner_role: R-CONV
+diff -ruN candidate-v0.7.0/usc-spec.md candidate-v0.7.1/usc-spec.md
+--- candidate-v0.7.0/usc-spec.md	2026-11-14 12:10:07.166675044 +0000
++++ candidate-v0.7.1/usc-spec.md	2026-11-14 12:16:47.530998150 +0000
+@@ -3,7 +3,7 @@
+ name_en: Universal Skill Contract
+ name_zh: 通用 Skill 契約
+ module: universal-skill-contract
+-version: 0.7.0
++version: 0.7.1
+ date: 2026-11-14
+ status: PROPOSED
+ applies_to: [skill]

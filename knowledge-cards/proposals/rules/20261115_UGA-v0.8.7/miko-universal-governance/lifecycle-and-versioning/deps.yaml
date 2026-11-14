@@ -1,0 +1,33 @@
+schema: miko-dependency-graph/1
+version: 0.8.7
+date: 2026-11-14
+note: 修正 F-01：移除 UAC -> UCP run-time 邊；兩張圖皆須無環。
+nodes:
+  - {id: GOV, name_zh: 治理層, layer: L0}
+  - {id: UCP, name_zh: 通用製作流程, layer: L1}
+  - {id: UAC, name_zh: 通用產物契約, layer: L2}
+  - {id: USC, name_zh: 通用Skill契約, layer: L2}
+  - {id: RSL, name_zh: 路由與選擇, layer: L3}
+  - {id: LCV, name_zh: 生命週期與版本, layer: L3}
+  - {id: TSV, name_zh: 測試與驗證, layer: L3}
+  - {id: SKL, name_zh: Skills, layer: L4}
+  - {id: ADP, name_zh: Adapters, layer: L4}
+  - {id: TST, name_zh: Tests, layer: L5}
+  - {id: ARC, name_zh: Archive, layer: L5}
+edges:
+  - {from: UCP, to: GOV, kind: run-time}
+  - {from: UCP, to: RSL, kind: run-time}
+  - {from: UCP, to: TSV, kind: run-time}
+  - {from: UCP, to: UAC, kind: build-time}
+  - {from: UCP, to: USC, kind: build-time}
+  - {from: RSL, to: UAC, kind: build-time}
+  - {from: RSL, to: USC, kind: build-time}
+  - {from: LCV, to: UAC, kind: build-time}
+  - {from: TSV, to: UAC, kind: build-time}
+  - {from: TSV, to: USC, kind: build-time}
+  - {from: SKL, to: USC, kind: run-time}
+  - {from: SKL, to: UCP, kind: build-time}
+  - {from: ADP, to: USC, kind: run-time}
+  - {from: ADP, to: LCV, kind: run-time}
+  - {from: TST, to: TSV, kind: run-time}
+  - {from: ARC, to: LCV, kind: run-time}
