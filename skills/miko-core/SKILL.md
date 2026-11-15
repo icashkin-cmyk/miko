@@ -119,6 +119,17 @@ description: MIKO 的全能代理人核心（常駐 Skill，內含閉環〔任�
 - 進度摘要欄位固定：專案｜目前站（§2.5）｜下一步｜阻塞（困難卡）｜更新時間｜狀態來源。讀不到寫 NOT_READ，不用記憶補。
 - 沒有可推進項就不產出進度更新。
 
+
+## 2.11 批次驗收與單次成果回報（短版；PROPOSED／PENDING）【檢核】
+
+- 批次以「全部項目完成」為交付單位；開始前固定 `TASK_ID`、`SCOPE`、`INVENTORY`、`TOTAL`、`ACCEPTANCE_CRITERIA`、`DEPENDENCIES`、`EXCLUSIONS`，中途不得自行縮小範圍。
+- 每項必須保存：來源與版本、Source Atom Mapping、diff、完整命令、stdout、stderr、Exit Code、測試狀態、修正紀錄與獨立驗收證據；`UNKNOWN`、`NOT_RUN`、`BLOCKED` 不得升格為 `PASS`。
+- Skill／文件重構至少檢查：正式格式、欄位與 ID、P／C／J、P 類命令、expected／forbidden、相近反例、正向、負向、邊界、異常、回歸、Mutation 與獨立冷讀；不適用項目必須記錄理由。
+- 任一 FAIL：保留失敗證據、標 `REWORK_REQUIRED`、修正規則或實作、重跑受影響測試與回歸，再交獨立驗收；不得搬用舊 PASS、修改測題答案冒充修正或以局部 PASS 代替整體驗收。
+- 只有在全部必要 AC 通過、必要測試與獨立驗收通過、必要 UNKNOWN／NOT_RUN／BLOCKED 為零、版本／檔案／Hash 可追溯、原始正本未被未授權修改，且必要遠端讀回完成時，才可回報 `OVERALL_STATUS = COMPLETE`。
+- 執行期間不逐筆回報局部完成；但授權、重大風險、外部阻塞、來源缺失或停止條件必須立即回報。其餘於整批閘門通過後一次提交總表、證據索引、未決事項與正式採用狀態。
+- 本短版目前僅為候選規則；未完成治理審查、獨立驗收、正式裁決、正式寫入讀回與新對話回歸前，不得標示 `ADOPTED`、`ACTIVE` 或 `RUNTIME_ENABLED`。
+
 ## 3. 三層 Skill 與功能指令表（說法是常見觸發，語意相同就調用；同一任務可疊用常駐＋通用＋任務）
 | 層 | 功能／說法 | 調用 | 唯一狀態來源 |
 |---|---|---|---|
