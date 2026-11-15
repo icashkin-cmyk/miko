@@ -141,3 +141,6 @@
 | 2026-11-14 20:07 | Claude | 本輪變化：origin/main 窗內無新提交；Drive 窗內 4 筆修改中繼資料（Git 內部檔 3 筆、安裝檔 1 筆，內容 NOT_READ，查詢無分頁）；Notion 關鍵字 MIKO 0 筆、DGHP 1 筆但窗外；帳號 miko-core 啟用；其他 repo NOT_READ（無 list_repos 工具）；GPT 同步依 ADR-039 不列中斷 | 已記錄（中繼資料）；內容保留：待 MIKO 決定 | Claude、MIKO | 完成（記錄） |
 | 2026-11-14 20:07 | Claude | 推進（承 2026-11-14 08:08 列）：檢查 README 第 84 行「過去 65 分鐘內」字樣是否與 ADR-033 一致（正本 1.2.72，SHA-256 與 VERSION 第 4 行相符） | 未通過：字樣仍在，ADR-033 已改為每日兩次；保留：轉治理房 | Claude、MIKO、治理房 | 進行中 |
 | 2026-11-14 20:07 | Claude | Drive 窗內 Git 內部檔再次修改（3 筆，11:41Z）：同步來源是否有意備份、是否含敏感內容（承 08:08 列） | 列入待 MIKO 決定（Claude 不改 Drive） | MIKO | 進行中 |
+| 2026-11-15 08:08 | Claude | 本輪變化：origin/main 窗內無新提交；Drive 窗內 3 筆修改中繼資料（Git 內部檔，內容 NOT_READ）；Notion 關鍵字 MIKO 0 筆、DGHP 1 筆但窗外（日期篩選需 Business，弱證據）；帳號 miko-core 啟用；其他 repo NOT_READ（無 list_repos 工具）；GPT 同步依 ADR-039 不列中斷 | 已記錄（中繼資料）；內容保留：待 MIKO 決定 | Claude、MIKO | 完成（記錄） |
+| 2026-11-15 08:08 | Claude | 推進（承 2026-11-14 20:07 列）：重新核對 README 第 84 行「過去 65 分鐘內」與 ADR-033 一致性（正本 1.2.72）；同段另寫「每天兩次」，自相矛盾 | 未通過；保留：轉治理房 | Claude、MIKO、治理房 | 進行中 |
+| 2026-11-15 08:08 | Claude | Drive 窗內 Git 內部檔連續四輪修改（本輪 3 筆，2026-11-14 23:56Z）：同步來源是否有意備份、是否含敏感內容（承 2026-11-14 20:07 列） | 列入待 MIKO 決定（Claude 不改 Drive） | MIKO | 進行中 |
