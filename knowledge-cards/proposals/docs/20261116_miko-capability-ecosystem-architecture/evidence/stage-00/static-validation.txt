@@ -1,0 +1,34 @@
+未驗收提案
+
+# Static Validation Evidence
+
+- command_scope: knowledge-cards/proposals/docs/20261116_miko-capability-ecosystem-architecture
+- branch: manus/miko-capability-ecosystem-architecture-20261116
+- baseline_commit: 90caec80d2c7bb32bd01fe4acbdfe4ae23b99fe8
+- executed_at: 2026-11-16T11:08:29+08:00
+
+## Commands
+
+```text
+find knowledge-cards/proposals/docs/20261116_miko-capability-ecosystem-architecture -type f -name '*.md' | wc -l
+find knowledge-cards/proposals/docs/20261116_miko-capability-ecosystem-architecture/stages -type f -name '*.md' | wc -l
+wc -l < knowledge-cards/proposals/docs/20261116_miko-capability-ecosystem-architecture/evidence/stage-00/capability-inventory-baseline.tsv
+git diff --cached --check
+```
+
+## Actual Results
+
+```text
+markdown=21
+stage_files=9
+inventory_rows=20
+binary_files=0
+changed_paths=22 before this evidence and manifest were added
+diff_check=PASS
+marker_check=PASS
+required_status_terms=PASS
+```
+
+## Boundary
+
+此證據只證明檔案結構、標記、目錄與基線清單存在；不證明 Runtime 載入、外部 API 授權、跨 Skill 實際編排或正式採用。
