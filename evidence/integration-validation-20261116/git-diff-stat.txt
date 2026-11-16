@@ -1,0 +1,16 @@
+ skills/dghp-beauty/SKILL.md                        | 209 [32m+++++++++++++++[m[31m------[m
+ skills/dghp-food/SKILL.md                          |  62 [32m+++++[m[31m-[m
+ .../dghp-metaphysical-integrated-analysis/SKILL.md |  62 [32m+++++[m[31m-[m
+ skills/dghp-travel/SKILL.md                        | 166 [32m+++++++++++[m[31m-----[m
+ skills/dghp-work-handoff/SKILL.md                  |  51 [32m++++[m[31m-[m
+ skills/gmail-cleanup/SKILL.md                      |  52 [32m++++[m[31m-[m
+ skills/independent-audit/SKILL.md                  |  51 [32m++++[m[31m-[m
+ skills/label-foreign-text/SKILL.md                 |  51 [32m++++[m[31m-[m
+ skills/make-skill/SKILL.md                         |  51 [32m++++[m[31m-[m
+ skills/miko-core/SKILL.md                          |   9 [32m+[m
+ skills/photo-inspection-log/SKILL.md               |  51 [32m++++[m[31m-[m
+ skills/safe-implementation/SKILL.md                |  51 [32m++++[m[31m-[m
+ skills/tw-alert-check/SKILL.md                     |  51 [32m++++[m[31m-[m
+ skills/tw-backtest-workflow/SKILL.md               |  52 [32m++++[m[31m-[m
+ skills/visual-content-intelligence/SKILL.md        |  53 [32m+++++[m[31m-[m
+ 15 files changed, 899 insertions(+), 123 deletions(-)

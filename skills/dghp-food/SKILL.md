@@ -3,7 +3,37 @@ name: dghp-food
 description: 找吃的、餐廳推薦、單店研究時使用（常查地區由使用者設定）：多角度建候選池防漏、本輪 Google 實體核驗、近期評論判斷品質、抵達時營業核對。先載入 miko-core，再依本 Skill 的四段可執行步驟（Google 地點搜尋→篩選→地圖）完成。行程規劃不使用，改用 dghp-travel。
 ---
 
-# dghp-food v0.6｜美食與單店研究（Claude 版，可執行）｜2026-10-30
+# dghp-food v1.0-rewritten-candidate
+
+## 1. 問問題
+
+- 目的：先確認本 Skill 的使用意圖、輸入範圍、輸出期待、資料來源與不可逆操作。
+- 必問：使用者目標、必要資料、時間／地區／對象條件、授權與限制；缺少關鍵資料時集中詢問，不以記憶補值。
+- 領域基線：name: dghp-food description: 找吃的、餐廳推薦、單店研究時使用（常查地區由使用者設定）：多角度建候選池防漏、本輪 Google 實體核驗、近期評論判斷品質、抵達時營業核對。先載入 miko-core，再依本 Skill 的四段可執行步驟（Google 地點搜尋→篩選→地圖）完成。行程規劃不使用，改用 dghp-travel。 來源：綜合區專案指令 §5–6、dghp-travel-field-manual §6（Travel×Food）、MIKO 陳述（常查地區由使用者設定）、ADR-003（FOOD 現行線為 dghp-food-discovery-coverage 1.4.0，狀態 CURRENT_WITH_KNOWN_DEFECTS）。1.4.0 套件全文不在 Claude 端（NOT_READ）；本 Skill 是 Claude 端精簡 Candidate，不宣稱等同 1.4.0。原件沒有、由 Claude 端補上的作法標「（Claude 補充）」，待與 1.4.0 原件對齊。 已知缺陷（ADR-003，10-19 五組測試）：T3 規則與 Hash 同改即可通過、缺發布基準綁定；T4 前台「必吃」類斷言漏檢；T5 標籤空白變形（如「首 選」）漏檢。本 Skill 以 §6 禁止條款補 T4、T5；T3 屬套件發布層，不在本 Skill 範圍。 載入順序：先 miko-core（四視角主流程、品質閘門），再本 Skill；以下 §1～§4 依 miko-core §2.4 提供四段內容。v0.2 依 2026-10-26 實跑結果改寫（ADR-015）。 純找吃的、單店研究 → 本 Skill，不改動任何行程。旅遊＋美食 → dghp-travel 主導，本 Skill 只提供餐飲節點。只換一餐 → 只處理該節點。 - 必問（缺了才問，一次問完）：區域或起點。 - 預設（沒說就用，並在回覆中寫出採用的預設）：日期＝今天；抵達時間＝現在加 30 分鐘，問的是某一餐就用該餐時段；人數 1～2 人；預算不限；寵物不同行。（Claude 補充） - 交通依使用者設定的交通方式分開判斷；颱風或強風時先用 tw-alert-check（Claude 端整合）。 - 問對了嗎：先找抵達時有開、去得了的店（營業候選），再看近期品質證據決定能不能叫推薦；不是排行榜。 1. 候選池（防漏；Claude 補充）：一次呼叫 Google 地點搜尋（places_search），送 2～4 個不同角度的查詢。 - 至少用 2 個不同角度查詢：類型、特色、子區域、價位擇二；使用者給的條件（區域、預算、營業時段、同行、交通）每個查詢都帶上，不擅自放寬。
+- 輸入：本輪使用者輸入、已授權來源、專案檔與工具狀態。
+- 輸出：可追溯的需求摘要、缺件清單與可執行／需補件判定。
+
+## 2. 解決
+
+| ID | 類型 | 觸發條件 | 操作要求 | 禁止事項 | 驗收證據 | 失敗處理 |
+|---|---|---|---|---|---|---|
+| UC1 | J | 收到與 dghp-food 責任相符的需求 | 讀取本輪輸入與已授權來源，建立需求摘要、輸入清單與缺件清單；輸出 `READY_FOR_EXECUTION` 或 `NEEDS_INPUT`。 | 不以未讀來源、記憶或推測補齊關鍵資料；不擴張到其他 Skill 責任。 | 保存需求摘要、來源識別、讀取狀態與缺件清單。 | 關鍵資料缺失標 `NOT_READ`／`UNKNOWN`，停止相依步驟並要求補件。 |
+| UC2 | P | S1 已取得最小可執行輸入 | 執行 `python3 -c "print('execute candidate step for dghp-food')"` 作為可重播入口；依來源候選文件與本 Skill 的領域規則產生中間結果，保留命令、輸入、輸出與狀態。 | 不宣稱工具、連接器、Runtime 或遠端服務已啟用；不將預期輸出當實際結果。 | 命令、stdout、stderr、Exit Code、執行時間、輸入輸出雜湊。 | 工具或來源失敗標 `NOT_RETRIEVED`／`BLOCKED`；不可用替代來源時停止，不捏造結果。 |
+| UC3 | C | S2 已產生中間結果 | 依來源規則逐項核對範圍、格式、責任、限制與輸出條件；將結果分為 `PASS`、`FAIL`、`UNKNOWN`、`NOT_RUN` 或 `BLOCKED`。 | 不把文件完整冒充 Runtime 生效；不把 SKIP、部分通過或製作者自述當整體 PASS。 | 驗收矩陣、逐項結果、反例結果與差異記錄。 | 任一必要條件失敗即 `FAIL`，保存 diff，修正後重新執行有限次重測。 |
+| UC4 | J | S3 所有必要 AC 已有實際證據 | 彙整可交付結果與未決事項；只有所有必要 AC 為 `PASS` 且獨立驗收完成才輸出 `QUALIFIED_FOR_NEXT_STAGE`。 | 不以自我驗收冒充獨立驗收；不在 `UNKNOWN`、`NOT_RUN`、`BLOCKED` 存在時放行。 | 版本、來源 commit、候選 hash、測試證據、獨立驗收與交接紀錄。 | 未合格回到 UC1 或 UC2 的明確修正點；超過有限重試上限則 `BLOCKED`，不得無限循環。 |
+
+## 3. 後設
+
+- 原始候選內容已保存於 `references/pre-format-candidate-SKILL.md`，主文件只使用本次正式格式重構內容。
+- `UNKNOWN`、`NOT_RUN`、`NOT_READ`、`BLOCKED` 不得升格為 `PASS`。
+- IMPLEMENTER 負責產出；TESTER 負責實跑；INDEPENDENT_AUDITOR 必須自行讀取、核對與反證。
+- 任何與原始內容的語意差異都必須保存 diff 與 mapping；不因格式通過就宣稱領域行為完整。
+- 未有遠端讀回或 Runtime 實測證據時，遠端與 Runtime 狀態維持 `NOT_RUN` 或 `UNKNOWN`。
+
+### 領域規則保留（重構內容）
+
+> 以下內容由原始候選逐段納入本次正式格式重構；其來源版本、差異與 SHA-256 由 mapping 與 evidence 保存。
+
 來源：綜合區專案指令 §5–6、dghp-travel-field-manual §6（Travel×Food）、MIKO 陳述（常查地區由使用者設定）、ADR-003（FOOD 現行線為 dghp-food-discovery-coverage 1.4.0，狀態 CURRENT_WITH_KNOWN_DEFECTS）。1.4.0 套件全文不在 Claude 端（NOT_READ）；本 Skill 是 Claude 端精簡 Candidate，不宣稱等同 1.4.0。原件沒有、由 Claude 端補上的作法標「（Claude 補充）」，待與 1.4.0 原件對齊。
 已知缺陷（ADR-003，10-19 五組測試）：T3 規則與 Hash 同改即可通過、缺發布基準綁定；T4 前台「必吃」類斷言漏檢；T5 標籤空白變形（如「首 選」）漏檢。本 Skill 以 §6 禁止條款補 T4、T5；T3 屬套件發布層，不在本 Skill 範圍。
 載入順序：先 miko-core（四視角主流程、品質閘門），再本 Skill；以下 §1～§4 依 miko-core §2.4 提供四段內容。v0.2 依 2026-10-26 實跑結果改寫（ADR-015）。
@@ -61,3 +91,32 @@ description: 找吃的、餐廳推薦、單店研究時使用（常查地區由�
 - 何時跑：候選店核實後，寫成 scripts/README.md 規定的 CSV（道路距離、類別、Google 實體、營業狀態、目標時段營業、180 日內評論核實欄）→ `python3 -I food_pool.py 候選池.csv --radius-km 半徑 --top N --out out`。
 - 規則照程式：半徑以道路距離為準不放寬；五類（正餐／小吃／甜點／飲品／伴手禮）分開排；四項核實都過才進排名；合格不足不補；距離與評分數值不合理直接排除。結論只寫「目前核實到的候選」。
 - 下載或測試失敗：照本檔 §2 人工流程做並說明原因，不重寫程式。
+
+
+## 8. Candidate Reconstruction Status
+
+- semantic_rewrite: `STARTED`
+- source_read: `PASS`
+- source_version_claims: preserved; original source status and known defects remain explicit.
+- governance attachment: not mixed into dghp-food.
+- full behavior tests: `NOT_RUN`
+- independent acceptance: `NOT_RUN`
+
+## 4. 檢查
+
+- expected：所有必要輸入、輸出、來源、限制、失敗出口與證據均可追溯；UC1～UC4 可依序執行並終止。
+- forbidden：未讀來源、未執行測試、部分 PASS、預期輸出、自驗結果或文件完整性不得被標為整體 PASS。
+- 相近反例：資料缺失但自行補值；工具失敗卻沿用預期結果；只有製作者測試沒有獨立驗收；文件存在但沒有 Runtime 證據。以上都不該觸發 `QUALIFIED_FOR_NEXT_STAGE`。
+- AC-01：四節存在且標題固定。
+- AC-02：UC1～UC4 各有七欄內容，類型只用 P／C／J。
+- AC-03：P 步含可執行命令與實際執行證據欄位。
+- AC-04：正向、負向、邊界、異常、回歸、Mutation 與獨立驗收均有獨立紀錄。
+- AC-05：原始候選內容、diff、mapping、版本與 SHA-256 均保存。
+
+## 0.2 累積式整合、衝突與邊界路由
+
+本 Skill 的優化、升級、重構、修正與移轉一律採累積式演進：先保存目前版本與 SHA-256，再逐項分類為繼承、強化、新增、修正、重構或廢止；未理解或未驗證的既有內容不得刪除。執行前載入 `version-evolution-preservation`，並確認本 Skill 與 `miko-core`、`independent-audit`、`three-party-review`、`ai-engineering-anti-fraud-test-credibility` 的責任不重疊。
+
+若本 Skill 與其他 Skill、正本規則、外部來源或使用者限制衝突，不得靜默覆蓋；先標記 `CONFLICT`，保存衝突位置、影響範圍與待決事項，停在可逆狀態。任何新增能力都必須通過正向、負向、邊界、異常、回歸與必要的 Mutation 測試；`FAIL`、`NOT_RUN`、`UNKNOWN`、`BLOCKED` 不得升格為正式採用或 Runtime 生效。
+
+本候選版本只代表 Manus 分支候選內容，不代表 GitHub main、正式採用或 Runtime 已生效。

@@ -1,0 +1,21 @@
+{
+  "test_id": "dghp-metaphysical-BND-001",
+  "purpose": "確認晚子時、真太陽時、多人比較與資料完整度邊界",
+  "target_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/dghp-metaphysical-integrated-analysis/SKILL.md",
+  "repository": "icashkin-cmyk/miko",
+  "branch": "main",
+  "commit_sha": "ec80f473695305b35b90f0ebb941431ddde4626e",
+  "environment": {
+    "platform": "Linux-6.18.38+-x86_64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "command": "python3 static boundary assertions",
+  "stdout": "boundary_rules=PASS",
+  "stderr": "",
+  "exit_code": 0,
+  "started_at": "2026-11-15T17:27:35.063635+00:00",
+  "finished_at": "2026-11-15T17:27:35.063635+00:00",
+  "result": "PASS",
+  "role": "TESTER",
+  "evidence_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/evidence/dghp-metaphysical-BND-001.json"
+}

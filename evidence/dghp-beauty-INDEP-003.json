@@ -1,0 +1,21 @@
+{
+  "test_id": "dghp-beauty-INDEP-003",
+  "purpose": "獨立重新讀取候選、來源 mapping、Hash 與原始 repo 邊界",
+  "target_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/dghp-beauty/SKILL.md",
+  "repository": "icashkin-cmyk/miko",
+  "branch": "main",
+  "commit_sha": "ec80f473695305b35b90f0ebb941431ddde4626e",
+  "environment": {
+    "platform": "Linux-6.18.38+-x86_64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "command": "python3 independent cold-read audit",
+  "stdout": "candidate_sha256=PASS\nsb_atoms=53\nGP_in_dghp_beauty=0\noriginal_repo_clean=PASS\n",
+  "stderr": "",
+  "exit_code": 0,
+  "started_at": "2026-11-15T17:19:16.736934+00:00",
+  "finished_at": "2026-11-15T17:19:16.736934+00:00",
+  "result": "PASS",
+  "role": "INDEPENDENT_AUDITOR",
+  "evidence_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/evidence/dghp-beauty-INDEP-003.json"
+}

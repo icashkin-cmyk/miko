@@ -1,0 +1,3 @@
+INFO K2 影格覆蓋 3/4
+INFO K5 SOURCE_ONLY（只提示）：沒有被任何建議引用的主張 ['C2', 'C3', 'C4']
+PASS

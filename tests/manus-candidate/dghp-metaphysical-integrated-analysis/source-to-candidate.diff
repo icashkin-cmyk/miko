@@ -1,0 +1,17 @@
+--- /home/ubuntu/work/github-miko-target/skills/dghp-metaphysical-integrated-analysis/SKILL.md
++++ /home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/dghp-metaphysical-integrated-analysis/SKILL.md
+@@ -65,3 +65,14 @@
+ - AC-M6：輸出順序符合 §2 的「輸出順序」，沒有把治理術語當答案；狀態標 PASS／PARTIAL／UNKNOWN／BLOCKED 之一。
+ - 實跑題：「某人晚子時出生，排八字並列候選。」通過條件：至少列 A、B 兩盤並寫出換日規則；若有第三種排法標 CONFLICT；寫出共同項、差異項與翻轉的判讀；有真太陽時是否跨日的說明與算法。
+ - 實跑紀錄（2026-10-30）：用 lunar-python 與 ephem 重算一個晚子時樣本。候選 B 與來源一致；來源的候選 A 時柱和 lunar-python 夜子時派不同（來源沿用當日日干，lunar-python 用次日日干），改列 A 與 A′ 並標 CONFLICT；十個天體（太陽到冥王星）黃經與來源區間差距在 1 角分內；真太陽時約比民用時快 10.8 分鐘，區間最後約 10 分鐘會跨過真太陽時午夜。冷啟動稽核獨立重算結果一致。
++
++
++## 5. Candidate Reconstruction Status
++
++- semantic_rewrite: `PASS_CANDIDATE`（preservation-first；保留來源語意並建立可追溯映射）
++- domain_scope: 命理／關係象徵分析；不升格為科學、醫療、法律、投資或第三人心理事實。
++- source_read: `PASS`
++- governance_attachment: 未混入通用治理附約。
++- personal_data_storage: 不寫入 Skill 或公開 repository。
++- full_behavior_tests: `NOT_RUN`
++- independent_acceptance: `NOT_RUN`

@@ -1,0 +1,20 @@
+{
+  "test_id": "INDEP-001",
+  "purpose": "independent cold-read: source/candidate/hash/lint/original clean",
+  "target_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/dghp-food/SKILL.md",
+  "repository": "icashkin-cmyk/miko",
+  "branch": "main",
+  "commit_sha": "ec80f473695305b35b90f0ebb941431ddde4626e",
+  "environment": {
+    "platform": "Linux-6.18.38+-x86_64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "command": "python3 independent cold-read audit",
+  "stdout": "source_read=PASS\nformat=PASS\noriginal_repo_clean=PASS",
+  "stderr": "",
+  "exit_code": 0,
+  "started_at": "2026-11-15T17:45:34.225798+00:00",
+  "result": "PASS",
+  "role": "INDEPENDENT_AUDITOR",
+  "evidence_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/evidence/dghp-food-INDEP-001.json"
+}

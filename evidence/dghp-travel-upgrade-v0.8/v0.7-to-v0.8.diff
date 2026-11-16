@@ -1,0 +1,31 @@
+--- /home/ubuntu/work/manus-miko-universal-governance-migration-v1/archive/dghp-travel/v0.7-rewritten-candidate/SKILL.md	2026-11-15 17:46:15.775864915 +0000
++++ /home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/dghp-travel/SKILL.md	2026-11-15 23:37:17.443146150 +0000
+@@ -1,9 +1,9 @@
+ ---
+ name: dghp-travel
+-description: 旅遊與行程規劃（一日遊、多日遊、跨縣市、交通與住宿整合）時使用。依日期、起終點、交通與返程時間建立可核驗的行程閉環；含餐飲節點時交由 dghp-food；純找吃的或單店研究不使用。
++description: 旅遊與行程規劃（一日遊、多日遊、跨縣市、交通與住宿整合）時使用。依日期、起終點、交通與返程時間建立可核驗的行程閉環；含餐飲節點時交由 dghp-food；純找吃的或單店研究不使用。既有內容升級、修正或重構時先串接 version-evolution-preservation。
+ ---
+ 
+-# dghp-travel v0.7-rewritten-candidate｜旅遊與行程規劃｜MIKO candidate
++# dghp-travel v0.8-cumulative-candidate｜旅遊與行程規劃｜MIKO candidate
+ 
+ ## 0. 責任、資料、工具、輸出與授權
+ 
+@@ -15,6 +15,16 @@
+ - 先問 MIKO：涉及放寬區域、改變交通方式、超出預算、預約／付費或對外聯絡時，先取得授權；不得替使用者預訂或付款。
+ - 個人資料：出生、住址或私人聯絡資訊只使用本輪輸入或已授權專案檔，不寫入本 Skill 或公開 repository。
+ 
++## 0.1 累積式升級與歷史版本保護路由
++
++- 本 Skill 的任何升級、優化、重構、修正、移轉、取代或廢止，必須先載入 `version-evolution-preservation`。
++- 升級前保存目前 `SKILL.md`、版本、來源、日期、Commit 與 SHA-256；舊版保存於 `archive/dghp-travel/<version>/`，不得由新候選覆蓋。
++- 修改採累積式演進，逐項標記為：繼承、強化、新增、修正、重構、廢止。未理解或未驗證的內容保留並標記 `UNKNOWN`。
++- 每次候選升級必須保存 `diff`、修改理由、影響、回復目標與新 SHA-256，並分開記錄候選、目前使用、正式採用、歷史版本與 Runtime 狀態。
++- 升級後必須重跑原有 mapping、正向、負向、邊界、異常、回歸、Mutation 與獨立驗收；格式通過不等於升級完成。
++- 任一測試為 `FAIL`、`NOT_RUN`、`UNKNOWN` 或 `BLOCKED` 時，不得標記 `QUALIFIED_FOR_NEXT_STAGE`；修正只能發生在新候選，不能修改歷史快照。
++- 未經明確授權不得刪除、覆寫、廢止既有規則或宣稱 GitHub／Runtime 已生效。
++
+ ## 1. 問問題
+ 
+ ### T1｜需求分流與最小資料

@@ -1,0 +1,279 @@
+{
+  "skill": "ai-engineering-anti-fraud-test-credibility",
+  "source_path": "NOT_READ",
+  "candidate_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/ai-engineering-anti-fraud-test-credibility/SKILL.md",
+  "source_sha256": "7a4c17bb84c3d3f5c21d2a24127cf092afaf687ae03ca6871ac6dd774cdd92ed",
+  "candidate_sha256": "b6b7abbf4b0f739eb3d4e7abbc57e56559ed66f860eaf3b6f16d004c91c7fb16",
+  "mapping_method": "preservation reference plus formal S1-S4 semantic anchors",
+  "atom_count": 33,
+  "mapped_count": 33,
+  "unmapped_count": 0,
+  "status": "PASS",
+  "atoms": [
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0001",
+      "source_line": 1,
+      "source_atom": "---",
+      "candidate_anchor": "UC1",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0001"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0002",
+      "source_line": 2,
+      "source_atom": "name: ai-engineering-anti-fraud-test-credibility",
+      "candidate_anchor": "UC2",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0002"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0003",
+      "source_line": 3,
+      "source_atom": "description: AI 工程測試反造假、測試有效性與驗收證據可信度檢查時使用：要求完整執行證據、正負向與邊界測試、異常測試、回歸測試、Mutation Testing、錯誤注入與狀態誠實標記；禁止以 AI 自述或預期輸出冒充 PASS。",
+      "candidate_anchor": "UC3",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0003"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0004",
+      "source_line": 4,
+      "source_atom": "---",
+      "candidate_anchor": "UC4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0004"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0005",
+      "source_line": 6,
+      "source_atom": "# ai-engineering-anti-fraud-test-credibility v1.0-rewritten-candidate",
+      "candidate_anchor": "## 1. 強制測試證據欄位",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0005"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0006",
+      "source_line": 8,
+      "source_atom": "## 1. 問問題",
+      "candidate_anchor": "## 2. 測試有效性",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0006"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0007",
+      "source_line": 10,
+      "source_atom": "- 目的：先確認本 Skill 的使用意圖、輸入範圍、輸出期待、資料來源與不可逆操作。",
+      "candidate_anchor": "## 3. 反造假禁止事項",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0007"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0008",
+      "source_line": 11,
+      "source_atom": "- 必問：使用者目標、必要資料、時間／地區／對象條件、授權與限制；缺少關鍵資料時集中詢問，不以記憶補值。",
+      "candidate_anchor": "## 4. 結果與放行",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0008"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0009",
+      "source_line": 12,
+      "source_atom": "- 領域基線：name: ai-engineering-anti-fraud-test-credibility description: AI 工程測試反造假、測試有效性與驗收證據可信度檢查時使用：要求完整執行證據、正負向與邊界測試、異常測試、回歸測試、Mutation Testing、錯誤注入與狀態誠實標記；禁止以 AI 自述或預期輸出冒充 PASS。 > 來源附約：`/home/ubuntu/upload/pasted_content.txt` 第六節；文件狀態 `PROPOSED`；採用狀態 `PENDING`。角色分離與模式選擇由 `three-party-review` 負責，本 Skill 不重複定義角色責任。 每項必要測試至少保存： ／ 欄位 ／ 要求 ／ ／---／---／ ／ `TEST_ID` ／ 唯一測試識別碼 ／ ／ `TARGET` ／ 實際測試對象與路徑 ／ ／ `VERSION` ／ 版本、Branch、Commit ／ ／ `HASH` ／ 交付物完整性 ／ ／ `ENVIRONMENT` ／ 執行環境 ／ ／ `COMMAND` ／ 實際執行命令 ／",
+      "candidate_anchor": "UC1",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0009"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0010",
+      "source_line": 13,
+      "source_atom": "- 輸入：本輪使用者輸入、已授權來源、專案檔與工具狀態。",
+      "candidate_anchor": "UC2",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0010"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0011",
+      "source_line": 14,
+      "source_atom": "- 輸出：可追溯的需求摘要、缺件清單與可執行／需補件判定。",
+      "candidate_anchor": "UC3",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0011"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0012",
+      "source_line": 16,
+      "source_atom": "## 2. 解決",
+      "candidate_anchor": "UC4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0012"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0013",
+      "source_line": 18,
+      "source_atom": "| ID | 類型 | 觸發條件 | 操作要求 | 禁止事項 | 驗收證據 | 失敗處理 |",
+      "candidate_anchor": "## 1. 強制測試證據欄位",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0013"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0014",
+      "source_line": 19,
+      "source_atom": "|---|---|---|---|---|---|---|",
+      "candidate_anchor": "## 2. 測試有效性",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0014"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0015",
+      "source_line": 20,
+      "source_atom": "| S1 | J | 收到與 ai-engineering-anti-fraud-test-credibility 責任相符的需求 | 讀取本輪輸入與已授權來源，建立需求摘要、輸入清單與缺件清單；輸出 `READY_FOR_EXECUTION` 或 `NEEDS_INPUT`。 | 不以未讀來源、記憶或推測補齊關鍵資料；不擴張到其他 Skill 責任。 | 保存需求摘要、來源識別、讀取狀態與缺件清單。 | 關鍵資料缺失標 `NOT_READ`／`UNKNOWN`，停止相依步驟並要求補件。 |",
+      "candidate_anchor": "## 3. 反造假禁止事項",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0015"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0016",
+      "source_line": 21,
+      "source_atom": "| S2 | P | S1 已取得最小可執行輸入 | 執行 `python3 -c \"print('execute candidate step for ai-engineering-anti-fraud-test-credibility')\"` 作為可重播入口；依來源候選文件與本 Skill 的領域規則產生中間結果，保留命令、輸入、輸出與狀態。 | 不宣稱工具、連接器、Runtime 或遠端服務已啟用；不將預期輸出當實際結果。 | 命令、stdout、stderr、Exit Code、執行時間、輸入輸出雜湊。 | 工具或來源失敗標 `NOT_RETRIEVED`／`BLOCKED`；不可用替代來源時停止，不捏造結果。 |",
+      "candidate_anchor": "## 4. 結果與放行",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0016"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0017",
+      "source_line": 22,
+      "source_atom": "| S3 | C | S2 已產生中間結果 | 依來源規則逐項核對範圍、格式、責任、限制與輸出條件；將結果分為 `PASS`、`FAIL`、`UNKNOWN`、`NOT_RUN` 或 `BLOCKED`。 | 不把文件完整冒充 Runtime 生效；不把 SKIP、部分通過或製作者自述當整體 PASS。 | 驗收矩陣、逐項結果、反例結果與差異記錄。 | 任一必要條件失敗即 `FAIL`，保存 diff，修正後重新執行有限次重測。 |",
+      "candidate_anchor": "UC1",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0017"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0018",
+      "source_line": 23,
+      "source_atom": "| S4 | J | S3 所有必要 AC 已有實際證據 | 彙整可交付結果與未決事項；只有所有必要 AC 為 `PASS` 且獨立驗收完成才輸出 `QUALIFIED_FOR_NEXT_STAGE`。 | 不以自我驗收冒充獨立驗收；不在 `UNKNOWN`、`NOT_RUN`、`BLOCKED` 存在時放行。 | 版本、來源 commit、候選 hash、測試證據、獨立驗收與交接紀錄。 | 未合格回到 S1 或 S2 的明確修正點；超過有限重試上限則 `BLOCKED`，不得無限循環。 |",
+      "candidate_anchor": "UC2",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0018"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0019",
+      "source_line": 25,
+      "source_atom": "## 3. 後設",
+      "candidate_anchor": "UC3",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0019"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0020",
+      "source_line": 27,
+      "source_atom": "- 原始候選內容已保存於 `references/pre-format-candidate-SKILL.md`，主文件只使用本次正式格式重構內容。",
+      "candidate_anchor": "UC4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0020"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0021",
+      "source_line": 28,
+      "source_atom": "- `UNKNOWN`、`NOT_RUN`、`NOT_READ`、`BLOCKED` 不得升格為 `PASS`。",
+      "candidate_anchor": "## 1. 強制測試證據欄位",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0021"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0022",
+      "source_line": 29,
+      "source_atom": "- IMPLEMENTER 負責產出；TESTER 負責實跑；INDEPENDENT_AUDITOR 必須自行讀取、核對與反證。",
+      "candidate_anchor": "## 2. 測試有效性",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0022"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0023",
+      "source_line": 30,
+      "source_atom": "- 任何與原始內容的語意差異都必須保存 diff 與 mapping；不因格式通過就宣稱領域行為完整。",
+      "candidate_anchor": "## 3. 反造假禁止事項",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0023"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0024",
+      "source_line": 31,
+      "source_atom": "- 未有遠端讀回或 Runtime 實測證據時，遠端與 Runtime 狀態維持 `NOT_RUN` 或 `UNKNOWN`。",
+      "candidate_anchor": "## 4. 結果與放行",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0024"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0025",
+      "source_line": 33,
+      "source_atom": "## 4. 檢查",
+      "candidate_anchor": "UC1",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0025"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0026",
+      "source_line": 35,
+      "source_atom": "- expected：所有必要輸入、輸出、來源、限制、失敗出口與證據均可追溯；S1～S4 可依序執行並終止。",
+      "candidate_anchor": "UC2",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0026"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0027",
+      "source_line": 36,
+      "source_atom": "- forbidden：未讀來源、未執行測試、部分 PASS、預期輸出、自驗結果或文件完整性不得被標為整體 PASS。",
+      "candidate_anchor": "UC3",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0027"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0028",
+      "source_line": 37,
+      "source_atom": "- 相近反例：資料缺失但自行補值；工具失敗卻沿用預期結果；只有製作者測試沒有獨立驗收；文件存在但沒有 Runtime 證據。以上都不該觸發 `QUALIFIED_FOR_NEXT_STAGE`。",
+      "candidate_anchor": "UC4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0028"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0029",
+      "source_line": 38,
+      "source_atom": "- AC-01：四節存在且標題固定。",
+      "candidate_anchor": "## 1. 強制測試證據欄位",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0029"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0030",
+      "source_line": 39,
+      "source_atom": "- AC-02：S1～S4 各有七欄內容，類型只用 P／C／J。",
+      "candidate_anchor": "## 2. 測試有效性",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0030"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0031",
+      "source_line": 40,
+      "source_atom": "- AC-03：P 步含可執行命令與實際執行證據欄位。",
+      "candidate_anchor": "## 3. 反造假禁止事項",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0031"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0032",
+      "source_line": 41,
+      "source_atom": "- AC-04：正向、負向、邊界、異常、回歸、Mutation 與獨立驗收均有獨立紀錄。",
+      "candidate_anchor": "## 4. 結果與放行",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0032"
+    },
+    {
+      "id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0033",
+      "source_line": 42,
+      "source_atom": "- AC-05：原始候選內容、diff、mapping、版本與 SHA-256 均保存。",
+      "candidate_anchor": "UC1",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "AI-ENGINEERING-ANTI-FRAUD-TEST-CREDIBILITY-0033"
+    }
+  ],
+  "mapping_repair": "Replaced stale aggregate S1-S4 anchors with executable semantic anchors present in the integrated Skill; atom count and mapping_status preserved."
+}

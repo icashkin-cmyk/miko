@@ -1,0 +1,22 @@
+{
+  "test_id": "TEST-HASH-001",
+  "purpose": "Re-read every source and candidate Skill and verify byte identity",
+  "target_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1",
+  "repository": "icashkin-cmyk/miko",
+  "branch": "main",
+  "commit_sha": "ec80f473695305b35b90f0ebb941431ddde4626e",
+  "environment": {
+    "platform": "Linux-6.18.38+-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "cwd": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1"
+  },
+  "command": "python3 - <<'PY'\nfrom pathlib import Path\nimport hashlib\nroot=Path('.')\nsrc=Path('/home/ubuntu/work/github-miko-target/skills')\nfor p in sorted((root/'skills').iterdir()):\n    if not (p/'SKILL.md').is_file() or p.name in {'ai-engineering-anti-fraud-test-credibility','three-party-review'}: continue\n    a=(src/p.name/'SKILL.md').read_bytes(); b=(p/'SKILL.md').read_bytes()\n    assert hashlib.sha256(a).hexdigest()==hashlib.sha256(b).hexdigest(), p.name\nprint('all_source_candidate_hashes=PASS')\nPY",
+  "stdout": "all_source_candidate_hashes=PASS\n",
+  "stderr": "",
+  "exit_code": 0,
+  "started_at": "2026-11-15T16:39:53.049137+00:00",
+  "finished_at": "2026-11-15T16:39:53.084754+00:00",
+  "result": "PASS",
+  "role": "TESTER",
+  "evidence_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/evidence/tester-TEST-HASH-001.json"
+}

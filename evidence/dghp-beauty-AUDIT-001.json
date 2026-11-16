@@ -1,0 +1,21 @@
+{
+  "test_id": "dghp-beauty-AUDIT-001",
+  "purpose": "獨立重新讀取來源、候選、mapping、SHA-256 與原始 repo 狀態",
+  "target_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/dghp-beauty",
+  "repository": "icashkin-cmyk/miko",
+  "branch": "main",
+  "commit_sha": "ec80f473695305b35b90f0ebb941431ddde4626e",
+  "environment": {
+    "platform": "Linux-6.18.38+-x86_64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "command": "python3 - independent fresh source/candidate/hash/anchor checks",
+  "stdout": "source_sha256=PASS\ncandidate_sha256=PASS\natom_count=53\nall_candidate_anchors_present=PASS\noriginal_repo_clean=PASS\n",
+  "stderr": "",
+  "exit_code": 0,
+  "started_at": "2026-11-15T17:00:54.803718+00:00",
+  "finished_at": "2026-11-15T17:00:54.803718+00:00",
+  "result": "PASS",
+  "role": "INDEPENDENT_AUDITOR",
+  "evidence_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/evidence/dghp-beauty-AUDIT-001.json"
+}

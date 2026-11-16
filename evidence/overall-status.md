@@ -1,0 +1,30 @@
+# Overall Status｜Migration v1
+
+- source_commit: `ec80f473695305b35b90f0ebb941431ddde4626e`
+- source_version: `1.2.72`
+- original_miko_worktree_unmodified: `PASS`
+- governance_attachment_mixing_into_dghp_beauty: `REVOKED`
+- three_party_review_rewrite: `QUALIFIED_FOR_NEXT_STAGE; CANDIDATE_NOT_ADOPTED`
+- anti_fraud_rewrite: `PASS_CANDIDATE`
+- dghp_beauty_rewrite: `QUALIFIED_FOR_NEXT_STAGE; CANDIDATE_NOT_ADOPTED`
+- dghp_food_rewrite: `QUALIFIED_FOR_NEXT_STAGE; CANDIDATE_NOT_ADOPTED`
+- dghp_food_source_atoms: `40/40 MAPPED`
+- dghp_food_positive_tests: `PASS`
+- dghp_food_negative_tests: `PASS`
+- dghp_food_boundary_tests: `PASS`
+- dghp_food_exception_tests: `PASS`
+- dghp_food_regression_tests: `PASS`
+- dghp_food_mutation_tests: `PASS`
+- dghp_food_independent_acceptance: `PASS`
+- dghp_metaphysical_rewrite: `REWORK_REQUIRED; NOT_ADOPTED`（格式稽核撤回）
+- dghp_metaphysical_source_atoms: `61/61 MAPPED`
+- dghp_metaphysical_tests: `PASS`
+- dghp_metaphysical_independent_acceptance: `PASS`
+- dghp_travel_rewrite: `QUALIFIED_FOR_NEXT_STAGE; CANDIDATE_NOT_ADOPTED`
+- dghp_travel_source_atoms: `50/50 SEMANTICALLY MAPPED`
+- dghp_travel_tests: `PASS AFTER FORMAT REWRITE`
+- dghp_travel_independent_acceptance: `PASS AFTER FORMAT REWRITE`
+- remote_readback: `NOT_RUN`
+- runtime_status: `UNKNOWN`
+- overall_candidate_gate: `FORMAT_REWRITE_AND_FULL_STATIC_GATE_PASS; FORMAL_ADOPTION_NOT_RUN`
+- candidate_status: `CANDIDATE_NOT_ADOPTED`

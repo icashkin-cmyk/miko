@@ -1,0 +1,17 @@
+--- /home/ubuntu/work/github-miko-target/skills/dghp-travel/SKILL.md
++++ /home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/dghp-travel/SKILL.md
+@@ -57,3 +57,14 @@
+ - 判定照程式輸出：EXECUTABLE（可執行）、有風險、INCOMPLETE_UNVERIFIED（未完整驗證）、NOT_EXECUTABLE（不可執行）。不得把程式的未驗證改寫成可執行；人工判斷與程式不同時兩個都寫並說明。
+ - 程式檢查：回程最後一段必須抵達 home；「已核班次」必須附官方網址與查核日期；每段大眾運輸預留進站、步行、購票、候車時間（未填預設 10 分鐘）與轉乘緩衝；營業時間與最後點餐。
+ - 尚未做（程式 README 列的 P2）：輸出表未顯示接駁、餐飲證據與最後一哩；TDX 取資料程式不在本版。
++
++
++## 8. Candidate Reconstruction Status
++
++- semantic_rewrite: `PASS_CANDIDATE`（preservation-first；保留旅遊流程與判定狀態並建立可追溯映射）
++- domain_scope: 旅遊、行程、交通、住宿與返程閉環；純美食交 dghp-food。
++- source_read: `PASS`
++- governance_attachment: 未混入通用治理附約。
++- runtime_claims: 不宣稱工具、遠端或 Runtime 已啟用。
++- full_behavior_tests: `NOT_RUN`
++- independent_acceptance: `NOT_RUN`

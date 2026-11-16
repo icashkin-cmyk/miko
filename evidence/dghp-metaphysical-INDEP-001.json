@@ -1,0 +1,21 @@
+{
+  "test_id": "dghp-metaphysical-INDEP-001",
+  "purpose": "獨立重新讀取來源、候選、61 atoms、Hash 與原始 repo 狀態",
+  "target_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/dghp-metaphysical-integrated-analysis/SKILL.md",
+  "repository": "icashkin-cmyk/miko",
+  "branch": "main",
+  "commit_sha": "ec80f473695305b35b90f0ebb941431ddde4626e",
+  "environment": {
+    "platform": "Linux-6.18.38+-x86_64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "command": "python3 independent cold-read audit",
+  "stdout": "source_sha256=PASS\ncandidate_sha256=PASS\natom_count=61\nanchors=61/61\noriginal_repo_clean=PASS\n",
+  "stderr": "",
+  "exit_code": 0,
+  "started_at": "2026-11-15T17:27:35.100352+00:00",
+  "finished_at": "2026-11-15T17:27:35.100352+00:00",
+  "result": "PASS",
+  "role": "INDEPENDENT_AUDITOR",
+  "evidence_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/evidence/dghp-metaphysical-INDEP-001.json"
+}

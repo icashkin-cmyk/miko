@@ -1,0 +1,3 @@
+skill_count=20
+domain_lint_count=19
+mapping_validators_passed=6/6

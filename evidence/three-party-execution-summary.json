@@ -1,0 +1,18 @@
+{
+  "roles": [
+    "IMPLEMENTER",
+    "TESTER",
+    "INDEPENDENT_AUDITOR"
+  ],
+  "tests": [
+    "IMPL-FORMAT-001",
+    "TEST-HASH-001",
+    "TEST-MUTATION-001",
+    "AUDIT-EXTERNAL-001"
+  ],
+  "all_exit_codes_zero": true,
+  "mutation_effectiveness": "PASS",
+  "semantic_rewrite": "NOT_RUN",
+  "runtime_status": "UNKNOWN",
+  "overall_candidate_gate": "NOT_QUALIFIED_FOR_FORMAL_ADOPTION"
+}

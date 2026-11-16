@@ -1,0 +1,21 @@
+{
+  "skill": "batch-task-completion-and-single-report",
+  "status": "QUALIFIED_FOR_NEXT_STAGE_CANDIDATE",
+  "source_miko_commit": "9cfcdfa63060e1aadc14c218a9dd4bc1922c4ab8",
+  "candidate_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/batch-task-completion-and-single-report",
+  "candidate_sha256": "cafd5b4c4b7ad5c0ae76a3265708a5ea8a9fdb6abdeb14a61eea201bed4f31a8",
+  "quick_validate": "PASS",
+  "skill_lint": "PASS",
+  "line_count": 50,
+  "runtime": "NOT_RUN",
+  "formal_adoption": "NOT_RUN",
+  "github_write": "NOT_RUN",
+  "original_miko_repo_clean": true,
+  "timestamp": "2026-11-15T18:08:26.908206+00:00",
+  "notes": [
+    "實質功能與規則審查要求已寫入 Skill",
+    "完整清單與總數要求已寫入 Skill",
+    "單次回報不隱瞞 BLOCKED 已寫入 Skill",
+    "IMPLEMENTER／TESTER／INDEPENDENT_AUDITOR 已分離"
+  ]
+}

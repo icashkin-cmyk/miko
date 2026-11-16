@@ -1,0 +1,11 @@
+{
+ "kind": "video",
+ "width": 80,
+ "height": 60,
+ "streams": {
+  "video": 1,
+  "audio": 0,
+  "subtitle": 0
+ },
+ "duration_s": 3
+}
