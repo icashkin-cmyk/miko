@@ -1,0 +1,22 @@
+{
+  "test_id": "IMPL-FORMAT-001",
+  "purpose": "Validate every candidate Skill with skill-creator quick_validate",
+  "target_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1",
+  "repository": "icashkin-cmyk/miko",
+  "branch": "main",
+  "commit_sha": "ec80f473695305b35b90f0ebb941431ddde4626e",
+  "environment": {
+    "platform": "Linux-6.18.38+-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "cwd": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1"
+  },
+  "command": "set -e; for d in skills/*; do [ -f \"$d/SKILL.md\" ] || continue; python3 /home/ubuntu/skills/skill-creator/scripts/quick_validate.py --path \"$d\" >/dev/null; done",
+  "stdout": "",
+  "stderr": "",
+  "exit_code": 0,
+  "started_at": "2026-11-15T16:39:52.168603+00:00",
+  "finished_at": "2026-11-15T16:39:53.044599+00:00",
+  "result": "PASS",
+  "role": "IMPLEMENTER",
+  "evidence_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/evidence/implementer-IMPL-FORMAT-001.json"
+}

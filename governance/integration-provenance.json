@@ -1,0 +1,14 @@
+{
+  "source_repo": "icashkin-cmyk/miko",
+  "base_branch": "main",
+  "base_commit": "cb04d3a73a4fdf2c8c01425ed37cbfc779f084c1",
+  "candidate_source": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1",
+  "claude_paths": [
+    "CLAUDE.md",
+    "sync/CLAUDE_STATUS.md",
+    "knowledge-cards/proposals/docs/20261112_Manus與Claude協作交接SOP.md"
+  ],
+  "formal_adoption": "PENDING",
+  "runtime_status": "UNKNOWN",
+  "remote_readback": "NOT_RUN"
+}

@@ -1,0 +1,15 @@
+{
+  "test_id": "FINAL-GATE-001",
+  "skill": "dghp-metaphysical-integrated-analysis",
+  "purpose": "full candidate format and governance gate",
+  "target_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/dghp-metaphysical-integrated-analysis/SKILL.md",
+  "source_commit": "ec80f473695305b35b90f0ebb941431ddde4626e",
+  "candidate_sha256": "bf71254528693ef2e5b56704b0f3c7677fdfc40bf7923fa89b535e5f25dc0020",
+  "command": "skill_lint + quick_validate + current evidence gate",
+  "stdout": "format=PASS; quick_validate=PASS; source_mapping=PASS; positive=PASS; negative=PASS; boundary=PASS; exception=PASS; regression=PASS; mutation=PASS; independent=PASS; original_repo_clean=PASS",
+  "stderr": "",
+  "exit_code": 0,
+  "executed_at": "2026-11-15T17:45:50.384246+00:00",
+  "result": "PASS",
+  "role": "INDEPENDENT_AUDITOR"
+}

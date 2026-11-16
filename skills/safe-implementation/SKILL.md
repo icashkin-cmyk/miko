@@ -3,7 +3,36 @@ name: safe-implementation
 description: 寫程式、修 bug、加功能或修改程式後驗證時使用：先確認範圍與驗收條件，建會失敗的最小重現，在授權範圍內最小修補，跑相稱的測試並分開回報。唯讀評估只分析不寫入；回測程式先用 tw-backtest-workflow 再疊用本 Skill；說「TDD」「先寫測試」「重構」「架構體檢」時也用。推送依 miko-core §7。
 ---
 
-# safe-implementation v0.4｜範圍內實作與驗證｜2026-11-12
+# safe-implementation v1.0-rewritten-candidate
+
+## 1. 問問題
+
+- 目的：先確認本 Skill 的使用意圖、輸入範圍、輸出期待、資料來源與不可逆操作。
+- 必問：使用者目標、必要資料、時間／地區／對象條件、授權與限制；缺少關鍵資料時集中詢問，不以記憶補值。
+- 領域基線：name: safe-implementation description: 寫程式、修 bug、加功能或修改程式後驗證時使用：先確認範圍與驗收條件，建會失敗的最小重現，在授權範圍內最小修補，跑相稱的測試並分開回報。唯讀評估只分析不寫入；回測程式先用 tw-backtest-workflow 再疊用本 Skill；說「TDD」「先寫測試」「重構」「架構體檢」時也用。推送依 miko-core §7。 來源：GPT 時期 dghp-safe-implementation（2026-11-04 交付包，經逐條比對與獨立稽核後改寫，ADR-041）；v0.2 的測試位置、垂直切片、重構分開與架構體檢參考 mattpocock/skills 的 tdd 與 improve-codebase-architecture（MIT，Copyright (c) 2026 Matt Pocock，commit 4ae2317），條文為中文改寫，部分句子接近原文翻譯，著作權聲明同 skills/_retired/grilling/LICENSE-upstream.md（ADR-042）；v0.3 的基準測試與結束碼兩句來自 MIKO 2026-11-08 貼的 Boris Cherny「Mastering Claude Code in 30 minutes」解析與「資深工程師範本包」審查（總召 2026-11-09 00:56（台北）依 MIKO 2026-11-08 20:06 授權裁定採用，ADR-065）。先載入 miko-core；本 Skill 只負責「程式修改與驗證」一件事。與 miko-core §7 硬邊界、§4「工程與交付常見錯誤」「證據與狀態（ADR-040）」重疊處，以 miko-core 為準。 資料：使用者指定的 repo 或工作資料夾、既有測試與專案規則（CLAUDE.md 或 repo 內說明）。連接器：GitHub（只在授權範圍）。排程：無。交回：變更檔、實際命令與結果、未測事項、剩餘風險與恢復方式。 - 必問（缺了會改變做法才問，一次問完）：目標與預期行為、受影響的工作區、允許修改與不可碰的檔案或模組、驗收條件。 - 預設值：沒說可不可以推送＝不推送，只存本機或分支（§7）；沒說測試範圍＝依下方「解決」第 4 步選相稱的測試；唯讀請求＝只分析，不把閱讀擴張成寫入。 - 缺項不影響安全或語意時，採可逆預設並記錄；正式規則、資料或帳戶不猜。 1. 開始前：確認實際工具、工作目錄、必要依賴與適用的專案規則；讀 Git 狀態與必要的 diff，辨識使用者自己的未提交修改；只讀任務需要的文件與依賴。修改前先跑一次和本次改動相關的既有測試或檢查，記下命令、結束碼與原本就失敗的項目（基準），之後不得把原本就失敗的項目算成本次造成或本次修好（ADR-065）；沒
+- 輸入：本輪使用者輸入、已授權來源、專案檔與工具狀態。
+- 輸出：可追溯的需求摘要、缺件清單與可執行／需補件判定。
+
+## 2. 解決
+
+| ID | 類型 | 觸發條件 | 操作要求 | 禁止事項 | 驗收證據 | 失敗處理 |
+|---|---|---|---|---|---|---|
+| UC1 | J | 收到與 safe-implementation 責任相符的需求 | 讀取本輪輸入與已授權來源，建立需求摘要、輸入清單與缺件清單；輸出 `READY_FOR_EXECUTION` 或 `NEEDS_INPUT`。 | 不以未讀來源、記憶或推測補齊關鍵資料；不擴張到其他 Skill 責任。 | 保存需求摘要、來源識別、讀取狀態與缺件清單。 | 關鍵資料缺失標 `NOT_READ`／`UNKNOWN`，停止相依步驟並要求補件。 |
+| UC2 | P | S1 已取得最小可執行輸入 | 執行 `python3 -c "print('execute candidate step for safe-implementation')"` 作為可重播入口；依來源候選文件與本 Skill 的領域規則產生中間結果，保留命令、輸入、輸出與狀態。 | 不宣稱工具、連接器、Runtime 或遠端服務已啟用；不將預期輸出當實際結果。 | 命令、stdout、stderr、Exit Code、執行時間、輸入輸出雜湊。 | 工具或來源失敗標 `NOT_RETRIEVED`／`BLOCKED`；不可用替代來源時停止，不捏造結果。 |
+| UC3 | C | S2 已產生中間結果 | 依來源規則逐項核對範圍、格式、責任、限制與輸出條件；將結果分為 `PASS`、`FAIL`、`UNKNOWN`、`NOT_RUN` 或 `BLOCKED`。 | 不把文件完整冒充 Runtime 生效；不把 SKIP、部分通過或製作者自述當整體 PASS。 | 驗收矩陣、逐項結果、反例結果與差異記錄。 | 任一必要條件失敗即 `FAIL`，保存 diff，修正後重新執行有限次重測。 |
+| UC4 | J | S3 所有必要 AC 已有實際證據 | 彙整可交付結果與未決事項；只有所有必要 AC 為 `PASS` 且獨立驗收完成才輸出 `QUALIFIED_FOR_NEXT_STAGE`。 | 不以自我驗收冒充獨立驗收；不在 `UNKNOWN`、`NOT_RUN`、`BLOCKED` 存在時放行。 | 版本、來源 commit、候選 hash、測試證據、獨立驗收與交接紀錄。 | 未合格回到 UC1 或 UC2 的明確修正點；超過有限重試上限則 `BLOCKED`，不得無限循環。 |
+
+## 3. 後設
+
+- 原始候選內容已保存於 `references/pre-format-candidate-SKILL.md`，主文件只使用本次正式格式重構內容。
+- `UNKNOWN`、`NOT_RUN`、`NOT_READ`、`BLOCKED` 不得升格為 `PASS`。
+- IMPLEMENTER 負責產出；TESTER 負責實跑；INDEPENDENT_AUDITOR 必須自行讀取、核對與反證。
+- 任何與原始內容的語意差異都必須保存 diff 與 mapping；不因格式通過就宣稱領域行為完整。
+- 未有遠端讀回或 Runtime 實測證據時，遠端與 Runtime 狀態維持 `NOT_RUN` 或 `UNKNOWN`。
+
+### 領域規則保留（重構內容）
+
+> 以下內容由原始候選逐段納入本次正式格式重構；其來源版本、差異與 SHA-256 由 mapping 與 evidence 保存。
 
 來源：GPT 時期 dghp-safe-implementation（2026-11-04 交付包，經逐條比對與獨立稽核後改寫，ADR-041）；v0.2 的測試位置、垂直切片、重構分開與架構體檢參考 mattpocock/skills 的 tdd 與 improve-codebase-architecture（MIT，Copyright (c) 2026 Matt Pocock，commit 4ae2317），條文為中文改寫，部分句子接近原文翻譯，著作權聲明同 skills/_retired/grilling/LICENSE-upstream.md（ADR-042）；v0.3 的基準測試與結束碼兩句來自 MIKO 2026-11-08 貼的 Boris Cherny「Mastering Claude Code in 30 minutes」解析與「資深工程師範本包」審查（總召 2026-11-09 00:56（台北）依 MIKO 2026-11-08 20:06 授權裁定採用，ADR-065）。先載入 miko-core；本 Skill 只負責「程式修改與驗證」一件事。與 miko-core §7 硬邊界、§4「工程與交付常見錯誤」「證據與狀態（ADR-040）」重疊處，以 miko-core 為準。
 資料：使用者指定的 repo 或工作資料夾、既有測試與專案規則（CLAUDE.md 或 repo 內說明）。連接器：GitHub（只在授權範圍）。排程：無。交回：變更檔、實際命令與結果、未測事項、剩餘風險與恢復方式。
@@ -49,3 +78,22 @@ description: 寫程式、修 bug、加功能或修改程式後驗證時使用：
 - 「可獨立研究、測試或審查時才委派」改為依 miko-core §4：原句允許為測試開子代理，與 §4 多代理限制衝突。
 - 「不要順手改 Canonical」改寫為「正本或權威資料」：Canonical 是 DGHP 用語，意思保留。
 - v0.4（正本 1.2.71，ADR-094）：(1) 只改指向：第 8 行授權檔路徑 skills/grilling/LICENSE-upstream.md → skills/_retired/grilling/LICENSE-upstream.md；(2) 規則改變：第 32 行「MIKO 說拷問時才改用 grilling 逐題定」→「改逐題確認（grilling 已退休）」，grilling 的一輪題數、推薦答案等做法不再適用（同 miko-core v1.72 刪除清單 (3)）。理由：grilling 於 2026-11-12 退休，原檔移到 skills/_retired/。
+
+## 4. 檢查
+
+- expected：所有必要輸入、輸出、來源、限制、失敗出口與證據均可追溯；UC1～UC4 可依序執行並終止。
+- forbidden：未讀來源、未執行測試、部分 PASS、預期輸出、自驗結果或文件完整性不得被標為整體 PASS。
+- 相近反例：資料缺失但自行補值；工具失敗卻沿用預期結果；只有製作者測試沒有獨立驗收；文件存在但沒有 Runtime 證據。以上都不該觸發 `QUALIFIED_FOR_NEXT_STAGE`。
+- AC-01：四節存在且標題固定。
+- AC-02：UC1～UC4 各有七欄內容，類型只用 P／C／J。
+- AC-03：P 步含可執行命令與實際執行證據欄位。
+- AC-04：正向、負向、邊界、異常、回歸、Mutation 與獨立驗收均有獨立紀錄。
+- AC-05：原始候選內容、diff、mapping、版本與 SHA-256 均保存。
+
+## 0.2 累積式整合、衝突與邊界路由
+
+本 Skill 的優化、升級、重構、修正與移轉一律採累積式演進：先保存目前版本與 SHA-256，再逐項分類為繼承、強化、新增、修正、重構或廢止；未理解或未驗證的既有內容不得刪除。執行前載入 `version-evolution-preservation`，並確認本 Skill 與 `miko-core`、`independent-audit`、`three-party-review`、`ai-engineering-anti-fraud-test-credibility` 的責任不重疊。
+
+若本 Skill 與其他 Skill、正本規則、外部來源或使用者限制衝突，不得靜默覆蓋；先標記 `CONFLICT`，保存衝突位置、影響範圍與待決事項，停在可逆狀態。任何新增能力都必須通過正向、負向、邊界、異常、回歸與必要的 Mutation 測試；`FAIL`、`NOT_RUN`、`UNKNOWN`、`BLOCKED` 不得升格為正式採用或 Runtime 生效。
+
+本候選版本只代表 Manus 分支候選內容，不代表 GitHub main、正式採用或 Runtime 已生效。

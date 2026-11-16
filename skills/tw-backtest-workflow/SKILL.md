@@ -3,7 +3,37 @@ name: tw-backtest-workflow
 description: 臺股策略、月配息 ETF 或下跌預警的回測與改進時使用：把想法拆成可程式化規則、讀本機 FinMind 資料（雲端改用證交所官方日線）、用內附 bt_min.py 實算成本與統計、找虧損模式、樣本外驗證。先載入 miko-core，再依本 Skill 四段執行。一般投資問答、即時報價、台指期不使用。
 ---
 
-# 臺股回測工作流 v1.8｜2026-11-04 可執行版（對齊 DGHP 規則）
+# tw-backtest-workflow v1.0-rewritten-candidate
+
+## 1. 問問題
+
+- 目的：先確認本 Skill 的使用意圖、輸入範圍、輸出期待、資料來源與不可逆操作。
+- 必問：使用者目標、必要資料、時間／地區／對象條件、授權與限制；缺少關鍵資料時集中詢問，不以記憶補值。
+- 領域基線：name: tw-backtest-workflow description: 臺股策略、月配息 ETF 或下跌預警的回測與改進時使用：把想法拆成可程式化規則、讀本機 FinMind 資料（雲端改用證交所官方日線）、用內附 bt_min.py 實算成本與統計、找虧損模式、樣本外驗證。先載入 miko-core，再依本 Skill 四段執行。一般投資問答、即時報價、台指期不使用。 載入順序：先 miko-core（四視角主流程、品質閘門），再本 Skill；§1 問問題、§2～§3 解決、§4 後設、§6 檢查，對應 miko-core §2.4。v1.3 依 2026-10-26 實跑結果加入資料取得路徑、執行步驟與附錄 A 引擎（ADR-015）。 來源：臺股專案指令原件 V1.2-REFERENCE-CANDIDATE、ADR-001、ADR-004、四視角引擎 v3.1 §7.2（RC2 作用域 PROJECT_RC2_PROFILE_ONLY、不適用月配息）、MIKO 帳號偏好（三檔 2330／2454／2317 共同規則、OOS 與全局最優用語、策略比較 Markdown）；v1.2 增補來自 H-03、H-04（ADR-015）。 - DGHP_TW_STOCK_REBUILD（含 2330、2454、2317 三檔共同策略）：適用 RC2（PROJECT_RC2_PROFILE_ONLY，從屬 RC1）與臺股專案指令。Universe 只限 TWSE＋TPEx 可交易普通股，排除興櫃、創櫃、ETF、ETN、REIT、TDR、特別股、權證、可轉債、槓桿反向商品。 - 月配息專案（MONTHLY_INCOME_DASHBOARD）：標的是 ETF，屬另一個領域，RC2 與上面的普通股限制不適用。 - 權責：Claude 是總召（ADR-001），負責驗證、探索、審查與放行；工程執行由 Claude 負責（雲端工作區實跑，或產生終端機指令由 MIKO 在 Mac 執行；2026-11-02 前為「Codex 負責工程執行」，ADR-039）；送審與結論由 MIKO 轉貼。STOP_FOR_GPT_REVIEW 等門檻只由總召以正式審查紀錄放行，不自審解鎖。 - 台指期維持停止；下單、交易、Broker、LIVE 一律不做。 - 狀態階梯（ADR-040，承襲 DGHP 2026-09-13 規則）：草案 DRAFT／CANDIDATE → 測試通過 TESTED → 回測結果 RESEARCH_RESULT；任何 AI 都不得自行升格為 Canonical、Strict Release 或 LIVE，升格由 MIKO 決定（KEEP／MODIFY／REJECT）。PAPER 測試不等於 LIVE；合成測試或有限工程檢查通過，不代表完整回測、Stric
+- 輸入：本輪使用者輸入、已授權來源、專案檔與工具狀態。
+- 輸出：可追溯的需求摘要、缺件清單與可執行／需補件判定。
+
+## 2. 解決
+
+| ID | 類型 | 觸發條件 | 操作要求 | 禁止事項 | 驗收證據 | 失敗處理 |
+|---|---|---|---|---|---|---|
+| UC1 | J | 收到與 tw-backtest-workflow 責任相符的需求 | 讀取本輪輸入與已授權來源，建立需求摘要、輸入清單與缺件清單；輸出 `READY_FOR_EXECUTION` 或 `NEEDS_INPUT`。 | 不以未讀來源、記憶或推測補齊關鍵資料；不擴張到其他 Skill 責任。 | 保存需求摘要、來源識別、讀取狀態與缺件清單。 | 關鍵資料缺失標 `NOT_READ`／`UNKNOWN`，停止相依步驟並要求補件。 |
+| UC2 | P | S1 已取得最小可執行輸入 | 執行 `python3 -c "print('execute candidate step for tw-backtest-workflow')"` 作為可重播入口；依來源候選文件與本 Skill 的領域規則產生中間結果，保留命令、輸入、輸出與狀態。 | 不宣稱工具、連接器、Runtime 或遠端服務已啟用；不將預期輸出當實際結果。 | 命令、stdout、stderr、Exit Code、執行時間、輸入輸出雜湊。 | 工具或來源失敗標 `NOT_RETRIEVED`／`BLOCKED`；不可用替代來源時停止，不捏造結果。 |
+| UC3 | C | S2 已產生中間結果 | 依來源規則逐項核對範圍、格式、責任、限制與輸出條件；將結果分為 `PASS`、`FAIL`、`UNKNOWN`、`NOT_RUN` 或 `BLOCKED`。 | 不把文件完整冒充 Runtime 生效；不把 SKIP、部分通過或製作者自述當整體 PASS。 | 驗收矩陣、逐項結果、反例結果與差異記錄。 | 任一必要條件失敗即 `FAIL`，保存 diff，修正後重新執行有限次重測。 |
+| UC4 | J | S3 所有必要 AC 已有實際證據 | 彙整可交付結果與未決事項；只有所有必要 AC 為 `PASS` 且獨立驗收完成才輸出 `QUALIFIED_FOR_NEXT_STAGE`。 | 不以自我驗收冒充獨立驗收；不在 `UNKNOWN`、`NOT_RUN`、`BLOCKED` 存在時放行。 | 版本、來源 commit、候選 hash、測試證據、獨立驗收與交接紀錄。 | 未合格回到 UC1 或 UC2 的明確修正點；超過有限重試上限則 `BLOCKED`，不得無限循環。 |
+
+## 3. 後設
+
+- 原始候選內容已保存於 `references/pre-format-candidate-SKILL.md`，主文件只使用本次正式格式重構內容。
+- `UNKNOWN`、`NOT_RUN`、`NOT_READ`、`BLOCKED` 不得升格為 `PASS`。
+- IMPLEMENTER 負責產出；TESTER 負責實跑；INDEPENDENT_AUDITOR 必須自行讀取、核對與反證。
+- 任何與原始內容的語意差異都必須保存 diff 與 mapping；不因格式通過就宣稱領域行為完整。
+- 未有遠端讀回或 Runtime 實測證據時，遠端與 Runtime 狀態維持 `NOT_RUN` 或 `UNKNOWN`。
+
+### 領域規則保留（重構內容）
+
+> 以下內容由原始候選逐段納入本次正式格式重構；其來源版本、差異與 SHA-256 由 mapping 與 evidence 保存。
+
 載入順序：先 miko-core（四視角主流程、品質閘門），再本 Skill；§1 問問題、§2～§3 解決、§4 後設、§6 檢查，對應 miko-core §2.4。v1.3 依 2026-10-26 實跑結果加入資料取得路徑、執行步驟與附錄 A 引擎（ADR-015）。
 
 ## 0. 作用域與權威（v1.1 新增）
@@ -250,3 +280,22 @@ if __name__ == '__main__':
         out['note'] = '使用者明知不含股利：報酬不含股利，跨除權息或拆股日的價差可能失真'
     print(json.dumps(out, ensure_ascii=False, indent=1))
 ```
+
+## 4. 檢查
+
+- expected：所有必要輸入、輸出、來源、限制、失敗出口與證據均可追溯；UC1～UC4 可依序執行並終止。
+- forbidden：未讀來源、未執行測試、部分 PASS、預期輸出、自驗結果或文件完整性不得被標為整體 PASS。
+- 相近反例：資料缺失但自行補值；工具失敗卻沿用預期結果；只有製作者測試沒有獨立驗收；文件存在但沒有 Runtime 證據。以上都不該觸發 `QUALIFIED_FOR_NEXT_STAGE`。
+- AC-01：四節存在且標題固定。
+- AC-02：UC1～UC4 各有七欄內容，類型只用 P／C／J。
+- AC-03：P 步含可執行命令與實際執行證據欄位。
+- AC-04：正向、負向、邊界、異常、回歸、Mutation 與獨立驗收均有獨立紀錄。
+- AC-05：原始候選內容、diff、mapping、版本與 SHA-256 均保存。
+
+## 0.2 累積式整合、衝突與邊界路由
+
+本 Skill 的優化、升級、重構、修正與移轉一律採累積式演進：先保存目前版本與 SHA-256，再逐項分類為繼承、強化、新增、修正、重構或廢止；未理解或未驗證的既有內容不得刪除。執行前載入 `version-evolution-preservation`，並確認本 Skill 與 `miko-core`、`independent-audit`、`three-party-review`、`ai-engineering-anti-fraud-test-credibility` 的責任不重疊。
+
+若本 Skill 與其他 Skill、正本規則、外部來源或使用者限制衝突，不得靜默覆蓋；先標記 `CONFLICT`，保存衝突位置、影響範圍與待決事項，停在可逆狀態。任何新增能力都必須通過正向、負向、邊界、異常、回歸與必要的 Mutation 測試；`FAIL`、`NOT_RUN`、`UNKNOWN`、`BLOCKED` 不得升格為正式採用或 Runtime 生效。
+
+本候選版本只代表 Manus 分支候選內容，不代表 GitHub main、正式採用或 Runtime 已生效。

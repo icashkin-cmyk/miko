@@ -1,0 +1,67 @@
+{
+ "source": {
+  "file": "demo.mp4",
+  "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "retrieved": "2026-11-08"
+ },
+ "request_mode": "content_and_miko",
+ "complete": false,
+ "media": {
+  "kind": "video",
+  "streams": {
+   "video": 1,
+   "audio": 1,
+   "subtitle": 1
+  },
+  "frames_viewed": [
+   1,
+   2,
+   3
+  ],
+  "audio_status": "NOT_READ",
+  "frames_total": 4
+ },
+ "claims": [
+  {
+   "id": "C1",
+   "kind": "author_claim",
+   "status": "VERIFIED",
+   "quote": "〈作者原句〉",
+   "evidence": [
+    {
+     "url": "https://example.org/doc",
+     "dates": "發布：UNKNOWN｜生效：UNKNOWN｜查閱：2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "C2",
+   "kind": "observed",
+   "status": "VERIFIED",
+   "locator": {
+    "frame": 2
+   }
+  },
+  {
+   "id": "C3",
+   "kind": "inference",
+   "status": "INFERENCE"
+  },
+  {
+   "id": "C4",
+   "kind": "user_provided",
+   "status": "UNVERIFIED"
+  }
+ ],
+ "proposal_items": [
+  {
+   "id": "P1",
+   "claim_ids": [
+    "C1"
+   ],
+   "miko_refs": [
+    "skills/make-skill/SKILL.md@a816be1"
+   ]
+  }
+ ]
+}

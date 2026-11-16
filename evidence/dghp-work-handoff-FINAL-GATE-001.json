@@ -1,0 +1,15 @@
+{
+  "test_id": "FINAL-GATE-001",
+  "skill": "dghp-work-handoff",
+  "purpose": "full candidate format and governance gate",
+  "target_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/dghp-work-handoff/SKILL.md",
+  "source_commit": "ec80f473695305b35b90f0ebb941431ddde4626e",
+  "candidate_sha256": "cb4b27ff4080b5ab1eb9cb82df6fc28f6c39d6f812559bac6fcaf642a7bba362",
+  "command": "skill_lint + quick_validate + current evidence gate",
+  "stdout": "format=PASS; quick_validate=PASS; source_mapping=PASS; positive=PASS; negative=PASS; boundary=PASS; exception=PASS; regression=PASS; mutation=PASS; independent=PASS; original_repo_clean=PASS",
+  "stderr": "",
+  "exit_code": 0,
+  "executed_at": "2026-11-15T17:45:50.442823+00:00",
+  "result": "PASS",
+  "role": "INDEPENDENT_AUDITOR"
+}

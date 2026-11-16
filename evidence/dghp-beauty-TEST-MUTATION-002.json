@@ -1,0 +1,21 @@
+{
+  "test_id": "dghp-beauty-TEST-MUTATION-002",
+  "purpose": "將 SB-040 錨點突變後驗證器拒絕候選",
+  "target_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/dghp-beauty/SKILL.md",
+  "repository": "icashkin-cmyk/miko",
+  "branch": "main",
+  "commit_sha": "ec80f473695305b35b90f0ebb941431ddde4626e",
+  "environment": {
+    "platform": "Linux-6.18.38+-x86_64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "command": "python3 /tmp/tmp7jtgz9f5/root/tests/dghp-beauty/validate_mapping.py",
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp7jtgz9f5/root/tests/dghp-beauty/validate_mapping.py\", line 11, in <module>\n    assert hashlib.sha256(candidate.read_bytes()).hexdigest()==data['candidate_sha256']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "exit_code": 1,
+  "started_at": "2026-11-15T17:14:45.744252+00:00",
+  "finished_at": "2026-11-15T17:14:45.744252+00:00",
+  "result": "PASS",
+  "role": "TESTER",
+  "evidence_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/evidence/dghp-beauty-TEST-MUTATION-002.json"
+}

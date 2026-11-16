@@ -1,0 +1,326 @@
+{
+  "skill": "tw-alert-check",
+  "source_path": "/home/ubuntu/work/github-miko-target/skills/tw-alert-check/SKILL.md",
+  "candidate_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/tw-alert-check/SKILL.md",
+  "source_sha256": "ba7892fb0dc6e36350592934f6b839653306c8989b22e75e305d42685f38c923",
+  "candidate_sha256": "a010fa44ee14ccc85112d793552d27b74dc2473bf83c545f607ae3047277b8fe",
+  "mapping_method": "preservation reference plus formal S1-S4 semantic anchors",
+  "atom_count": 39,
+  "mapped_count": 39,
+  "unmapped_count": 0,
+  "status": "PASS",
+  "atoms": [
+    {
+      "id": "TW-ALERT-CHECK-0001",
+      "source_line": 1,
+      "source_atom": "---",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0001"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0002",
+      "source_line": 2,
+      "source_atom": "name: tw-alert-check",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0002"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0003",
+      "source_line": 3,
+      "source_atom": "description: 臺灣天氣、颱風、豪雨、強風、停班停課、明天出門、戶外活動與交通（含騎車）的當日或未來 7 天查詢時使用：先查官方白名單（中央氣象署警特報、人事行政總處停班停課、縣市政府公告），讀不到標 NOT_RETRIEVED，不用媒體或天氣網站代替官方結論。純氣候知識與歷史天氣不使用。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0003"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0004",
+      "source_line": 4,
+      "source_atom": "---",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0004"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0005",
+      "source_line": 6,
+      "source_atom": "# tw-alert-check v0.6｜官方警特報與停班停課白名單｜2026-11-09",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0005"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0006",
+      "source_line": 8,
+      "source_atom": "## 1. 官方白名單（只有這些能下「警報」與「停班停課」結論）",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0006"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0007",
+      "source_line": 9,
+      "source_atom": "| 項目 | 權威來源 | 網址 | 本版核實狀態 |",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0007"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0008",
+      "source_line": 10,
+      "source_atom": "|---|---|---|---|",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0008"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0009",
+      "source_line": 11,
+      "source_atom": "| 颱風、警特報、預報 | 交通部中央氣象署 | https://www.cwa.gov.tw | 網站身分已確認（2026-10-22）；警報專頁網址未確認 |",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0009"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0010",
+      "source_line": 12,
+      "source_atom": "| 停班停課（全國彙整） | 行政院人事行政總處 | https://www.dgpa.gov.tw/typh/daily/nds.html | 網頁讀取工具被網站拒絕，內容未讀到 |",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0010"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0011",
+      "source_line": 13,
+      "source_atom": "| 停班停課原始公告、災情 | 各縣市政府（使用者所在縣市的災害應變網站） | 依縣市而定 | 未確認 |",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0011"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0012",
+      "source_line": 14,
+      "source_atom": "| 道路、鐵路、高鐵營運 | 交通部公路局、臺鐵、台灣高鐵官網 | 依當下官網 | 未確認 |",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0012"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0013",
+      "source_line": 16,
+      "source_atom": "媒體報導、AccuWeather 等天氣網站只能當輔助，標【來源：名稱＋時間】，不能代替官方結論。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0013"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0014",
+      "source_line": 18,
+      "source_atom": "同一機關兩個頁面（例如警特報專頁與首頁、縣市政府兩個公告頁）內容不一致時，兩邊並列、各附頁面名稱與查閱時間，標 CONFLICT，不自行裁決，也不挑較新的一邊當結論（1.2.43，整體流程鎖串 P11）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0014"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0015",
+      "source_line": 20,
+      "source_atom": "## 2. 流程",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0015"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0016",
+      "source_line": 21,
+      "source_atom": "凌晨說「明天」（1.2.45，整體流程鎖串 P14 甲案，總召同意）：使用者在台北時間 00:00～05:59 說「明天」時，今天白天與明天白天兩天都給，並寫明各是幾月幾日（例：「今天白天 11/09、明天白天 11/10」）；不只挑一天，也不只寫「明天」不寫日期。取不到台北當下時間時，當下時間標 UNKNOWN，同樣兩天都給；日期以使用者訊息或官方預報頁標示的日期為準，兩者都沒有就兩天的日期都標 UNKNOWN，不猜。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0016"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0017",
+      "source_line": 22,
+      "source_atom": "0. 使用者說官方網站或工具「連不上」「失敗」「卡住」時，回覆在對齊行之後先列七欄困難卡（現象｜證據｜類別｜影響哪個 AC｜解除條件｜負責方｜首次發現時間）再查；本輪自己讀得到時仍列卡，類別照原本會判的寫，解除條件寫「已解除（本輪取得成功，附證據）」（同 miko-core §2.7；1.2.43，整體流程鎖串 P10）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0017"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0018",
+      "source_line": 23,
+      "source_atom": "1. 先查中央氣象署有沒有颱風警報或特報（豪雨、強風、低溫等）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0018"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0019",
+      "source_line": 24,
+      "source_atom": "2. 有警報或特報，就查人事行政總處與該縣市政府的停班停課公告，寫出公告時間。尚未公告就寫「截至 HH:MM 尚未公告」，不推測。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0019"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0020",
+      "source_line": 25,
+      "source_atom": "3. 官方頁讀不到就標 NOT_RETRIEVED，附官方連結請使用者自行確認；不得用新聞代替官方結論。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0020"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0021",
+      "source_line": 26,
+      "source_atom": "4. 之後才回答天氣細節與活動。有警報時推薦戶外活動或夜間演出，必須註明可能取消，請查主辦單位公告。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0021"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0022",
+      "source_line": 27,
+      "source_atom": "5. 交通：陸上颱風警報或強風特報期間，不建議騎乘兩輪車；優先大眾運輸，並查營運公告。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0022"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0023",
+      "source_line": 29,
+      "source_atom": "## 3. 輸出順序",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0023"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0024",
+      "source_line": 30,
+      "source_atom": "第一段固定寫：警特報狀態（含發布時間）→ 停班停課（含公告時間或 NOT_RETRIEVED）→ 天氣 → 活動或交通建議。數字與狀態附行內標籤，最後一行寫流程鎖（同 miko-core §5 第 1、5 點）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0024"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0025",
+      "source_line": 31,
+      "source_atom": "日期行寫在第一段之後、流程鎖之前（1.2.49）。引用的每個官方來源各寫一行日期「發布：YYYY-MM-DD｜生效：YYYY-MM-DD｜查閱：YYYY-MM-DD」，缺的寫 UNKNOWN，三項都要出現；警特報的發布時間、停班停課的公告時間接在同一行後面；讀不到（NOT_RETRIEVED）的來源也寫這一行，查閱寫本次日期，其餘寫 UNKNOWN，並在同一行寫「找過：官方頁網址（NOT_RETRIEVED）」（1.2.48；依 miko-core §4 與 references/research-and-dating.md，細節以本節為準）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0025"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0026",
+      "source_line": 33,
+      "source_atom": "## 4. 檢查（驗收；2026-11-05 總檢補，正本 1.2.27。本 Skill 在正本 1.2.25 前採用，依 miko-core §2.4 不改判；「問問題」「後設」兩節與「解決」逐步閘門未補；1.2.43 加 §2 第 0 步、1.2.45 加 §2 開頭「凌晨說明天」、1.2.48 加 §3 日期行、1.2.49 寫明日期行位置時仍未補齊，依 skills/README.md 採用狀態表註記排在 tw-alert-check 升級站補齊）",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0026"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0027",
+      "source_line": 34,
+      "source_atom": "- AC-W1：第一段順序是警特報狀態→停班停課→天氣→活動或交通建議（§3）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0027"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0028",
+      "source_line": 35,
+      "source_atom": "- AC-W2：警報與停班停課的結論只來自 §1 白名單；官方頁讀不到標 NOT_RETRIEVED 並附官方連結，沒有用新聞或天氣網站代替。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0028"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0029",
+      "source_line": 36,
+      "source_atom": "- AC-W3：尚未公告時寫「截至 HH:MM 尚未公告」，沒有推測會不會停班停課。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0029"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0030",
+      "source_line": 37,
+      "source_atom": "- AC-W4：有警報時推薦的戶外活動或夜間演出，都註明可能取消、請查主辦單位公告。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0030"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0031",
+      "source_line": 38,
+      "source_atom": "- AC-W5：陸上颱風警報或強風特報期間，沒有建議騎乘兩輪車，改建議大眾運輸並查營運公告。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0031"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0032",
+      "source_line": 39,
+      "source_atom": "- AC-W6：數字與狀態附行內標籤，最後一行寫流程鎖。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0032"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0033",
+      "source_line": 40,
+      "source_atom": "- AC-W7（1.2.43）：使用者說官方網站連不上時，對齊行之後先有七欄困難卡；本輪讀得到時解除條件寫「已解除（本輪取得成功，附證據）」（§2 第 0 步）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0033"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0034",
+      "source_line": 41,
+      "source_atom": "- AC-W8（1.2.43）：同一機關兩頁不一致時，兩邊並列、附查閱時間、標 CONFLICT，沒有只取一邊（§1）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0034"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0035",
+      "source_line": 42,
+      "source_atom": "- AC-W9（1.2.45）：台北時間 00:00～05:59 問「明天」時，今天白天與明天白天兩天都有，且各寫明日期（取不到時標 UNKNOWN，§2 開頭）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0035"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0036",
+      "source_line": 43,
+      "source_atom": "- AC-W10（1.2.48）：引用的每個官方來源各有一行「發布｜生效｜查閱」，缺的寫 UNKNOWN，沒有把兩個來源合成一行（§3）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0036"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0037",
+      "source_line": 44,
+      "source_atom": "- 實跑題：「明天颱風會不會停班停課？我要騎車去上班。」通過條件：AC-W1～W6 全過；官方頁讀不到的項目逐項標 NOT_RETRIEVED，不因讀不到就說「不會停班」。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0037"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0038",
+      "source_line": 46,
+      "source_atom": "## 刪除清單",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0038"
+    },
+    {
+      "id": "TW-ALERT-CHECK-0039",
+      "source_line": 47,
+      "source_atom": "- v0.3（正本 1.2.43）§4 標題括號原句「下次改 §2 流程時補齊」：改為「1.2.43 加 §2 第 0 步時仍未補齊，依 skills/README.md 採用狀態表註記排在 tw-alert-check 升級站補齊」。理由：本版就是「下次改 §2 流程」，原句已過時；補齊時程改依 skills/README.md 註記（1.2.43 稽核第一輪必改 1）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "TW-ALERT-CHECK-0039"
+    }
+  ]
+}

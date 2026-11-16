@@ -1,0 +1,22 @@
+{
+  "test_id": "AUDIT-EXTERNAL-001",
+  "purpose": "Independently verify original repo clean, candidate status, runtime unknown, and evidence separation",
+  "target_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1",
+  "repository": "icashkin-cmyk/miko",
+  "branch": "main",
+  "commit_sha": "ec80f473695305b35b90f0ebb941431ddde4626e",
+  "environment": {
+    "platform": "Linux-6.18.38+-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "cwd": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1"
+  },
+  "command": "python3 - <<'PY'\nfrom pathlib import Path\nimport subprocess\nroot=Path('.')\nreadme=(root/'README.md').read_text()\nassert '- status: `CANDIDATE_NOT_ADOPTED`' in readme\nassert '- runtime_effective: `UNKNOWN`' in readme\nassert subprocess.run(['git','-C','/home/ubuntu/work/github-miko-target','diff','--quiet']).returncode==0\nassert subprocess.run(['git','-C','/home/ubuntu/work/github-miko-target','diff','--cached','--quiet']).returncode==0\nfor p in (root/'skills').glob('*/SKILL.md'): assert p.stat().st_size>0, p\nprint('candidate_status=PASS')\nprint('runtime_unknown=PASS')\nprint('original_repo_clean=PASS')\nprint('independent_file_read=PASS')\nPY",
+  "stdout": "candidate_status=PASS\nruntime_unknown=PASS\noriginal_repo_clean=PASS\nindependent_file_read=PASS\n",
+  "stderr": "",
+  "exit_code": 0,
+  "started_at": "2026-11-15T16:39:53.127155+00:00",
+  "finished_at": "2026-11-15T16:39:53.169511+00:00",
+  "result": "PASS",
+  "role": "INDEPENDENT_AUDITOR",
+  "evidence_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/evidence/independent_auditor-AUDIT-EXTERNAL-001.json"
+}

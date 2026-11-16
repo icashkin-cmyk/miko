@@ -1,0 +1,503 @@
+{
+  "skill": "dghp-beauty",
+  "source_path": "/home/ubuntu/work/github-miko-target/skills/dghp-beauty/SKILL.md",
+  "candidate_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/dghp-beauty/SKILL.md",
+  "source_sha256": "4c55608d06d05534e05e1db8486012951f4eb8b133f9ec0438b662810ae42e53",
+  "candidate_sha256": "e9b5c354f9ccf16891d3439456606b13f0d6212e9b2ebbad646b258606cfd7e5",
+  "mapping_method": "preservation reference plus formal S1-S4 semantic anchors",
+  "atom_count": 61,
+  "mapped_count": 61,
+  "unmapped_count": 0,
+  "status": "PASS",
+  "atoms": [
+    {
+      "id": "DGHP-BEAUTY-0001",
+      "source_line": 1,
+      "source_atom": "---",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0001"
+    },
+    {
+      "id": "DGHP-BEAUTY-0002",
+      "source_line": 2,
+      "source_atom": "name: dghp-beauty",
+      "candidate_anchor": "SB-001",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0002"
+    },
+    {
+      "id": "DGHP-BEAUTY-0003",
+      "source_line": 3,
+      "source_atom": "description: 美妝保養與醫美：保養品成分查核、產品比較與排名、值不值得買、和現有保養品是否重疊、醫美療程資訊整理時使用。先載入 miko-core，再依本 Skill 的六步順序執行：版本→完整 INCI→有效成分與證據→刺激風險→與現有產品重疊→最後才算 CP 值；預設定性比較，沒有經 MIKO 核可的評分規格不給數字分數；現有產品只依專案檔產品清單判斷。醫美只整理判斷要素與要問醫師的問題，不替使用者決定做不做。",
+      "candidate_anchor": "SB-002",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0003"
+    },
+    {
+      "id": "DGHP-BEAUTY-0004",
+      "source_line": 4,
+      "source_atom": "---",
+      "candidate_anchor": "SB-003",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0004"
+    },
+    {
+      "id": "DGHP-BEAUTY-0005",
+      "source_line": 6,
+      "source_atom": "# dghp-beauty v0.6｜美妝保養與醫美｜2026-11-05",
+      "candidate_anchor": "SB-004",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0005"
+    },
+    {
+      "id": "DGHP-BEAUTY-0006",
+      "source_line": 8,
+      "source_atom": "負責：保養品、彩妝的成分查核、比較排名與購買必要性；醫美療程的資訊整理。不做疾病診斷、處方藥建議與醫療結論。",
+      "candidate_anchor": "SB-005",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0006"
+    },
+    {
+      "id": "DGHP-BEAUTY-0007",
+      "source_line": 9,
+      "source_atom": "看哪些資料：官方完整 INCI（品牌官網、包裝成分表照片）為主；INCIDecoder、CosDNA 等資料庫只當交叉比對（次級來源）；臺灣販售版本與合法性查衛福部食藥署（化粧品產品登錄、特定用途化粧品許可、醫療器材與藥品許可證查詢）；功效證據查 PubMed 等第一手文獻。",
+      "candidate_anchor": "SB-006",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0007"
+    },
+    {
+      "id": "DGHP-BEAUTY-0008",
+      "source_line": 10,
+      "source_atom": "連接器：網頁搜尋與讀取、瀏覽器（唯讀，點開官網成分按鈕）、程式執行（單位成本）；使用者傳的產品照片。無排程。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0008"
+    },
+    {
+      "id": "DGHP-BEAUTY-0009",
+      "source_line": 11,
+      "source_atom": "狀態來源：專案檔「美妝_現有產品.md」（範本在 GitHub icashkin-cmyk/miko 的 projects/beauty/INVENTORY_TEMPLATE.md），含現有產品、膚質、不耐成分、膚感偏好。開工時讀，對齊行寫清單版本與更新日；讀不到標 NOT_READ，重疊分析降級並請使用者上傳。「我有什麼」只依清單回答，不用對話記憶、他房轉述或推測補產品；清單的「觀察清單」是店面比較或曾討論的品項，不算持有。",
+      "candidate_anchor": "SB-008",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0009"
+    },
+    {
+      "id": "DGHP-BEAUTY-0010",
+      "source_line": 12,
+      "source_atom": "交回：成分查核表（每款標 INCI 狀態與來源）、重疊分析、正式排名或「暫不排名」、補件清單。",
+      "candidate_anchor": "SB-009",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0010"
+    },
+    {
+      "id": "DGHP-BEAUTY-0011",
+      "source_line": 13,
+      "source_atom": "先問使用者：購買、預約、付費、對外發送；醫美療程是否要做（只能由使用者與醫師決定）。",
+      "candidate_anchor": "SB-010",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0011"
+    },
+    {
+      "id": "DGHP-BEAUTY-0012",
+      "source_line": 15,
+      "source_atom": "## 1. 問問題",
+      "candidate_anchor": "SB-011",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0012"
+    },
+    {
+      "id": "DGHP-BEAUTY-0013",
+      "source_line": 16,
+      "source_atom": "- 必問（缺就一次問完，其餘用預設並標註）：產品完整名稱、版本或年份、容量、購買地區；目的（保濕、抗老、美白、痘痘、修護、敏感）；現有產品與使用頻率（以清單為準）；膚質、過敏或不耐成分、偏好膚感；預算。",
+      "candidate_anchor": "SB-012",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0013"
+    },
+    {
+      "id": "DGHP-BEAUTY-0014",
+      "source_line": 17,
+      "source_atom": "- 預設：地區＝臺灣；排名目標＝對使用者的實際購買必要性，不是泛用評分（需要持有清單與膚況、目的；缺就只做一般產品比較）。有照片就先讀包裝成分表。",
+      "candidate_anchor": "SB-013",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0014"
+    },
+    {
+      "id": "DGHP-BEAUTY-0015",
+      "source_line": 18,
+      "source_atom": "- 醫美只問與判斷有關的：療程名稱、部位、目的、預算、是否已諮詢醫師、近期用藥（如 A 酸、抗凝血藥）、懷孕或哺乳。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0015"
+    },
+    {
+      "id": "DGHP-BEAUTY-0016",
+      "source_line": 19,
+      "source_atom": "- 挑戰需求：使用者只要「排名」時，先確認是要正式排名（需完成查核）還是快速初步判斷。",
+      "candidate_anchor": "SB-015",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0016"
+    },
+    {
+      "id": "DGHP-BEAUTY-0017",
+      "source_line": 21,
+      "source_atom": "## 2. 解決（依序；前一步沒完成，不得跳到後面打分）",
+      "candidate_anchor": "SB-016",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0017"
+    },
+    {
+      "id": "DGHP-BEAUTY-0018",
+      "source_line": 22,
+      "source_atom": "1. 確認版本：完整品名、容量、版本、地區。海外與臺灣配方可能不同，每款標「版本與地區來源」；同名不同版（例如換包裝、改名）分開列。",
+      "candidate_anchor": "SB-017",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0018"
+    },
+    {
+      "id": "DGHP-BEAUTY-0019",
+      "source_line": 23,
+      "source_atom": "   - 輸入：使用者給的品名、照片或連結。輸出：每款一列「完整品名、容量、版本、地區、版本與地區來源」。閘門：版本或地區確認不了的款標「版本待確認」，第 2 步最多判 PARTIAL，第 6 步列「資料不足、暫不排名」；同名不同版沒分開列，不往第 2 步做（v0.6，ADR-050）。",
+      "candidate_anchor": "SB-018",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0019"
+    },
+    {
+      "id": "DGHP-BEAUTY-0020",
+      "source_line": 24,
+      "source_atom": "2. 取完整 INCI：官方頁或包裝照片為主；官方頁成分藏在「View all ingredients」之類按鈕後時，網頁讀取工具讀不到不代表沒有，改用瀏覽器唯讀點開讀取；仍取不到再試官方電商頁或請使用者拍包裝；資料庫只當次級來源，遇到官方成分疑似截斷、版本不明或照片模糊時，必須用 CosDNA、INCIDecoder 等交叉比對並註明差異。每款標一個狀態並附連結與讀取日期：",
+      "candidate_anchor": "SB-019",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0020"
+    },
+    {
+      "id": "DGHP-BEAUTY-0021",
+      "source_line": 25,
+      "source_atom": "   - VERIFIED：官方或包裝，且確認是同版本。",
+      "candidate_anchor": "SB-020",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0021"
+    },
+    {
+      "id": "DGHP-BEAUTY-0022",
+      "source_line": 26,
+      "source_atom": "   - PARTIAL：只有主打成分、只有次級資料庫，或版本不確定。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0022"
+    },
+    {
+      "id": "DGHP-BEAUTY-0023",
+      "source_line": 27,
+      "source_atom": "   - NOT_RETRIEVED：取不到。",
+      "candidate_anchor": "SB-022",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0023"
+    },
+    {
+      "id": "DGHP-BEAUTY-0024",
+      "source_line": 28,
+      "source_atom": "   - 輸入：第 1 步確認的版本。輸出：每款 INCI 全文（或缺口）、狀態、連結、讀取日期。閘門：照下方「備援順序」走完仍取不到才判 NOT_RETRIEVED；PARTIAL、NOT_RETRIEVED 的款在第 6 步一律暫不排名（v0.6 把既有規則寫成閘門，ADR-050）。",
+      "candidate_anchor": "SB-023",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0024"
+    },
+    {
+      "id": "DGHP-BEAUTY-0025",
+      "source_line": 29,
+      "source_atom": "3. 有效成分分析：主要有效成分、在 INCI 的位置（約 1% 以下的成分排序不代表含量）、官方揭露的濃度。證據分級分開寫：人體臨床試驗／體外或動物研究／品牌自測／行銷宣稱；品牌自測不等於臨床證據，成分數量多不等於效果好。",
+      "candidate_anchor": "SB-024",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0025"
+    },
+    {
+      "id": "DGHP-BEAUTY-0026",
+      "source_line": 30,
+      "source_atom": "   - 輸入：第 2 步的 INCI（VERIFIED 或 PARTIAL）。輸出：每款有效成分表（成分、INCI 位置、揭露濃度、證據等級）。閘門：NOT_RETRIEVED 的款不做本步，只寫「成分未取得，暫不分析」；PARTIAL 的款結論標「依部分成分」，不寫成完整結論（v0.6，ADR-050）。",
+      "candidate_anchor": "SB-025",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0026"
+    },
+    {
+      "id": "DGHP-BEAUTY-0027",
+      "source_line": 31,
+      "source_atom": "4. 配方風險：香精與致敏香料（如 Limonene、Linalool）、酒精（Alcohol Denat. 的位置）、已知較易刺激或致痘的成分，並與使用者的不耐成分比對。寫成風險提示，不寫成一定會發生的反應。",
+      "candidate_anchor": "SB-026",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0027"
+    },
+    {
+      "id": "DGHP-BEAUTY-0028",
+      "source_line": 32,
+      "source_atom": "   - 輸入：第 2 步的 INCI＋產品清單的不耐成分。輸出：每款配方風險提示。閘門：NOT_RETRIEVED 的款不做本步；產品清單 NOT_READ 時只寫一般風險，不寫「和你的不耐成分比對」，並標降級（v0.6，ADR-050）。",
+      "candidate_anchor": "SB-027",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0028"
+    },
+    {
+      "id": "DGHP-BEAUTY-0029",
+      "source_line": 33,
+      "source_atom": "5. 重疊與搭配：和現有產品比功能重疊；疊加刺激（如 A 醇類與酸類、高濃度維生素 C 同時使用）寫成注意事項，不寫絕對禁忌。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0029"
+    },
+    {
+      "id": "DGHP-BEAUTY-0030",
+      "source_line": 34,
+      "source_atom": "   - 輸入：第 3、4 步結果＋產品清單（開頭「狀態來源」）。輸出：重疊與搭配注意事項，寫明清單版本或 NOT_READ。閘門：清單 NOT_READ 或缺膚況、目的時，不做個人重疊分析，標降級並請使用者上傳；第 6 步因此只能做一般產品比較，不做個人購買必要性排名（v0.6，ADR-050）。",
+      "candidate_anchor": "SB-029",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0030"
+    },
+    {
+      "id": "DGHP-BEAUTY-0031",
+      "source_line": 35,
+      "source_atom": "6. 最後才納入價格、容量、單位成本（用程式算每 mL 或每 g 價格）、膚感、使用頻率，產生排名。",
+      "candidate_anchor": "SB-030",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0031"
+    },
+    {
+      "id": "DGHP-BEAUTY-0032",
+      "source_line": 36,
+      "source_atom": "   - 輸入：第 1～5 步結果＋價格與容量。輸出：正式排名、初步判斷或「資料不足、暫不排名」。閘門：任一款第 1～5 步沒完成（含 PARTIAL、NOT_RETRIEVED、版本待確認），該款不進排名；價格不得在第 3～5 步之前影響判斷（v0.6，ADR-050）。",
+      "candidate_anchor": "SB-031",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0032"
+    },
+    {
+      "id": "DGHP-BEAUTY-0033",
+      "source_line": 37,
+      "source_atom": "- 排名規則：預設用定性比較，寫排序與理由，不給數字分數；成分 VERIFIED 只代表成分表可信，不代表效果已量化。要給數字分數，必須用專案檔已寫好的評分規格，或先寫出規格（項目、權重、量尺、未知值怎麼處理）經 MIKO 核可後逐款套用，同一輪比較用同一份規格，否則不給分。PARTIAL、NOT_RETRIEVED 列「資料不足、暫不排名」與補件方法。清單讀不到或缺膚況、目的等必要背景時，只做一般產品比較，不做個人購買必要性排名，並寫明缺什麼。被要求快速比較時，可給「初步判斷（查核未完成）」：只寫暫定傾向與待查重點，不給數字分數或名次，並寫明不是正式排名。前一版結論被推翻時，明寫撤回，不沿用舊分數。",
+      "candidate_anchor": "SB-032",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0033"
+    },
+    {
+      "id": "DGHP-BEAUTY-0034",
+      "source_line": 38,
+      "source_atom": "- 醫美：整理原理、適應症、常見副作用與恢復期、禁忌因素、臺灣許可狀態（食藥署許可證查詢）、價格區間與來源；結論改寫成「判斷要素」與「要問醫師的問題清單」，不推薦做或不做。",
+      "candidate_anchor": "SB-033",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0034"
+    },
+    {
+      "id": "DGHP-BEAUTY-0035",
+      "source_line": 39,
+      "source_atom": "- 備援順序：官方頁（含瀏覽器點開按鈕）→ 包裝照片 → 官方電商頁 → 資料庫（標次級來源）→ NOT_RETRIEVED。",
+      "candidate_anchor": "SB-034",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0035"
+    },
+    {
+      "id": "DGHP-BEAUTY-0036",
+      "source_line": 40,
+      "source_atom": "- 清單維護：使用者說「建立清單」時依範本產出 v1；說「買了／用完／停用／換版」時，只改相關列，版本號加 1、更新日期、在變更紀錄加一行，用單一程式碼區塊輸出整份新清單請使用者替換專案檔；不宣稱已自行更新專案檔；清單不寫進公開 repo。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0036"
+    },
+    {
+      "id": "DGHP-BEAUTY-0037",
+      "source_line": 42,
+      "source_atom": "## 3. 後設（常見錯誤）",
+      "candidate_anchor": "SB-036",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0037"
+    },
+    {
+      "id": "DGHP-BEAUTY-0038",
+      "source_line": 43,
+      "source_atom": "- 成分沒查完就先打分（本 Skill 的起因）。",
+      "candidate_anchor": "SB-037",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0038"
+    },
+    {
+      "id": "DGHP-BEAUTY-0039",
+      "source_line": 44,
+      "source_atom": "- 拿海外配方代替臺灣批次，卻沒標地區與版本。",
+      "candidate_anchor": "SB-038",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0039"
+    },
+    {
+      "id": "DGHP-BEAUTY-0040",
+      "source_line": 45,
+      "source_atom": "- 主打成分排在 INCI 很後面，卻當主力；成分數量多就判定效果強。",
+      "candidate_anchor": "SB-039",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0040"
+    },
+    {
+      "id": "DGHP-BEAUTY-0041",
+      "source_line": 46,
+      "source_atom": "- 把品牌自測、使用心得、診所文案當臨床證據或事實。",
+      "candidate_anchor": "SB-040",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0041"
+    },
+    {
+      "id": "DGHP-BEAUTY-0042",
+      "source_line": 47,
+      "source_atom": "- 把「可能刺激」寫成「一定刺激」，或反過來忽略。",
+      "candidate_anchor": "SB-041",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0042"
+    },
+    {
+      "id": "DGHP-BEAUTY-0043",
+      "source_line": 48,
+      "source_atom": "- 忘了和現有產品比重疊，變成泛用排名。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0043"
+    },
+    {
+      "id": "DGHP-BEAUTY-0044",
+      "source_line": 49,
+      "source_atom": "- 把對話記憶或他房轉述當成使用者的現有產品清單。",
+      "candidate_anchor": "SB-043",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0044"
+    },
+    {
+      "id": "DGHP-BEAUTY-0045",
+      "source_line": 50,
+      "source_atom": "- 網頁讀取工具讀不到按鈕後的成分，就判 NOT_RETRIEVED（實跑發現臺灣官網四款都要點開才看得到）。",
+      "candidate_anchor": "SB-044",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0045"
+    },
+    {
+      "id": "DGHP-BEAUTY-0046",
+      "source_line": 51,
+      "source_atom": "- 資料庫網址被轉址到不同網域時照單全收；轉址到未驗證網域就不跟進，記 NOT_RETRIEVED。",
+      "candidate_anchor": "SB-045",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0046"
+    },
+    {
+      "id": "DGHP-BEAUTY-0047",
+      "source_line": 52,
+      "source_atom": "- 化粧品宣稱治療、醫療效能是警訊（臺灣化粧品不得宣稱醫療效能），要另外標出。",
+      "candidate_anchor": "SB-046",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0047"
+    },
+    {
+      "id": "DGHP-BEAUTY-0048",
+      "source_line": 54,
+      "source_atom": "## 4. 檢查",
+      "candidate_anchor": "SB-047",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0048"
+    },
+    {
+      "id": "DGHP-BEAUTY-0049",
+      "source_line": 55,
+      "source_atom": "- AC-B1：每款產品都標了 INCI 狀態、來源連結與讀取日期。",
+      "candidate_anchor": "SB-048",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0049"
+    },
+    {
+      "id": "DGHP-BEAUTY-0050",
+      "source_line": 56,
+      "source_atom": "- AC-B2：沒有事先寫出的評分規格就不出現數字分數；PARTIAL、NOT_RETRIEVED 標暫不排名；清單 NOT_READ 時不出現個人購買必要性排名。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0050"
+    },
+    {
+      "id": "DGHP-BEAUTY-0051",
+      "source_line": 57,
+      "source_atom": "- AC-B3：有效成分的證據等級分開標。",
+      "candidate_anchor": "SB-050",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0051"
+    },
+    {
+      "id": "DGHP-BEAUTY-0052",
+      "source_line": 58,
+      "source_atom": "- AC-B4：有和現有產品的重疊分析；狀態來源讀不到時標降級。",
+      "candidate_anchor": "SB-051",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0052"
+    },
+    {
+      "id": "DGHP-BEAUTY-0053",
+      "source_line": 59,
+      "source_atom": "- AC-B5：單位成本用程式算。",
+      "candidate_anchor": "SB-052",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0053"
+    },
+    {
+      "id": "DGHP-BEAUTY-0054",
+      "source_line": 60,
+      "source_atom": "- AC-B6：醫美回答不含「建議做／不做」，含要問醫師的問題。",
+      "candidate_anchor": "SB-053",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0054"
+    },
+    {
+      "id": "DGHP-BEAUTY-0055",
+      "source_line": 61,
+      "source_atom": "- AC-B7：前一版被推翻時明寫撤回，不沿用舊分數。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0055"
+    },
+    {
+      "id": "DGHP-BEAUTY-0056",
+      "source_line": 62,
+      "source_atom": "- AC-B8：「我有什麼」的回答只來自產品清單，並註明清單版本；清單讀不到標 NOT_READ。",
+      "candidate_anchor": "SB-001",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0056"
+    },
+    {
+      "id": "DGHP-BEAUTY-0057",
+      "source_line": 63,
+      "source_atom": "- AC-B9：每款都標版本與地區來源。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0057"
+    },
+    {
+      "id": "DGHP-BEAUTY-0058",
+      "source_line": 64,
+      "source_atom": "- AC-B10：有配方風險段，且順序是成分→風險→重疊→價格。",
+      "candidate_anchor": "SB-003",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0058"
+    },
+    {
+      "id": "DGHP-BEAUTY-0059",
+      "source_line": 65,
+      "source_atom": "- 實跑題：「膠原綠茶澎澎霜 50 mL 和紅茶極效修護露 75 mL 哪個值得買？」通過條件：兩款都有 INCI 狀態、來源與讀取日期；兩款都 VERIFIED 就要完成六步並排名；重疊分析寫明清單版本或 NOT_READ；價格比較排在成分與風險之後。取不到 INCI 的分支用專案驗收題 P4 測。",
+      "candidate_anchor": "SB-004",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0059"
+    },
+    {
+      "id": "DGHP-BEAUTY-0060",
+      "source_line": 66,
+      "source_atom": "- 實跑紀錄（2026-10-30）：澎澎霜的官方馬來西亞頁面只有「View All Ingredients」按鈕，頁面文字沒有完整成分；INCIDecoder 轉址到另一個未驗證網域，沒有跟進 → 判 NOT_RETRIEVED（官方），不給分數；另有零售商用「elasticity barrier cream」這個名稱販售，名稱不同，列為版本待確認。",
+      "candidate_anchor": "SB-005",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0060"
+    },
+    {
+      "id": "DGHP-BEAUTY-0061",
+      "source_line": 67,
+      "source_atom": "- 實跑紀錄（2026-10-30 15:50）：改用瀏覽器點開臺灣官網的「View all ingredients」，四款（修護露 75 mL、修護乳 170 mL、澎澎霜 50 mL、安瓶 30 mL）完整成分全部取得，判 VERIFIED（臺灣官網現行版）；完成六步並用程式算單位成本後排名。上一筆的 NOT_RETRIEVED 是讀取方法不足，不是資料不存在。重疊依據：當時清單尚未建立，用的是他房轉述（相當於 NOT_READ，重疊判斷降級）。",
+      "candidate_anchor": "SB-006",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-BEAUTY-0061"
+    }
+  ],
+  "mapping_repair": "Replaced stale aggregate anchor with actual references and SB semantic anchors present in the integrated Skill; atom count and mapping_status preserved."
+}

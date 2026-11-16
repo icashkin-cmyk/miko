@@ -1,0 +1,22 @@
+{
+  "test_id": "TEST-MUTATION-001",
+  "purpose": "Prove status guard rejects a mutation that upgrades candidate status",
+  "target_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1",
+  "repository": "icashkin-cmyk/miko",
+  "branch": "main",
+  "commit_sha": "ec80f473695305b35b90f0ebb941431ddde4626e",
+  "environment": {
+    "platform": "Linux-6.18.38+-x86_64-with-glibc2.39",
+    "python": "3.12.3",
+    "cwd": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1"
+  },
+  "command": "python3 - <<'PY'\nfrom pathlib import Path\nimport tempfile\nroot=Path('.')\ntext=(root/'README.md').read_text()\nmutated=text.replace('CANDIDATE_NOT_ADOPTED','ADOPTED')\nassert 'CANDIDATE_NOT_ADOPTED' in text\nassert 'CANDIDATE_NOT_ADOPTED' not in mutated\n# The guard must reject mutated status.\ndef guard(s): return ('CANDIDATE_NOT_ADOPTED' in s and 'runtime_effective: `UNKNOWN`' in s)\nassert guard(text) is True\nassert guard(mutated) is False\nprint('mutation=detected')\nprint('mutation_test=PASS')\nPY",
+  "stdout": "mutation=detected\nmutation_test=PASS\n",
+  "stderr": "",
+  "exit_code": 0,
+  "started_at": "2026-11-15T16:39:53.086759+00:00",
+  "finished_at": "2026-11-15T16:39:53.125119+00:00",
+  "result": "PASS",
+  "role": "TESTER",
+  "evidence_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/evidence/tester-TEST-MUTATION-001.json"
+}

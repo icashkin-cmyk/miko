@@ -1,0 +1,358 @@
+{
+  "skill": "dghp-work-handoff",
+  "source_path": "/home/ubuntu/work/github-miko-target/skills/dghp-work-handoff/SKILL.md",
+  "candidate_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/dghp-work-handoff/SKILL.md",
+  "source_sha256": "b3c11f04d51b62d8f04c6822f12302059ba1071a76422aea758a1c5711cedac9",
+  "candidate_sha256": "bd099ccc91ebf561721b1eaac54dc1991c2544cd1c1e19ad75344b182f9d036a",
+  "mapping_method": "preservation reference plus formal S1-S4 semantic anchors",
+  "atom_count": 43,
+  "mapped_count": 43,
+  "unmapped_count": 0,
+  "status": "PASS",
+  "atoms": [
+    {
+      "id": "DGHP-WORK-HANDOFF-0001",
+      "source_line": 1,
+      "source_atom": "---",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0001"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0002",
+      "source_line": 2,
+      "source_atom": "name: \"dghp-work-handoff\"",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0002"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0003",
+      "source_line": 3,
+      "source_atom": "description: \"使用者要求交接、恢復進度、說「收工」「換手」，或多階段任務需要保存工作狀態、Type B／治理工作收尾需要存檔到 Drive MIKO_ARCHIVE 時使用；短問答不建立額外檔案，但只說「收工」時就算本對話沒有工作，也要回覆交接欄位、存檔處與任務四態。\"",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0003"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0004",
+      "source_line": 4,
+      "source_atom": "---",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0004"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0005",
+      "source_line": 6,
+      "source_atom": "# 可恢復工作交接 v1.2（dghp-work-handoff）｜2026-11-12",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0005"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0006",
+      "source_line": 8,
+      "source_atom": "> 名詞（1.2.53，ADR-076）：本檔短名詞第一次出現在這一行，寫成「短名（正式名稱）【類型】」；每個名詞的定義、觸發條件、執行動作、輸出格式、完成判準、失敗處理、不適用情況、相關名詞見 MIKO 核心詞彙與行為定義表（skills/miko-core/references/term-definitions.md，https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/miko-core/references/term-definitions.md）。正本（正式名稱：GitHub 上的正式規則來源與目前採用版本）【限制】；任務四態（正式名稱：交付結果四種狀態判定：完成／完成但有疑慮／需要資料／卡住）【輸出】；治理（正式名稱：規則版本、變更、授權、審查與正式放行管理）【流程】。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0006"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0007",
+      "source_line": 10,
+      "source_atom": "## 原則",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0007"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0008",
+      "source_line": 11,
+      "source_atom": "交接紀錄是工作索引，不取代完整來源或 Canonical。只在授權可寫目錄保存；READ_ONLY 時在回覆交付，不創建檔案。保存後才可說已保存；無可用排程／持久化工具不承諾背景追蹤。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0008"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0009",
+      "source_line": 13,
+      "source_atom": "## 交接欄位",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0009"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0010",
+      "source_line": 14,
+      "source_atom": "TASK_ID、PROJECT_ID／領域、目標、授權及禁止項、來源檔／版本／位置、當前程式與資料位置、已完成且有證據的工作、執行命令／結果、已知失敗與重現方式、UNKNOWN／CONFLICT、尚未完成、下一個可執行步驟、輸入依賴、恢復入口、最近實際更新時間。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0010"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0011",
+      "source_line": 16,
+      "source_atom": "## 執行",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0011"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0012",
+      "source_line": 17,
+      "source_atom": "將完成、待驗證、阻塞、被拒絕與未授權分開。更新時只修改本任務狀態，不混入其他市場、健康、財務或案件動態。保留導致重大決策的證據和例外，不僅留下結論。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0012"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0013",
+      "source_line": 18,
+      "source_atom": "長任務在里程碑提供短進度與已知成果；避免反覆「開始、繼續處理」但沒有結果。收到更正時先納入新要求，保留仍有效成果與需重驗部分。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0013"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0014",
+      "source_line": 19,
+      "source_atom": "恢復任務先核對文件／檔案仍可讀及版本一致，時效性資料重新確認。不要從舊摘要推定今天的帳戶、價格、權限或 Runtime 狀態。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0014"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0015",
+      "source_line": 20,
+      "source_atom": "多個 AI 或多房同時做同一專案時：共用介面（CSV 欄位、API、狀態碼、檔名規則）要改，先寫進交接檔「介面異動」一節再改，接手方先讀這一節。接手以專案狀態（任務、commit SHA、測試結果、下一步）為準，不以聊天紀錄為準。（2026-10-24 增補，H-03）",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0015"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0016",
+      "source_line": 21,
+      "source_atom": "轉交給其他房間、平台或 AI 時原文照轉，不改寫、不摘要；自己的補充另起一段並標明是補充。（2026-10-26 增補，ADR-016）",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0016"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0017",
+      "source_line": 23,
+      "source_atom": "## 驗收",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0017"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0018",
+      "source_line": 24,
+      "source_atom": "另一工作階段能從交接中的實際入口辨識範圍、已完成證據、剩餘工作和禁止項。未執行不填已完成；無檔案存取就提供可貼用交接文本並標示尚未持久化。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0018"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0019",
+      "source_line": 25,
+      "source_atom": "讀者測試（1.2.64，ADR-087；MIKO 2026-11-10 回「加」，來自總召專案 Doc Co-authoring 評估）：交接檔要存檔或交給接手方之前，先寫出接手者最可能問的 3～5 個問題（例：現在做到哪、下一步是什麼、哪些不能做、證據在哪）；把交接檔交給沒看過本對話的子代理或新對話，只憑交接檔回答；答錯或答不出的題，補交接檔對應的欄位後再測一次，全部答對才算通過；第二次仍有答錯就停，標 FAIL，把答錯的題寫進交接檔「尚未完成」，不宣稱通過。測題、作答與判定寫在交接檔最後一節；環境沒有子代理也不能開新對話，或額度將盡跑不完時，標 NOT_RUN 並寫原因（額度將盡時先存交接檔，讀者測試留給接手的新對話第一步跑），不宣稱通過。只說「收工」、本對話沒有工作也沒有交接檔時，不跑讀者測試，照 description 回覆交接欄位、存檔處與任務四態即可。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0019"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0020",
+      "source_line": 27,
+      "source_atom": "## Claude 環境對應（claude.ai 改編，2026-10-13）",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0020"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0021",
+      "source_line": 28,
+      "source_atom": "- 有檔案工具時：交接寫成 UTF-8 Markdown 檔（短檔名），以 SendUserFile 交付，回覆只放一行說明。狀態分開回報：已寫本地／已交付 MIKO／已存遠端（Drive、GitHub）／已讀回／內容一致（有雜湊才算）；沒做到的寫 NOT_DONE 或 UNKNOWN，不混成一個「已保存」。（2026-10-26 增補，H-06）",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0021"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0022",
+      "source_line": 29,
+      "source_atom": "- 無檔案工具或使用者只要文本：交付單一可貼用 Markdown Code Block，標 `PERSISTED=NO`。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0022"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0023",
+      "source_line": 30,
+      "source_atom": "- 交接中的程式碼狀態以 GitHub 固定 commit／branch 指向，不貼整檔；Notion 狀態以頁面連結指向，不複製內容。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0023"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0024",
+      "source_line": 31,
+      "source_atom": "- 遮蔽 Token、帳密、API Key 與個資；不寫入私密推理。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0024"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0025",
+      "source_line": 33,
+      "source_atom": "## 收工（miko-core §1.1 觸發；2026-10-23 增補）",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0025"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0026",
+      "source_line": 34,
+      "source_atom": "1. 依上方交接欄位寫交接檔（UTF-8 Markdown，實際交付後才說已保存）；交給其他 AI 或另一個 Claude 對話做正式交接時改用 19 欄 FINAL_HANDOFF（原寫「外部 ChatGPT 或 Codex」，兩者 2026-11-02 起停用，ADR-039）（skills/miko-core/references/governance-module.md §7.8，原 multi-agent-coordination-engine §7.8）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0026"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0027",
+      "source_line": 35,
+      "source_atom": "2. 列出待推送 GitHub、待同步 Notion 的項目；這些跨平台寫入只在當次授權後執行，寫入前後讀回。Drive「MIKO_ARCHIVE」依下節的常設授權；GitHub 正本 repo icashkin-cmyk/miko 依 ADR-016 常設授權（只更新 MIKO 正本，推送後讀回）；同 repo 的 sync/ 依 ADR-020（只寫 Claude 自己的同步檔）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0027"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0028",
+      "source_line": 36,
+      "source_atom": "3. 跨專案、會再遇到的坑（不是單一任務的狀態）列為「踩坑候選」一到三行，由 MIKO 決定是否存入記憶或 Notion；不另建帳本。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0028"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0029",
+      "source_line": 37,
+      "source_atom": "4. 以 miko-core §5 第 8 項的任務四態收尾。額度重置後的下一則對話，從交接檔的「下一個可執行步驟」續做；不能假設平台會在額度重置時自動續做，沒有實際排程或系統續跑紀錄不得宣稱已在背景執行，續做前先讀最新狀態，不把舊 BLOCKED 當已解除，不為續做新增定時排程（細則見 miko-core §1.1，ADR-055）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0029"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0030",
+      "source_line": 38,
+      "source_atom": "5. 本對話沒有工作時（例如新對話只說「收工」），也要在回覆列出交接欄位清單（沒有內容的欄位寫 NONE）、存檔處（Drive MIKO_ARCHIVE，本次不建檔的理由）與任務四態（沒有本輪工具輸出不得標「完成」；從 miko-core §5 第 8 項四態選適用的一個並寫理由，通常是「需要資料」：本對話沒有可交接的任務）；只是不建交接檔，不得只回「沒有可交接的工作」（ADR-045）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0030"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0031",
+      "source_line": 39,
+      "source_atom": "6. 正本改版的收工另依 miko-core §6「正本改版收工的三份可貼文字」（1.2.68，ADR-091）：給偏好自訂、專案自訂、關於我三份，有變動的附逐句差異，沒變動的明寫「無變動」並附現行版本依據；少一份標未完成。細則只在 miko-core §6 寫一次，這裡指回。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0031"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0032",
+      "source_line": 41,
+      "source_atom": "## Drive 存檔（ADR-012；2026-10-23 增補）",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0032"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0033",
+      "source_line": 42,
+      "source_atom": "1. 觸發：依 miko-core §1.1（收工、可驗收階段完成、額度將盡，或 Type B／治理工作收尾且本輪改了狀態、決策或正本）。單一問答不存。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0033"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0034",
+      "source_line": 43,
+      "source_atom": "2. 先更新該領域狀態檔與 HANDOFF（現況、待決、未完成待辦、最小下一步）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0034"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0035",
+      "source_line": 44,
+      "source_atom": "3. 寫入 Google Drive「MIKO_ARCHIVE」下的子資料夾「YYYYMMDD_領域_版本」：只新增；不覆寫、不刪除、不移動、不分享、不改權限。授權只限這個資料夾，其他跨平台寫入仍須當次授權（GitHub 正本 repo icashkin-cmyk/miko 例外，見 miko-core §7）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0035"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0036",
+      "source_line": 45,
+      "source_atom": "4. 存什麼：狀態檔、決策紀錄、HANDOFF、當輪正本。Claude 帳號已存的 Skill 不重複上傳全文；程式碼以 GitHub 為權威。大檔（約 50 KB 以上）不經對話以 base64 上傳，改請 MIKO 手動拖入，並在回覆寫明未存項目。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0036"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0037",
+      "source_line": 46,
+      "source_atom": "5. 讀回：依新檔 ID 讀回內容，和本機內容比對 SHA-256（不符標不一致、回報阻塞，不覆寫）；只讀得到檔名與大小時，內容一致性標 UNKNOWN（內容未驗證），不寫已驗證。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0037"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0038",
+      "source_line": 47,
+      "source_atom": "6. 回報：存了什麼、位置、讀回結果、未存項目與原因。寫入失敗或連接器不可用時回報阻塞與檔案所在處，不換其他平台代存。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0038"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0039",
+      "source_line": 49,
+      "source_atom": "## 派工（給其他 AI 或另一個 Claude 對話；2026-10-26 增補，ADR-016；原寫「給 Codex」，Codex 自 2026-11-02 停用，ADR-039）",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0039"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0040",
+      "source_line": 50,
+      "source_atom": "1. 一次給齊：目標、相關檔案路徑（repo、分支、資料夾）、完成條件（可判定的驗收）、禁止事項與授權範圍。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0040"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0041",
+      "source_line": 51,
+      "source_atom": "2. 預設附上：「不要推送，只存本地；不發文、不發訊息」。MIKO 說「推」才推送、合併、部署。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0041"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0042",
+      "source_line": 52,
+      "source_atom": "3. 要求對方回報：改了哪些檔、去哪裡看、怎麼驗過、哪些沒做完與卡點；回報原文照轉回治理房。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0042"
+    },
+    {
+      "id": "DGHP-WORK-HANDOFF-0043",
+      "source_line": 53,
+      "source_atom": "4. 派工內容需要交接時，用上方交接欄位；交給其他 AI 或另一個 Claude 對話的正式交接用 19 欄 FINAL_HANDOFF。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "DGHP-WORK-HANDOFF-0043"
+    }
+  ]
+}

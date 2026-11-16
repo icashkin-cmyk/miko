@@ -1,0 +1,12 @@
+{
+ "status": "OK",
+ "file": "demo.mp4",
+ "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+ "kind": "video",
+ "streams": {
+  "video": 1,
+  "audio": 1,
+  "subtitle": 1
+ },
+ "duration_s": 6.0
+}

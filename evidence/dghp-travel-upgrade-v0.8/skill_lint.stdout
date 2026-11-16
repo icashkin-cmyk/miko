@@ -1,0 +1,10 @@
+== /home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/dghp-travel/SKILL.md：PASS（9/9）
+  PASS L1 frontmatter 有 name 與 description
+  PASS L2 標題有版本號（# 名稱 vX）
+  PASS L3 四節齊（問問題／解決／後設／檢查）
+  PASS L4 解決節有七欄表（ID、類型、觸發、操作、禁止、驗收證據、失敗處理）
+  PASS L5 七欄都有內容（只有禁止事項可寫「無」）
+  PASS L6 類型只有 P／C／J
+  PASS L7 P 步的操作要求寫出可執行命令（不是〈佔位〉）
+  PASS L8 檢查節有 expected、forbidden，且寫明相近反例或不該觸發的題
+  PASS L9 ID 不重複

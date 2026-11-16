@@ -1,0 +1,430 @@
+{
+  "skill": "label-foreign-text",
+  "source_path": "/home/ubuntu/work/github-miko-target/skills/label-foreign-text/SKILL.md",
+  "candidate_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/label-foreign-text/SKILL.md",
+  "source_sha256": "e204078c4f5e3cdd68651f28f261d2c721610ca04fb3c7f8ebe12df17a02caa0",
+  "candidate_sha256": "837dce20353ab5600e81d7837863ef9074dcc3afa2000700b922ea5967be0849",
+  "mapping_method": "preservation reference plus formal S1-S4 semantic anchors",
+  "atom_count": 52,
+  "mapped_count": 52,
+  "unmapped_count": 0,
+  "status": "PASS",
+  "atoms": [
+    {
+      "id": "LABEL-FOREIGN-TEXT-0001",
+      "source_line": 1,
+      "source_atom": "---",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0001"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0002",
+      "source_line": 2,
+      "source_atom": "name: label-foreign-text",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0002"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0003",
+      "source_line": 3,
+      "source_atom": "description: 包材、標籤、說明書上出現他國文字（泰文、越南文等）時的審查與排版建議：先查字義與該國法規用語，再分法定標示用語或一般翻譯，法定用語與對應資料（例如到期日）保持配對，版面衝突先找原因再給方案，定稿前核對拼寫與聲調符號。先載入 miko-core。一般翻譯、施工查驗照片不使用。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0003"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0004",
+      "source_line": 4,
+      "source_atom": "---",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0004"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0005",
+      "source_line": 6,
+      "source_atom": "# label-foreign-text v0.1｜外文與跨國標示審查｜2026-11-08",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0005"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0006",
+      "source_line": 8,
+      "source_atom": "來源：MIKO 2026-11-06 提出的「外文與跨國標示規則（提案）」5 條，總召審查後改寫（ADR-057；MIKO 2026-11-08 選 B 案：miko-core 一句通則＋本 Skill）。先載入 miko-core；與 miko-core §4 研究與查核細則、§7 硬邊界重疊處以 miko-core 為準。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0006"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0007",
+      "source_line": 10,
+      "source_atom": "- 負責什麼：包材、標籤、說明書上的他國文字審查與排版建議（一個 Skill 只做這件事）。不處理一般翻譯、施工查驗照片（photo-inspection-log；該 Skill「字形相同就照寫」只適用白板中文與既有詞庫，不適用本 Skill）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0007"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0008",
+      "source_line": 11,
+      "source_atom": "- 看哪些資料：MIKO 提供的標籤稿或照片（版本或日期）、目標國家、產品類別；該國主管機關的法規或公告原文。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0008"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0009",
+      "source_line": 12,
+      "source_atom": "- 連接器：網頁搜尋與網頁讀取。排程：無。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0009"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0010",
+      "source_line": 13,
+      "source_atom": "- 交回什麼：逐字串判定表（字串、字義、官方用語、分類、配對對象、來源與日期一行）＋版面方案（至少兩案）＋待核對清單＋任務四態。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0010"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0011",
+      "source_line": 14,
+      "source_atom": "- 先問 MIKO：目標國家、產品類別、哪一版是要審的標籤稿；稿件含公司名、產品名、批號時只在對話內處理，不寫進任何公開檔。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0011"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0012",
+      "source_line": 15,
+      "source_atom": "- 高風險：藥品、醫療器材、食品、化學品的標示定稿前走 independent-audit（miko-core §6「不自審」條：高風險定案前用 independent-audit；醫療屬高風險，食品、化學品是本 Skill 自加的高風險類別）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0012"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0013",
+      "source_line": 17,
+      "source_atom": "## 1. 問問題",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0013"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0014",
+      "source_line": 18,
+      "source_atom": "- 必問：目標國家；產品類別；標籤稿版本。沒給目標國家就停在這裡，不從文字猜國家（同一種文字可能用在多國）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0014"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0015",
+      "source_line": 19,
+      "source_atom": "- 預設值：沒說要定稿時，產出標「草案」；沒說可否改字時，只建議、不改原稿字串。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0015"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0016",
+      "source_line": 21,
+      "source_atom": "## 2. 解決（有先後依賴，依序做；前一步沒完成不跳到後面）",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0016"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0017",
+      "source_line": 22,
+      "source_atom": "1. 字義與官方用語",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0017"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0018",
+      "source_line": 23,
+      "source_atom": "   - 輸入：標籤上每一個外文字串（逐字抄出，含聲調符號）、目標國家。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0018"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0019",
+      "source_line": 24,
+      "source_atom": "   - 輸出：每字串的字義、該國法規或主管機關使用的用語、來源與日期一行（「發布：YYYY-MM-DD｜生效：YYYY-MM-DD｜查閱：YYYY-MM-DD」，缺的寫 UNKNOWN）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0019"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0020",
+      "source_line": 25,
+      "source_atom": "   - 閘門：只靠字形辨識或模型記憶不算查證，不得往下。特定官方來源讀不到時，先換一次替代來源（例如法規資料庫讀不到改主管機關公告頁或官方公報），仍讀不到依 miko-core §2.7 標 NOT_READ；換查法後仍找不到字義或官方用語寫「未證實」，並分開寫是工具失敗、沒有資料或無權限（miko-core §4 研究與查核）。標 NOT_READ 或「未證實」的字串，第 2～5 步停，其他字串照做。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0020"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0021",
+      "source_line": 26,
+      "source_atom": "2. 分類",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0021"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0022",
+      "source_line": 27,
+      "source_atom": "   - 輸入：第 1 步結果。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0022"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0023",
+      "source_line": 28,
+      "source_atom": "   - 輸出：每字串標「法定標示用語」（法規要求出現的字樣，例如到期日、製造日、批號的標題字，依該國法規而定）或「一般翻譯」。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0023"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0024",
+      "source_line": 29,
+      "source_atom": "   - 閘門：分不出來標 UNKNOWN，當法定標示用語處理（較保守），並列入待核對清單。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0024"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0025",
+      "source_line": 30,
+      "source_atom": "3. 配對",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0025"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0026",
+      "source_line": 31,
+      "source_atom": "   - 輸入：第 2 步的法定標示用語。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0026"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0027",
+      "source_line": 32,
+      "source_atom": "   - 輸出：每個法定用語對應的資料（例如到期日數字）與配對關係。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0027"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0028",
+      "source_line": 33,
+      "source_atom": "   - 閘門：預設相鄰並配對（這是 MIKO 的版面預設，不是法規斷言），不得為了版面把法定用語挪到和對應資料無關的位置；實際位置與格式要求以該國原法條為準。只讀到二手來源時寫「原法條 NOT_READ（依據：二手來源名稱）」並附日期一行，方案標「暫定」，不當定稿依據。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0028"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0029",
+      "source_line": 34,
+      "source_atom": "4. 版面",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0029"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0030",
+      "source_line": 35,
+      "source_atom": "   - 輸入：第 2、3 步結果與標籤尺寸或稿件。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0030"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0031",
+      "source_line": 36,
+      "source_atom": "   - 輸出：衝突原因逐類判定（法規、配對、可讀性、固定物理位置，各寫是或否與依據），再給至少兩個方案，每案照 miko-core §2.8 列做法、代價、主要風險、可逆性、怎麼驗收，另加是否仍相鄰並配對；選一案並寫不採其他案的理由。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0031"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0032",
+      "source_line": 37,
+      "source_atom": "   - 閘門：不得只寫「放不下」；四類原因有任一類是 UNKNOWN 時，方案標「暫定」並寫要補查哪一類。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0032"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0033",
+      "source_line": 38,
+      "source_atom": "5. 定稿前核對",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0033"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0034",
+      "source_line": 39,
+      "source_atom": "   - 輸入：方案用到的每一個外文字串。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0034"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0035",
+      "source_line": 40,
+      "source_atom": "   - 輸出：拼寫、聲調符號與該國官方文件逐字比對的結果（相符、不符、無官方文件可比）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0035"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0036",
+      "source_line": 41,
+      "source_atom": "   - 閘門：沒有官方文件可比、需要母語者核對時，列為外部依賴（miko-core §2.7，負責方寫 MIKO 指定的人），任務四態寫「完成但有疑慮」，不寫「已定稿」；高風險產品照開頭走 independent-audit。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0036"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0037",
+      "source_line": 43,
+      "source_atom": "## 3. 後設（常見錯）",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0037"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0038",
+      "source_line": 44,
+      "source_atom": "- 字形相近就當同一個字（聲調符號或字母差一個，意思就變）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0038"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0039",
+      "source_line": 45,
+      "source_atom": "- 把翻譯網站、電商頁、他人標籤照片當法規來源。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0039"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0040",
+      "source_line": 46,
+      "source_atom": "- 為了版面把法定用語和日期拆開，或只改中文、忘了外文字串跟著移動。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0040"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0041",
+      "source_line": 47,
+      "source_atom": "- 版面卡住只說「放不下」，沒找出是哪一類原因。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0041"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0042",
+      "source_line": 48,
+      "source_atom": "- 一國的規定套到另一國；舊版法規當現行。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0042"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0043",
+      "source_line": 50,
+      "source_atom": "## 4. 檢查（驗收）",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0043"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0044",
+      "source_line": 51,
+      "source_atom": "- AC-L1：每個外文字串都有字義、官方用語與來源日期一行，或標 NOT_READ（特定來源讀不到）或「未證實」（找不到）；沒有只靠記憶的字義。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0044"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0045",
+      "source_line": 52,
+      "source_atom": "- AC-L2：每個字串都有分類；UNKNOWN 已當法定用語處理並列待核對。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0045"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0046",
+      "source_line": 53,
+      "source_atom": "- AC-L3：法定用語都和對應資料配對；原法條沒讀到的寫「原法條 NOT_READ（依據：…）」，方案標暫定。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0046"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0047",
+      "source_line": 54,
+      "source_atom": "- AC-L4：版面衝突四類原因逐類判定，至少兩個方案；沒有只寫「放不下」。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0047"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0048",
+      "source_line": 55,
+      "source_atom": "- AC-L5：定稿核對結果逐字串列出；需要母語者時列外部依賴、四態寫「完成但有疑慮」。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0048"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0049",
+      "source_line": 56,
+      "source_atom": "- AC-L6：輸出與任何公開檔沒有公司名、產品名、批號或個資。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0049"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0050",
+      "source_line": 57,
+      "source_atom": "- 實跑題：「這是虛構產品的外盒標籤稿，要出口越南，空間不夠，到期日那一行想把越南文字樣移到背面，幫我排版。外文字串：『HSD』『Hạn sử dụng』，對應資料：到期日 2027-05-31。」（題目字串只當受測輸入，出題時未查證字義；受測者仍須依第 1 步自行查證。）通過條件：AC-L1～L6 全過；先查越南官方來源的字義與用語才談版面；沒有建議把字樣與到期日拆到不同面（或指出依原法條可拆時附原法條來源）；讀不到原法條時寫「原法條 NOT_READ（依據：…）」並標方案暫定。forbidden：沒查證就直接給排版；只寫放不下。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0050"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0051",
+      "source_line": 59,
+      "source_atom": "## 刪除清單",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0051"
+    },
+    {
+      "id": "LABEL-FOREIGN-TEXT-0052",
+      "source_line": 60,
+      "source_atom": "- 無（新 Skill）。",
+      "candidate_anchor": "references/pre-format-candidate-SKILL.md or S1-S4",
+      "mapping_status": "MAPPED",
+      "source_atom_id": "LABEL-FOREIGN-TEXT-0052"
+    }
+  ]
+}

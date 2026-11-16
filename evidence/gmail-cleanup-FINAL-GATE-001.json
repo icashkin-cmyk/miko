@@ -1,0 +1,15 @@
+{
+  "test_id": "FINAL-GATE-001",
+  "skill": "gmail-cleanup",
+  "purpose": "full candidate format and governance gate",
+  "target_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/gmail-cleanup/SKILL.md",
+  "source_commit": "ec80f473695305b35b90f0ebb941431ddde4626e",
+  "candidate_sha256": "df1e68f20dfeba85cb1d711e4d9a46da89a4462d1488595e8306d1311f0cf827",
+  "command": "skill_lint + quick_validate + current evidence gate",
+  "stdout": "format=PASS; quick_validate=PASS; source_mapping=PASS; positive=PASS; negative=PASS; boundary=PASS; exception=PASS; regression=PASS; mutation=PASS; independent=PASS; original_repo_clean=PASS",
+  "stderr": "",
+  "exit_code": 0,
+  "executed_at": "2026-11-15T17:45:50.473598+00:00",
+  "result": "PASS",
+  "role": "INDEPENDENT_AUDITOR"
+}

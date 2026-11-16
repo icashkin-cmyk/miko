@@ -1,0 +1,21 @@
+{
+  "test_id": "dghp-food-REG-001",
+  "purpose": "重新執行 mapping validator 作為回歸測試",
+  "target_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/dghp-food/SKILL.md",
+  "repository": "icashkin-cmyk/miko",
+  "branch": "main",
+  "commit_sha": "ec80f473695305b35b90f0ebb941431ddde4626e",
+  "environment": {
+    "platform": "Linux-6.18.38+-x86_64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "command": "python3 tests/dghp-food/validate_mapping.py",
+  "stdout": "source_sha256=PASS\ncandidate_sha256=PASS\natom_count=40\ncandidate_anchor_coverage=40/40\norphan_source_atoms=0\nmapping_result=PASS\n",
+  "stderr": "",
+  "exit_code": 0,
+  "started_at": "2026-11-15T17:25:16.930664+00:00",
+  "finished_at": "2026-11-15T17:25:16.930664+00:00",
+  "result": "PASS",
+  "role": "TESTER",
+  "evidence_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/evidence/dghp-food-REG-001.json"
+}

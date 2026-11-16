@@ -1,0 +1,15 @@
+M	skills/dghp-beauty/SKILL.md
+M	skills/dghp-food/SKILL.md
+M	skills/dghp-metaphysical-integrated-analysis/SKILL.md
+M	skills/dghp-travel/SKILL.md
+M	skills/dghp-work-handoff/SKILL.md
+M	skills/gmail-cleanup/SKILL.md
+M	skills/independent-audit/SKILL.md
+M	skills/label-foreign-text/SKILL.md
+M	skills/make-skill/SKILL.md
+M	skills/miko-core/SKILL.md
+M	skills/photo-inspection-log/SKILL.md
+M	skills/safe-implementation/SKILL.md
+M	skills/tw-alert-check/SKILL.md
+M	skills/tw-backtest-workflow/SKILL.md
+M	skills/visual-content-intelligence/SKILL.md

@@ -1,0 +1,21 @@
+{
+  "test_id": "dghp-metaphysical-MUT-001",
+  "purpose": "Mutation 移除第三人慾望禁止規則，確認反向測試可偵測",
+  "target_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/dghp-metaphysical-integrated-analysis/SKILL.md",
+  "repository": "icashkin-cmyk/miko",
+  "branch": "main",
+  "commit_sha": "ec80f473695305b35b90f0ebb941431ddde4626e",
+  "environment": {
+    "platform": "Linux-6.18.38+-x86_64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "command": "python3 temporary mutation assertion",
+  "stdout": "mutation_detected=PASS",
+  "stderr": "",
+  "exit_code": 0,
+  "started_at": "2026-11-15T17:27:35.098032+00:00",
+  "finished_at": "2026-11-15T17:27:35.098032+00:00",
+  "result": "PASS",
+  "role": "TESTER",
+  "evidence_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/evidence/dghp-metaphysical-MUT-001.json"
+}

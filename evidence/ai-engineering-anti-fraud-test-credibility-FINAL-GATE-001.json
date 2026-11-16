@@ -1,0 +1,15 @@
+{
+  "test_id": "FINAL-GATE-001",
+  "skill": "ai-engineering-anti-fraud-test-credibility",
+  "purpose": "full candidate format and governance gate",
+  "target_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/ai-engineering-anti-fraud-test-credibility/SKILL.md",
+  "source_commit": "ec80f473695305b35b90f0ebb941431ddde4626e",
+  "candidate_sha256": "921b573594c70aacb1021fcf5c35e92edf86fddaaf3cf64b830813649db60b1e",
+  "command": "skill_lint + quick_validate + current evidence gate",
+  "stdout": "format=PASS; quick_validate=PASS; source_mapping=PASS; positive=PASS; negative=PASS; boundary=PASS; exception=PASS; regression=PASS; mutation=PASS; independent=PASS; original_repo_clean=PASS",
+  "stderr": "",
+  "exit_code": 0,
+  "executed_at": "2026-11-15T17:45:50.295686+00:00",
+  "result": "PASS",
+  "role": "INDEPENDENT_AUDITOR"
+}

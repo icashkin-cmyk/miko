@@ -1,0 +1,16 @@
+--- /home/ubuntu/work/github-miko-target/skills/dghp-food/SKILL.md
++++ /home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/dghp-food/SKILL.md
+@@ -61,3 +61,13 @@
+ - 何時跑：候選店核實後，寫成 scripts/README.md 規定的 CSV（道路距離、類別、Google 實體、營業狀態、目標時段營業、180 日內評論核實欄）→ `python3 -I food_pool.py 候選池.csv --radius-km 半徑 --top N --out out`。
+ - 規則照程式：半徑以道路距離為準不放寬；五類（正餐／小吃／甜點／飲品／伴手禮）分開排；四項核實都過才進排名；合格不足不補；距離與評分數值不合理直接排除。結論只寫「目前核實到的候選」。
+ - 下載或測試失敗：照本檔 §2 人工流程做並說明原因，不重寫程式。
++
++
++## 8. Candidate Reconstruction Status
++
++- semantic_rewrite: `STARTED`
++- source_read: `PASS`
++- source_version_claims: preserved; original source status and known defects remain explicit.
++- governance attachment: not mixed into dghp-food.
++- full behavior tests: `NOT_RUN`
++- independent acceptance: `NOT_RUN`

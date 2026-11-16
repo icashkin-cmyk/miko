@@ -1,0 +1,20 @@
+{
+  "test_id": "FORMAT-001",
+  "purpose": "MIKO four-section and seven-column lint",
+  "target_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/gmail-cleanup/SKILL.md",
+  "repository": "icashkin-cmyk/miko",
+  "branch": "main",
+  "commit_sha": "ec80f473695305b35b90f0ebb941431ddde4626e",
+  "environment": {
+    "platform": "Linux-6.18.38+-x86_64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "command": "python3 skill_lint.py",
+  "stdout": "== /home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/gmail-cleanup/SKILL.md：PASS（9/9）\n  PASS L1 frontmatter 有 name 與 description\n  PASS L2 標題有版本號（# 名稱 vX）\n  PASS L3 四節齊（問問題／解決／後設／檢查）\n  PASS L4 解決節有七欄表（ID、類型、觸發、操作、禁止、驗收證據、失敗處理）\n  PASS L5 七欄都有內容（只有禁止事項可寫「無」）\n  PASS L6 類型只有 P／C／J\n  PASS L7 P 步的操作要求寫出可執行命令（不是〈佔位〉）\n  PASS L8 檢查節有 expected、forbidden，且寫明相近反例或不該觸發的題\n  PASS L9 ID 不重複\n",
+  "stderr": "",
+  "exit_code": 0,
+  "started_at": "2026-11-15T17:45:34.526162+00:00",
+  "result": "PASS",
+  "role": "TESTER",
+  "evidence_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/evidence/gmail-cleanup-FORMAT-001.json"
+}

@@ -1,0 +1,10 @@
+source_sha256=PASS
+attachment_sha256=PASS
+candidate_sha256=PASS
+atom_count=68
+sb_atom_count=53
+gp_atom_count=15
+candidate_anchor_coverage=68/68
+orphan_source_atoms=0
+orphan_candidate_anchors=0
+mapping_result=PASS

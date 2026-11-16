@@ -1,0 +1,110 @@
+[ai-engineering-anti-fraud-test-credibility] exit_code=0
+stdout:
+Validating skill at: /home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/ai-engineering-anti-fraud-test-credibility
+Skill is valid!
+stderr:
+
+
+[dghp-beauty] exit_code=0
+stdout:
+Validating skill at: /home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/dghp-beauty
+Skill is valid!
+stderr:
+
+
+[dghp-food] exit_code=0
+stdout:
+Validating skill at: /home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/dghp-food
+Skill is valid!
+stderr:
+
+
+[dghp-metaphysical-integrated-analysis] exit_code=0
+stdout:
+Validating skill at: /home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/dghp-metaphysical-integrated-analysis
+Skill is valid!
+stderr:
+
+
+[dghp-travel] exit_code=0
+stdout:
+Validating skill at: /home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/dghp-travel
+Skill is valid!
+stderr:
+
+
+[dghp-work-handoff] exit_code=0
+stdout:
+Validating skill at: /home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/dghp-work-handoff
+Skill is valid!
+stderr:
+
+
+[gmail-cleanup] exit_code=0
+stdout:
+Validating skill at: /home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/gmail-cleanup
+Skill is valid!
+stderr:
+
+
+[independent-audit] exit_code=0
+stdout:
+Validating skill at: /home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/independent-audit
+Skill is valid!
+stderr:
+
+
+[label-foreign-text] exit_code=0
+stdout:
+Validating skill at: /home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/label-foreign-text
+Skill is valid!
+stderr:
+
+
+[make-skill] exit_code=0
+stdout:
+Validating skill at: /home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/make-skill
+Skill is valid!
+stderr:
+
+
+[photo-inspection-log] exit_code=0
+stdout:
+Validating skill at: /home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/photo-inspection-log
+Skill is valid!
+stderr:
+
+
+[safe-implementation] exit_code=0
+stdout:
+Validating skill at: /home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/safe-implementation
+Skill is valid!
+stderr:
+
+
+[three-party-review] exit_code=0
+stdout:
+Validating skill at: /home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/three-party-review
+Skill is valid!
+stderr:
+
+
+[tw-alert-check] exit_code=0
+stdout:
+Validating skill at: /home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/tw-alert-check
+Skill is valid!
+stderr:
+
+
+[tw-backtest-workflow] exit_code=0
+stdout:
+Validating skill at: /home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/tw-backtest-workflow
+Skill is valid!
+stderr:
+
+
+[visual-content-intelligence] exit_code=0
+stdout:
+Validating skill at: /home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/visual-content-intelligence
+Skill is valid!
+stderr:

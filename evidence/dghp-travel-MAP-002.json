@@ -1,0 +1,21 @@
+{
+  "test_id": "dghp-travel-MAP-002",
+  "purpose": "正式格式重構後 50 source atoms 語意錨點映射與雙 Hash",
+  "target_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/skills/dghp-travel/SKILL.md",
+  "repository": "icashkin-cmyk/miko",
+  "branch": "main",
+  "commit_sha": "ec80f473695305b35b90f0ebb941431ddde4626e",
+  "environment": {
+    "platform": "Linux-6.18.38+-x86_64-with-glibc2.39",
+    "python": "3.12.3"
+  },
+  "command": "python3 semantic mapping validator",
+  "stdout": "mapping_result=PASS; source_atoms=50; semantic_anchor_coverage=50/50; unmapped=0",
+  "stderr": "",
+  "exit_code": 0,
+  "started_at": "2026-11-15T17:34:20.811665+00:00",
+  "finished_at": "2026-11-15T17:34:20.811665+00:00",
+  "result": "PASS",
+  "role": "TESTER",
+  "evidence_path": "/home/ubuntu/work/manus-miko-universal-governance-migration-v1/evidence/dghp-travel-MAP-002.json"
+}
