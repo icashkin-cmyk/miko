@@ -116,7 +116,8 @@ for p in sorted((R / 'skills').glob('*/SKILL.md')):
 ok('C2 Skill 開頭格式（name 與資料夾同名、小寫連字號 ≤ 64 字、description ≤ 1024 字）', not bad, f'不合格：{bad}；提示（不擋）標題沒有版號：{nover}')
 
 words = _pw()
-pat = re.compile(r'[\w.+-]+@[\w-]+\.(com|tw|net|org)|/home/|/Users/|~/[A-Z]' + ''.join('|' + re.escape(w) for w in words))
+# 提案（未改版）：/home/ 後面接通用沙盒家目錄 ubuntu、user、runner 時不擋，其餘 /home/ 路徑照擋；測試 tests/test_c3_home_rule.py
+pat = re.compile(r'[\w.+-]+@[\w-]+\.(com|tw|net|org)|/home/(?!(?:ubuntu|user|runner)(?:/|[^\w.-]|$))|/Users/|~/[A-Z]' + ''.join('|' + re.escape(w) for w in words))
 hits = []
 if (R / '.git').exists():
     files = [R / f for f in subprocess.run(['git', 'ls-files'], cwd=R, capture_output=True, text=True).stdout.splitlines()]
