@@ -5,6 +5,8 @@ description: "使用者要求交接、恢復進度、說「收工」「換手」
 
 # "dghp-work-handoff" v1.0-rewritten-candidate
 
+> 名詞（1.2.53，ADR-076）：本檔短名詞第一次出現在這一行，寫成「短名（正式名稱）【類型】」；每個名詞的定義、觸發條件、執行動作、輸出格式、完成判準、失敗處理、不適用情況、相關名詞見 MIKO 核心詞彙與行為定義表（skills/miko-core/references/term-definitions.md，https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/miko-core/references/term-definitions.md）。正本（正式名稱：GitHub 上的正式規則來源與目前採用版本）【限制】；任務四態（正式名稱：交付結果四種狀態判定：完成／完成但有疑慮／需要資料／卡住）【輸出】；治理（正式名稱：規則版本、變更、授權、審查與正式放行管理）【流程】；出口（正式名稱：困難卡依類別的下一步處置）【處置】。
+
 ## 1. 問問題
 
 - 目的：先確認本 Skill 的使用意圖、輸入範圍、輸出期待、資料來源與不可逆操作。
@@ -33,8 +35,6 @@ description: "使用者要求交接、恢復進度、說「收工」「換手」
 ### 領域規則保留（重構內容）
 
 > 以下內容由原始候選逐段納入本次正式格式重構；其來源版本、差異與 SHA-256 由 mapping 與 evidence 保存。
-
-> 名詞（1.2.53，ADR-076）：本檔短名詞第一次出現在這一行，寫成「短名（正式名稱）【類型】」；每個名詞的定義、觸發條件、執行動作、輸出格式、完成判準、失敗處理、不適用情況、相關名詞見 MIKO 核心詞彙與行為定義表（skills/miko-core/references/term-definitions.md，https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/miko-core/references/term-definitions.md）。正本（正式名稱：GitHub 上的正式規則來源與目前採用版本）【限制】；任務四態（正式名稱：交付結果四種狀態判定：完成／完成但有疑慮／需要資料／卡住）【輸出】；治理（正式名稱：規則版本、變更、授權、審查與正式放行管理）【流程】。
 
 ## 原則
 交接紀錄是工作索引，不取代完整來源或 Canonical。只在授權可寫目錄保存；READ_ONLY 時在回覆交付，不創建檔案。保存後才可說已保存；無可用排程／持久化工具不承諾背景追蹤。

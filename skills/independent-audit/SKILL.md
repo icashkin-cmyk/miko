@@ -5,6 +5,8 @@ description: 獨立稽核：治理放行、規則或 Skill 修改、正式交付
 
 # independent-audit v1.0-rewritten-candidate
 
+> 名詞（1.2.53，ADR-076）：本檔短名詞第一次出現在這一行，寫成「短名（正式名稱）【類型】」；每個名詞的定義、觸發條件、執行動作、輸出格式、完成判準、失敗處理、不適用情況、相關名詞見 MIKO 核心詞彙與行為定義表（skills/miko-core/references/term-definitions.md，https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/miko-core/references/term-definitions.md）。四視角（正式名稱：四視角任務檢查流程：問問題→解決→後設→檢查）【流程】；治理（正式名稱：規則版本、變更、授權、審查與正式放行管理）【流程】；正本（正式名稱：GitHub 上的正式規則來源與目前採用版本）【限制】；出口（正式名稱：困難卡依類別的下一步處置）【處置】。
+
 ## 1. 問問題
 
 - 目的：先確認本 Skill 的使用意圖、輸入範圍、輸出期待、資料來源與不可逆操作。
@@ -34,7 +36,6 @@ description: 獨立稽核：治理放行、規則或 Skill 修改、正式交付
 
 > 以下內容由原始候選逐段納入本次正式格式重構；其來源版本、差異與 SHA-256 由 mapping 與 evidence 保存。
 
-> 名詞（1.2.53，ADR-076）：本檔短名詞第一次出現在這一行，寫成「短名（正式名稱）【類型】」；每個名詞的定義、觸發條件、執行動作、輸出格式、完成判準、失敗處理、不適用情況、相關名詞見 MIKO 核心詞彙與行為定義表（skills/miko-core/references/term-definitions.md，https://raw.githubusercontent.com/icashkin-cmyk/miko/main/skills/miko-core/references/term-definitions.md）。四視角（正式名稱：四視角任務檢查流程：問問題→解決→後設→檢查）【流程】；治理（正式名稱：規則版本、變更、授權、審查與正式放行管理）【流程】；正本（正式名稱：GitHub 上的正式規則來源與目前採用版本）【限制】。
 依據：ADR-001（不自審）、ADR-007（子代理只用於高風險獨立驗證）、v3.1 §3.9（四視角共用同一模型的盲點，不算獨立驗證；引擎 v3.2 起在 §3 第 9 點「自審限制」）、H-01（模型自述不能當證據，要看行為與證據）。
 
 ## 1. 何時用
