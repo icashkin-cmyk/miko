@@ -67,7 +67,8 @@
 - 架構責任分層：PASS_WITH_REFINEMENT
 - 外部平台能力：UNKNOWN
 - Anthropic 官方功能主張：UNKNOWN
-- Manus Runtime 實測：NOT_RUN
+- Stage 1 格式／metadata／觸發契約：PASS_WITH_REFINEMENT（20/20）
+- Stage 1 Runtime 實測：UNKNOWN／NOT_RUN
 - GitHub 正本採用：NOT_RUN
 - 正式採用：NOT_RUN
 
