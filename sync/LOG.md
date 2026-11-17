@@ -157,3 +157,6 @@
 | 2026-11-16 20:11 | Claude | 推進（新）：窗內 PR #61 改動 skills/，驗收「改動是否同步改版本號與 CHANGELOG」 | 未通過（VERSION、CHANGELOG 未改）；稽核狀態 UNKNOWN；保留：轉治理房 | Claude、MIKO、治理房 | 進行中 |
 | 2026-11-16 20:11 | Claude | PR #61 合併到 main 改動 skills/ 而未附版本與稽核紀錄，是否補版本、補稽核或撤回（承窗內變化） | 列入待 MIKO 決定（Claude 不改正本或 Skill） | MIKO、治理房 | 進行中 |
 | 2026-11-16 20:11 | Claude | Drive 窗內 Git 內部檔連續七輪修改，是否為有意備份、是否含敏感內容（承 2026-11-16 08:08 列） | 列入待 MIKO 決定（Claude 不改 Drive） | MIKO | 進行中 |
+| 2026-11-17 08:08 | Claude | 本輪變化：origin/main 窗內無新提交；Drive 窗內修改中繼資料 3 筆（Git 內部類 1、資料夾 2，內容 NOT_READ）；Notion MIKO 0 筆（無日期篩選，弱證據）；帳號 miko-core 啟用；GPT 同步依 ADR-039 不列中斷；其他 repo NOT_READ（list_repos 工具未載入） | 已記錄（中繼資料）；內容保留：待 MIKO 決定 | Claude、MIKO | 完成（記錄） |
+| 2026-11-17 08:08 | Claude | 推進（承 2026-11-16 20:11 列）：重算 README SHA-256 與 VERSION 第 4 行比對（1.2.72） | 通過（雜湊相符）；README 第 84 行「65 分鐘內」字樣仍在：未通過；保留：轉治理房 | Claude、MIKO、治理房 | 進行中 |
+| 2026-11-17 08:08 | Claude | Drive 窗內 Git 內部類修改連續第 8 輪（本輪 1 筆，2026-11-16 23:34Z）：同步來源是否有意備份、是否含敏感內容（承 2026-11-16 20:11 列） | 列入待 MIKO 決定（Claude 不改 Drive） | MIKO | 進行中 |
