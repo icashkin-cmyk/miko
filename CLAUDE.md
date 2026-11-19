@@ -5,7 +5,7 @@
 ## 專案結構
 - `skills/`：通用與領域 Skill；`skills/miko-core/` 是核心規則與相關檢查腳本。
 - `tests/`：repo 驗證、固定樣本回歸與各 Skill 的測試資料。
-- `knowledge-cards/`：Manus 任務卡與提案區；Manus 只能透過分支與 PR 提案（1.2.74 前）。（1.2.74 起依 README §6 可改範圍與審核條，Manus 可修改本 repo 的檔案；合併或推 main 前須 check_repo 16 項全過、獨立稽核通過、CI 綠、MIKO 當次明說同意。）
+- `knowledge-cards/`：Manus 任務卡與提案區；Manus 只能透過分支與 PR 提案（1.2.74 前）。（1.2.74 起依 README §6 可改範圍與審核條，Manus 可修改本 repo 的檔案；合併或推 main 前須 check_repo 16 項全過、獨立稽核通過、CI 綠、MIKO 當次明說同意；執行合併或直推者暫定為 MIKO 或 Claude 總召；sync/ 依 README §4 常設授權例外，見 README §6 (9)。）
 - `adapters/`：各平台適配與同步說明；`sync/`：協作狀態與紀錄。
 - `.github/workflows/check.yml`：推送與 PR 的完整 CI 驗證流程。
 
@@ -29,7 +29,7 @@
 README 標題版本、VERSION 四行（第 4 行是 README 的 SHA-256）、CHANGELOG.md 新增一行（只新增）、adapters/README.md 版本、skills/miko-core/SKILL.md 的「對應正本」；並在 Drive MIKO_ARCHIVE 存一份 DELTA（治理專案指示「正本改版」；check_repo C1、C10 檢查版本一致與 SHA-256）。
 
 ## 推送前後
-- 推送前執行 python3 -I -B tests/check_repo.py（C6、C9 用固定樣本跑回測引擎回歸檢查，不算違反回測暫停 PAUSED_BY_USER，照跑；--skip-backtest 只當選項，用了 C6、C9 印 NOT_RUN、不算 PASS；1.2.51 ADR-074 取代 1.2.44 ADR-067 的略過方向，CI 同標準），私密字清單用環境變數 MIKO_PRIVATE_WORDS 帶入，C1～C16 共 16 項全過才推；C15 只提示不擋；1.2.44～1.2.50 回測暫停期間曾是其餘 13 項全過、C6／C9 NOT_RUN，1.2.51 起恢復 C6／C9；1.2.53 起加 C16 詞彙定義表檢查共 16 項，ADR-076）；已 commit 後再跑時帶 MIKO_BASE=<底本 commit>，否則 C11 比的是 HEAD、會顯示「無改動」（1.2.53 稽核第一輪）；清單不得寫進 repo、commit 訊息或任何公開檔（治理專案指示「推送前必做」）。會跑到 MIKO 暫停中任務的檢查項怎麼標，依 skills/make-skill S9。（1.2.74 起，ADR-097：推 main 或合併進 main 前，另須 README §6 (2) 四項同時成立：check_repo 16 項全過、獨立稽核通過、CI 綠、MIKO 當次明說同意。）
+- 推送前執行 python3 -I -B tests/check_repo.py（C6、C9 用固定樣本跑回測引擎回歸檢查，不算違反回測暫停 PAUSED_BY_USER，照跑；--skip-backtest 只當選項，用了 C6、C9 印 NOT_RUN、不算 PASS；1.2.51 ADR-074 取代 1.2.44 ADR-067 的略過方向，CI 同標準），私密字清單用環境變數 MIKO_PRIVATE_WORDS 帶入，C1～C16 共 16 項全過才推；C15 只提示不擋；1.2.44～1.2.50 回測暫停期間曾是其餘 13 項全過、C6／C9 NOT_RUN，1.2.51 起恢復 C6／C9；1.2.53 起加 C16 詞彙定義表檢查共 16 項，ADR-076）；已 commit 後再跑時帶 MIKO_BASE=<底本 commit>，否則 C11 比的是 HEAD、會顯示「無改動」（1.2.53 稽核第一輪）；清單不得寫進 repo、commit 訊息或任何公開檔（治理專案指示「推送前必做」）。會跑到 MIKO 暫停中任務的檢查項怎麼標，依 skills/make-skill S9。（1.2.74 起，ADR-097：推 main 或合併進 main 前，另須 README §6 (2) 四項同時成立：check_repo 16 項全過、獨立稽核通過、CI 綠、MIKO 當次明說同意；sync/ 依 README §4 常設授權例外，見 README §6 (9)。）
 - 規則或 Skill 修改先經獨立稽核，不自審（skills/independent-audit §3 擇一方式）；稽核後再改任何一個字要重新稽核（miko-core ADR-050）；例外只有 miko-core §6 稽核後改字條的「只改版本號字樣」例外（回報附兩份改動 diff 比對；1.2.56，ADR-079）。
 - 推送後確認 GitHub Actions check_repo 通過，raw 讀回主要檔案比對 SHA-256（治理專案指示，推送後確認；skills/make-skill S10）。
 
