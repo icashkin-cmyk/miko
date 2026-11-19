@@ -21,7 +21,7 @@
 
 ## 改動規則
 - Skill 改版用局部修改，不整份重寫；舊條文保留、改寫或寫進「## 刪除清單」附理由（ADR-036；tests/check_repo.py C11 要求子句保留 ≥ 90%）。
-- 每個 Skill 只有一個 writer；其他專案改 Skill 或規則先整理成提案交總召（治理專案指示「單一 writer」表）。
+- 每個 Skill 只有一個 writer；其他專案改 Skill 或規則先整理成提案交總召（治理專案指示「單一 writer」表）。1.2.74 起（ADR-097）：Manus 總召與 Claude 總召可改相同範圍，開工前登記要改的路徑、後到先停；合併或推 main 前須 check_repo 16 項全過、獨立稽核通過、CI 綠、MIKO 當次明說同意；各領域專案的 writer 不變。
 - 公開 repo 不放工程名稱、單位名稱、人名、個人資料，xlsx／csv 內容也算（治理專案指示；check_repo C12）。
 - 一律繁體中文；API、函式、變數、Key、介面名稱與狀態識別碼保留原文（README §7；skills/miko-core/references/governance-module.md；帳號偏好〔檔案與語言〕）。
 
