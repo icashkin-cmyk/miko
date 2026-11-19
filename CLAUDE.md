@@ -5,7 +5,7 @@
 ## 專案結構
 - `skills/`：通用與領域 Skill；`skills/miko-core/` 是核心規則與相關檢查腳本。
 - `tests/`：repo 驗證、固定樣本回歸與各 Skill 的測試資料。
-- `knowledge-cards/`：Manus 任務卡與提案區；Manus 只能透過分支與 PR 提案。（1.2.74 起依 README §6 可改範圍與審核條，Manus 可修改本 repo 的檔案；合併或推 main 前須 check_repo 16 項全過、獨立稽核通過、CI 綠、MIKO 當次明說同意。）
+- `knowledge-cards/`：Manus 任務卡與提案區；Manus 只能透過分支與 PR 提案（1.2.74 前）。（1.2.74 起依 README §6 可改範圍與審核條，Manus 可修改本 repo 的檔案；合併或推 main 前須 check_repo 16 項全過、獨立稽核通過、CI 綠、MIKO 當次明說同意。）
 - `adapters/`：各平台適配與同步說明；`sync/`：協作狀態與紀錄。
 - `.github/workflows/check.yml`：推送與 PR 的完整 CI 驗證流程。
 
