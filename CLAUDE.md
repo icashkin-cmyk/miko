@@ -5,7 +5,7 @@
 ## 專案結構
 - `skills/`：通用與領域 Skill；`skills/miko-core/` 是核心規則與相關檢查腳本。
 - `tests/`：repo 驗證、固定樣本回歸與各 Skill 的測試資料。
-- `knowledge-cards/`：Manus 任務卡與提案區；Manus 只能透過分支與 PR 提案。（1.2.74 起依 README §6 可改範圍與審核條，Manus 可修改本 repo 的檔案，合併或推 main 前須 MIKO 當次明說同意。）
+- `knowledge-cards/`：Manus 任務卡與提案區；Manus 只能透過分支與 PR 提案。（1.2.74 起依 README §6 可改範圍與審核條，Manus 可修改本 repo 的檔案；合併或推 main 前須 check_repo 16 項全過、獨立稽核通過、CI 綠、MIKO 當次明說同意。）
 - `adapters/`：各平台適配與同步說明；`sync/`：協作狀態與紀錄。
 - `.github/workflows/check.yml`：推送與 PR 的完整 CI 驗證流程。
 
@@ -21,7 +21,7 @@
 
 ## 改動規則
 - Skill 改版用局部修改，不整份重寫；舊條文保留、改寫或寫進「## 刪除清單」附理由（ADR-036；tests/check_repo.py C11 要求子句保留 ≥ 90%）。
-- 每個 Skill 只有一個 writer；其他專案改 Skill 或規則先整理成提案交總召（治理專案指示「單一 writer」表）。1.2.74 起（ADR-097）：本 repo 內 Manus 總召與 Claude 總召可改相同範圍，開工前在 PR 內文登記要改的路徑、後到先停；合併或推 main 前須 check_repo 16 項全過、獨立稽核通過、CI 綠、MIKO 當次明說同意；各領域專案與程式、網站 repo 的 writer 不變。
+- 每個 Skill 只有一個 writer；其他專案改 Skill 或規則先整理成提案交總召（治理專案指示「單一 writer」表）。1.2.74 起（ADR-097）：本 repo 內 Manus 總召與 Claude 總召可改相同範圍，同時改同檔時開工前查所有 open PR 登記的路徑，重疊者為後到者、停下回報 MIKO，先到的 PR 合併或關閉後 rebase 到最新 main、重新登記才可繼續，不重疊者照常進行（登記方式：draft PR 內文或留言，可用空 commit）；合併或推 main 前須 check_repo 16 項全過、獨立稽核通過、CI 綠、MIKO 當次明說同意；各領域專案與程式、網站 repo 的 writer 不變。
 - 公開 repo 不放工程名稱、單位名稱、人名、個人資料，xlsx／csv 內容也算（治理專案指示；check_repo C12）。
 - 一律繁體中文；API、函式、變數、Key、介面名稱與狀態識別碼保留原文（README §7；skills/miko-core/references/governance-module.md；帳號偏好〔檔案與語言〕）。
 

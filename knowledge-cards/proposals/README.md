@@ -1,4 +1,4 @@
-# knowledge-cards/proposals｜Manus 總召的提案與失敗紀錄｜2026-11-11
+# knowledge-cards/proposals｜Manus 總召的提案與失敗紀錄｜2026-11-11（1.2.74 更新 2026-11-19）
 
 > 名詞：困難卡（正式名稱：失敗分類與阻塞處置卡）【處置】；正本（正式名稱：GitHub 上的正式規則來源與目前採用版本）【限制】；定義見 skills/miko-core/references/term-definitions.md（MIKO 核心詞彙與行為定義表）。
 
