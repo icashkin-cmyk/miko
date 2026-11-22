@@ -195,3 +195,6 @@
 | 2026-11-22 08:08 | Claude | 本輪變化：origin/main 窗內無新提交（僅上一輪 sync 提交 08d9305，不計）；Drive 窗內修改中繼資料第一頁 100 筆（仍有分頁，後續 NOT_READ；程式、設定與資料類約 85 筆，內容 NOT_READ，歸屬 UNKNOWN）；Notion NOT_READ（本輪未執行）；帳號 miko-core 啟用（代入卡）；GPT 同步依 ADR-039 不列；其他 repo NOT_READ | 已記錄（中繼資料）；內容保留：待 MIKO 決定 | Claude、MIKO | 完成（記錄） |
 | 2026-11-22 08:08 | Claude | 推進（承 2026-11-21 20:08 列）：重算 README SHA-256 與 VERSION 第 4 行比對，並重新 grep 第 84 行「65 分鐘」與「每天兩次」字樣 | 未通過（字樣仍同行並存）；SHA 通過；保留：轉治理房 | Claude、MIKO、治理房 | 進行中 |
 | 2026-11-22 08:08 | Claude | Drive 窗內程式、設定與資料類修改第一頁 100 筆（2026-11-21 23:28 至 2026-11-22 08:00 台北，仍有後續分頁）：是否為有意的自動輸出、是否含敏感內容、歸屬是否為 MIKO_ARCHIVE、是否需翻完後續分頁（不記檔名） | 列入待 MIKO 決定（Claude 不改 Drive） | MIKO | 進行中 |
+| 2026-11-22 20:08 | Claude | 本輪變化：origin/main 窗內無新提交（僅上一輪 sync 提交 f9eba64，不計）；Drive 窗內修改中繼資料第一頁 100 筆（仍有後續分頁，後續 NOT_READ；程式、設定與資料類為主，內容 NOT_READ，歸屬 UNKNOWN）；Notion NOT_READ（本輪未執行）；帳號 miko-core 啟用（代入卡）；GPT 同步依 ADR-039 不列；其他 repo NOT_READ | 已記錄（中繼資料）；內容保留：待 MIKO 決定 | Claude、MIKO | 完成（記錄） |
+| 2026-11-22 20:08 | Claude | 推進（承 2026-11-22 08:08 列）：重算 README SHA-256 與 VERSION 第 4 行比對（相符），重新核對第 84 行「65 分鐘」與「每天兩次」字樣（仍同行並存） | 未通過；保留：轉治理房 | Claude、MIKO、治理房 | 進行中 |
+| 2026-11-22 20:08 | Claude | Drive 窗內程式、設定與資料類修改第一頁 100 筆（2026-11-22 13:19～19:46 台北，仍有後續分頁未翻）：是否為有意的自動輸出、是否含敏感內容、歸屬是否為 MIKO_ARCHIVE、是否需翻完後續分頁（不記檔名） | 列入待 MIKO 決定（Claude 不改 Drive） | MIKO | 進行中 |
