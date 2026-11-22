@@ -5,9 +5,9 @@
 #         設計超出且實測未填時合併 F:I 並加一行「實測值：【待填】」（決議第 7 項）；棟別未填只留標籤（同範例，決議第 8 項）；
 #         PDF 一頁寬（fitToWidth=1）；照片未加高區塊用兩格錨點、加高區塊固定尺寸對齊左上；「超出格子」訊息改為說明已加高（舊訊息誤寫「已截行」）。
 #   v0.5（2026-11-08，MIKO 決定卡「留空白」）：照片與材料表都沒有的資訊只留標籤、冒號後空白，不再寫【待確認】【待填】（取代決議第 7 項的【待填】）；合併區塊最後一行改為「實測值：」。
-#   v0.6（2026-11-22，13 張驗收獨立稽核：直式照片被拉成 4:3 照片格而變形）：照片先等比縮放、置中補白成照片格比例（2875930×2156190 EMU）再放入，錨點不變；
-#         先依 EXIF 轉正；照片紀錄沒有「已確認詞彙」時交付檔仍建一張只有表頭的隱藏表（AC-3）；加高超過 A4 時整張依最高一頁算縮放比例（不用 fitToHeight），區塊不被切到下一頁；照片一律用固定尺寸錨點（範例 A 的位置與尺寸），加高區塊上下置中（place）；左右不依欄寬計算（欄寬像素隨字型而變）。重現測試 scripts/tests/test_build_company_photo.py。
-#   待 MIKO 決定：加高列與整張縮放是否接受；電腦版 Excel 看不到照片（A／B／C 測試檔待回報）。
+#   v0.6（2026-11-22，13 張驗收獨立稽核：直式照片被拉成 4:3 照片格而變形）：照片先等比縮放、置中補白成照片格比例（2875930×2156190 EMU）再放入（錨點改法見本段後半）；
+#         先依 EXIF 轉正；照片紀錄沒有「已確認詞彙」時交付檔仍建一張只有表頭的隱藏表（AC-3）；加高超過 A4 時整張依最高一頁算縮放比例（不用 fitToHeight），區塊不被切到下一頁；照片一律用固定尺寸錨點（起點同範例 A，尺寸沿用 v0.4 加高區塊的固定尺寸 2875930×2156190 EMU），加高區塊上下置中（place）；左右不依欄寬計算（欄寬像素隨字型而變）。重現測試 scripts/tests/test_build_company_photo.py。
+#   待 MIKO 決定：加高列與整張縮放是否接受；電腦版 Excel 看不到照片（A／B／C 測試檔待回報；v0.6 改了錨點寫法，舊測試檔不再適用，需用 v0.6 產出的檔重測，見 SKILL.md）。
 # entries.json：[{"sec":分項工程名稱,"item":檢查項目,"design":[行...],"measured":[行...],
 #                "shot":"115年10月8日","loc":"工區內","bldg":"","photo":"照片路徑或空"}]
 # 版面：每頁 46 列；3 個區塊，每塊 14 列（A:E 照片、F:I 資訊）；A46 頁碼。全部複製自範例，不另設計。
@@ -17,7 +17,7 @@ from openpyxl.drawing.image import Image as XI
 from openpyxl.styles import Alignment
 from openpyxl.worksheet.pagebreak import Break
 from openpyxl.cell.cell import MergedCell
-from openpyxl.drawing.spreadsheet_drawing import TwoCellAnchor, AnchorMarker
+from openpyxl.drawing.spreadsheet_drawing import AnchorMarker   # v0.6 起不再用 TwoCellAnchor
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 TPL = os.path.join(HERE, "材料自主檢查照片_範本.xlsx")
