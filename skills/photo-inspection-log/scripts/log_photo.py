@@ -1,4 +1,5 @@
-# log_photo.py v0.16｜施工查驗照片登記（支援一次上百張）：每天一個分頁；A 欄照片（固定在格子裡）、B 欄照片文字，一張一列；自動整理詞庫
+# log_photo.py v0.17｜施工查驗照片登記（支援一次上百張）：每天一個分頁；A 欄照片（固定在格子裡）、B 欄照片文字，一張一列；自動整理詞庫
+#   v0.17（2026-11-22，13 張第二輪稽核）：split_dm 實測值前面不再加「廠牌」等標籤字（LABELED）；其餘不變。
 # 視覺：待確認處自動編號〔?1〕〔?2〕並標紅字，和提問、放大圖同號；分頁標籤黃色＝有待確認；表頭顯示張數與待確認列數；清單可點擊跳到該列
 # 分頁：依 B 欄「查驗時間」的日期（YYYY-MM-DD）分頁；查驗時間讀不到用照片日期；都沒有放「日期未知」。不同天不會接在同一頁。
 # 位置寫法：「分頁:列號」，例 2026-10-15:3；分頁可只寫月日（10-15:3）；只有一個分頁時可只寫列號。
@@ -734,6 +735,7 @@ def split_dm(head, lines):                      # 白板內容拆成 設計/標�
             dv = ' '.join(x for i, x in enumerate(p) if i not in (mi, qi) and x)
             mv = p[mi] if mi < len(p) and p[mi] not in ('—', '') else ''
             nm = NAME.match(dv); nm = NAMEMAP.get(nm.group(0), nm.group(0)) if nm else ''
+            if nm in LABELED: nm = ''                # 2026-11-22（13 張第二輪稽核）：「廠牌」等標籤字不是品名，不加在實測值前面
             if dv: d.append(dv + (f'（{q}）' if q else ''))
             ml = ' '.join(x for x in (nm, mv) if x) + (f'（{q}）' if q else '')
             m.append(ml or '—')
