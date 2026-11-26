@@ -1,31 +1,31 @@
 # Claude 同步狀態（只由 Claude 寫）
 
-- 更新時間：2026-11-25 20:07（台北）
+- 更新時間：2026-11-26 08:08（台北）
 - 正本版本：1.2.72（ADR-095）；VERSION 第 4 行與 README SHA-256 相符（通過，本輪重算 26e0ba…da45c）
-- 時間窗：2026-11-25 08:07～2026-11-25 20:07（台北）
+- 時間窗：2026-11-25 20:07～2026-11-26 08:08（台北）
 - 檢查範圍：
-  - origin/main：窗內無新提交（HEAD 為上一輪 sync 提交 71c53f9，不計）；README、VERSION、skills/ 窗內無提交。
-  - Drive：modifiedTime 窗內查詢，第一頁 100 筆（資料夾 59、二進位檔 30、Python 原始碼 9、純文字 2），全部集中於台北 10:11 左右；仍有後續分頁未翻（後續 NOT_READ）；只記類別，歸屬 UNKNOWN；內容 NOT_READ。
-  - Notion：本輪未呼叫（NOT_READ）。
-  - 帳號 Skill：ListSkills 顯示 miko-core 啟用（代入卡型，正文從 GitHub 讀），不列為落後。
-  - GPT 同步：sync/gpt/ 目錄不存在，sync/GPT_STATUS.md 為舊檔；依 ADR-039 停用，不列為變化、不列為中斷。
-  - 其他 repo：本輪工具未載入（claude-code-remote 的 list_repos、add_repo 未取得），NOT_READ。
+  - origin/main：窗內無新提交（HEAD 為上一輪 sync 提交 41e3041，不計）；README、VERSION、skills/ 窗內無提交。
+  - Drive：modifiedTime 窗內篩選查詢 0 筆；按修改時間排序的第一頁最新項目早於窗起點，交叉確認一致；無分頁殘留。內容不讀。
+  - Notion：關鍵字查詢 0 筆；時間篩選需 Business 方案，未生效，結果不代表窗內無編輯（NOT_READ）。
+  - 帳號 Skill：miko-core 為代入卡（正文從 GitHub 讀），不計為落後；但該卡標註對應正本 1.2.61，落後目前正本 1.2.72，見待 MIKO 決定。
+  - GPT 同步：sync/gpt/ 不存在；依 ADR-039 停用，不列為變化、不列為中斷。
+  - 其他 repo：本輪 list_repos 工具不可用（NOT_READ）；本工作階段已有 icashkin-cmyk/miko，未呼叫 add_repo。
 
 ## 本輪變化
-- GitHub｜origin/main 窗內無新提交｜證據：git log／list_commits since 2026-11-25T00:07Z（僅上一輪 sync 提交，不計）
-- Drive｜窗內修改中繼資料第一頁 100 筆，集中於台北 10:11 前後；類別為資料夾、二進位與程式類；後續分頁 NOT_READ｜證據：Drive 檔案查詢（中繼資料，已剔除檔名與 ID）
-- Notion｜NOT_READ（本輪未呼叫）
-- 帳號 Skill｜miko-core 啟用（代入卡）｜證據：ListSkills
-- GPT 同步｜依 ADR-039 停用，不列變化、不列中斷｜證據：sync/gpt/ 不存在
-- 其他 repo｜NOT_READ（工具未載入）
+- GitHub｜窗內無新提交｜證據：git log 窗內只有 41e3041（上一輪 sync 提交，不計）
+- Drive｜窗內修改中繼資料 0 筆｜證據：Drive 篩選查詢與第一頁排序結果交叉比對
+- Notion｜NOT_READ（時間篩選不可用，關鍵字 0 筆）
+- 帳號 Skill｜miko-core 為代入卡，不計為變化（落後情況見待 MIKO 決定）｜證據：代入卡第 0 項版本欄
+- GPT 同步｜依 ADR-039 不列
+- 其他 repo｜NOT_READ（工具不可用）
 
 ## 本輪推進與驗收
-- 推進（承 2026-11-25 08:07 列）：重算 README SHA-256 與 VERSION 第 4 行比對（相符，通過）；重新核對第 84 行，「每天兩次」與「65 分鐘內有新提交」仍同行並存。結果：未通過；窗內 README 無新提交，結論不變；保留：轉治理房。
-- 本輪未重跑 tests/check_repo.py（UNKNOWN）；未改任何正本、Skill 或 skills/ 檔案。
+- 推進（承 2026-11-25 20:07 列）：重算 README SHA-256 與 VERSION 第 4 行比對（相符，通過）；重新核對 README 第 84 行「每天兩次」與「65 分鐘內有新提交」（同行並存）。結果：未通過；窗內 README 無新提交，結論不變；保留：轉治理房。
+- 本輪未跑 tests/check_repo.py（UNKNOWN）；未改任何正本、Skill 或 skills/ 檔案。
 
 ## 各專案進度摘要
-- 治理：正本 1.2.72（ADR-095）維持；窗內 origin/main 無新提交；Drive 中繼資料列為待 MIKO 決定。
-- 臺股：窗內無獨立提交；Drive 程式類中繼資料內容 NOT_READ；台指期維持停止。
+- 治理：正本 1.2.72（ADR-095）維持；窗內 origin/main 無新提交；Drive 窗內無修改。
+- 臺股：窗內無獨立提交；Drive 窗內無修改；台指期維持停止。
 - 月配息：NOT_READ。
 - 美食旅遊：NOT_READ。
 - 分潤：NOT_READ。
@@ -44,5 +44,6 @@
 - 無。
 
 ## 待 MIKO 決定
-- Drive 窗內台北 10:11 前後的一批資料夾、二進位與程式類修改（第一頁 100 筆，仍有後續分頁）：是否為有意的自動輸出或備份、是否含敏感內容、歸屬是否為 MIKO_ARCHIVE、是否需翻完後續分頁（不記檔名）。
-- Notion 與其他 repo 的時間窗結果仍 NOT_READ：是否需要開放查詢權限。
+- 前一輪所列 Drive 10:11 前後批次：本窗內查詢為 0 筆，未再新增；是否翻完歷史分頁確認其歸屬（不記檔名）仍待 MIKO 決定。
+- 代入卡 miko-core 對應正本 1.2.61，落後目前正本 1.2.72：請 MIKO 決定是否換卡（換卡由 MIKO 親手做，Claude 不代存）。
+- Notion 時間篩選需 Business 方案；是否開放或改用其他查詢方式，待 MIKO 決定。
