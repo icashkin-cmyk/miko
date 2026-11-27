@@ -219,3 +219,7 @@
 | 2026-11-26 08:08 | Claude | 本輪變化：origin/main 窗內無新提交（僅上一輪 sync 提交 41e3041，不計）；Drive 窗內修改中繼資料 0 筆；Notion 時間篩選不可用（NOT_READ）；帳號 miko-core 為代入卡（不計變化）；GPT 同步依 ADR-039 不列；其他 repo NOT_READ（工具不可用） | 已記錄（中繼資料）；待 MIKO 決定項見 CLAUDE_STATUS | Claude、MIKO | 完成（記錄） |
 | 2026-11-26 08:08 | Claude | 推進（承 2026-11-25 20:07 列）：重算 README SHA-256 與 VERSION 第 4 行比對（相符），重新核對第 84 行「每天兩次」與「65 分鐘內有新提交」（同行並存） | 未通過；SHA 通過；保留：轉治理房 | Claude、MIKO、治理房 | 進行中 |
 | 2026-11-26 08:08 | Claude | 代入卡 miko-core 對應正本 1.2.61，落後目前正本 1.2.72（代入卡規則：卡比正本舊時標未同步並提醒換卡） | 列入待 MIKO 決定（換卡由 MIKO 親手做，Claude 不代存） | MIKO | 進行中 |
+| 2026-11-27 20:08 | Claude | 本輪變化：origin/main 窗內無新提交（僅上一輪 sync 提交 735002d，不計）；Drive 窗內修改中繼資料約 50 筆（內容 NOT_READ，歸屬 UNKNOWN）；Notion NOT_READ（時間篩選需 Business）；帳號 miko-core 為代入卡，對應正本 1.2.61 落後 1.2.72；GPT 同步依 ADR-039 不列；其他 repo NOT_READ（本輪未呼叫） | 已記錄（中繼資料）；待 MIKO 決定項見 CLAUDE_STATUS | Claude、MIKO | 完成（記錄） |
+| 2026-11-27 20:08 | Claude | 推進（承 2026-11-26 08:08 列）：重算 README SHA-256 與 VERSION 第 4 行比對（相符），重新核對第 84 行「65 分鐘內有新提交」與「每天兩次」字樣（同行並存） | 未通過；SHA 通過；保留：轉治理房 | Claude、MIKO、治理房 | 進行中 |
+| 2026-11-27 20:08 | Claude | Drive 窗內修改批次約 50 筆（台北 2026-11-26 16:57 起至 2026-11-27 20:05）：是否為有意的自動輸出或備份、是否含敏感內容、歸屬是否為 MIKO_ARCHIVE、交接類文件是否應保留於同步範圍（不記檔名，承 2026-11-26 08:08 列） | 列入待 MIKO 決定（Claude 不改 Drive） | MIKO | 進行中 |
+| 2026-11-27 20:08 | Claude | 代入卡 miko-core 對應正本 1.2.61，落後目前正本 1.2.72（代入卡規則：卡比正本舊時標未同步並提醒換卡） | 列入待 MIKO 決定（換卡由 MIKO 親手做，Claude 不代存） | MIKO | 進行中 |
